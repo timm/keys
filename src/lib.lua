@@ -119,14 +119,13 @@ local function div(t,   d,n,   e,lo)
   table.sort(t)
   n = (#t)^n
   while(n < 4 and n < #t/2) do n = n*1.2 end
-  local lo, e, out = 1, d * lsd(t), {}
-  for hi,x in pairs(t) do
-    if hi - lo >= n then
-      if x ~= t[hi+1] then
-        if x - t[lo] >= e then
-          out[#out+1] = t[hi]
-          print(">",(#t)/n,hi,hi-lo)
-          lo = hi end end end end 
+  local lo, e, out,n = 1, d * lsd(t), {}, math.floor(n)
+  for hi=n,#t-n do
+     if hi - lo >= n then
+       if t[hi] ~= t[hi+1] then
+         if t[hi] - t[lo] >= e then
+            out[#out+1] = t[hi]
+            lo = hi end end end end
   return out end
 
 -----
