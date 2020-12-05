@@ -17,21 +17,35 @@ Useful defaults for this algorithm are C,N,X,Z=20,100,20,2.  </p>
 <li>Create N pairs of <inputs,outputs>  by either selecting 
  from a database or running a simulator or asking an oracle.  </li>
 <li>Cluster on the pairs on the output scores into groups of size .5X%. . 
- If there is only one score, just sort on that one output variable. <br />
- Else, cluster the pairs using the output scores with (say) a 
- recursive KMEANS++ algorithm with k=2.   </li>
+<ul>
+<li>If there is only one score, just sort on that one output variable.  </li>
+<li>Else, cluster the pairs using the output scores with (say) a 
+recursive KMEANS++ algorithm with k=2.   </li>
+</ul></li>
+<li>Discretize: 
+<ul>
 <li>Using the clusters, divide the N pairs into  the X% best (B) 
- and Y=100-X% worst (W outputs.   </li>
+and Y=100-X% worst (W) outputs.   </li>
 <li>Use something simple like C% equal percentile chops or Chi-merge 
- to divide numeric inputs into ranges R1, R2, etc.   </li>
+to divide numeric inputs into ranges R1, R2, etc.   </li>
+</ul></li>
+<li>Elite sampling:
+<ul>
 <li>Take all those ranges, and all the ranges of non-numeric inputs R10,R11,
- etc and count  how often they appear among the best and worst pairs. 
- Normalize those counts  as follows: #B=#B/(N<em>X/100) and #W=#W/(N</em>Y/100)</li>
-<li>Discard unpromising ranges; i.e. if  #W >= #B. <br />
- Sort the remaining ranges by #B^2/(#B+#W) into a list L of size S</li>
+etc and count  how often they appear among the best and worst pairs. </li>
+<li>Normalize those counts  as follows: #B=#B/(N*X/100) and #W=#W/(N*Y/100)</li>
+<li>Discard unpromising ranges; i.e. if  #W >= #B.    </li>
+</ul></li>
+<li>Contrast:
+<ul>
+<li>Sort the remaining ranges by #B^2/(#B+#W) into a list L of size S</li>
 <li>Generate N’ new inputs by,  N times, using inputs L[0:max(1,int(S*rand()<sup>Z</sup>))] <br />
- (and randomly selected items for everything else).  To create the new output 
- scores either ask some oracle or re-run the simulator (if it exists) or 
- interpolate between nearest neighbors in the database. </li>
+(and randomly selected items for everything else). <br />
+<ul>
+<li>To create the new output 
+scores either ask some oracle or re-run the simulator (if it exists) or 
+interpolate between nearest neighbors in the database. </li>
+</ul></li>
+</ul></li>
 <li>Return the final best X% group.</li>
 </ul>
