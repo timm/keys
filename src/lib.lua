@@ -1,10 +1,9 @@
 -- <img src="https://image.flaticon.com/icons/png/512/264/264745.png" width=75">  
 -- <a href="http://github.com/timm/keys"><img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" align=left></a>  
 -- "Keys = cluster, discretize, contrast"    
--- ![](https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey?style=flat-square)  
+-- ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange?style=flat-square)  
 -- ![](https://img.shields.io/badge/language-lua,bash-blue?style=flat-square)  
 -- ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
--- ![](https://img.shields.io/badge/language-lua-red?style=flat-square)  
 -- ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
 -- [lib](lib.html) :: [tbl](tbl.html)   
 -- [home](http://menzies.us/keys) :: [lib](lib.html) :: [tbl](tbl.html)   

@@ -1,10 +1,9 @@
 -- <img width=75 src="https://cdn0.iconfinder.com/data/icons/data-charts/110/TableDataGridThickLines-512.png">   <br>
 -- <a href="http://github.com/timm/keys"><img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" align=left></a>  
 -- "Keys = cluster, discretize, contrast"    
--- ![](https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey?style=flat-square)  
+-- ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange?style=flat-square)  
 -- ![](https://img.shields.io/badge/language-lua,bash-blue?style=flat-square)  
 -- ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
--- ![](https://img.shields.io/badge/language-lua-red?style=flat-square)  
 -- ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
 -- [home](http://menzies.us/keys) :: [lib](http://menzies.us/keys/lib.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 --------------------
