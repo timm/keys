@@ -7,7 +7,7 @@
 ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
 ![](https://img.shields.io/badge/language-lua-red?style=flat-square)  
 ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
-[lib](http://menzies.us/timm/keys/lib.html) :: [tbl](http://menzies.us/timm/keys/tbl.html)   
+[lib](http://menzies.us/keys/lib.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 
 
 
