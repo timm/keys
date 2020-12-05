@@ -6,7 +6,7 @@
 -- ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
 -- ![](https://img.shields.io/badge/language-lua-red?style=flat-square)  
 -- ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
--- [lib](lib.html) :: [tbl](tbl.html)   
+-- [home](http://menzies.us/keys) :: [lib](http://menzies.us/keys/lib.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 --------------------
 local Of  = {
   synopois= "tables with rows, summarized in column headers",

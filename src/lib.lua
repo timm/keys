@@ -7,6 +7,7 @@
 -- ![](https://img.shields.io/badge/language-lua-red?style=flat-square)  
 -- ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
 -- [lib](lib.html) :: [tbl](tbl.html)   
+-- [home](http://menzies.us/keys) :: [lib](lib.html) :: [tbl](tbl.html)   
 --------------------
 local Of  ={
   synopois= "Misc lua routines",
