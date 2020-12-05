@@ -108,7 +108,29 @@ local function csv(file,     stream,tmp,t)
     else
       io.close(stream) end end end
 
+local function lsd(t)
+  local f, lo, hi = math.floor, .1*#t, .9*#t
+  return (t[ f(hi) ] - t[ f(lo) ])/2.54
+end
+
+local function div(t,   d,n,   e,lo)
+  d = d and d or .3
+  n = n and n or .5
+  table.sort(t)
+  n = (#t)^n
+  while(n < 4 and n < #t/2) do n = n*1.2 end
+  local lo, e, out = 1, d * lsd(t), {}
+  for hi,x in pairs(t) do
+    if hi - lo >= n then
+      if x ~= t[hi+1] then
+        if x - t[lo] >= e then
+          out[#out+1] = t[hi]
+          print(">",(#t)/n,hi,hi-lo)
+          lo = hi end end end end 
+  return out end
+
 -----
 -- Any finally...
-return {any=any, split=split, copy=copy, rogues=rogues,
+return {div=div,
+        any=any, split=split, copy=copy, rogues=rogues,
         csv=csv, isa=isa, order=order, o=o, oo=oo}

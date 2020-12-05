@@ -35,6 +35,7 @@ local function cell(x) return not(type(x)=="string" and x=="?") end
 
 ---------------------
 -- ## Column summaries
+-- Col
 function Col.factory(j,s,t) 
   local tmp,aka = Sym, t.xs
   if s:find(Of.ch.num)  then tmp     = Num        end
@@ -47,14 +48,12 @@ function Col.factory(j,s,t)
   t.cols[j] = x
   aka[j]= x end
 
+-- Skip
 function Skip.new(n,s) return isa(Skip,{txt=s, pos=n}) end 
-function Sym.new(n,s)  return isa(Sym, {txt=s, pos=n}) end
-function Num.new(n,s) 
-  local  x=isa(Num, {txt=s, pos=n})
-  x.w = x.txt:find(Of.ch.less) and -1 or 1
-  return x end
-
 function Skip:add(x) return x end 
+
+-- Sym
+function Sym.new(n,s)  return isa(Sym, {txt=s, pos=n}) end
 
 function Sym:add(x) 
   if cell(x) then
@@ -65,6 +64,12 @@ function Sym:add(x)
   return x end 
 
 function Sym:dist(x,y) return x==y and 0 or 1 end
+
+-- Num
+function Num.new(n,s) 
+  local  x=isa(Num, {txt=s, pos=n})
+  x.w = x.txt:find(Of.ch.less) and -1 or 1
+  return x end
 
 function Num:add(x) 
   if cell(x) then
@@ -80,6 +85,7 @@ function Num:add(x)
   return x end
 
 function Num:norm(x) return (x - self.lo) / (self.hi - self.lo + 1E-32) end
+
 function Num:dist(x,y)
   if      not cell(x) then y   = self:norm(y); x=y>0.5 and 0 or 1 
   else if not cell(y) then y   = self:norm(y); y=x>0.5 and 0 or 1 
