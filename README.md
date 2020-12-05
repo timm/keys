@@ -10,7 +10,7 @@
 
 
 
-## Keys 1010
+## Keys 101
 
 Repeat the following until happy or bored. 
 Useful defaults for this algorithm are C,N,X,Z=20,100,20,2.  
@@ -33,7 +33,7 @@ Useful defaults for this algorithm are C,N,X,Z=20,100,20,2.
   - Discard unpromising ranges; i.e. if  #W >= #B.    
 - Contrast:
   - Sort the remaining ranges by #B^2/(#B+#W) into a list L of size S
-  -  Generate N’ new inputs by,  N times, using inputs L[0:max(1,int(S\*rand()<sup>Z</sup>))]  
+  -  Generate N’ new inputs by,  N times, using inputs L[0:max(1,int(S\*rand()<sup>Z</sup>))]
      (and randomly selected items for everything else).  
      - To create the new output 
        scores either ask some oracle or re-run the simulator (if it exists) or 
