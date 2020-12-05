@@ -10,6 +10,7 @@ alias ok="(cd $Src/tests; ls *.lua | lua all.lua)"
 docs() {
   mkdir -p $Src/docs
   (cd $Src/src; pycco -d $Src/docs *.lua)
+  (cd $Src; markdown README.md > $Src/docs/index.html)
   cp $Src/etc/pycco.css $Src/docs
 }
 

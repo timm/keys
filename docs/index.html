@@ -1,0 +1,38 @@
+<p><img align=right src="https://www.iconexperience.com/_img/v_collection_png/256x256/shadow/keys.png">    </p>
+
+<h1>Keys = cluster, discretize, contrast</h1>
+
+<p><img src="https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey?style=flat-square" alt="" title="" /> <br />
+<img src="https://img.shields.io/badge/language-lua,bash-blue?style=flat-square" alt="" title="" /> <br />
+<img src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square" alt="" title="" /> <br />
+<img src="https://img.shields.io/badge/language-lua-red?style=flat-square" alt="" title="" /> <br />
+<img src="https://img.shields.io/badge/license-mit-green?style=flat-square" alt="" title="" /> <br />
+<a href="http://menzies.us/keys/lib.html">lib</a> :: <a href="http://menzies.us/keys/tbl.html">tbl</a>   </p>
+
+<h2>Keys 1010</h2>
+
+<p>Repeat the following until happy or bored. 
+Useful defaults for this algorithm are C,N,X,Z=20,100,20,2.  </p>
+
+<ul>
+<li>Create N pairs of <inputs,outputs>  by either selecting 
+ from a database or running a simulator or asking an oracle.  </li>
+<li>Cluster on the pairs on the output scores into groups of size .5X%. . 
+ If there is only one score, just sort on that one output variable. <br />
+ Else, cluster the pairs using the output scores with (say) a 
+ recursive KMEANS++ algorithm with k=2.   </li>
+<li>Using the clusters, divide the N pairs into  the X% best (B) 
+ and Y=100-X% worst (W outputs.   </li>
+<li>Use something simple like C% equal percentile chops or Chi-merge 
+ to divide numeric inputs into ranges R1, R2, etc.   </li>
+<li>Take all those ranges, and all the ranges of non-numeric inputs R10,R11,
+ etc and count  how often they appear among the best and worst pairs. 
+ Normalize those counts  as follows: #B=#B/(N<em>X/100) and #W=#W/(N</em>Y/100)</li>
+<li>Discard unpromising ranges; i.e. if  #W >= #B. <br />
+ Sort the remaining ranges by #B^2/(#B+#W) into a list L of size S</li>
+<li>Generate N’ new inputs by,  N times, using inputs L[0:max(1,int(S*rand()<sup>Z</sup>))] <br />
+ (and randomly selected items for everything else).  To create the new output 
+ scores either ask some oracle or re-run the simulator (if it exists) or 
+ interpolate between nearest neighbors in the database. </li>
+<li>Return the final best X% group.</li>
+</ul>
