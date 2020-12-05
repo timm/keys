@@ -5,7 +5,6 @@
 -- ![](https://img.shields.io/badge/language-lua,bash-blue?style=flat-square)  
 -- ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
 -- ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
--- [lib](lib.html) :: [tbl](tbl.html)   
 -- [home](http://menzies.us/keys) :: [lib](lib.html) :: [tbl](tbl.html)   
 --------------------
 local Of  ={
