@@ -80,14 +80,15 @@ local function oo(t,pre,    indent,fmt)
 -- Warn about locals that have escaped into the global space
 local function rogues(    ignore,match)
   ignore = {
-    jit=true, utf8=true,math=true, package=true, table=true, 
-    coroutine=true, bit=true, os=true, io=true, 
-    bit32=true, string=true, arg=true, debug=true, 
-    _VERSION=true, _G=true }
+    jit=1, utf8=1,math=1, package=1, table=1, coroutine=1, bit=1, 
+    os=1, io=1, bit32=1, string=1, arg=1, debug=1, _VERSION=1, _G=1,
+    tonumber=1, next=1, print=1, collectgarbage=1, xpcall=1, rawset=1,
+    load=1, rawequal=1, tostring=1, assert=1, _assert=1, ipairs=1,
+    setmetatable=1, type=1, loadfile=1, require=1, error=1, rawlen=1,
+    getmetatable=1, pcall=1, dofile=1, select=1, rawget=1, pairs=1}
   for k,v in pairs( _G ) do
-    if type(v) ~= "function" and not ignore[k] then
-       if k:match("^[^A-Z]") then
-         print("-- warning, rogue local ["..k.."]") end end end end 
+    if  not ignore[k] then
+      print("-- warning, rogue variable ["..k.."]") end end end 
 
 -- Return each row, split on ",", numstrings coerced to numbers,
 -- kills comments and whitespace.
