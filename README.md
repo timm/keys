@@ -5,7 +5,7 @@
 ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange?style=flat-square)    
 ![](https://img.shields.io/badge/language-lua,bash-blue?style=flat-square)  
 ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
-[![Build Status](https://travis-ci.org/timm/keys.svg?branch=main)](https://travis-ci.org/timm/keys)
+[![Build Status](https://travis-ci.org/timm/keys.svg?branch=main)](https://travis-ci.org/timm/keys)   
 ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
 [home](http://menzies.us/keys) :: [lib](lib.html) ::
       [cols](cols.html)        :: [tbl](tbl.html)

@@ -8,6 +8,7 @@ install:
   - tar zxf lua-5.4.1.tar.gz
   - cd lua-5.4.1
   - make linux test
+  - cd ..
 
 script:
   - cd tests
