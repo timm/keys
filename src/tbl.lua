@@ -6,7 +6,7 @@
 -- ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
 -- ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
 -- [home](http://menzies.us/keys)         :: [lib](http://menzies.us/keys/lib.html) ::
--- [col](http://menzies.us/keys/col.html) :: [tbl](http://menzies.us/keys/tbl.html)   
+-- [cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 --------------------
 local Of  = {
   synopois= "tables with rows, summarized in column headers",
@@ -18,8 +18,8 @@ local Of  = {
 
 -- ## Objects 
 local Lib            = require "lib"
-local Col            = require "col"
-local Num, Sym, Some = Col.Num, Col.Sym, Col.Some
+local Cols           = require "cols"
+local Col,Num,Sym,Some = Cols.Col, Cols.Num, Cols.Sym, Cols.Some
 local Row            = {ako="Row",  cells={}, bins={}}
 local Tbl            = {ako="Tbl",  rows={},  cols={},
                         ys={},      xs={},    dist={}}
@@ -54,7 +54,7 @@ function Tbl.new() return isa(Tbl) end
 
 function Tbl:add(t)  
   if #self.cols==0 then 
-    for j,x in pairs(t) do Col.Col.factory(j,x,self) end 
+    for j,x in pairs(t) do Col.factory(j,x,self) end 
   else
     self.rows[(#self.rows)+1] = Row.new(t,self) end end
       

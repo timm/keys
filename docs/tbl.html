@@ -25,7 +25,7 @@
 <img alt="" src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square" /><br />
 <img alt="" src="https://img.shields.io/badge/license-mit-green?style=flat-square" /><br />
 <a href="http://menzies.us/keys">home</a>         :: <a href="http://menzies.us/keys/lib.html">lib</a> ::
-<a href="http://menzies.us/keys/col.html">col</a> :: <a href="http://menzies.us/keys/tbl.html">tbl</a>   </p>
+<a href="http://menzies.us/keys/cols.html">cols</a> :: <a href="http://menzies.us/keys/tbl.html">tbl</a>   </p>
 <hr />
     </div>
     <div class='code'>
@@ -48,8 +48,8 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">Lib</span>            <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;lib&quot;</span>
-<span class="kd">local</span> <span class="n">Col</span>            <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;col&quot;</span>
-<span class="kd">local</span> <span class="n">Num</span><span class="p">,</span> <span class="n">Sym</span><span class="p">,</span> <span class="n">Some</span> <span class="o">=</span> <span class="n">Col</span><span class="p">.</span><span class="n">Num</span><span class="p">,</span> <span class="n">Col</span><span class="p">.</span><span class="n">Sym</span><span class="p">,</span> <span class="n">Col</span><span class="p">.</span><span class="n">Some</span>
+<span class="kd">local</span> <span class="n">Cols</span>           <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;cols&quot;</span>
+<span class="kd">local</span> <span class="n">Col</span><span class="p">,</span><span class="n">Num</span><span class="p">,</span><span class="n">Sym</span><span class="p">,</span><span class="n">Some</span> <span class="o">=</span> <span class="n">Cols</span><span class="p">.</span><span class="n">Col</span><span class="p">,</span> <span class="n">Cols</span><span class="p">.</span><span class="n">Num</span><span class="p">,</span> <span class="n">Cols</span><span class="p">.</span><span class="n">Sym</span><span class="p">,</span> <span class="n">Cols</span><span class="p">.</span><span class="n">Some</span>
 <span class="kd">local</span> <span class="n">Row</span>            <span class="o">=</span> <span class="p">{</span><span class="n">ako</span><span class="o">=</span><span class="s2">&quot;Row&quot;</span><span class="p">,</span>  <span class="n">cells</span><span class="o">=</span><span class="p">{},</span> <span class="n">bins</span><span class="o">=</span><span class="p">{}}</span>
 <span class="kd">local</span> <span class="n">Tbl</span>            <span class="o">=</span> <span class="p">{</span><span class="n">ako</span><span class="o">=</span><span class="s2">&quot;Tbl&quot;</span><span class="p">,</span>  <span class="n">rows</span><span class="o">=</span><span class="p">{},</span>  <span class="n">cols</span><span class="o">=</span><span class="p">{},</span>
                         <span class="n">ys</span><span class="o">=</span><span class="p">{},</span>      <span class="n">xs</span><span class="o">=</span><span class="p">{},</span>    <span class="n">dist</span><span class="o">=</span><span class="p">{}}</span></pre></div>
@@ -111,7 +111,7 @@
 
 <span class="kr">function</span> <span class="nc">Tbl</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>  
   <span class="kr">if</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">cols</span><span class="o">==</span><span class="mi">0</span> <span class="kr">then</span> 
-    <span class="kr">for</span> <span class="n">j</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">Col</span><span class="p">.</span><span class="n">Col</span><span class="p">.</span><span class="n">factory</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">self</span><span class="p">)</span> <span class="kr">end</span> 
+    <span class="kr">for</span> <span class="n">j</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">Col</span><span class="p">.</span><span class="n">factory</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">self</span><span class="p">)</span> <span class="kr">end</span> 
   <span class="kr">else</span>
     <span class="n">self</span><span class="p">.</span><span class="n">rows</span><span class="p">[(</span><span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">rows</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Row</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">self</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
     </div>

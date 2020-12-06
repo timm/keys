@@ -7,7 +7,7 @@
 ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
 ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
 [home](http://menzies.us/keys) :: [lib](lib.html) ::
-      [col](col.html)          :: [tbl](tbl.html)
+      [cols](cols.html)        :: [tbl](tbl.html)
 
 
 ## Keys 101

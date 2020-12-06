@@ -1,11 +1,11 @@
 package.path='../src/?.lua;'.. package.path 
 local l=require "lib"
-local t=require "col"
+local c=require "cols"
 
 math.randomseed(1)
 
 local o ,oo, any = l.o, l.oo, l.any
-local Num, Sym,Some = t.Num, t.Sym, t.Some
+local Num, Sym,Some = c.Num, c.Sym, c.Some
 
 local function going(      x,y,z)
   x = Sym.new()
