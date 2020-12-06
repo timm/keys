@@ -4,19 +4,19 @@ local function main(l)
   local Tbl = t.Tbl
   
   local function rowsreading()
-    local tbl = Tbl.read("../data/auto93.csv")
+    local tbl = Tbl.read("data/auto93.csv")
     assert("Num"==tbl.cols[2].ako,"is Num?")
     assert(#tbl.rows==398,"auto has rows?") end
   
   local function rowsdist()
-    local tbl = Tbl.read("../data/weather.csv")
+    local tbl = Tbl.read("data/weather.csv")
       local r1,r2 = tbl.rows[3], tbl.rows[4]
       assert(5 == #r1.cells,"rows have cells?")
       assert(5 == #r1.bins,"bins have cells?")
       assert(0<=  r1:dist(r2,tbl.xs),"dist functioning?" ) end
   
   local function rowsdists()
-    local tbl = Tbl.read("../data/auto93.csv")
+    local tbl = Tbl.read("data/auto93.csv")
     local all={}
     local insane=0
     for i=1,10 do
@@ -34,7 +34,7 @@ local function main(l)
     end
   
   local function binnings()
-    local tbl = Tbl.read("../data/auto93.csv")
+    local tbl = Tbl.read("data/auto93.csv")
     tbl:bins() 
     assert(true,"bins runs?") end 
   rowsreading()

@@ -23,7 +23,7 @@ local function main(l)
   local function csving(   m,n)
     m=-1
     local eek=0
-    for row in l.csv("../data/weather.csv") do
+    for row in l.csv("data/weather.csv") do
       n = n or #row
       m=m+1
       if m>0 and not "number" == type(row[2]) then eek=eek+1 end
