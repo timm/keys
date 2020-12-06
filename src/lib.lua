@@ -17,8 +17,6 @@ local Of  ={
 -- Return any item in a list
 local function any(a) return a[1 + math.floor(#a*math.random())] end
 
-local function sort(a,f) table.sort(a,f); return a end
-
 -- Split the string `s` on separator `c`, defaults to "." 
 local function split(s,     c,t)
   t, c = {}, c or ","
@@ -110,6 +108,5 @@ local function csv(file,     stream,tmp,t)
 
 -----
 -- Any finally...
-return {div=div, bin=bin, sort=sort,
-        any=any, split=split, copy=copy, rogues=rogues,
+return {any=any, split=split, copy=copy, rogues=rogues,
         csv=csv, isa=isa, order=order, o=o, oo=oo}

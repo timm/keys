@@ -14,11 +14,15 @@ local Of  = {
   license = "MIT",
   year    = 2020,
   tbl     = {samples=128},
-  row     = {p=2,cols="ys"}}
+  row     = {p=2, cols="ys"}}
 
 -- ## Objects 
-local Row  = {ako="Row",  cells={}, bins={}}
-local Tbl  = {ako="Tbl",  rows={}, cols={},ys={},xs={}, dist={}}
+local Lib            = require "lib"
+local Col            = require "col"
+local Num, Sym, Some = Col.Num, Col.Sym, Col.Some
+local Row            = {ako="Row",  cells={}, bins={}}
+local Tbl            = {ako="Tbl",  rows={},  cols={},
+                        ys={},      xs={},    dist={}}
 
 ---------------------
 -- ## Shortcuts
@@ -50,7 +54,7 @@ function Tbl.new() return isa(Tbl) end
 
 function Tbl:add(t)  
   if #self.cols==0 then 
-    for j,x in pairs(t) do Col.factory(j,x,self) end 
+    for j,x in pairs(t) do Col.Col.factory(j,x,self) end 
   else
     self.rows[(#self.rows)+1] = Row.new(t,self) end end
       

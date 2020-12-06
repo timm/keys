@@ -5,34 +5,7 @@ local t=require "tbl"
 math.randomseed(1)
 
 local o ,oo, any = l.o, l.oo, l.any
-local Num, Sym,Tbl,Some = t.Num, t.Sym, t.Tbl, t.Some
-
-local function going(      x,y,z)
-  x = Sym.new()
-  y = Num.new()
-  x:add("love")
-  x:add("hate")
-  x:add("hate")
-  y:add(20)
-  y:add(30)
-  print(y)
-  assert(2==x.seen.hate,"counting symbols")
-  assert(25==y.mu,"mean") 
-  z=Num.new()
-  for _,x in pairs{9,2,5,4,12,7,8,11,9,
-                   3,7,4,12,5,4,10,9,6,9,4} do z:add(x) end
-  assert(7 == z.mu,"mu")
-  assert(3.06 <= z.sd and z.sd <= 3.061,"sd")
-end
-
-local function csving(   m,n)
-  m=-1
-  for row in l.csv("../data/weather.csv") do
-    n = n or #row
-    m=m+1
-    if m>0 then assert("number" == type(row[2]),"is number") end
-    assert(#row == n,"rows right") end 
-  end
+local Tbl = t.Tbl
 
 local function rowsreading()
   local tbl = Tbl.read("../data/auto93.csv")
@@ -60,23 +33,15 @@ local function rowsdists()
   for _,one in pairs(all) do
      print(""); print(one.d); o(one.r1); o(one.r2) end end
 
-local function diving()
-  local s = l.isa(Some,{max=256})
-  for _=1,10^3 do s:add( (100*math.random()^2)//1 ) end
-  l.o(s:bins()) end
-
 local function binnings()
   local tbl = Tbl.read("../data/auto93.csv")
   tbl:bins() 
   for j=1,30 do l.o(l.any(tbl.rows).bins) end end 
 
  
---going()
---csving()
---rowsreading()
---rowsdist()
---rowsdists()
--- diving()
+rowsreading()
+rowsdist()
+rowsdists()
 binnings()
 l.rogues()
 

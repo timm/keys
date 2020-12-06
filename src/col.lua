@@ -141,4 +141,4 @@ function Sym:dist(x,y) return x==y and 0 or 1 end
 
 ------
 -- And finally...
-return {Sym=Sym,Some=Some,Num=Num}
+return {Col=Col, Sym=Sym,Some=Some,Num=Num}
