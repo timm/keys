@@ -2,12 +2,8 @@ local Of={
   synopsis="run all files in this rectory",
   get="ls"}
 
-_assert = assert
-
-function assert(x,y) 
-  print("-- " .. (y or ""))
-  pcall(_assert(x,y) )
-end
+--_assert = assert
+-- function assert(x,y) print("-- " .. (y or ""));pcall(_assert(x,y) ) end
 
 for x in  io.popen(Of.get):lines() do
   if x:match(".lua$") then
