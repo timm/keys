@@ -6,7 +6,7 @@ _assert = assert
 
 function assert(x,y) 
   print("-- " .. (y or ""))
-  _assert(x,y) 
+  pcall(_assert(x,y) )
 end
 
 for x in  io.popen(Of.get):lines() do
