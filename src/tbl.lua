@@ -39,7 +39,7 @@ local function cell(x) return not(type(x)=="string" and x=="?") end
 
 ---------------------
 -- ## Column summaries
--- Col
+-- ### Col
 function Col.factory(j,s,t) 
   local tmp,aka = Sym, t.xs
   if s:find(Of.ch.num)  then tmp     = Num        end
@@ -52,11 +52,11 @@ function Col.factory(j,s,t)
   t.cols[j] = x
   aka[j]= x end
 
--- Skip
+-- ### Skip
 function Skip.new(n,s) return isa(Skip,{txt=s, pos=n}) end 
 function Skip:add(x) return x end 
 
--- Sym
+-- ### Sym
 function Sym.new(n,s)  return isa(Sym, {txt=s, pos=n}) end
 
 function Sym:add(x) 
@@ -69,7 +69,7 @@ function Sym:add(x)
 
 function Sym:dist(x,y) return x==y and 0 or 1 end
 
--- Some
+-- ### Some
 function Some.new(n,s) return isa(Some,{txt=s,pos=n}) end
 
 function Some:add(x,   j)
@@ -111,7 +111,7 @@ function Some:bins(d,n)
           b4,lo = now,hi end end end end
   return out end
 
--- Num
+-- ### Num
 function Num.new(n,s) 
   local  x=isa(Num, {txt=s, pos=n})
   x.w = x.txt:find(Of.ch.less) and -1 or 1
