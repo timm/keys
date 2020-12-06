@@ -3,7 +3,7 @@ local Of={
   get="ls"}
 
 --_assert = assert
-function assert(x,y) print("-- " .. (y or "") .. (x and "" or "fail")) end
+function ok(x,y) print("-- " .. (y or "") .. (x and "" or "fail")) end
 
 for x in  io.popen(Of.get):lines() do
   if x:match(".lua$") then
