@@ -1,10 +1,11 @@
 -- <img width=75 src="https://www.flaticon.com/svg/static/icons/svg/2286/2286294.svg"> <hr>
 -- <a href="http://github.com/timm/keys"><img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" align=left></a>  
 -- "Keys = cluster, discretize, elites, contrast"    
--- ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange?style=flat-square)  
--- ![](https://img.shields.io/badge/language-lua,bash-blue?style=flat-square)  
--- ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet?style=flat-square)  
--- ![](https://img.shields.io/badge/license-mit-green?style=flat-square)  
+-- ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange)    
+-- ![](https://img.shields.io/badge/language-lua,bash-blue)  
+-- ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet)  
+-- [![Build Status](https://travis-ci.com/timm/keys.svg?branch=main)](https://travis-ci.com/timm/keys)   
+-- ![](https://img.shields.io/badge/license-mit-lightgrey)  
 -- [home](http://menzies.us/keys)         :: [lib](http://menzies.us/keys/lib.html) ::
 -- [cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 --------------------
