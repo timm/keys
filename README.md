@@ -2,6 +2,7 @@
 
 # Keys = cluster, discretize, elites, contrast   
 
+[![DOI](https://zenodo.org/badge/318809834.svg)](https://zenodo.org/badge/latestdoi/318809834)  
 ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange)    
 ![](https://img.shields.io/badge/language-lua,bash-blue)  
 ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet)  
@@ -10,6 +11,11 @@
 [home](http://menzies.us/keys) :: [lib](http://menzies.us/keys/lib.html) ::
 [cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html)
 
+
+This repo is very much a work in progress.
+I'm busy writing  into here all the stuff
+learned from several years of grad students as well as numerous experiments in different languages.
+So come back soon, this could get interesting.
 
 ## Keys 101
 
