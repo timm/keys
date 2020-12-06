@@ -23,6 +23,7 @@ local Col,Num,Sym,Some = Cols.Col, Cols.Num, Cols.Sym, Cols.Some
 local Row            = {ako="Row",  cells={}, bins={}}
 local Tbl            = {ako="Tbl",  rows={},  cols={},
                         ys={},      xs={},    dist={}}
+local TwoDiv         = {ako="BiDev"}
 
 ---------------------
 -- ## Shortcuts
