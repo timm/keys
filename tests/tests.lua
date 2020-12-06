@@ -4,7 +4,7 @@ local Of={
 
 local fails =0
 --_assert = assert
-function ok(x,y) 
+function assert(x,y) 
   if not x then fails=fails+1 end
   print("-- " .. (y or "") .. (x and "" or "fail")) end
 

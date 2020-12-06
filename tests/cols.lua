@@ -11,13 +11,13 @@ local function main(l)
     x:add("hate")
     y:add(20)
     y:add(30)
-    ok(2==x.seen.hate,"counting symbols?")
-    ok(25==y.mu,"mean?") 
+    assert(2==x.seen.hate,"counting symbols?")
+    assert(25==y.mu,"mean?") 
     z=Num.new()
     for _,x in pairs{9,2,5,4,12,7,8,11,9,
                      3,7,4,12,5,4,10,9,6,9,4} do z:add(x) end
-    ok(7 == z.mu,"mu?")
-    ok(3.06 <= z.sd and z.sd <= 3.061,"sd?")
+    assert(7 == z.mu,"mu?")
+    assert(3.06 <= z.sd and z.sd <= 3.061,"sd?")
   end
   
   local function csving(   m,n)
@@ -28,12 +28,12 @@ local function main(l)
       m=m+1
       if m>0 and not "number" == type(row[2]) then eek=eek+1 end
       if m>0 and not #row == n then eek=eek+1 end end
-    ok(eek==0,"cvs reading?") end
+    assert(eek==0,"cvs reading?") end
   
   local function diving()
     local s = l.isa(Some,{max=256})
     for _=1,10^3 do s:add( (100*math.random()^2)//1 ) end
-    ok(6 == # s:bins(),"bins working?") end
+    assert(6 == # s:bins(),"bins working?") end
   going()
   csving()
   diving()
