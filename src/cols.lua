@@ -1,4 +1,4 @@
--- <img width=75 src="https://www.flaticon.com/svg/static/icons/svg/2286/2286294.svg"> <br>
+-- <img width=75 src="https://www.flaticon.com/svg/static/icons/svg/2286/2286294.svg"> <hr>
 -- <a href="http://github.com/timm/keys"><img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" align=left></a>  
 -- "Keys = cluster, discretize, elites, contrast"    
 -- ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange?style=flat-square)  
@@ -111,17 +111,19 @@ function Some:bin(x,bins)
   for j,b in pairs(bins) do if x<=b then return say(j) end end
   return say(#bins+1)  end 
 
-function Some:bins(d,n)
-  d = d and d or .2
-  n = n and n or .5 
+function Some:bins(i)
+  i = i or {}
+  local d = i.d or Of.some.d -- .2
+  local n = i.n or Of.some.n -- .5 
+  local epsilon = i.epsilon or d*self:sd()
   n = (#self.has)^n
-  while(n < 4 and n < #self.has/2) do n = n*1.25 end
-  local b4, lo, out, sd, n = 0, 1, {}, self:sd(t), n//1
+  while(n < 4 and n < #self.has/2) do n = n*1.1 end
+  local b4, lo, out,  n = 0, 1, {},  n//1
   for hi = n, #self.has - n do
     if hi - lo >= n then                      -- now enough in the div
       if self.has[hi] ~= self.has[hi+1] then  -- there is a break here
         local now = self.has[lo+(hi-lo)//2]
-        if now - b4 > d*sd then -- your different enough to last bin
+        if now - b4 > epsilon then -- your different enough to last bin
           out[#out+1] = self.has[hi]
           b4,lo = now,hi end end end end
   return out end
