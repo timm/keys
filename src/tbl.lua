@@ -120,7 +120,7 @@ function Tbl:add(t)
     for j,x in pairs(t) do Col.factory(j,x,self) end 
   else
     self.rows[(#self.rows)+1] = Row.new(t,self) end end
-
+      
 -- Read from files
 function Tbl.read(f,    t) 
   t=Tbl.new()
@@ -128,5 +128,44 @@ function Tbl.read(f,    t)
   return t end
 
 ------
+-- ### Unsupervised descritization of nuermic columns
+function Tbl:bins(samples,d,n,      some,lsd,bin,div)
+  -- For one column: find a random `sample ` of the data
+  local function some(pos, out)
+    for _ in 1,samples do 
+      local x = Lib.any(self.rows).cells[pos]
+      if cell(row) then out[#out+1] = x end end  
+    return out end
+  -- For one list of sorted numbers, report its spread
+  local function spread(t) 
+    return (t[ math.floor(.9*#t) ] - t[ math.floor(.1*#t)])/2.54 end
+  -- For one list of sorted numbers, divided into bins of size `n`
+  local function div(t)
+    local b4, lo, out, sd, n = 0, 1, {}, lsd(t), math.floor(n)
+    for hi= n,#t-n do
+      if hi - lo >= n then i      -- enough in his div
+        if t[hi] ~= t[hi+1] then  -- there is a break here
+          local now = t[math.floor(lo+(hi-lo)/2)]
+          if now - b4 > d*sd then -- your different enough to last bin
+            out[#out+1] = t[hi]
+            b4,lo = now,hi end end end end
+    return out end
+  -- Report which bin has `x`
+  local function bin(x,bins) 
+    for j,b in pairs(bins) do if x<=b then return j end end
+    return #bins+1 end 
+  --- main
+  samples = samples or 128
+  d = d and d or .2
+  n = n and n or .5
+  n = (#self.rows)^n
+  while(n < 4 and n < #t/2) do n = n*1.25 end
+  for _,col in pairs(self.cols) do
+    if col.ako == "Num" then
+      local bins = div( Lib.sort(some(col.pos, {})))
+      for _,r in pairs(self.rows) do
+        r.bins[col.pos] = bin(r.cols[col.pos],bins) end end end end
+
+ ------
 -- And finally...
 return {Tbl=Tbl,Row=Row,Sym=Sym,Num=Num}

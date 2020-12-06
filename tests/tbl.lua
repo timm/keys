@@ -15,6 +15,7 @@ local function going(      x,y,z)
   x:add("hate")
   y:add(20)
   y:add(30)
+  print(y)
   assert(2==x.seen.hate,"counting symbols")
   assert(25==y.mu,"mean") 
   z=Num.new()
@@ -59,10 +60,10 @@ local function rowsdists()
   for _,one in pairs(all) do
      print(""); print(one.d); o(one.r1); o(one.r2) end end
 
---going()
+going()
 --csving()
 --rowsreading()
 --rowsdist()
-rowsdists()
+--rowsdists()
 l.rogues()
 

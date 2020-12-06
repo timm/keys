@@ -16,6 +16,8 @@ local Of  ={
 -- Return any item in a list
 local function any(a) return a[1 + math.floor(#a*math.random())] end
 
+local function sort(a,f) table.sort(a,f); return a end
+
 -- Split the string `s` on separator `c`, defaults to "." 
 local function split(s,     c,t)
   t, c = {}, c or ","
@@ -108,28 +110,8 @@ local function csv(file,     stream,tmp,t)
     else
       io.close(stream) end end end
 
-local function lsd(t)
-  local f, lo, hi = math.floor, .1*#t, .9*#t
-  return (t[ f(hi) ] - t[ f(lo) ])/2.54
-end
-
-local function div(t,   d,n,   e,lo)
-  d = d and d or .3
-  n = n and n or .5
-  table.sort(t)
-  n = (#t)^n
-  while(n < 4 and n < #t/2) do n = n*1.2 end
-  local lo, e, out,n = 1, d * lsd(t), {}, math.floor(n)
-  for hi=n,#t-n do
-     if hi - lo >= n then
-       if t[hi] ~= t[hi+1] then
-         if t[hi] - t[lo] >= e then
-            out[#out+1] = t[hi]
-            lo = hi end end end end
-  return out end
-
 -----
 -- Any finally...
-return {div=div,
+return {div=div, bin=bin, sort=sort,
         any=any, split=split, copy=copy, rogues=rogues,
         csv=csv, isa=isa, order=order, o=o, oo=oo}
