@@ -1,7 +1,7 @@
 language: c
 
 os:
-  - osx
+  - linux
 
 install:
   - curl -R -O http://www.lua.org/ftp/lua-5.4.1.tar.gz
