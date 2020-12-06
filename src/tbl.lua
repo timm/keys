@@ -70,9 +70,10 @@ function Sym:add(x)
 function Sym:dist(x,y) return x==y and 0 or 1 end
 
 -- ### Some
--- A reservoir sampler. While there is space, add anything.
+-- A reservoir sampler. 
 function Some.new(n,s) return isa(Some,{txt=s,pos=n}) end
 
+-- While there is space, add anything.
 -- Once we are full, new additions delete some older item
 -- (selected at random).
 function Some:add(x,   j)
