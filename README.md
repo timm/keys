@@ -6,7 +6,7 @@
 ![](https://img.shields.io/badge/language-lua,bash-blue)  
 ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet)  
 [![Build Status](https://travis-ci.com/timm/keys.svg?branch=main)](https://travis-ci.com/timm/keys)   
-![](https://img.shields.io/badge/license-mit-light-gray)  
+![](https://img.shields.io/badge/license-mit-lightgrey)  
 [home](http://menzies.us/keys) :: [lib](lib.html) ::
       [cols](cols.html)        :: [tbl](tbl.html)
 
