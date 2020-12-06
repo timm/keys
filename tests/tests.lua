@@ -2,13 +2,20 @@ local Of={
   synopsis="run all files in this rectory",
   get="ls"}
 
+local fails =0
 --_assert = assert
-function ok(x,y) print("-- " .. (y or "") .. (x and "" or "fail")) end
+function ok(x,y) 
+  if not x then fails=fails+1 end
+  print("-- " .. (y or "") .. (x and "" or "fail")) end
+
 
 for x in  io.popen(Of.get):lines() do
   if x:match(".lua$") then
     if x ~= "tests.lua" then
       print("\n---------- " .. x)
       dofile(x) end end end
+
+
+os.exit(fails==0)
 
 
