@@ -2,7 +2,7 @@ local Of={
   synopsis="run all files in this rectory",
   get="ls"}
 
-local fails =0
+local fails=0
 --_assert = assert
 function assert(x,y) 
   if not x then fails=fails+1 end
@@ -15,7 +15,4 @@ for x in  io.popen(Of.get):lines() do
       print("\n---------- " .. x)
       dofile(x) end end end
 
-
-os.exit(fails==0)
-
-
+assert(fails==0)
