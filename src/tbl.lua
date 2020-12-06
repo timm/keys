@@ -52,22 +52,36 @@ function Col.factory(j,s,t)
   t.cols[j] = x
   aka[j]= x end
 
+-- ### Num
+function Num.new(n,s) 
+  local  x=isa(Num, {txt=s, pos=n})
+  x.w = x.txt:find(Of.ch.less) and -1 or 1
+  return x end
+
+function Num:add(x) 
+  if cell(x) then
+    self.n = self.n + 1
+    local d = x - self.mu
+    self.mu = self.mu + d / self.n
+    self.m2 = self.m2 + d*(x - self.mu)
+    self.sd = self.m2<0 and 0 or (
+              self.n<2  and 0 or (
+              (self.m2/(self.n -1))^0.5))
+    self.lo = math.min(self.lo,x)
+    self.hi = math.max(self.hi,x) end
+  return x end
+
+function Num:norm(x) return (x - self.lo) / (self.hi - self.lo + 1E-32) end
+
+function Num:dist(x,y)
+  if      not cell(x) then y   = self:norm(y); x=y>0.5 and 0 or 1 
+  else if not cell(y) then y   = self:norm(y); y=x>0.5 and 0 or 1 
+  else                     x,y = self:norm(x), self:norm(y) end end
+  return math.abs(x-y) end 
+
 -- ### Skip
 function Skip.new(n,s) return isa(Skip,{txt=s, pos=n}) end 
 function Skip:add(x) return x end 
-
--- ### Sym
-function Sym.new(n,s)  return isa(Sym, {txt=s, pos=n}) end
-
-function Sym:add(x) 
-  if cell(x) then
-    self.n = self.n + 1
-    self.seen[x] = (self.seen[x] or 0) + 1
-    if self.seen[x] > self.most then 
-      self.most, self.mode = self.seen[x], x end end
-  return x end 
-
-function Sym:dist(x,y) return x==y and 0 or 1 end
 
 -- ### Some
 -- A reservoir sampler. 
@@ -115,32 +129,18 @@ function Some:bins(d,n)
           b4,lo = now,hi end end end end
   return out end
 
--- ### Num
-function Num.new(n,s) 
-  local  x=isa(Num, {txt=s, pos=n})
-  x.w = x.txt:find(Of.ch.less) and -1 or 1
-  return x end
+-- ### Sym
+function Sym.new(n,s)  return isa(Sym, {txt=s, pos=n}) end
 
-function Num:add(x) 
+function Sym:add(x) 
   if cell(x) then
     self.n = self.n + 1
-    local d = x - self.mu
-    self.mu = self.mu + d / self.n
-    self.m2 = self.m2 + d*(x - self.mu)
-    self.sd = self.m2<0 and 0 or (
-              self.n<2  and 0 or (
-              (self.m2/(self.n -1))^0.5))
-    self.lo = math.min(self.lo,x)
-    self.hi = math.max(self.hi,x) end
-  return x end
+    self.seen[x] = (self.seen[x] or 0) + 1
+    if self.seen[x] > self.most then 
+      self.most, self.mode = self.seen[x], x end end
+  return x end 
 
-function Num:norm(x) return (x - self.lo) / (self.hi - self.lo + 1E-32) end
-
-function Num:dist(x,y)
-  if      not cell(x) then y   = self:norm(y); x=y>0.5 and 0 or 1 
-  else if not cell(y) then y   = self:norm(y); y=x>0.5 and 0 or 1 
-  else                     x,y = self:norm(x), self:norm(y) end end
-  return math.abs(x-y) end 
+function Sym:dist(x,y) return x==y and 0 or 1 end
 
 ---------------------
 -- ## Row
