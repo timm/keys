@@ -63,21 +63,18 @@ local function o(z,pre,   s,c)
 -- Don't show private slots (those that start with `_`);
 -- show slots in sorted order;
 -- if `pre` is specified, then  print that as a prefix.
-local function oo(t,pre,    old,indent,fmt)
+local function oo(t,pre,    indent,fmt)
   pre    = pre or ""
   indent = indent or 0
   if(indent==0) then print("") end
   if indent < 10 then
     for k, v in order(t or {}) do
       if not (type(k)=='string' and k:match("^_")) then
-        if old and old[t] then v="..." end
-        old = old or {}
-        okd[t]=t
         if not (type(v)=='function') then
           fmt = pre..string.rep("|  ",indent)..tostring(k)..": "
           if type(v) == "table" then
             print(fmt)
-            oo(v, pre, old, indent+1)
+            oo(v, pre, indent+1)
           else
             print(fmt .. tostring(v)) end end end end end end
 

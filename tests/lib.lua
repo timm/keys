@@ -15,8 +15,4 @@ for k,v in l.order({cc=1,bb=2,aa=3}) do
   assert("aa"==k,"sort keys")
   break end
 
-local t={}
-for _=1,10^3 do t[#t+1] = math.floor(100*math.random()^2) end
-l.o(l.div(t))
-
 l.rogues()

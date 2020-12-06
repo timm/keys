@@ -15,6 +15,8 @@ local Of  = {
   seed    = 1,
   ch      = {skip="?", klass="!",sym="_", 
              num=":", more=">", less="<"},
+  some    = {n=.5, d=.2},
+  tbl     = {samples=128},
   row     = {p=2,cols="ys"}}
 
 -- ## Objects 
@@ -24,6 +26,8 @@ local Num  = {ako="Num", pos=0,txt="",n=0,
               mu=0, m2=0, sd=0, lo=math.huge, hi= -math.huge}
 local Sym  = {ako="Sym", pos=0,txt="",n=0, 
               seen={}, most=0,mode=true}
+local Some = {ako="Some", pos=0,txt="",n=0, 
+              has={}, ok=false, max=256, bins={}}
 local Skip = {ako="Skip"}
 local Row  = {ako="Row",  cells={}, bins={}}
 local Tbl  = {ako="Tbl",  rows={}, cols={},ys={},xs={}, dist={}}
@@ -64,6 +68,48 @@ function Sym:add(x)
   return x end 
 
 function Sym:dist(x,y) return x==y and 0 or 1 end
+
+-- Some
+function Some.new(n,s) return isa(Some,{txt=s,pos=n}) end
+
+function Some:add(x,   j)
+  local r = math.random
+  if cell(x) then
+    self.n = self.n + 1
+    if #self.has < self.max then j = #self.has+1   
+    elseif r() < self.max/self.n then j = r(#self.has)  
+    end 
+    if j then self.has[j]=x; self.ok=false end end
+  return x end 
+
+function Some:all() 
+  if not self.ok then self.ok = true; table.sort(self.has) end
+  return self.has end
+
+function Some:sd(    t)
+  t = self:all()
+  return (t[.9*#t//1] - t[.1*#t//1]) / 2.54 end
+
+function Some:bin(x,bins)
+  if not cell(x) then return x end
+  local say=function (n) return string.format("%s/%s",n,#bins+1) end
+  for j,b in pairs(bins) do if x<=b then return say(j) end end
+  return say(#bins+1)  end 
+
+function Some:bins(d,n)
+  d = d and d or .2
+  n = n and n or .5 
+  n = (#self.has)^n
+  while(n < 4 and n < #self.has/2) do n = n*1.25 end
+  local b4, lo, out, sd, n = 0, 1, {}, self:sd(t), n//1
+  for hi = n, #self.has - n do
+    if hi - lo >= n then                      -- now enough in the div
+      if self.has[hi] ~= self.has[hi+1] then  -- there is a break here
+        local now = self.has[lo+(hi-lo)//2]
+        if now - b4 > d*sd then -- your different enough to last bin
+          out[#out+1] = self.has[hi]
+          b4,lo = now,hi end end end end
+  return out end
 
 -- Num
 function Num.new(n,s) 
@@ -127,45 +173,18 @@ function Tbl.read(f,    t)
   for row in Lib.csv(f) do t:add(row) end
   return t end
 
-------
--- ### Unsupervised descritization of nuermic columns
-function Tbl:bins(samples,d,n,      some,lsd,bin,div)
-  -- For one column: find a random `sample ` of the data
-  local function some(pos, out)
-    for _ in 1,samples do 
-      local x = Lib.any(self.rows).cells[pos]
-      if cell(row) then out[#out+1] = x end end  
-    return out end
-  -- For one list of sorted numbers, report its spread
-  local function spread(t) 
-    return (t[ math.floor(.9*#t) ] - t[ math.floor(.1*#t)])/2.54 end
-  -- For one list of sorted numbers, divided into bins of size `n`
-  local function div(t)
-    local b4, lo, out, sd, n = 0, 1, {}, lsd(t), math.floor(n)
-    for hi= n,#t-n do
-      if hi - lo >= n then i      -- enough in his div
-        if t[hi] ~= t[hi+1] then  -- there is a break here
-          local now = t[math.floor(lo+(hi-lo)/2)]
-          if now - b4 > d*sd then -- your different enough to last bin
-            out[#out+1] = t[hi]
-            b4,lo = now,hi end end end end
-    return out end
-  -- Report which bin has `x`
-  local function bin(x,bins) 
-    for j,b in pairs(bins) do if x<=b then return j end end
-    return #bins+1 end 
-  --- main
-  samples = samples or 128
-  d = d and d or .2
-  n = n and n or .5
-  n = (#self.rows)^n
-  while(n < 4 and n < #t/2) do n = n*1.25 end
-  for _,col in pairs(self.cols) do
+-- Unsupervised discretization 
+function Tbl:bins(samples,d,n)
+  samples = samples or Of.tbl.samples
+  for _,col in pairs(self.xs) do
     if col.ako == "Num" then
-      local bins = div( Lib.sort(some(col.pos, {})))
-      for _,r in pairs(self.rows) do
-        r.bins[col.pos] = bin(r.cols[col.pos],bins) end end end end
+      local pos, some = col.pos, isa(Some,{max=samples})
+      for _,row in pairs(self.rows) do 
+        some:add(row.cells[pos]) end
+      local bins = some:bins(d, n)
+      for _,row in pairs(self.rows) do
+        row.bins[pos] = some:bin(row.cells[pos], bins) end end end end
 
  ------
 -- And finally...
-return {Tbl=Tbl,Row=Row,Sym=Sym,Num=Num}
+return {Tbl=Tbl,Row=Row,Sym=Sym,Some=Some,Num=Num}

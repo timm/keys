@@ -5,7 +5,7 @@ local t=require "tbl"
 math.randomseed(1)
 
 local o ,oo, any = l.o, l.oo, l.any
-local Num, Sym,Tbl  = t.Num, t.Sym, t.Tbl
+local Num, Sym,Tbl,Some = t.Num, t.Sym, t.Tbl, t.Some
 
 local function going(      x,y,z)
   x = Sym.new()
@@ -60,10 +60,23 @@ local function rowsdists()
   for _,one in pairs(all) do
      print(""); print(one.d); o(one.r1); o(one.r2) end end
 
-going()
+local function diving()
+  local s = l.isa(Some,{max=256})
+  for _=1,10^3 do s:add( (100*math.random()^2)//1 ) end
+  l.o(s:bins()) end
+
+local function binnings()
+  local tbl = Tbl.read("../data/auto93.csv")
+  tbl:bins() 
+  for j=1,30 do l.o(l.any(tbl.rows).bins) end end 
+
+ 
+--going()
 --csving()
 --rowsreading()
 --rowsdist()
 --rowsdists()
+-- diving()
+binnings()
 l.rogues()
 
