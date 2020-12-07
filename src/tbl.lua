@@ -79,6 +79,31 @@ function Tbl:bins(samples,d,n)
       for _,row in pairs(self.rows) do
         row.bins[pos] = some:bin(row.cells[pos], bins) end end end end
 
+function Tbl:dist(row1,row2) 
+  return row1:dist(row2, self[Of.row.cols]) end
+
+-- Find a sample of things around `row`.
+function Tbl:aound(row, rows)
+  rows = rows or self.rows
+  local t = {}
+  for _ = 1,math.min(100, #rows) do
+    t[#t+1] = {d = self:dist(row,any(rows)),
+               row = other} end
+  table.sort(t,  function(x,y) return x.d < y.d end)
+  return t end
+
+-- Return a point about 90% difference.
+function Tbl:far(row,rows) 
+  rows = rows or self.rows
+  local t = self:around(row,rows)s
+  return t[.9*#t//1].row end
+
+-- Return two point about 90% different.
+function Tbl:far2(rows) 
+  rows = rows or self.rows
+  local y = far(any(rows),rows)
+  return y, far(y, rs) end 
+
 ------
 -- And finally...
-return {Tbl=Tbl,Row=Row}
+return {cell=cell, Tbl=Tbl,Row=Row}
