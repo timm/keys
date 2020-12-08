@@ -10,9 +10,9 @@
 -- [home](http://menzies.us/keys)         :: [lib](http://menzies.us/keys/lib.html) ::
 -- [cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 --------------------
-local Of  = {
+local Of  = {         
   synopois = "`Col`s summarize  columns of data",
-  author  = "Tim Menzies, timm@ieee.org",
+   author  = "Tim Menzies, timm@ieee.org",
   license = "MIT",
   year    = 2020,
   seed    = 1,     
