@@ -1,14 +1,12 @@
 local Of={
-  synopsis="run all files in this rectory",
+  synopsis="run all the .lua files in this directory (except this one)",
   get="ls"}
 
 local fails= 0
 local WHITE = "\27[0m" 
-local RED = "\27[31m"
-local GREEN = "\27[32m"
+local FAIL = "\27[31m" .. " FAIL! " .. WHITE
 local BOLD = "\27[35m"
-local FAIL = RED .. " FAIL! " .. WHITE
-local PASS = GREEN .. " pass " .. WHITE
+local PASS = "\27[32m" .. " pass " .. WHITE
 --_assert = assert
 function assert(x,y) 
   if not x then fails=fails+1 end
