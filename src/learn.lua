@@ -29,17 +29,15 @@ local cell=Tbl.cell
 ---------------------
 -- ## Cluster
 
--- XXX 
-function Div2.new(t leafs,rows, lvl,i)
-   rows = rows or t.rows
-   i = isa(Div2,{id=0,
-                  lefts={}, rights={},
-                  min=min or (#rows)^0.5,
-                  rows=rows})
-   i:split(t,leafs or {}, rows)
-   return i
+function Div2.new(t leafs,rows,min,lvl)
+   leafs = leafs or {}, 
+   rows  = rows  or t.rows, 
+   min   = min   or (#t.rows)^0.5)
+   lvl   = lvl   or 0
+   i = isa(Div2):split(t,leafs,rows,min,lvl)
+   return i,leafs
 
-function Div2:split(t, leafs, rows)
+function Div2:split(t, leafs, rows,min,lvl)
   if #rows < min * 2 then 
     leafs[#leafs+1] = rows
   else

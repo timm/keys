@@ -22,7 +22,6 @@ local Of  = {
 
 -- ## Objects
 local Lib  = require "lib"    
- 
 local Col  = {}
 local Num  = {ako="Num", pos=0,txt="",n=0, 
               mu=0, m2=0, sd=0, lo=math.huge, hi= -math.huge}

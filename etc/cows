@@ -1,0 +1,17 @@
+  a[0]="blowfish" #
+  a[1]="bud-frogs"  #
+  a[2]="eyes"
+  a[3]="flaming-sheep"
+  a[4]="hellokitty"
+  a[5]="meow"
+  a[6]="small"
+  a[7]="tux"
+
+
+for i in "${a[@]}"
+do
+  echo $i
+  date +"%r" | cowsay -f $i
+ read
+done
+
