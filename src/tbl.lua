@@ -85,7 +85,7 @@ function Tbl:dist(row1,row2)
 -- Find a sample of things around `row`.
 function Tbl:aound(row, rows)
   rows = rows or self.rows
-  local t = {}
+  local = {}
   for _ = 1,math.min(100, #rows) do
     t[#t+1] = {d = self:dist(row,any(rows)),
                row = other} end
@@ -95,14 +95,9 @@ function Tbl:aound(row, rows)
 -- Return a point about 90% difference.
 function Tbl:far(row,rows) 
   rows = rows or self.rows
-  local t = self:around(row,rows)s
-  return t[.9*#t//1].row end
-
--- Return two point about 90% different.
-function Tbl:far2(rows) 
-  rows = rows or self.rows
-  local y = far(any(rows),rows)
-  return y, far(y, rs) end 
+  local t = self:around(row,rows)
+  local x = t[.9*#t//1]
+  return x.row, x.d
 
 ------
 -- And finally...
