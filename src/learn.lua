@@ -19,7 +19,7 @@ local Of  = {
 -- ## Objects 
 local Lib  = require "lib"
 local Tbl  = require "tbl"
-local Div2 = {ako="Div2"}
+local Div2 = {ako="Div2", mid=0,lefts={}, rights={}}
 
 ---------------------
 -- ## Shortcuts
@@ -29,13 +29,13 @@ local cell=Tbl.cell
 ---------------------
 -- ## Cluster
 
-function Div2.new(t leafs,rows,min,lvl)
-   leafs = leafs or {}, 
-   rows  = rows  or t.rows, 
-   min   = min   or (#t.rows)^0.5)
+function Div2.new(t,leafs,rows,min,lvl)
+   leafs = leafs or {} 
+   rows  = rows  or t.rows 
+   min   = min   or (#t.rows)^0.5
    lvl   = lvl   or 0
    i = isa(Div2):split(t,leafs,rows,min,lvl)
-   return i,leafs
+   return i,leafs end
 
 function Div2:split(t, leafs, rows,min,lvl)
   if #rows < min * 2 then 
@@ -56,8 +56,8 @@ function Div2:split(t, leafs, rows,min,lvl)
       what[#what+1] = row 
     end
       if #self.left < #rows and #self.right < #rows then
-        i.left  = Div2(t, leafs, i.lefts, lvl+1)
-        i.right = Div2(t, leafs, i.rights, lvl+1) end end end
+        i.left  = Div2(t, leafs, i.lefts,  min, lvl+1)
+        i.right = Div2(t, leafs, i.rights, min, lvl+1) end end end
 
 -- And finally...
-return {Cluster=Cluster}
+return {Div2=Div2}
