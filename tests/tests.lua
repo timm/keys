@@ -19,4 +19,4 @@ for x in  io.popen(Of.get):lines() do
       print(BOLD .."\n------------ "..x..WHITE)
       dofile(x) end end end
 
-assert(fails==0, "some bugs exist")
+assert(fails==0, "some bugs exist?")

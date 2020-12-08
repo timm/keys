@@ -11,17 +11,18 @@
 -- [cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 --------------------
 local Of  = {
-  synopois= "`Col`s summarize  columns of data",
+  synopois = "`Col`s summarize  columns of data",
   author  = "Tim Menzies, timm@ieee.org",
   license = "MIT",
   year    = 2020,
-  seed    = 1,
-  ch      = {skip="?", klass="!",sym="_", 
+  seed    = 1,     
+  ch       = {skip="?", klass="!",sym="_", 
              num=":", more=">", less="<"},
   some    = {n=.5, d=.2}}
 
 -- ## Objects
-local Lib  = require "lib" 
+local Lib  = require "lib"    
+ 
 local Col  = {}
 local Num  = {ako="Num", pos=0,txt="",n=0, 
               mu=0, m2=0, sd=0, lo=math.huge, hi= -math.huge}

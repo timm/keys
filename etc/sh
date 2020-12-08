@@ -3,11 +3,13 @@
 # misc convenient shortcuts
 
 Src=$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )/..
+chmod +x $Src/etc/sh
 
 alias ls="ls -G"
 alias gp="git add *; git commit -am saving; git push; git status"
 alias axe="lua axe.lua"
-alias ok="(cd $Src/tests; ls *.lua | lua tests.lua)"
+alias oks="(date; cd $Src/tests;                         lua tests.lua)"
+alias okspy="(rerun '$Src/etc/sh -t')"
 
 docs() {
   mkdir -p $Src/docs
@@ -15,4 +17,24 @@ docs() {
   (cd $Src; markdown README.md > $Src/docs/index.html)
   cp $Src/etc/pycco.css $Src/docs
 }
+
+#cd /usr/local/Cellar/cowsay/3.04_1/share/cows/
+
+if [ "$1" == "-t" ]; then
+  a[0]="blowfish";     a[1]="bong";            a[2]="bud-frogs";    a[3]="bunny";    a[4]="cheese";
+  a[5]="cower";        a[6]="daemon";          a[7]="default";      a[8]="dragon-and-cow";
+  a[9]="dragon";       a[10]="elephant-in-snake"; a[11]="elephant"; a[12]="eyes";
+  a[13]="flaming-sheep"; a[14]="ghostbusters"; a[15]="head-in";     a[16]="hellokitty";
+  a[17]="kiss";        a[18]="kitty";          a[19]="koala";       a[20]="kosh";    a[21]="luke-koala";
+  a[22]="meow";        a[23]="meow";           a[24]="milk";        a[25]="moofasa"; a[26]="moose";
+  a[27]="mutilated";   a[28]="ren";            a[29]="satanic";     a[30]="sheep";   a[31]="skeleton";
+  a[32]="small";       a[33]="stegosaurus";    a[34]="stimpy";      a[35]="supermilker"; a[36]="surgery";
+  a[37]="three-eyes";  a[38]="turkey";         a[39]="turtle";      a[40]="tux";     a[41]="udder";
+  a[42]="vader-koala"; a[43]="vader";          a[44]="www";
+  r=$[ $RANDOM % 45 ]
+  f=${a[$r]}
+  cd $Src/tests
+  date +"%r" | cowsay -f $f
+  lua tests.lua
+fi
 
