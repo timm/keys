@@ -20,7 +20,7 @@ local function main(l)
     local tbl = Tbl.read("data/auto93.csv")
     local all={}
     local insane=0
-    for i=1,10 do
+    for i=1,10 do 
       local r1,r2 = any(tbl.rows), any(tbl.rows)
       local one ={r1=r1.cells, r2=r2.cells}
       one.d = r1:dist(r2,tbl.xs) 

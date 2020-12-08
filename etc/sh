@@ -20,15 +20,14 @@ docs() {
 
 
 if [ "$1" == "-t" ]; then
-  a[0]="blowfish" #
+  a[0]="tux" #
   a[1]="bud-frogs"  #
   a[2]="eyes"
   a[3]="flaming-sheep"
   a[4]="hellokitty"
   a[5]="meow"
   a[6]="small"
-  a[7]="tux"
-  r=$[ $RANDOM % 8 ]
+  r=$[ $RANDOM % 7 ]
   f=${a[$r]}
   cd $Src/tests
   date +"%r" | cowsay -f $f
