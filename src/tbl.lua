@@ -71,11 +71,11 @@ function Tbl:cloneCells(rows)
 
 function Tbl:cloneBins(rows)
   local i = Tbl:new()
-  local top={}
-  for j,head in pairs(self.header) do top[j] = "_" .. head end
+  local top=Lib.copy(self.header)
+  for j,col in pairs(self.xs) do 
+     if col.ako == "Num" then top[j] ="_" .. col.txt end end
   i:add(top)
-  Lib.oo(i)
-  for _,row in pairs(rows or {}) do self:add(row.bins) end 
+  for _,row in pairs(rows or {}) do i:add(row.bins) end 
   return i end
   
 function Tbl:mid()

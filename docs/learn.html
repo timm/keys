@@ -49,7 +49,7 @@
     <div class='code'>
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">Lib</span>  <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;lib&quot;</span>
 <span class="kd">local</span> <span class="n">Tbl</span>  <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;tbl&quot;</span>
-<span class="kd">local</span> <span class="n">Div2</span> <span class="o">=</span> <span class="p">{</span><span class="n">ako</span><span class="o">=</span><span class="s2">&quot;Div2&quot;</span><span class="p">,</span> <span class="n">mid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">lefts</span><span class="o">=</span><span class="p">{},</span> <span class="n">rights</span><span class="o">=</span><span class="p">{}}</span></pre></div>
+<span class="kd">local</span> <span class="n">Div2</span> <span class="o">=</span> <span class="p">{</span><span class="n">ako</span><span class="o">=</span><span class="s2">&quot;Div2&quot;</span><span class="p">,</span> <span class="n">mid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">lefts</span><span class="o">=</span><span class="p">{},</span> <span class="n">rights</span><span class="o">=</span><span class="p">{},</span><span class="n">kids</span><span class="o">=</span><span class="p">{}}</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -63,7 +63,8 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">isa</span><span class="o">=</span><span class="n">Lib</span><span class="p">.</span><span class="n">isa</span>
-<span class="kd">local</span> <span class="n">cell</span><span class="o">=</span><span class="n">Tbl</span><span class="p">.</span><span class="n">cell</span></pre></div>
+<span class="kd">local</span> <span class="n">cell</span><span class="o">=</span><span class="n">Tbl</span><span class="p">.</span><span class="n">cell</span>
+<span class="kd">local</span> <span class="n">leaf</span><span class="o">=</span><span class="n">Tbl</span><span class="p">.</span><span class="n">Tbl</span><span class="p">.</span><span class="n">new</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -76,35 +77,32 @@
 <h2>Cluster</h2>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Div2</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">leafs</span><span class="p">,</span><span class="n">rows</span><span class="p">,</span><span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="p">)</span>
-   <span class="n">leafs</span> <span class="o">=</span> <span class="n">leafs</span> <span class="ow">or</span> <span class="p">{}</span> 
-   <span class="n">rows</span>  <span class="o">=</span> <span class="n">rows</span>  <span class="ow">or</span> <span class="n">t</span><span class="p">.</span><span class="n">rows</span> 
-   <span class="n">min</span>   <span class="o">=</span> <span class="n">min</span>   <span class="ow">or</span> <span class="p">(</span><span class="o">#</span><span class="n">t</span><span class="p">.</span><span class="n">rows</span><span class="p">)</span><span class="o">^</span><span class="mf">0.5</span>
-   <span class="n">lvl</span>   <span class="o">=</span> <span class="n">lvl</span>   <span class="ow">or</span> <span class="mi">0</span>
-   <span class="n">i</span> <span class="o">=</span> <span class="n">isa</span><span class="p">(</span><span class="n">Div2</span><span class="p">):</span><span class="n">split</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">leafs</span><span class="p">,</span><span class="n">rows</span><span class="p">,</span><span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="p">)</span>
-   <span class="kr">return</span> <span class="n">i</span><span class="p">,</span><span class="n">leafs</span> <span class="kr">end</span>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Div2</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">out</span><span class="p">,</span><span class="n">rows</span><span class="p">,</span><span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="p">)</span>
+   <span class="n">out</span>  <span class="o">=</span> <span class="n">out</span> <span class="ow">or</span> <span class="p">{}</span> 
+   <span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span>  <span class="ow">or</span> <span class="n">t</span><span class="p">.</span><span class="n">rows</span> 
+   <span class="n">min</span>  <span class="o">=</span> <span class="n">min</span>   <span class="ow">or</span> <span class="p">(</span><span class="o">#</span><span class="n">rows</span><span class="p">)</span><span class="o">^</span><span class="mf">0.5</span>
+   <span class="n">lvl</span>  <span class="o">=</span> <span class="n">lvl</span>   <span class="ow">or</span> <span class="mi">0</span>
+   <span class="kd">local</span> <span class="n">i</span> <span class="o">=</span> <span class="n">isa</span><span class="p">(</span><span class="n">Div2</span><span class="p">)</span>
+   <span class="n">i</span><span class="p">:</span><span class="n">split</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">out</span><span class="p">,</span><span class="n">rows</span><span class="p">,</span><span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="p">)</span>
+   <span class="kr">return</span> <span class="n">i</span><span class="p">,</span><span class="n">out</span> <span class="kr">end</span>
 
-<span class="kr">function</span> <span class="nc">Div2</span><span class="p">:</span><span class="nf">split</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">leafs</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span><span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="p">)</span>
+<span class="kr">function</span> <span class="nc">Div2</span><span class="p">:</span><span class="nf">split</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">out</span><span class="p">,</span><span class="n">rows</span><span class="p">,</span><span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="p">)</span>
   <span class="kr">if</span> <span class="o">#</span><span class="n">rows</span> <span class="o">&lt;</span> <span class="n">min</span> <span class="o">*</span> <span class="mi">2</span> <span class="kr">then</span> 
-    <span class="n">leafs</span><span class="p">[</span><span class="o">#</span><span class="n">leafs</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rows</span>
+    <span class="n">out</span><span class="p">[</span><span class="o">#</span><span class="n">out</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">cloneBins</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
   <span class="kr">else</span>
-    <span class="n">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">far</span><span class="p">(</span><span class="n">any</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span> <span class="n">rows</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">string.rep</span><span class="p">(</span><span class="s2">&quot;|.. &quot;</span><span class="p">,</span><span class="n">lvl</span><span class="p">)</span><span class="o">..#</span><span class="n">rows</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">one</span> <span class="o">=</span> <span class="n">Lib</span><span class="p">.</span><span class="n">any</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">far</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
     <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">far</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
     <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">row</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="kr">do</span>
-      <span class="kd">local</span> <span class="n">a</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">dist</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
-      <span class="kd">local</span> <span class="n">b</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">dist</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
-      <span class="kd">local</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">b</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
-      <span class="n">x</span> <span class="o">=</span> <span class="nb">math.max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">math.min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+      <span class="kd">local</span> <span class="n">a</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">dist</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">left</span><span class="p">)</span>
+      <span class="kd">local</span> <span class="n">b</span> <span class="o">=</span> <span class="n">t</span><span class="p">:</span><span class="n">dist</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">right</span><span class="p">)</span>
+      <span class="kd">local</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">c</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">b</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">self</span><span class="p">.</span><span class="n">c</span><span class="p">)</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="nb">math.max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">math.min</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
       <span class="n">row</span><span class="p">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">x</span>
-      <span class="n">self</span><span class="p">.</span><span class="n">mid</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">mid</span> <span class="o">+</span> <span class="n">x</span><span class="o">/</span><span class="mi">2</span>
     <span class="kr">end</span>
-    <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">row</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="kr">do</span>
-      <span class="kd">local</span> <span class="n">what</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="n">tmp</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">mid</span> <span class="ow">and</span> <span class="n">self</span><span class="p">.</span><span class="n">lefts</span> <span class="ow">or</span> <span class="n">self</span><span class="p">.</span><span class="n">rights</span>
-      <span class="n">what</span><span class="p">[</span><span class="o">#</span><span class="n">what</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span> 
-    <span class="kr">end</span>
-      <span class="kr">if</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">left</span> <span class="o">&lt;</span> <span class="o">#</span><span class="n">rows</span> <span class="ow">and</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">right</span> <span class="o">&lt;</span> <span class="o">#</span><span class="n">rows</span> <span class="kr">then</span>
-        <span class="n">i</span><span class="p">.</span><span class="n">left</span>  <span class="o">=</span> <span class="n">Div2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">leafs</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">lefts</span><span class="p">,</span>  <span class="n">min</span><span class="p">,</span> <span class="n">lvl</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">i</span><span class="p">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">Div2</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">leafs</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">rights</span><span class="p">,</span> <span class="n">min</span><span class="p">,</span> <span class="n">lvl</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    <span class="nb">table.sort</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="kr">return</span> <span class="n">a</span><span class="p">.</span><span class="n">tmp</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">.</span><span class="n">tmp</span> <span class="kr">end</span><span class="p">)</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">mid</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="o">#</span><span class="n">rows</span> <span class="o">//</span><span class="mi">2</span><span class="p">].</span><span class="n">tmp</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -112,6 +110,35 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>print(rows[1].tmp, self.mid, rows[#rows].tmp)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">row</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="kr">do</span>
+      <span class="kd">local</span> <span class="n">what</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="n">tmp</span> <span class="o">&lt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">mid</span> <span class="ow">and</span> <span class="n">self</span><span class="p">.</span><span class="n">lefts</span> <span class="ow">or</span> <span class="n">self</span><span class="p">.</span><span class="n">rights</span>
+      <span class="n">what</span><span class="p">[</span><span class="o">#</span><span class="n">what</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span> 
+    <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>print(#rows, #self.lefts, #self.rights)</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="kr">if</span>  <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">lefts</span> <span class="o">&lt;</span> <span class="o">#</span><span class="n">rows</span> <span class="ow">and</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">rights</span> <span class="o">&lt;</span> <span class="o">#</span><span class="n">rows</span> <span class="kr">then</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">kids</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">Div2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">out</span><span class="p">,</span><span class="n">self</span><span class="p">.</span><span class="n">lefts</span><span class="p">,</span> <span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">kids</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">Div2</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">out</span><span class="p">,</span><span class="n">self</span><span class="p">.</span><span class="n">rights</span><span class="p">,</span><span class="n">min</span><span class="p">,</span><span class="n">lvl</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <p>And finally&hellip;</p>
     </div>

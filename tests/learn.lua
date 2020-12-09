@@ -8,7 +8,8 @@ local function main(l)
     local tbl = Tbl.read("data/auto93.csv")
     tbl:bins()
     local _,ts= le.Div2.new(tbl) 
-   oo(ts[1].cols) end
+   --oo(ts[1].cols) 
+   end
   
   cluster()
 end
