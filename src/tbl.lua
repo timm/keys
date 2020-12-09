@@ -10,7 +10,6 @@
 -- [home](http://menzies.us/keys)         :: [lib](http://menzies.us/keys/lib.html) ::
 -- [cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html)   
 --------------------
-
 local Of  = {
   synopois= "tables with rows, summarized in column headers",
   author  = "Tim Menzies, timm@ieee.org",
