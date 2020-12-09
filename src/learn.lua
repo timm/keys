@@ -1,5 +1,5 @@
--- <img width=75 src="https://cdn0.iconfinder.com/data/icons/data-charts/110/TableDataGridThickLines-512.png">   <hr>
--- <a href="http://github.com/timm/keys"><img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" align=left></a>  
+-- <img width=75 src="https://github.com/timm/keys/raw/main/etc/img/learn.png"> <hr>
+-- <a href="http://github.com/timm/keys"><img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" align=left></a>
 -- "Keys = cluster, discretize, elites, contrast"    
 -- [![DOI](https://zenodo.org/badge/318809834.svg)](https://zenodo.org/badge/latestdoi/318809834)  
 -- ![](https://img.shields.io/badge/platform-osx%20,%20linux-orange)    
