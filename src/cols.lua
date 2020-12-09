@@ -28,7 +28,7 @@ local Num  = {ako="Num", pos=0,txt="",n=0,
 local Sym  = {ako="Sym", pos=0,txt="",n=0, 
               seen={}, most=0,mode=true}
 local Some = {ako="Some", pos=0,txt="",n=0, 
-              has={}, ok=false, max, bins={}}
+              has={}, ok=false, max=256, bins={}}
 local Skip = {ako="Skip"}
 
 ---------------------

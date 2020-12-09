@@ -83,11 +83,11 @@ function Tbl:dist(row1,row2)
   return row1:dist(row2, self[Of.row.cols]) end
 
 -- Find a sample of things around `row`.
-function Tbl:aound(row, rows)
+function Tbl:around(row, rows)
   rows = rows or self.rows
   local t = {}
-  for _ = 1,math.min(100, #rows) do
-    t[#t+1] = {d = self:dist(row,any(rows)),
+  for _,other in pairs(rows) do
+    t[#t+1] = {d = self:dist(row,other),
                row = other} end
   table.sort(t,  function(x,y) return x.d < y.d end)
   return t end
