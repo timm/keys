@@ -15,6 +15,7 @@ local Of  = {
   author  = "Tim Menzies, timm@ieee.org",
   license = "MIT",
   year    = 2020,
+  ch      = {sym="_"},
   tbl     = {samples=128},
   row     = {p=2, cols="ys"}}
 
@@ -23,7 +24,7 @@ local Lib            = require "lib"
 local Cols           = require "cols"
 local Col,Num,Sym,Some = Cols.Col, Cols.Num, Cols.Sym, Cols.Some
 local Row            = {ako="Row",  cells={}, bins={}}
-local Tbl            = {ako="Tbl",  rows={},  cols={},
+local Tbl            = {ako="Tbl",  header={}, rows={},  cols={},
                         ys={},      xs={},    dist={}}
 local TwoDiv         = {ako="BiDev"}
 
@@ -57,10 +58,31 @@ function Tbl.new() return isa(Tbl) end
 
 function Tbl:add(t)  
   if #self.cols==0 then 
-    for j,x in pairs(t) do Col.factory(j,x,self) end 
+    self.header=t
+    for j,x in pairs(t) do self.cols[j] = Col.factory(j,x,self) end 
   else
     self.rows[(#self.rows)+1] = Row.new(t,self) end end
-      
+
+function Tbl:cloneCells(rows)
+  local i = Tbl:new()
+  i:add(self.header)
+  for _,row in pairs(rows or {}) do self:add(row.cells) end 
+  return i end
+
+function Tbl:cloneBins(rows)
+  local i = Tbl:new()
+  local top={}
+  for j,head in pairs(self.header) do top[j] = "_" .. head end
+  i:add(top)
+  Lib.oo(i)
+  for _,row in pairs(rows or {}) do self:add(row.bins) end 
+  return i end
+  
+function Tbl:mid()
+  local t={}
+  for _,col in self.cols do t[col.pos] = col:mid() end
+  return t end
+
 -- Read from files
 function Tbl.read(f,    t) 
   t=Tbl.new()
@@ -83,11 +105,12 @@ function Tbl:dist(row1,row2)
   return row1:dist(row2, self[Of.row.cols]) end
 
 -- Find a sample of things around `row`.
-function Tbl:aound(row, rows)
-  rows = rows or self.rows
+function Tbl:around(row, rows)
+  rows= rows or self.rows
   local t = {}
-  for _ = 1,math.min(100, #rows) do
-    t[#t+1] = {d = self:dist(row,any(rows)),
+  for j = 1,math.min(100,#rows) do
+    local other = Lib.any(rows)
+    t[#t+1] = {d = self:dist(row,other),
                row = other} end
   table.sort(t,  function(x,y) return x.d < y.d end)
   return t end
@@ -96,7 +119,7 @@ function Tbl:aound(row, rows)
 function Tbl:far(row,rows) 
   rows = rows or self.rows
   local t = self:around(row,rows)
-  local x = t[.9*#t//1]
+  local x = t[(.9*#t)//1]
   return x.row, x.d end
 
 ------

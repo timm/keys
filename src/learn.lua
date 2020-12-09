@@ -19,46 +19,52 @@ local Of  = {
 -- ## Objects 
 local Lib  = require "lib"
 local Tbl  = require "tbl"
-local Div2 = {ako="Div2", mid=0,lefts={}, rights={}}
+local Div2 = {ako="Div2", mid=0,lefts={}, rights={},kids={}}
 
 ---------------------
 -- ## Shortcuts
 local isa=Lib.isa
 local cell=Tbl.cell
+local leaf=Tbl.Tbl.new
 
 ---------------------
 -- ## Cluster
 
-function Div2.new(t,leafs,rows,min,lvl)
-   leafs = leafs or {} 
-   rows  = rows  or t.rows 
-   min   = min   or (#rows)^0.5
-   lvl   = lvl   or 0
-   i =isa(Div2)
-   i:split(t,leafs,rows,min,lvl)
-   return i,leafs end
+function Div2.new(t,out,rows,min,lvl)
+   out  = out or {} 
+   rows = rows  or t.rows 
+   min  = min   or (#rows)^0.5
+   lvl  = lvl   or 0
+   local i = isa(Div2)
+   i:split(t,out,rows,min,lvl)
+   return i,out end
 
-function Div2:split(t, leafs, rows,min,lvl)
+function Div2:split(t,out,rows,min,lvl)
   if #rows < min * 2 then 
-    leafs[#leafs+1] = rows
+    out[#out+1] = t:cloneBins(rows)
   else
-    self.left = t:far(any(rows), rows)
+    print(string.rep("|.. ",lvl)..#rows)
+    local one = Lib.any(rows)
+    self.left = t:far(one, rows)
     self.right, self.c = t:far(self.left, rows)
     for _,row in pairs(rows) do
-      local a = t:dist(row, i.left)
-      local b = t:dist(row, i.right)
-      local x = (a^2 + c^2 - b*2) / (2*c)
-      x = math.max(0, math.min(1, x))
+      local a = t:dist(row, self.left)
+      local b = t:dist(row, self.right)
+      local x = (a^2 + self.c^2 - b^2) / (2*self.c)
+      x = math.max(0, math.min(self.c, x))
       row.tmp = x
-      self.mid = self.mid + x/2
     end
+    table.sort(rows, function(a,b) return a.tmp < b.tmp end)
+    self.mid = rows[#rows //2].tmp
+    -- print(rows[1].tmp, self.mid, rows[#rows].tmp)
     for _,row in pairs(rows) do
-      local what = row.tmp < self.mid and self.lefts or self.rights
+      local what = row.tmp <= self.mid and self.lefts or self.rights
       what[#what+1] = row 
     end
-      if #self.left < #rows and #self.right < #rows then
-        i.left  = Div2(t, leafs, i.lefts,  min, lvl+1)
-        i.right = Div2(t, leafs, i.rights, min, lvl+1) end end end
+    --print(#rows, #self.lefts, #self.rights)
+    if  #self.lefts < #rows and #self.rights < #rows then
+      self.kids[1]= Div2.new(t,out,self.lefts, min,lvl+1)
+      self.kids[2]= Div2.new(t,out,self.rights,min,lvl+1) end end end
 
 -- And finally...
 return {Div2=Div2}

@@ -48,14 +48,16 @@ function Col.factory(j,s,t)
   if s:find(Of.ch.skip) then tmp,aka = Skip,{}    end
   local x = tmp.new(j,s)
   if s:find(Of.ch.klass) then t.class,aka = x,t.ys end 
-  t.cols[j] = x
-  aka[j]= x end
+  aka[j]= x 
+  return x end
 
 -- ### Num
 function Num.new(n,s) 
   local  x=isa(Num, {txt=s, pos=n})
   x.w = x.txt:find(Of.ch.less) and -1 or 1
   return x end
+
+function Num:mid() return x.mu end
 
 function Num:add(x) 
   if cell(x) then
@@ -81,6 +83,7 @@ function Num:dist(x,y)
 -- ### Skip
 function Skip.new(n,s) return isa(Skip,{txt=s, pos=n}) end 
 function Skip:add(x) return x end 
+function Skip:mid() return "" end
 
 -- ### Some
 -- A reservoir sampler. 
@@ -141,6 +144,7 @@ function Sym:add(x)
       self.most, self.mode = self.seen[x], x end end
   return x end 
 
+function Skip:mid() return x.mode end
 function Sym:dist(x,y) return x==y and 0 or 1 end
 
 ------
