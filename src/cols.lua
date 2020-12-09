@@ -1,4 +1,4 @@
--- <img width=75 src="https://www.flaticon.com/svg/static/icons/svg/2286/2286294.svg"> <hr>
+-- <img width=75 src="https://github.com/timm/keys/raw/main/etc/img/cols.png"> <hr>
 -- <a href="http://github.com/timm/keys"><img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" align=left></a>  
 -- "Keys = cluster, discretize, elites, contrast"    
 -- [![DOI](https://zenodo.org/badge/318809834.svg)](https://zenodo.org/badge/latestdoi/318809834)  

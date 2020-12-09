@@ -32,9 +32,10 @@ local cell=Tbl.cell
 function Div2.new(t,leafs,rows,min,lvl)
    leafs = leafs or {} 
    rows  = rows  or t.rows 
-   min   = min   or (#t.rows)^0.5
+   min   = min   or (#rows)^0.5
    lvl   = lvl   or 0
-   i = isa(Div2):split(t,leafs,rows,min,lvl)
+   i =isa(Div2)
+   i:split(t,leafs,rows,min,lvl)
    return i,leafs end
 
 function Div2:split(t, leafs, rows,min,lvl)
