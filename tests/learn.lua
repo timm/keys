@@ -10,7 +10,10 @@ local function main(l)
     local out ={}
     local ts= le.Div2.new(tbl,out) 
     ts:show()
-    --for _,row in pairs(tbl.rows) do ts:place(tbl,row) end
+    for _,row in pairs(tbl.rows) do 
+      ts:place(tbl,row):add(row.bins) end
+    for _,tbl1 in pairs(out) do
+       print(tbl1:mid()) end
   end
   cluster()
 end

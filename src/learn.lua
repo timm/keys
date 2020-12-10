@@ -78,9 +78,10 @@ function Div2:show(lvl)
     print(s.." " ..self.leaf:mid()) end end
  
 function Div2:place(t,row)
-  local x = self:project(t,row)
   if self.kids[1] then 
-    return self:place(self.kids[x <= self.mid and 1 or 2], row)
+    local x = self:project(t,row)
+    local kid = self.kids[ x <= self.mid and 1 or 2 ]
+    return kid:place(t, row)
   else 
     return self.leaf end end
 
