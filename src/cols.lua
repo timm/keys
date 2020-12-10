@@ -59,7 +59,7 @@ function Num.new(n,s)
   x.w = x.txt:find(Of.ch.less) and -1 or 1
   return x end
 
-function Num:mid() return x.mu end
+function Num:mid() return self.mu end
 
 function Num:add(x) 
   if cell(x) then
@@ -114,7 +114,8 @@ function Some:sd(    t)
 
 function Some:bin(x,bins)
   if not cell(x) then return x end
-  local say=function (n) return string.format("%s/%s",n,#bins+1) end
+  --local say=function (n) return string.format("%s/%s",n,#bins+1) end
+  local say=function (n) return n end
   for j,b in pairs(bins) do if x<=b then return say(j) end end
   return say(#bins+1)  end 
 
@@ -146,7 +147,7 @@ function Sym:add(x)
       self.most, self.mode = self.seen[x], x end end
   return x end 
 
-function Skip:mid() return x.mode end
+function Skip:mid() return self.mode end
 function Sym:dist(x,y) return x==y and 0 or 1 end
 
 ------

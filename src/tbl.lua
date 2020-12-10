@@ -81,9 +81,12 @@ function Tbl:cloneBins(rows)
   return i end
   
 function Tbl:mid()
-  local t={}
-  for _,col in self.cols do t[col.pos] = col:mid() end
-  return t end
+  local str,sep = "",""
+  for _,col in pairs(self[Of.row.cols]) do 
+    str = str .. sep .. string.format("%s=%s",col.txt,col:mid()) 
+    sep = "," 
+  end
+  return str end
 
 -- Read from files
 function Tbl.read(f,    t) 
@@ -121,7 +124,7 @@ function Tbl:around(row, rows)
 function Tbl:far(row,rows) 
   rows = rows or self.rows
   local t = self:around(row,rows)
-  local x = t[(.9*#t)//1]
+  local x = t[.9*#t//1]
   return x.row, x.d end
 
 ------

@@ -57,10 +57,12 @@ local function order(t,  i,keys)
       i=i+1; return keys[i], t[keys[i]] end end end 
 
 -- Simple print of a flat table
-local function o(z,pre,   s,c) 
+local function o(z,pre) print(ooo(z,pre)) end
+
+local function ooo(z,pre,   s,c) 
   s, c = (pre or "")..'{', ""
   for _,v in order(z or {}) do s= s..c..tostring(v); c=", " end
-  print(s..'}') end
+  return s..'}' end
 
 -- Print nested tables. 
 -- Don't show private slots (those that start with `_`);
@@ -114,4 +116,5 @@ local function csv(file,     stream,tmp,t)
 -----
 -- Any finally...
 return {any=any, split=split, copy=copy, rogues=rogues,
-        csv=csv, isa=isa, order=order, o=o, oo=oo}
+        csv=csv, isa=isa, order=order, 
+        o=o, oo=oo, ooo=ooo}

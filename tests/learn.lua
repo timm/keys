@@ -7,10 +7,11 @@ local function main(l)
   local function cluster()
     local tbl = Tbl.read("data/auto93.csv")
     tbl:bins()
-    local _,ts= le.Div2.new(tbl) 
-   --oo(ts[1].cols) 
-   end
-  
+    local out ={}
+    local ts= le.Div2.new(tbl,out) 
+    ts:show()
+    --for _,row in pairs(tbl.rows) do ts:place(tbl,row) end
+  end
   cluster()
 end
 
