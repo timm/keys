@@ -11,12 +11,10 @@ alias axe="lua axe.lua"
 alias oks="(date; cd $Src/tests;                         lua tests.lua)"
 alias okspy="(rerun '$Src/etc/sh -t')"
 
-header() { gawk 'BEGIN{FS=""; RS=""} NR==3{print}' $1
-}
 docs() {
   mkdir -p $Src/docs
   (cd $Src/src; pycco -d $Src/docs *.lua)
-  (cd $Src; markdown README.md > $Src/docs/index.html)
+  markdown $Src/README.md > $Src/docs/index.html
   cp $Src/etc/pycco.css $Src/docs
 }
 

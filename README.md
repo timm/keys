@@ -8,7 +8,9 @@
 ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet)  
 [![Build Status](https://travis-ci.com/timm/keys.svg?branch=main)](https://travis-ci.com/timm/keys)   
 ![](https://img.shields.io/badge/license-mit-lightgrey)  
-[home](http://menzies.us/keys) :: [lib](http://menzies.us/keys/lib.html) :: [cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html)
+[home](http://menzies.us/keys)         :: [lib](http://menzies.us/keys/lib.html) ::
+[cols](http://menzies.us/keys/cols.html) :: [tbl](http://menzies.us/keys/tbl.html) ::
+[learn](http://menzies.us/keys/learn.html)
 
 This repo is very much a work in progress.
 I'm busy writing  into here all the stuff
