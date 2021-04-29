@@ -81,7 +81,7 @@ div.docs {
   text-align: right;
 }
   .docs pre {
-    margin: 15px 0 10px;
+    margin: 15px 0 15px;
     padding-left: 15px;
   }
   .docs p tt, .docs p code {
