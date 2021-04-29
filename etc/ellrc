@@ -8,7 +8,13 @@ mkdir -p $Ell/docs
 f=$Ell/docs/.nojekyll; [[ -f "$f" ]] || touch $f 
 
 docs() {
-  (cd $Ell/src;  pycco  -d $Ell/docs *.lua)
+  head=`gawk -f $Ell/etc/para2.awk README.me`
+  cd $Ell/src; 
+  for i in *.lua; do
+    gawk -v txt="$here"  -f $Ell/etc/addheader.awk $i > ../docs/$i
+  done
+  cd ../docs
+  pycco  -d $Ell/docs *.lua
   cp $Ell/etc/pycco.css $Ell/docs
 } 
 
