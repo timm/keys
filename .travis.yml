@@ -4,12 +4,12 @@ os:
   - linux
 
 install:
-  - curl -R -O http://www.lua.org/ftp/lua-5.4.1.tar.gz
-  - tar zxf lua-5.4.1.tar.gz
-  - cd lua-5.4.1
+  - curl -R -O http://www.lua.org/ftp/lua-5.4.3.tar.gz
+  - tar zxf lua-5.4.3.tar.gz
+  - cd lua-5.4.3
   - make linux test
   - cd ..
 
 script:
-  - cd tests
-  - ../lua-5.4.1/src/lua tests.lua
+  - cd src
+  - ../lua-5.4.1/src/lua eg.lua
