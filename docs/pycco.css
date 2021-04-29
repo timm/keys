@@ -81,7 +81,7 @@ div.docs {
   text-align: right;
 }
   .docs pre {
-    margin: 15px 0 15px;
+    margin: 15px 0 10px;
     padding-left: 15px;
   }
   .docs p tt, .docs p code {
@@ -108,7 +108,7 @@ div.docs {
       }
 div.code {
   margin-left: 580px;
-  padding: 14px 15px 16px 50px;
+  padding: 14px 15px 16px 20px;
   vertical-align: top;
 }
   .code pre, .docs p code {
