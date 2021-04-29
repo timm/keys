@@ -1,9 +1,9 @@
 clear
-tput bold; tput setaf 2; cat <<'EOF'
+tput bold; tput setaf 3; cat <<'EOF'
    .-.
   (o o)  There is no escape from...
   ( O )    sH ELL !!!
-   \   \      ver1 
+   \   \      
     `~~~'
 EOF
 tput sgr0
@@ -12,6 +12,5 @@ Ell=$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )
 
 # this may not be needed on your machine
 export PATH="$PATH:/opt/homebrew/Cellar/python@3.9/3.9.2/Frameworks/Python.framework/Versions/3.9/bin"
-
 
 Ell="$Ell" bash --init-file $Ell/etc/ellrc -i

@@ -3,7 +3,6 @@
 
 -- Unit tests.   
 -- Tim Menzies, (c) 2021, MIT    
--- [index](index.html)
 
 -- ---------------------------------------------
 

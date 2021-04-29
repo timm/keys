@@ -3,7 +3,6 @@
 
 -- Column to summarize `Sym`bolic columns.   
 -- Tim Menzies, license 2021, MIT     
--- [index](index.html)
 
 -- ---------------------------------------------
 

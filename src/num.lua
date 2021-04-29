@@ -3,7 +3,6 @@
 
 -- Column to summarize `Num`eric columns.       
 -- Tim Menzies, (c) 2021, MIT    
--- [index](index.html)
 
 -- ---------------------------------------------
 

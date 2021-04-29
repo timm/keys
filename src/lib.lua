@@ -3,7 +3,6 @@
 
 -- Misc lua routines.     
 -- Tim Menzies, (c) 2021, MIT     
--- [index](index.html)
 
 -- ---------------------------------------------
 

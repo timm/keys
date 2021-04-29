@@ -3,7 +3,7 @@
 
 -- Storage for rows, summarized in columns.    
 -- Tim Menzies, (c) 2021, MIT     
--- [index](index.html)
+
 -- ---------------------------------------------
 
 local lib  = require "lib"
