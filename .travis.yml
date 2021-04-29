@@ -12,4 +12,4 @@ install:
 
 script:
   - cd src
-  - ../lua-5.4.1/src/lua eg.lua
+  - ../lua-5.4.3/src/lua eg.lua
