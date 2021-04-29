@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+Ful=$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )
+
+############# assert dirs exist
+mkdir -p $Ful/etc
+mkdir -p $Ful/src
+mkdir -p $Ful/docs
+f=$Ful/docs/.nojekyll; [[ -f "$f" ]] || touch $f 
+
+docs() {
+  (cd $Ful/src;  pycco  -d $Ful/docs *.lua)
+  cp $Ful/etc/pycco.css $Ful/docs
+} 
+
+alias gp="git add *;git commit -am save;git push;git status"
+alias ls="ls -G"
+alias tmux="$(which tmux) -f $Ful/etc/tmux-conf "
+alias vi="vim -u $Ful/etc/vimrc "
+alias vims="vim +PluginInstall +qall"         
+
+here() { cd $1; basename `pwd`; }
+
+PROMPT_COMMAND='echo -ne "🌙 $(git branch 2>/dev/null | grep '^*' | colrm 1 2):";PS1="$(here ..)/$(here .):\!\e[m ▶ "'

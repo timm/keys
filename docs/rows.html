@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>rows.lua</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>rows.lua</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>vim: ts=2 sw=2 et :</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Storage for rows, summarized in columns.  <br />
+Tim Menzies, (c) 2021, MIT   <br />
+<a href="index.html">index</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">local</span> <span class="n">lib</span>  <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;lib&quot;</span>
+<span class="kd">local</span> <span class="n">Skip</span> <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;skip&quot;</span>
+<span class="kd">local</span> <span class="n">Sym</span>  <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;sym&quot;</span>
+<span class="kd">local</span> <span class="n">Num</span>  <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;num&quot;</span>
+
+<span class="kd">local</span> <span class="n">goalp</span><span class="p">,</span><span class="n">klassp</span><span class="p">,</span><span class="n">nump</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">skip</span><span class="p">,</span><span class="n">what</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">add</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h2>Functions</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Is <code>s</code> the name of a goal column?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">goalp</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="kr">return</span> <span class="n">s</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">s</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">s</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">)</span>  <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Is <code>s</code> the name of a class column?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">klassp</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="kr">return</span> <span class="n">s</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Is <code>s</code> the name of a numeric column?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">nump</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="kr">return</span> <span class="n">s</span><span class="p">:</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;[A-Z]&quot;</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>What is the weight of a column called <code>s</code>?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">weight</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="kr">return</span> <span class="n">s</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="mi">1</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Should I skip this row, column?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">skip</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="kr">return</span> <span class="n">s</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>What kind of column should be created from <code>s</code>?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">what</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="kr">return</span> <span class="n">skip</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Skip</span> <span class="ow">or</span> <span class="p">(</span><span class="n">nump</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Num</span> <span class="ow">or</span> <span class="n">Sym</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Make a new column, and if <code>inits</code> is supplied, then  load it data.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">col</span><span class="p">(</span><span class="n">at</span><span class="p">,</span><span class="n">txt</span><span class="p">,</span> <span class="n">inits</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">new</span> <span class="o">=</span> <span class="n">lib</span><span class="p">.</span><span class="n">isa</span><span class="p">(</span><span class="n">what</span><span class="p">(</span><span class="n">txt</span><span class="p">),</span> <span class="p">{</span><span class="n">at</span><span class="o">=</span><span class="n">at</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">weight</span><span class="p">(</span><span class="n">txt</span><span class="p">)})</span> 
+  <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">y</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">inits</span> <span class="ow">or</span> <span class="p">{})</span> <span class="kr">do</span> <span class="n">new</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="n">new</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Unless skipping, increment <code>n</code> and add <code>x</code>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">add</span><span class="p">(</span><span class="n">col</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="kr">if</span> <span class="n">x</span><span class="o">~=</span><span class="s2">&quot;?&quot;</span> <span class="kr">then</span> <span class="n">col</span><span class="p">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">col</span><span class="p">.</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">col</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <hr />
+<h2>Rows</h2>
+<p>Holder for rows, summarized in columns.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">local</span> <span class="n">Rows</span><span class="o">=</span> <span class="p">{</span><span class="n">rows</span><span class="o">=</span><span class="p">{},</span> <span class="n">txt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">{},</span> <span class="n">xs</span><span class="o">=</span><span class="p">{},</span> <span class="n">ys</span><span class="o">=</span><span class="p">{}}</span>
+
+<span class="kr">function</span> <span class="nc">Rows</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
+  <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">_isa</span><span class="o">==</span><span class="n">Row</span> <span class="ow">and</span> <span class="n">t</span><span class="p">.</span><span class="n">calls</span> <span class="ow">or</span> <span class="n">t</span>
+  <span class="kr">if</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">cols</span><span class="o">&gt;</span><span class="mi">0</span> <span class="kr">then</span>
+    <span class="kr">for</span> <span class="n">at</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">add</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">cols</span><span class="p">[</span><span class="n">at</span><span class="p">],</span> <span class="n">v</span><span class="p">)</span> <span class="kr">end</span> 
+    <span class="n">self</span><span class="p">.</span><span class="n">rows</span><span class="p">[</span><span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">rows</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+  <span class="kr">else</span>
+    <span class="kr">for</span> <span class="n">at</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> 
+      <span class="kd">local</span> <span class="n">new</span><span class="p">,</span><span class="n">where</span>
+      <span class="n">new</span>  <span class="o">=</span> <span class="n">col</span><span class="p">(</span><span class="n">at</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> 
+      <span class="n">where</span> <span class="o">=</span> <span class="n">goalp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="n">self</span><span class="p">.</span><span class="n">ys</span> <span class="ow">or</span> <span class="n">self</span><span class="p">.</span><span class="n">xs</span>
+      <span class="kr">if</span> <span class="n">klassp</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="kr">then</span> <span class="n">self</span><span class="p">.</span><span class="n">klass</span><span class="o">=</span> <span class="n">new</span> <span class="kr">end</span>
+      <span class="n">where</span><span class="p">[</span><span class="o">#</span><span class="n">where</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+      <span class="n">self</span><span class="p">.</span><span class="n">cols</span><span class="p">[</span><span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <hr />
+<p>And finally&hellip;</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">return</span> <span class="p">{</span><span class="n">add</span><span class="o">=</span><span class="n">add</span><span class="p">,</span> <span class="n">Sym</span><span class="o">=</span><span class="n">Sym</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="n">Num</span><span class="p">,</span>
+        <span class="n">Row</span><span class="o">=</span><span class="n">Row</span><span class="p">,</span> <span class="n">Rows</span><span class="o">=</span><span class="n">Rows</span><span class="p">}</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
