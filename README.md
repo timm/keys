@@ -6,6 +6,6 @@
 ![](https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet)     
 [![Build Status](https://travis-ci.org/timm/keys.svg?branch=main)](https://travis-ci.org/timm/keys)  
 [![](https://img.shields.io/badge/license-mit-lightgrey)](http://github.com/timm/keys/blob/main/LICENSE.md)     
-[docs](http://menzies.us/keys.html) | [github](http://github.com/timm/keys/README.md) 
+[docs](http://menzies.us/keys/index.html) | [github](http://github.com/timm/keys/blob/main/README.md) 
 
 Routines for optimizing as data miners.
