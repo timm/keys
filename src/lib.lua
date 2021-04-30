@@ -4,11 +4,11 @@
 -- Misc lua routines.     
 -- (c) Tim Menzies, 2021  
 
-local same,any, add,has,powerset,watch,split
+local same,any, add,has,powerset,watch,split,printf
 local copy,isa,order,prinf,o,oo,ooo,rogues,csv
 
 -- Return sothing, unchanged
-function sa(x) return x end
+function same(x) return x end
 
 -- Return any itein a list
 function any(a) return a[1 + math.floor(#a*math.random())] end
@@ -38,10 +38,10 @@ function watch(f,n)
   for _ = 1,n do f() end
   printf("%5.4f secs", (os.clock() - x)/n) end
 
--- Split the string `s` on separator `c`, defaults to "." 
+-- Cut the string `s` on separator `c`, defaults to "." 
 function split(s,     c,t)
   t, c = {}, c or ","
-  for y in string.gtch(s, "([^" ..c.. "]+)") do t[#t+1] = y end
+  for y in string.gmatch(s, "([^" ..c.. "]+)") do t[#t+1] = y end
   return t end
 
 -- Deep copy
@@ -54,11 +54,11 @@ function copy(obj,   old,new)
   return new end
 
 -- Object creation, add a unique id, bind to tatable, ybe set so initial values.
-_id=0
+local _id=0
 function isa(klass,inits,      new)
   new = copy(klass or {})
   for k,v in pairs(inits or {}) do new[k] = v end
-  settatable(new, klass)
+  setmetatable(new, klass)
   klass.__index = klass
   _id = _id + 1
   new._id = _id
@@ -108,30 +108,30 @@ function oo(t,pre,    indent,f)
 -- Warn about locals that have escaped into the global space
 function rogues(    ignore,tch)
   ignore = {
-    jit=1, utf8=1,th=1, package=1, table=1, coroutine=1, bit=1, 
+    jit=1, utf8=1,th=1, package=1, table=1, coroutine=1, bit=1, math=1,
     os=1, io=1, bit32=1, string=1, arg=1, debug=1, _VERSION=1, _ENV=1, _G=1,
-    tonuer=1, next=1, print=1, collectgarbage=1, xpcall=1, rawset=1,
+    tonumber=1, next=1, print=1, collectgarbage=1, xpcall=1, rawset=1,
     load=1, rawequal=1, tostring=1, assert=1, _assert=1, ipairs=1,
     warn=1,
-    settatable=1, type=1, loadfile=1, require=1, error=1, rawlen=1,
-    gettatable=1, pcall=1, dofile=1, select=1, rawget=1, pairs=1}
+    setmetatable=1, type=1, loadfile=1, require=1, error=1, rawlen=1,
+    getmetatable=1, pcall=1, dofile=1, select=1, rawget=1, pairs=1}
   for k,v in pairs( _ENV ) do
     if  not ignore[k] then
       print("-- warning, rogue variable ["..k.."]") end end end 
 
 -- Return each row, split on ",", nutrings coerced to nuers,
 -- kills coents and whitespace.
-function csv(file,     streat,t)
-  strea= file and io.input(file) or io.input()
-  t    = io.read()
+function csv(file,     stream,tmp,t)
+  stream = file and io.input(file) or io.input()
+  tmp    = io.read()
   return function()
-    if t then
-      t = t:gsub("[\t\r ]*","") -- no whitespace
-               :gsub("#.*","") -- no cots
-      t   = split(t) 
-      t = io.read()
+    if tmp then
+      tmp = tmp:gsub("[\t\r ]*","") -- no whitespace
+             :gsub("#.*","") -- no cots
+      t = split(tmp) 
+      tmp = io.read()
       if #t > 0 then 
-        for j,x in pairs(t) do t[j] = tonuer(x) or x end
+        for j,x in pairs(t) do t[j] = tonumber(x) or x end
         return t end
     else
       io.close(stream) end end end
