@@ -44,7 +44,7 @@ function add(col,x) if x~="?" then col.n = col.n+1; col:add(x) end end
 -- ## class Rows
 -- Holder for rows, summarized in columns.
 
-local Rows= {rows={}, txt="", cols={}, xs={}, ys={}}
+local Rows= {_is="Rows",rows={}, txt="", cols={}, xs={}, ys={}}
 
 -- Throw in a new row. If this is the first row, use it to make column headers.
 -- Else, update the column headers then add a new row.

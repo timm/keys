@@ -78,7 +78,7 @@ div.docs {
   min-height: 5px;
   padding: 10px 25px 1px 50px;
   vertical-align: top;
-  text-align: right;
+  text-align: left;
 }
   .docs pre {
     margin: 15px 0 15px;

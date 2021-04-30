@@ -5,7 +5,7 @@
 -- (c) Tim Menzies, 2021   
 
 -- ------------------------------
-local Skip= {at=0, txt="", n=0}
+local Skip= {_is="Skip",at=0, txt="", n=0}
 
 function Skip:add(x) return true end
 function Skip:mid()  return "?" end
