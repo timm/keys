@@ -2,7 +2,7 @@
 -- vim: ts=2 sw=2 et :
 
 -- Keys optimizer     
--- Tim Menzies, (c) 2021, MIT     
+-- Tim Menzies, (c) 2021        
 
 -- -----------------------------
 -- [eg](eg.html)   

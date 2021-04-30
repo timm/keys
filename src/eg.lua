@@ -2,7 +2,7 @@
 -- vim: ts=2 sw=2 et :
 
 -- Unit tests.   
--- Tim Menzies, (c) 2021, MIT    
+-- Tim Menzies, (c) 2021        
 
 -- -----------------------------
 local lib  = require "lib"

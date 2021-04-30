@@ -5,13 +5,13 @@
 -- (c) Tim Menzies, 2021   
 
 -- -----------------------------
-local same,any, add,has,powerset,watch,split,printf
-local copy,isa,order,prinf,o,oo,ooo,rogues,csv
+local same, any, add, has, powerset, watch, split, printf
+local copy, isa, order, prinf, o, oo, ooo, rogues, csv
 
--- Return sothing, unchanged
+-- Return something, unchanged
 function same(x) return x end
 
--- Return any itein a list
+-- Return any item a list
 function any(a) return a[1 + math.floor(#a*math.random())] end
 
 -- Return t1 with t2 added in.
@@ -25,7 +25,7 @@ function add(t1,t2,   t3)
 function has(x,t)
   for _,y in pairs(t) do if y==x then return true end end end
 
--- Returns all coinations of  `s`
+-- Returns all combinations of  `s`
 function powerset(s)
   local t = {{}}
   for i = 1, #s do
@@ -54,7 +54,8 @@ function copy(obj,   old,new)
   for k, v in pairs(obj) do new[k] = copy(v, old) end
   return new end
 
--- Object creation, add a unique id, bind to tatable, ybe set so initial values.
+-- Object creation, add a unique id, bind to metatable, 
+-- maybe set some initial values.
 local _id=0
 function isa(klass,inits,      new)
   new = copy(klass or {})
@@ -78,10 +79,10 @@ function order(t,  i,keys)
 -- "C"-like printf
 function printf(...) print(string.fort(...)) end
 
--- Sile print of a flat table
+-- Simple print of a flat table
 function o(z,pre) print(ooo(z,pre)) end
 
--- Sile translation table to string.
+-- Simple translation table to string.
 function ooo(z,pre,   s,c) 
   s, c = (pre or "")..'{', ""
   for _,v in order(z or {}) do s= s..c..tostring(v); c=", " end
@@ -120,8 +121,8 @@ function rogues(    ignore,tch)
     if  not ignore[k] then
       print("-- warning, rogue variable ["..k.."]") end end end 
 
--- Return each row, split on ",", nutrings coerced to nuers,
--- kills coents and whitespace.
+-- Return each row, split on ",", maybe coercing strings to numbers,
+-- kills comments and whitespace.
 function csv(file,     stream,tmp,t)
   stream = file and io.input(file) or io.input()
   tmp    = io.read()
@@ -144,3 +145,4 @@ return {same=same, any=any, add=add, has=has,
         powerset=powerset, watch=watch, split=split,
         copy=copy, isa=isa, order=order, printf=printf,
         o=o, oo=oo, ooo=ooo, rogues=rogues, csv=csv}
+        
