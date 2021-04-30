@@ -5,7 +5,7 @@
 -- Tim Menzies, (c) 2021, MIT     
 
 -- -----------------------------
-l-- [eg](eg.html)   
+-- [eg](eg.html)   
 -- [lib](lib.html)     
 -- [num](num.html)   
 -- [rows](rows.html)   
