@@ -2,7 +2,7 @@
 -- vim: ts=2 sw=2 et :
 
 -- Misc lua routines.     
--- (c) Tim Menzies, 2021  
+-- (c) Tim Menzies, 2021   
 
 local same,any, add,has,powerset,watch,split,printf
 local copy,isa,order,prinf,o,oo,ooo,rogues,csv

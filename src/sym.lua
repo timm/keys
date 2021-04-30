@@ -1,8 +1,8 @@
 #!/usr/bin/env lua
 -- vim: ts=2 sw=2 et :
 
--- Column to summarize `Sym`bolic columns.   
--- (c) Tim Menzies, 2021.
+-- Place to summarize `Sym`bolic columns.   
+-- (c) Tim Menzies, 2021.    
 
 local Sym = {at=0, txt="", n=0, most=0, seen={}}
 
