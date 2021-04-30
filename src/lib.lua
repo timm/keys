@@ -5,7 +5,7 @@
 -- (c) Tim Menzies, 2021   
 
 -- -----------------------------
-llocal same,any, add,has,powerset,watch,split,printf
+local same,any, add,has,powerset,watch,split,printf
 local copy,isa,order,prinf,o,oo,ooo,rogues,csv
 
 -- Return sothing, unchanged
