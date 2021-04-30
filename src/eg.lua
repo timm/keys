@@ -4,8 +4,6 @@
 -- Unit tests.   
 -- Tim Menzies, (c) 2021, MIT    
 
--- ---------------------------------------------
-
 local lib  = require "lib"
 local rows = require "rows"
 local powerset,watch,csv = lib.powerset,lib.watch,lib.csv

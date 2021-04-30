@@ -2,9 +2,7 @@
 -- vim: ts=2 sw=2 et :
 
 -- Storage for rows, summarized in columns.    
--- Tim Menzies, (c) 2021, MIT     
-
--- ---------------------------------------------
+-- (c) Tim Menzies, 2021
 
 local lib  = require "lib"
 local Skip = require "skip"

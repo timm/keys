@@ -4,8 +4,6 @@
 -- Keys optimizer     
 -- Tim Menzies, (c) 2021, MIT     
 
--- ---------------------------------------------
-
 -- [eg](eg.html)   
 -- [lib](lib.html)     
 -- [num](num.html)   
