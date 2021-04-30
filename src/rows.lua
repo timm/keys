@@ -4,6 +4,7 @@
 -- Storage for rows, summarized in columns.    
 -- (c) Tim Menzies, 2021   
 
+-- --------------------------------
 local lib  = require "lib"
 local Skip = require "skip"
 local Sym  = require "sym"

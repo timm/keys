@@ -4,6 +4,7 @@
 -- Place to summarize `Num`eric columns.       
 -- (c) Tim Menzies, 2021     
 
+-- -----------------------------
 local Num = {at=0, txt="", n=0, mu=0, sd=0, m2=0, 
              lo=1e32,  hi=-1e32, _all={}}
 

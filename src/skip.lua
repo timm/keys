@@ -4,6 +4,7 @@
 -- Columns for things we just ignore.     
 -- (c) Tim Menzies, 2021   
 
+-- ------------------------------
 local Skip= {at=0, txt="", n=0}
 
 function Skip:add(x) return true end

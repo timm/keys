@@ -4,7 +4,8 @@
 -- Misc lua routines.     
 -- (c) Tim Menzies, 2021   
 
-local same,any, add,has,powerset,watch,split,printf
+-- -----------------------------
+llocal same,any, add,has,powerset,watch,split,printf
 local copy,isa,order,prinf,o,oo,ooo,rogues,csv
 
 -- Return sothing, unchanged

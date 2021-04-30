@@ -4,6 +4,7 @@
 -- Place to summarize `Sym`bolic columns.   
 -- (c) Tim Menzies, 2021.    
 
+-- --------------------------------
 local Sym = {at=0, txt="", n=0, most=0, seen={}}
 
 -- Incremental symbol counts, maybe update `mode`.
