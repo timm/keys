@@ -8,14 +8,15 @@ mkdir -p $Ell/docs
 f=$Ell/docs/.nojekyll; [[ -f "$f" ]] || touch $f 
 
 docs() {
-  head=`gawk -f $Ell/etc/para2.awk README.me`
+  head=`gawk -f $Ell/etc/para2.awk $Ell/README.md`
   cd $Ell/src; 
   for i in *.lua; do
-    gawk -v txt="$here"  -f $Ell/etc/addheader.awk $i > ../docs/$i
+    gawk -v txt="$head"  -f $Ell/etc/addheader.awk $i > ../docs/$i
   done
   cd ../docs
   pycco  -d $Ell/docs *.lua
   cp $Ell/etc/pycco.css $Ell/docs
+  rm $Ell/docs/*.lua
 } 
 
 alias gp="git add *;git commit -am save;git push;git status"
