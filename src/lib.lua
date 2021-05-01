@@ -39,12 +39,15 @@ function watch(f,n)
   for _ = 1,n do f() end
   printf("%5.4f secs", (os.clock() - x)/n) end
 
+-- What is the mean of a list?
 function mu(t,   sum) 
   sum = 0
   for _,x in pairs(t) do sum=sum+x end
   return sum/#t end
 
 -- <a name=sd>
+-- What is the standard deviation of a list?
+
 function sd(t,   sum,m,tmp) 
   local tmp,m = 0,mu(t)
   for _,x in pairs(t) do tmp = tmp+(m-x)^2 end
