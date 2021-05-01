@@ -12,10 +12,24 @@ local Num = require "num"
 local powerset,watch,csv = lib.powerset,lib.watch,lib.csv
 local isa,oo             = lib.isa,lib.oo
 local add = rows.add
-cli = require "cli"
+local cli = require "cli"
+local Some = require "some"
 
 math.randomseed(1)
 local eg={}
+  
+function eg.some1()
+  local s = isa(Some,{max=16})
+  for i=1,100 do s:add(i) end
+  oo(s:has()) end
+  --print("some1", s.n, s.max, s:sd()) end 
+
+function eg.some2()
+  for max=25,250,25 do 
+    print(max)
+    local s = isa(Some, {max=250})
+    for i=1,100 do s:add(i) end
+    print("m", max, s.n, s.max, s:sd()) end end
 
 function eg.lists()
   assert(lib.has("bb",{"aa","bb","cc"}))
@@ -73,6 +87,13 @@ function eg.rows()
 --
 -- -----------------------------------
 -- And finally...
+local txt=arg[1]
 
-for txt,f in lib.order(eg) do print("-- "..txt); f(); end
+if txt then 
+  if txt=="?" then for txt,_ in lib.order(eg) do print("./eg.lua "..txt) end end
+  if eg[txt]  then print("-- "..txt); eg[arg[1]]()  end
+else
+  for txt,f in lib.order(eg) do print("-- "..txt); f() end 
+end 
+
 lib.rogues()
