@@ -6,7 +6,7 @@
 
 -- -----------------------------
 local same, any, add, has, powerset, watch, split, printf
-local copy, isa, order, prinf, o, oo, ooo, rogues, csv
+local copy, isa, order, prinf, o, oo, ooo, rogues, csv, mu, sd
 
 -- Return something, unchanged
 function same(x) return x end
@@ -38,6 +38,17 @@ function watch(f,n)
   local x = os.clock()
   for _ = 1,n do f() end
   printf("%5.4f secs", (os.clock() - x)/n) end
+
+function mu(t,   sum) 
+  sum = 0
+  for _,x in pairs(t) do sum=sum+x end
+  return sum/#t end
+
+-- <a name=sd>
+function sd(t,   sum,m,tmp) 
+  local tmp,m = 0,mu(t)
+  for _,x in pairs(t) do tmp = tmp+(m-x)^2 end
+  return (tmp/#t-1)^0.5 end
 
 -- Cut the string `s` on separator `c`, defaults to "." 
 function split(s,     c,t)
@@ -144,5 +155,5 @@ function csv(file,     stream,tmp,t)
 return {same=same, any=any, add=add, has=has,
         powerset=powerset, watch=watch, split=split,
         copy=copy, isa=isa, order=order, printf=printf,
-        o=o, oo=oo, ooo=ooo, rogues=rogues, csv=csv}
+        o=o, oo=oo, ooo=ooo, rogues=rogues, csv=csv,mu=mu,sd=sd}
         

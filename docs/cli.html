@@ -43,7 +43,7 @@ Cli  handler <br />
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">lib</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;lib&quot;</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">order</span><span class="o">=</span><span class="n">lib</span><span class="p">.</span><span class="n">order</span>
 <span class="kd">local</span> <span class="n">printf</span><span class="o">=</span><span class="n">lib</span><span class="p">.</span><span class="n">printf</span>
-<span class="kd">local</span> <span class="n">help</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">cli</span></pre></div>
+<span class="kd">local</span> <span class="n">help</span><span class="p">,</span> <span class="n">update</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -88,10 +88,10 @@ with the right type of <code>val</code>ue.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <p>Main driver  for cli.</p>
+      <p>Main driver for cli.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">main</span><span class="p">(</span><span class="n">usage</span><span class="p">,</span><span class="n">both</span><span class="p">)</span>
+      <div class="highlight"><pre><span class="kr">return</span> <span class="kr">function</span> <span class="p">(</span><span class="n">usage</span><span class="p">,</span><span class="n">both</span><span class="p">)</span>
   <span class="kd">local</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
   <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">both</span><span class="p">)</span> <span class="kr">do</span> <span class="n">opts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="kr">end</span>
   <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="kr">do</span>
@@ -99,8 +99,6 @@ with the right type of <code>val</code>ue.</p>
     <span class="kr">then</span> <span class="n">help</span><span class="p">(</span><span class="n">usage</span><span class="p">,</span><span class="n">both</span><span class="p">)</span> 
     <span class="kr">else</span> <span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">v</span><span class="p">:</span><span class="n">sub</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">arg</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">opts</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span>
   <span class="kr">return</span> <span class="n">opts</span> <span class="kr">end</span>
-
-<span class="kr">return</span> <span class="p">{</span><span class="n">cli</span><span class="o">=</span><span class="n">main</span><span class="p">}</span>
 
 </pre></div>
     </div>

@@ -41,7 +41,7 @@ Misc lua routines.   <br />
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">same</span><span class="p">,</span> <span class="n">any</span><span class="p">,</span> <span class="n">add</span><span class="p">,</span> <span class="n">has</span><span class="p">,</span> <span class="n">powerset</span><span class="p">,</span> <span class="n">watch</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">printf</span>
-<span class="kd">local</span> <span class="n">copy</span><span class="p">,</span> <span class="n">isa</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">prinf</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span></pre></div>
+<span class="kd">local</span> <span class="n">copy</span><span class="p">,</span> <span class="n">isa</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">prinf</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sd</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -126,7 +126,12 @@ Misc lua routines.   <br />
   <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="ow">or</span> <span class="mi">10</span>
   <span class="kd">local</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">os.clock</span><span class="p">()</span>
   <span class="kr">for</span> <span class="n">_</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="n">n</span> <span class="kr">do</span> <span class="n">f</span><span class="p">()</span> <span class="kr">end</span>
-  <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;%5.4f secs&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">os.clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+  <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;%5.4f secs&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">os.clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nf">mu</span><span class="p">(</span><span class="n">t</span><span class="p">,</span>   <span class="n">sum</span><span class="p">)</span> 
+  <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">sum</span><span class="o">=</span><span class="n">sum</span><span class="o">+</span><span class="n">x</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="n">sum</span><span class="o">/#</span><span class="n">t</span> <span class="kr">end</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -134,6 +139,21 @@ Misc lua routines.   <br />
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p><a name=sd></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">sd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span>   <span class="n">sum</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">tmp</span><span class="p">)</span> 
+  <span class="kd">local</span> <span class="n">tmp</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">mu</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+  <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">+</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="p">(</span><span class="n">tmp</span><span class="o">/#</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">^</span><span class="mf">0.5</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <p>Cut the string <code>s</code> on separator <code>c</code>, defaults to &ldquo;.&rdquo; </p>
     </div>
@@ -145,10 +165,10 @@ Misc lua routines.   <br />
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <p>Deep copy</p>
     </div>
@@ -163,10 +183,10 @@ Misc lua routines.   <br />
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-10'>
+  <div class='section' id='section-11'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-10'>#</a>
+        <a class='octothorpe' href='#section-11'>#</a>
       </div>
       <p>Object creation, add a unique id, bind to metatable, 
 maybe set some initial values.</p>
@@ -185,10 +205,10 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-11'>
+  <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
+        <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <p>Iterate on keys in sorted order</p>
     </div>
@@ -203,22 +223,22 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-12'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-12'>#</a>
-      </div>
-      <p>&ldquo;C&rdquo;-like printf</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">printf</span><span class="p">(...)</span> <span class="nb">print</span><span class="p">(</span><span class="n">string</span><span class="p">.</span><span class="n">fort</span><span class="p">(...))</span> <span class="kr">end</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-13'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>&ldquo;C&rdquo;-like printf</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">printf</span><span class="p">(...)</span> <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(...))</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
       </div>
       <p>Simple print of a flat table</p>
     </div>
@@ -227,10 +247,10 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-14'>
+  <div class='section' id='section-15'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-14'>#</a>
+        <a class='octothorpe' href='#section-15'>#</a>
       </div>
       <p>Simple translation table to string.</p>
     </div>
@@ -242,10 +262,10 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-15'>
+  <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
+        <a class='octothorpe' href='#section-16'>#</a>
       </div>
       <p>Nested translation table to string.
 Don&rsquo;t show private slots (those that start with <code>_</code>);
@@ -259,7 +279,7 @@ if <code>pre</code> is specified, then  print that as a prefix.</p>
   <span class="kr">if</span><span class="p">(</span><span class="n">indent</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="kr">then</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="kr">end</span>
   <span class="kr">if</span> <span class="n">indent</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="kr">then</span>
     <span class="kr">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="kr">in</span> <span class="n">order</span><span class="p">(</span><span class="n">t</span> <span class="ow">or</span> <span class="p">{})</span> <span class="kr">do</span>
-      <span class="kr">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;string&#39;</span> <span class="ow">and</span> <span class="n">k</span><span class="p">:</span><span class="n">tch</span><span class="p">(</span><span class="s2">&quot;^_&quot;</span><span class="p">))</span> <span class="kr">then</span>
+      <span class="kr">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;string&#39;</span> <span class="ow">and</span> <span class="n">k</span><span class="p">:</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^_&quot;</span><span class="p">))</span> <span class="kr">then</span>
         <span class="kr">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="kr">then</span>
           <span class="n">f</span> <span class="o">=</span> <span class="n">pre</span><span class="o">..</span><span class="nb">string.rep</span><span class="p">(</span><span class="s2">&quot;|  &quot;</span><span class="p">,</span><span class="n">indent</span><span class="p">)</span><span class="o">..</span><span class="nb">tostring</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">..</span><span class="s2">&quot; &quot;</span>
           <span class="kr">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span> <span class="kr">then</span>
@@ -270,15 +290,15 @@ if <code>pre</code> is specified, then  print that as a prefix.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-16'>
+  <div class='section' id='section-17'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-16'>#</a>
+        <a class='octothorpe' href='#section-17'>#</a>
       </div>
       <p>Warn about locals that have escaped into the global space</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">rogues</span><span class="p">(</span>    <span class="n">ignore</span><span class="p">,</span><span class="n">tch</span><span class="p">)</span>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">rogues</span><span class="p">(</span>    <span class="n">ignore</span><span class="p">)</span>
   <span class="n">ignore</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">jit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">utf8</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">th</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">coroutine</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">math</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">os</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">io</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bit32</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">_VERSION</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">_ENV</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">_G</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -293,10 +313,10 @@ if <code>pre</code> is specified, then  print that as a prefix.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-17'>
+  <div class='section' id='section-18'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-17'>#</a>
+        <a class='octothorpe' href='#section-18'>#</a>
       </div>
       <p>Return each row, split on &ldquo;,&rdquo;, maybe coercing strings to numbers,
 kills comments and whitespace.</p>
@@ -319,10 +339,10 @@ kills comments and whitespace.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-18'>
+  <div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-18'>#</a>
+        <a class='octothorpe' href='#section-19'>#</a>
       </div>
       <hr />
 <p>And finally&hellip;</p>
@@ -331,7 +351,7 @@ kills comments and whitespace.</p>
       <div class="highlight"><pre><span class="kr">return</span> <span class="p">{</span><span class="n">same</span><span class="o">=</span><span class="n">same</span><span class="p">,</span> <span class="n">any</span><span class="o">=</span><span class="n">any</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="n">add</span><span class="p">,</span> <span class="n">has</span><span class="o">=</span><span class="n">has</span><span class="p">,</span>
         <span class="n">powerset</span><span class="o">=</span><span class="n">powerset</span><span class="p">,</span> <span class="n">watch</span><span class="o">=</span><span class="n">watch</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="n">split</span><span class="p">,</span>
         <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">isa</span><span class="o">=</span><span class="n">isa</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">printf</span><span class="o">=</span><span class="n">printf</span><span class="p">,</span>
-        <span class="n">o</span><span class="o">=</span><span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="o">=</span><span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="o">=</span><span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="o">=</span><span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="o">=</span><span class="n">csv</span><span class="p">}</span>
+        <span class="n">o</span><span class="o">=</span><span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="o">=</span><span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="o">=</span><span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="o">=</span><span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="o">=</span><span class="n">csv</span><span class="p">,</span><span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span><span class="n">sd</span><span class="o">=</span><span class="n">sd</span><span class="p">}</span>
 
 </pre></div>
     </div>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>some.lua</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>some.lua</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p><img width=150 align=right src="https://i.dlpng.com/static/png/6933553_preview.png">
+Reservoir sampler
+(c) Tim Menzies, 2021 <br />
+<a href="https://doi.org/10.5281/zenodo.4728990"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg" /></a>
+<a href="https://travis-ci.com/timm/keys"><img alt="Build Status" src="https://travis-ci.com/timm/keys.svg?branch=main" /></a><br>
+<img alt="" src="https://img.shields.io/badge/language-lua,bash-orange" />
+<img alt="" src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet" />
+<a href="http://github.com/timm/keys/blob/main/LICENSE.md"><img alt="" src="https://img.shields.io/badge/license-mit-lightgrey" /></a><br>
+<a href="http://menzies.us/keys/index.html">docs</a> | <a href="http://github.com/timm/keys">github</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">local</span> <span class="n">Some</span><span class="o">=</span><span class="p">{</span><span class="n">_is</span><span class="o">=</span><span class="s2">&quot;Some&quot;</span><span class="p">,</span> <span class="n">max</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">unordered</span><span class="o">=</span><span class="kc">true</span><span class="p">,</span> <span class="n">_has</span><span class="o">=</span><span class="p">{}}</span>
+
+<span class="kd">local</span> <span class="n">r</span><span class="o">=</span><span class="nb">math.random</span>
+<span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> 
+  <span class="n">self</span><span class="p">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+  <span class="kd">local</span> <span class="n">pos</span> 
+  <span class="kr">if</span>   <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_has</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">max</span> 
+  <span class="kr">then</span> <span class="n">pos</span> <span class="o">=</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_has</span> <span class="o">+</span> <span class="mi">1</span> 
+  <span class="kr">else</span> <span class="kr">if</span>   <span class="n">r</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">max</span><span class="o">/</span><span class="n">self</span><span class="p">.</span><span class="n">n</span> 
+       <span class="kr">then</span> <span class="n">pos</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">r</span><span class="p">()</span><span class="o">*#</span><span class="n">self</span><span class="p">.</span><span class="n">_has</span><span class="p">)</span><span class="o">//</span><span class="mi">1</span> 
+       <span class="kr">end</span> 
+  <span class="kr">end</span>
+  <span class="kr">if</span> <span class="n">pos</span> <span class="kr">then</span> <span class="n">self</span><span class="p">.</span><span class="n">_has</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="o">=</span><span class="n">x</span><span class="p">;</span> <span class="n">self</span><span class="p">.</span><span class="n">unordered</span><span class="o">=</span><span class="kc">true</span> <span class="kr">end</span> <span class="kr">end</span> 
+
+<span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">has</span><span class="p">()</span> 
+  <span class="kr">if</span> <span class="n">self</span><span class="p">.</span><span class="n">unordered</span> <span class="kr">then</span> <span class="nb">table.sort</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">_has</span><span class="p">)</span> <span class="kr">end</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">unordered</span><span class="o">=</span><span class="kc">false</span>
+  <span class="kr">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_has</span> <span class="kr">end</span>
+
+<span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">sd</span><span class="p">()</span>
+  <span class="kd">local</span> <span class="n">n</span><span class="p">,</span> <span class="n">tmp</span> <span class="o">=</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_has</span><span class="p">,</span> <span class="n">self</span><span class="p">:</span><span class="n">has</span><span class="p">()</span>
+  <span class="kr">return</span> <span class="p">(</span><span class="n">tmp</span><span class="p">[(</span><span class="mf">.9</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">//</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">tmp</span><span class="p">[(</span><span class="mf">.1</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">//</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.8</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <hr />
+<p>And finally&hellip;</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">return</span> <span class="n">Some</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

@@ -11,9 +11,11 @@ local r=math.random
 function Some:add(x) 
   self.n = self.n + 1
   local pos 
-  if   #(self._has) < self.max 
-  then pos = #(self._has)+1 
-  else if r() < self.max/self.n then pos = 1+(r()*#(self._has))//1 end 
+  if   #self._has < self.max 
+  then pos = #self._has + 1 
+  else if   r() < self.max/self.n 
+       then pos = 1+(r()*#self._has)//1 
+       end 
   end
   if pos then self._has[pos]=x; self.unordered=true end end 
 
@@ -23,8 +25,8 @@ function Some:has()
   return self._has end
 
 function Some:sd()
-  local n, tmp = #(self._has), self:has()
-  return (tmp[(.9*n)//1] - tmp[(.1*n)//1])/2.56 end
+  local n, tmp = #self._has, self:has()
+  return (tmp[(.9*n)//1] - tmp[(.1*n)//1])/2.8 end
 
 -- -----------------------------
 -- And finally...

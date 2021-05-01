@@ -10,7 +10,8 @@ local rows = require "rows"
 local Sym = require "sym"
 local Num = require "num"
 local powerset,watch,csv = lib.powerset,lib.watch,lib.csv
-local isa,oo             = lib.isa,lib.oo
+local printf,isa,oo,watch= lib.printf,lib.isa,lib.oo,lib.watch
+local sd = lib.sd
 local add = rows.add
 local cli = require "cli"
 local Some = require "some"
@@ -18,18 +19,16 @@ local Some = require "some"
 math.randomseed(1)
 local eg={}
   
-function eg.some1()
-  local s = isa(Some,{max=16})
-  for i=1,100 do s:add(i) end
-  oo(s:has()) end
-  --print("some1", s.n, s.max, s:sd()) end 
-
-function eg.some2()
-  for max=25,250,25 do 
-    print(max)
-    local s = isa(Some, {max=250})
-    for i=1,100 do s:add(i) end
-    print("m", max, s.n, s.max, s:sd()) end end
+function eg.some()
+  -- load data
+  local t={}
+  for i=1,10^6 do t[#t+1] = i end
+  local want=sd(t)
+  -- try some approximations
+  for max=10,500,50 do
+    local s = isa(Some,{max=max})
+    for _,x in pairs(t) do s:add(x) end
+    printf("%4s %4.0f", max, 100*(want - s:sd())/want//1) end end
 
 function eg.lists()
   assert(lib.has("bb",{"aa","bb","cc"}))
