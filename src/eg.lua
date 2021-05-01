@@ -7,6 +7,8 @@
 -- -----------------------------
 local lib  = require "lib"
 local rows = require "rows"
+local Sym = require "sym"
+local Num = require "num"
 local powerset,watch,csv = lib.powerset,lib.watch,lib.csv
 local isa,oo             = lib.isa,lib.oo
 local add = rows.add
@@ -26,6 +28,11 @@ function eg.split()
   assert(4 == #t)
   assert("b" == t[2]) end
 
+function eg.powerset(   s,t)
+  s = {10,20,30,40,50,60,70,80,90,100,110,120,130,140,150}
+  t = powerset(s) 
+  assert(#t==2^(#s)) end
+
 function eg.copy()
   local t1={10,{20}}
   local t2=lib.copy(t1)
@@ -38,10 +45,18 @@ function eg.csv()
     n=n+1
     if n>1 then assert("number"==type(row[1]),tostring(n)) end end end
 
-function eg.powerset(   s,t)
-  s = {10,20,30,40,50,60,70,80,90,100,110,120,130,140,150}
-  t = powerset(s) 
-  assert(#t==2^(#s)) end
+function eg.num()
+  local n = isa(Num)
+  for _,v in pairs {600, 470, 170, 430, 300} do add(n,v) end
+  assert(n.mu==394)
+  assert(147.3 < n.sd and n.sd < 147.4) end
+
+function eg.sym()
+  local s = isa(Sym)
+  for _,v in pairs {"a","b","b","c","c","c","c"} do add(s,v) end
+  assert(s.n == 7)
+  assert("c"==s.mode)
+  assert(1.37 <= s:ent() and s:ent() <=1.38)  end
 
 function eg.rows()
   local rows=isa(rows.Rows)
@@ -49,12 +64,6 @@ function eg.rows()
   oo(rows.cols[1]._isa)
   assert(rows.cols[1].n == 398)
   assert(rows.cols[3].n == 397) end
-
-function eg.num()
-  local n = isa(rows.Num)
-  for _,v in pairs {600, 470, 170, 430, 300} do add(n,v) end
-  assert(n.mu==394)
-  assert(147.3 < n.sd and n.sd < 147.4) end
 
 -- function eg.cli(     t)
 --   t= cli("./eg.lua", {c = {10, "copyleft"}, 

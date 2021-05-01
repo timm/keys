@@ -19,9 +19,11 @@ function Sym:mid(x) return i.mode end
 function Sym:spread()  return self:ent() end
 
 -- Entropy reports the effort required to recreate a signal.
+local lib=require "lib"
 function Sym:ent(   e)
   e=0
-  for _,v in pairs(self.seen) do e = e-v/self.n*math.log(v/self.n,2) end
+  lib.oo(self.seen)
+  for _,v in pairs(self.seen) do print(v/self.n); e = e-v/self.n*math.log(v/self.n,2) end
   return e end
 
 -- -----------------------------------
