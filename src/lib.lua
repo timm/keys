@@ -77,7 +77,7 @@ function order(t,  i,keys)
       i=i+1; return keys[i], t[keys[i]] end end end 
 
 -- "C"-like printf
-function printf(...) print(string.fort(...)) end
+function printf(...) print(string.format(...)) end
 
 -- Simple print of a flat table
 function o(z,pre) print(ooo(z,pre)) end
@@ -98,7 +98,7 @@ function oo(t,pre,    indent,f)
   if(indent==0) then print("") end
   if indent < 10 then
     for k, v in order(t or {}) do
-      if not (type(k)=='string' and k:tch("^_")) then
+      if not (type(k)=='string' and k:match("^_")) then
         if not (type(v)=='function') then
           f = pre..string.rep("|  ",indent)..tostring(k)..": "
           if type(v) == "table" then
@@ -108,7 +108,7 @@ function oo(t,pre,    indent,f)
             print(f .. tostring(v)) end end end end end end
 
 -- Warn about locals that have escaped into the global space
-function rogues(    ignore,tch)
+function rogues(    ignore)
   ignore = {
     jit=1, utf8=1,th=1, package=1, table=1, coroutine=1, bit=1, math=1,
     os=1, io=1, bit32=1, string=1, arg=1, debug=1, _VERSION=1, _ENV=1, _G=1,

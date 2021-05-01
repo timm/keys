@@ -10,6 +10,7 @@ local rows = require "rows"
 local powerset,watch,csv = lib.powerset,lib.watch,lib.csv
 local isa,oo             = lib.isa,lib.oo
 local add = rows.add
+cli = require "cli"
 
 math.randomseed(1)
 local eg={}
@@ -45,6 +46,7 @@ function eg.powerset(   s,t)
 function eg.rows()
   local rows=isa(rows.Rows)
   for row in csv("../data/auto93.csv") do rows:add(row) end
+  oo(rows.cols[1]._isa)
   assert(rows.cols[1].n == 398)
   assert(rows.cols[3].n == 397) end
 
@@ -54,7 +56,12 @@ function eg.num()
   assert(n.mu==394)
   assert(147.3 < n.sd and n.sd < 147.4) end
 
-
+-- function eg.cli(     t)
+--   t= cli("./eg.lua", {c = {10, "copyleft"}, 
+--                       k = {2,  "low freq"},
+--                       optimize = {false, "options"}})
+--   oo(t) end
+--
 -- -----------------------------------
 -- And finally...
 

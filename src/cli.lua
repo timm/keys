@@ -8,7 +8,7 @@
 local lib=require("lib")
 local order=lib.order
 local printf=lib.printf
-local help, update, cli
+local help, update
 
 -- Pretty print the help.
 function help(usage,both)
@@ -26,8 +26,8 @@ function update(k,pre,flag,val,opts)
   assert(type(new) == old, flag.." expected "..old)
   opts[k] = new end 
 
--- Main driver  for cli.
-function main(usage,both)
+-- Main driver for cli.
+return function (usage,both)
   local opts = {}
   for k,v in pairs(both) do opts[k] = v[2] end
   for k,v in pairs(arg) do
@@ -35,5 +35,3 @@ function main(usage,both)
     then help(usage,both) 
     else update(v, v:sub(1,1), v:sub(s), arg[k+1], opts) end end
   return opts end
-
-return {cli=main}
