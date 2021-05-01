@@ -17,13 +17,14 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      <p>Keys optimizer   <br />
-Tim Menzies, (c) 2021, MIT   <br />
+      <p><img width=150 align=right src="https://i.dlpng.com/static/png/6933553_preview.png">
+Keys optimizer   <br />
+Tim Menzies, (c) 2021      <br />
 <a href="https://doi.org/10.5281/zenodo.4728990"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg" /></a>
+<a href="https://travis-ci.com/timm/keys"><img alt="Build Status" src="https://travis-ci.com/timm/keys.svg?branch=main" /></a><br>
 <img alt="" src="https://img.shields.io/badge/language-lua,bash-orange" />
 <img alt="" src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet" />
-<a href="https://travis-ci.com/timm/keys"><img alt="Build Status" src="https://travis-ci.com/timm/keys.svg?branch=main" /></a>
-<a href="http://github.com/timm/keys/blob/main/LICENSE.md"><img alt="" src="https://img.shields.io/badge/license-mit-lightgrey" /></a><br> <br />
+<a href="http://github.com/timm/keys/blob/main/LICENSE.md"><img alt="" src="https://img.shields.io/badge/license-mit-lightgrey" /></a><br>
 <a href="http://menzies.us/keys/index.html">docs</a> | <a href="http://github.com/timm/keys">github</a></p>
     </div>
     <div class='code'>
@@ -43,6 +44,59 @@ Tim Menzies, (c) 2021, MIT   <br />
 <a href="rows.html">rows</a> <br />
 <a href="skip.html">skip</a> <br />
 <a href="sym.html">sym</a>   </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <hr />
+<h2>Notes</h2>
+<p>In two papers about <em>DUO</em> (data miners using/used-by optimizers),
+Agrawal, Fu, Markus, Mathew, Menzies, Minku, Nair, Markus Wagner, and Yu 
+argued that <em>optimization</em> and <em>data mining</em> were very closely relate; i.e.
+miners divide up a space;
+while optimizers suggest ways to move to better parts of that space.</p>
+<p>Missing in that paper was a reference implementation showing how to achieve all that. <code>KEYS</code> is that reference system. It is offered here as a learning guide for
+those interested in data mining and optimization. </p>
+<h2>An Invitation</h2>
+<p><code>KEYS</code> is very short (a few 100 lines of code) and written in a very simple language (LUA). </p>
+<p>You are invited to recode <code>KEYS</code> in your favorite language.
+To start with, the file <code>eg.lua</code> offers unit tests. 
+It is suggested that you start at the top of that file and code up 
+the first example. Once you can passes that test, move to the second example. And so on.</p>
+<p>But more that that,
+when implementing this system, we challenge you to
+do better than what is offered here. 
+<code>`KEYS</code> made short-cuts to simplify the code.
+Some of those simplifications demonstrate interesting insights into the nature of data mining and optimization. 
+But some are those simplifications are just plain silly. 
+So your goal should be  to find and fix the silly bits. </p>
+<p>Good luck! Write a better <code>KEYS</code>! You can do it!</p>
+<h2>Why Study <code>KEYS</code>?</h2>
+<p>By combining the two technologies, said Agrawal et al., 
+it is possible for data miners to help optimizers (and vice versa)</p>
+<ul>
+<li><em>Transparency</em> : After optimizing,  data miners can generate succinct rules that 
+  summarize optimizer output. This is an very important, especially in this era
+  where AI is mistrusted and there are increasing demands 
+  for understandable AI (https://youtu.be/uaaC57tcci0);</li>
+<li><em>Focus</em> : Before optimizing, data miners can divide up a problem. This makes  optimizers run faster since they are focusing on smaller, more specific problems;</li>
+<li><em>Tuning</em> : Before data mining, optimizers can find  better parameter settings for a data miner, </li>
+<li><em>Advice</em> : After data mining, optimizers can take the learned model and use it to suggest how to improve some current situation.</li>
+<li><em>Simplicity</em> : under the hood, data miners and optimizers share many of the same data structures. So, if done
+  right, once you&rsquo;ve coded and optimizer you are half way to a data miner (and vice versa).</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li>Vivek Nair, Amritanshu Agrawal, Jianfeng Chen, Wei Fu, George Mathew, Tim Menzies, Leandro Minku, Markus Wagner, and Zhe Yu. 2018. Data-driven search-based software engineering. In Proceedings of the 15th International Conference on Mining Software Repositories (MSR &lsquo;18). Association for Computing Machinery, New York, NY, USA, 341–352. DOI:https://doi.org/10.1145/3196398.3196442</li>
+<li>Agrawal, A., Menzies, T., Minku, L. L., Wagner, M., &amp; Yu, Z. (2020). Better software analytics via “DUO”: Data mining algorithms using/used-by optimizers. Empirical Software Engineering, 25(3), 2099-2136.</li>
+</ul>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>

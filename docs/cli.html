@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>cli.lua</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>cli.lua</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p><img width=150 align=right src="https://i.dlpng.com/static/png/6933553_preview.png">
+Cli  handler <br />
+(c) Tim Menzies, 2021 <br />
+<a href="https://doi.org/10.5281/zenodo.4728990"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg" /></a>
+<a href="https://travis-ci.com/timm/keys"><img alt="Build Status" src="https://travis-ci.com/timm/keys.svg?branch=main" /></a><br>
+<img alt="" src="https://img.shields.io/badge/language-lua,bash-orange" />
+<img alt="" src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet" />
+<a href="http://github.com/timm/keys/blob/main/LICENSE.md"><img alt="" src="https://img.shields.io/badge/license-mit-lightgrey" /></a><br>
+<a href="http://menzies.us/keys/index.html">docs</a> | <a href="http://github.com/timm/keys">github</a></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kd">local</span> <span class="n">lib</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;lib&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">order</span><span class="o">=</span><span class="n">lib</span><span class="p">.</span><span class="n">order</span>
+<span class="kd">local</span> <span class="n">printf</span><span class="o">=</span><span class="n">lib</span><span class="p">.</span><span class="n">printf</span>
+<span class="kd">local</span> <span class="n">help</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">cli</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Pretty print the help.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">help</span><span class="p">(</span><span class="n">usage</span><span class="p">,</span><span class="n">both</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">..</span><span class="n">usage</span><span class="o">..</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">both</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot; %s%10s %s (default=%s)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> 
+           <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">==</span><span class="kc">false</span> <span class="ow">and</span> <span class="s2">&quot;+&quot;</span> <span class="ow">or</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Ensure we are updating a known <code>flag</code> 
+with the right type of <code>val</code>ue.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">update</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">pre</span><span class="p">,</span><span class="n">flag</span><span class="p">,</span><span class="n">val</span><span class="p">,</span><span class="n">opts</span><span class="p">)</span>
+  <span class="nb">assert</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="n">flag</span><span class="p">],</span> <span class="n">flag</span><span class="o">..</span><span class="s2">&quot; not known &quot;</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">new</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+  <span class="kr">if</span> <span class="n">pre</span><span class="o">==</span><span class="s2">&quot;+&quot;</span> <span class="kr">then</span> <span class="n">new</span> <span class="o">=</span> <span class="kc">true</span> <span class="kr">end</span>
+  <span class="kr">if</span> <span class="n">pre</span><span class="o">==</span><span class="s2">&quot;-&quot;</span> <span class="kr">then</span> <span class="n">new</span> <span class="o">=</span> <span class="nb">tonumber</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="ow">or</span> <span class="n">val</span>
+                   <span class="kd">local</span> <span class="n">old</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="n">flag</span><span class="p">])</span>
+                   <span class="nb">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">new</span><span class="p">)</span> <span class="o">==</span> <span class="n">old</span><span class="p">,</span> <span class="n">flag</span><span class="o">..</span><span class="s2">&quot; expected &quot;</span><span class="o">..</span><span class="n">old</span><span class="p">)</span> <span class="kr">end</span>
+  <span class="n">opts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Main driver  for cli.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">main</span><span class="p">(</span><span class="n">usage</span><span class="p">,</span><span class="n">both</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">both</span><span class="p">)</span> <span class="kr">do</span> <span class="n">opts</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="kr">end</span>
+  <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="kr">if</span> <span class="n">v</span><span class="o">==</span><span class="s2">&quot;-h&quot;</span> 
+    <span class="kr">then</span> <span class="n">help</span><span class="p">(</span><span class="n">usage</span><span class="p">,</span><span class="n">both</span><span class="p">)</span> 
+    <span class="kr">else</span> <span class="n">update</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">v</span><span class="p">:</span><span class="n">sub</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">arg</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">opts</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="n">opts</span> <span class="kr">end</span>
+
+<span class="kr">return</span> <span class="p">{</span><span class="n">cli</span><span class="o">=</span><span class="n">main</span><span class="p">}</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

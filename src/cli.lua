@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 -- vim: ts=2 sw=2 et :
 
--- Cli  handler
+-- Cli  handler   
 -- (c) Tim Menzies, 2021   
 
 -- -----------------------------
@@ -21,9 +21,11 @@ function help(usage,both)
 -- with the right type of `val`ue.
 function update(k,pre,flag,val,opts)
   assert(opts[flag], flag.." not known ")
-  val = tonumber(val) or val
-  local old = type(opts[flag])
-  assert(type(new) == old, flag.." expected "..old)
+  local new = opts[k]
+  if pre=="+" then new = true end
+  if pre=="-" then new = tonumber(val) or val
+                   local old = type(opts[flag])
+                   assert(type(new) == old, flag.." expected "..old) end
   opts[k] = new end 
 
 -- Main driver for cli.

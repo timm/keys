@@ -1,4 +1,0 @@
-lua >= 5.4
-pycco
-cowsay
-markdown

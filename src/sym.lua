@@ -5,7 +5,7 @@
 -- (c) Tim Menzies, 2021.    
 
 -- --------------------------------
-local Sym = {at=0, txt="", n=0, most=0, seen={}}
+local Sym = {_is="Sym", at=0, txt="", n=0, most=0, seen={}}
 
 -- Incremental symbol counts, maybe update `mode`.
 function Sym:add(x) 

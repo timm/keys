@@ -100,9 +100,9 @@ function oo(t,pre,    indent,f)
     for k, v in order(t or {}) do
       if not (type(k)=='string' and k:match("^_")) then
         if not (type(v)=='function') then
-          f = pre..string.rep("|  ",indent)..tostring(k)..": "
+          f = pre..string.rep("|  ",indent)..tostring(k).." "
           if type(v) == "table" then
-            print(f)
+            print((v._is or "")..":"..f)
             oo(v, pre, indent+1)
           else
             print(f .. tostring(v)) end end end end end end
