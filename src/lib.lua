@@ -46,7 +46,9 @@ function mu(t,   sum)
   return sum/#t end
 
 -- <a name=sd>
--- What is the standard deviation of a list?
+-- The  standard deviation of a list of numbers is
+-- the square root of the sum of (each item minus the mean)<sup>2</sup> divided
+-- by the size minus one.
 
 function sd(t,   sum,m,tmp) 
   local tmp,m = 0,mu(t)
