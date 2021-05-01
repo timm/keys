@@ -34,8 +34,7 @@ function Num:some(m)
     out[#out+1] = self._all[i] end
   return out end
 
--- -----------
--- ## Statistical tests
+-- Statistical tests
 function Num:different(them,my)
   local xs,ys = self:some(my.some), them:some(my.some)
   return not cliffsDelta(xs,ys) and bootstrap(xs,ys,my.b, my.conf) end

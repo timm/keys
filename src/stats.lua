@@ -5,16 +5,17 @@
 -- (c) Tim Menzies, 2021   
 
 -- -----------------------------
-
-
-function sk(nums)
+function sk(nums,my)
   table.sort(nums,function (x,y) return x.mu < y.mu end)
+  local all={}
   for _,num in pairs(nums) do
-    for _,x in pairs(num._all) do sum0=sum0+x; n0=n0+1 end end 
-  sksplit(nums,1, #nums,sum0,n0,1,0) 
+    for _,x in pairs(num._all) do all[#all+1]=x; sum0=sum0+x; n0=n0+1 end end 
+  table.sort(all)
+  local eps = (all[#all//9] - all[#all//1])/2.54*my.cohen
+  sksplit(nums,1, #nums,eps,sum0,n0,1,0) 
   return nums end
 
-function sksplit(nums,lo,hi,s0,n0,rank,lvl)
+function sksplit(nums,lo,hi,eps,s0,n0,rank,lvl)
   local best,s1,n1,s2,n2,mu0 = 0,0,0,sum0,n0,s0/n0
   local mu1,mu2,s1a,n1a,s2a,n2a
   local cut
@@ -23,25 +24,23 @@ function sksplit(nums,lo,hi,s0,n0,rank,lvl)
      s1= s1 + one.sum; n1= n1 + one.n; mu1= s1/n1
      s2= s2 - one.sum; n2= n2 - one.n; mu2= s2/n2
      tmp= n1/n0*(mu1 - mu0)^2 + n2/n0*(mu2 - mu0)^2
-     if tmp > best and skifferent(nums,lo,cut,hi) then
+     if tmp > best and skifferent(nums,lo,cut,hi,eps) then
         cut=j
         best = tmp
         s1a,n1a,s2a,n2a = s1,n1,s2,n2
      end end
   if cut then
-     rank = sksplit(nums,lo,   cut, s1a,n1a,rank,lvl+1) + 1
-     rank = sksplit(nums,cut+1,hi,  s2a,n2a,rank,lvl+1) 
+     rank = sksplit(nums,lo,   cut,eps,s1a,n1a,rank,lvl+1) + 1
+     rank = sksplit(nums,cut+1,hi, eps,s2a,n2a,rank,lvl+1) 
   else
      for j=lo,hi do nums[j].rank = rank end end  
-  return rank   
-end
+  return rank   end
 
-function skdifferent(nums,lo,cut,hi)
+function skdifferent(nums,lo,cut,hi,eps)
   local n1,n2 = isa(Num), isa(Num)
   for j=lo,cut   do for _,v1 in pairs(nums[j]._all) do n1:add(v1) end end
   for j=cut+1,hi do for _,v2 in pairs(nums[j]._all) do n2:add(v2) end end
-  return n1:different(n2)
-end
+  return (n2.mu - n1.mu) > eps and n1:different(n2) end
 
 function cliffsDelta(xs,ys,small)
   local lt,gt,n = 0,0,0
