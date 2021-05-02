@@ -15,7 +15,7 @@
 -- - [row](row.html) : place to hold rows, and their  column summaries
 -- - [skip](skip.html) : "summarize" by ignoring everything  you throw at it
 -- - [some](some.lua): reservoir sampler (keep a random sample)
--- - [sym](sym.lua} : for symbols
+-- - [sym](sym.lua) : for symbols
 -- 
 -- Utilities:
 -- 
