@@ -3,14 +3,17 @@
 <details> <summary>Contents</summary>
 
 - [Sharing  is Good](#sharing-is-good)
-  - [Version Control](#version-control)
-  - [Open Source Licenses](#open-source-licenses)
-  - [Long Term Storage, Cite-able](#long-term-storage,-cite-able)
-  - [Unit Tests](#unit-tests)
-  - [Documentation](#documentation)
+- [Standard Structures](#standard-structures)
+- [Version Control](#version-control)
+- [Open Source Licenses](#open-source-licenses)
+- [Long Term Storage, Cite-able](#long-term-storage,-cite-able)
+- [Testing](#testing)
+  - [Linting](#linting)
+  - [Unit Testss](#unit-testss)
+- [Code Formatting](#code-formatting)
+- [Documentation](#documentation)
 
 </details>
-
 
 ## Sharing  is Good
 
@@ -139,7 +142,7 @@ You need some linting for your code development. For Python, see the
 `pyflakes` (not to be confused  with `flake8` that includes both linting and code formatting,
 see below).
 
-Whenever you save a file, there are  some fast static tests
+Whenever you save a file, there are  some fast lint checks
 that look for illegal code.
 For example, this code was written in the VIM editor using the `vim-syntastic` add-on. 
 This code checks for code quirks, every time a file is saved. For example, the following
@@ -150,7 +153,7 @@ error suggests that  some `end` keyword is missing in a function.
 Very handy!
 
 
-#### Unit Testss
+### Unit Testss
 
 (Your repo needs a [.travis.yml](https://github.com/timm/keys/blob/main/.travis.yml)
 that adds a "post-commit hook" to the  repo. This hook runs a test suite each time
