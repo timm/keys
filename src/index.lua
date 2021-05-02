@@ -5,13 +5,29 @@
 -- Tim Menzies, (c) 2021        
 
 -- -----------------------------
--- [eg](eg.html)   
--- [lib](lib.html)     
--- [num](num.html)   
--- [rows](rows.html)   
--- [skip](skip.html)   
--- [sym](sym.html)   
-
+-- Unit tests:
+-- 
+-- - [eg](eg.html)
+-- 
+-- How to hold and summarize  data:
+-- 
+-- - num.lua : for numerics
+-- - rows.lua : place to hold rows, and their  column summaries
+-- - skip.lua : "summarize" by ignoring everything  you throw at it
+-- - some.lua : reservoir sampler (keep a random sample)
+-- - sym.lua : for symbols
+-- 
+-- Utilities:
+-- 
+-- - [lib](lib.html) : misc utils
+-- - [new](new.html)  : template for new files
+-- - [rand](rand.html) : random number generator
+--  -[stats](stats.html): statistical routines
+-- 
+-- Work in progress:
+-- 
+-- - [cli](cli.html)
+-- 
 -- -------------------
 -- ## Notes
 -- In two papers about _DUO_ (data miners using/used-by optimizers),
