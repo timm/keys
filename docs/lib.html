@@ -22,6 +22,7 @@ Misc lua routines.   <br />
 (c) Tim Menzies, 2021 <br />
 <a href="https://doi.org/10.5281/zenodo.4728990"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg" /></a>
 <a href="https://travis-ci.com/timm/keys"><img alt="Build Status" src="https://travis-ci.com/timm/keys.svg?branch=main" /></a><br>
+<img alt="" src="https://img.shields.io/badge/linting-luac-brown" />
 <img alt="" src="https://img.shields.io/badge/language-lua,bash-orange" />
 <img alt="" src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet" />
 <a href="http://github.com/timm/keys/blob/main/LICENSE.md"><img alt="" src="https://img.shields.io/badge/license-mit-lightgrey" /></a><br>
@@ -41,7 +42,9 @@ Misc lua routines.   <br />
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">same</span><span class="p">,</span> <span class="n">any</span><span class="p">,</span> <span class="n">add</span><span class="p">,</span> <span class="n">has</span><span class="p">,</span> <span class="n">powerset</span><span class="p">,</span> <span class="n">watch</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">printf</span>
-<span class="kd">local</span> <span class="n">copy</span><span class="p">,</span> <span class="n">isa</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">prinf</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sd</span></pre></div>
+<span class="kd">local</span> <span class="n">copy</span><span class="p">,</span> <span class="n">isa</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">prinf</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sd</span>
+
+<span class="kd">local</span> <span class="n">r</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;rand&quot;</span><span class="p">).</span><span class="n">rand</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -65,7 +68,7 @@ Misc lua routines.   <br />
       <p>Return any item a list</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">any</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="kr">return</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">math.floor</span><span class="p">(</span><span class="o">#</span><span class="n">a</span><span class="o">*</span><span class="nb">math.random</span><span class="p">())]</span> <span class="kr">end</span></pre></div>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nf">any</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="kr">return</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="o">#</span><span class="n">a</span><span class="o">*</span><span class="n">r</span><span class="p">()</span><span class="o">//</span><span class="mi">1</span><span class="p">]</span> <span class="kr">end</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -159,7 +162,7 @@ by the size minus one.</p>
       <div class="highlight"><pre><span class="kr">function</span> <span class="nf">sd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span>   <span class="n">sum</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">tmp</span><span class="p">)</span> 
   <span class="kd">local</span> <span class="n">tmp</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">mu</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
   <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">+</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span> <span class="kr">end</span>
-  <span class="kr">return</span> <span class="p">(</span><span class="n">tmp</span><span class="o">/#</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">^</span><span class="mf">0.5</span> <span class="kr">end</span></pre></div>
+  <span class="kr">return</span> <span class="p">(</span><span class="n">tmp</span><span class="o">/</span><span class="p">(</span><span class="o">#</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">^</span><span class="mf">0.5</span> <span class="kr">end</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

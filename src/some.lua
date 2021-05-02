@@ -22,7 +22,7 @@ function Some:add(x)
        then pos = 1+(r()*#self._has)//1 end end
   if pos then 
     self._has[pos]=x
-    self.unordered=true end end 
+    self.unordered=true end end  
 
 -- Ensure the returned list of numbers is sorted.
 function Some:has() 

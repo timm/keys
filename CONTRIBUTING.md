@@ -22,21 +22,57 @@ and, hence, learn  how to write better code.
 
 For code to be shared:
 
-- It must be under version control.
-- It must be unencumbered of  propitiatory licenses.
+- It should be well organized using a standard structure.
+- It should be under version control.
+- It should be unencumbered of  propitiatory licenses.
   Hence, you need an **open source license**. 
-- It must be accessible for now and for all time in the future.
+- It should be accessible for now and for all time in the future.
   Your code needs to be **mirrored** 
   in some long-term, cite-able, repository.
-- It needs to be  trusted by the community. This means that it needs a good
+- It should to be  trusted by the community. This means that it needs a good
   **test suite**.
 - It needs to be effectively **documented**.
 
-### Version Control
+## Standard Structures
+
+Your repo is your resume. Make it look good-- you will be judged by its  contents.
+
+Here's the structure of this repo showing some of the standard bits:
+
+- `./.gitignore` : files never to share (eg. tmp directories). The contents of
+  this file depend on the platform/tools you are using 
+   (e.g. for Mac, see [Macos.gitignore](https://github.com/github/gitignore/blob/master/Global/macOS.gitignore).
+   To find the right things to ignore for your toolset, see e.g. [the gitignore repo](https://github.com/github/gitignore).
+- `./.travis.yml` : post-commit hook for running unit tests. Discussed  [below](#unit-tests).
+- `./CONTRIBUTING.md` : notes on what is expected for code in this  repo (i.e. what you are reading  right now).
+- `./LICENSE.md` : a statement on how this work can be  shared
+- `./README.md` : some quick intro notes
+- `./data/` : place to store the demo data files
+- `./docs/` : contains documentation generated from the code
+- `./ell` : (Optional) contains shell programming tricks. To use, type `sh ell`.
+     This file defines (e.g.)
+   - A `vi` command that starts up VIM with all my preferred packages installed (using config files
+     from `./etc/vimrc`);
+   - A `vims` command that updates all my VIM packages.
+   - A `tmux` command that gives me a nice terminal-based multi-window envrionment.
+- `./etc/` : place to store miscellaneous files; e.g. all the config files needed by `./ell`.
+   Keeps the rest of the repo clean and simple.
+- `./requirements.txt` : lists code dependencies. Before trying to run this code,
+   first check that you have all these dependancies.
+- `./src/` : place for the source code
+  - `./src/eg,lua` : all my unit tests
+
+FYI: a common approach is to have a separate test directory `./tests` for all the unit
+tests. That is a good approach when  lots of people are writing lots of test files.
+
+If you want to add more directories, feel free. But consider using  [standard directory names](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard#Directory_structure).
+And where possible, do not clutter up the root.
+
+## Version Control
 
 Git. Enough  said. Just do it.
 
-### Open Source Licenses
+## Open Source Licenses
 
 (To add a license to your repo, add a  [LICENSE.md](https://github.com/timm/keys/blob/main/LICENSE.md)
 file to the root of your repo.)
@@ -57,7 +93,7 @@ to help you decide which one is right for you.
     (and Zephyr uses the Apache license).
 
 
-### Long Term Storage, Cite-able
+## Long Term Storage, Cite-able
 
 (Your repo needs a "digital object idenitifier" badge that assigns a unique ID
 to your code _and_ which backs up a copy of the code to some long term storage. 
@@ -80,7 +116,36 @@ identifier)
 
 For notes on that process, see [here](http://guides.github.com/activities/citable-code/).
 
-### Unit Tests
+
+##  Testing
+
+Unit tests are run (e.g.) every time you commit to a repo. Those tests can take
+a while to run. In-between times, whenever you save a file, there are  some fast lint  tests
+that look for illegal code.
+
+### Linting
+
+In a washing machine,
+the lint filter  is that part of a washing machine that catches  the little fluffy bits
+you do not want in  your clothes. In programming, a lint filter is a code that quickly
+catches  dubious code constructs.
+
+You need some linting for your code development. For Python, see the 
+`pyflakes` (not to be confused  with `flake8` that includes both linting and code formatting,
+see below).
+
+Whenever you save a file, there are  some fast static tests
+that look for illegal code.
+For example, this code was written in the VIM editor using the `vim-syntastic` add-on. 
+This code checks for code quirks, every time a file is saved. For example, the following
+error suggests that  some `end` keyword is missing in a function.
+
+      some.lua|41 error| 'end' expected (to close 'function' at line 16) near <eof>
+
+Very handy!
+
+
+#### Unit Testss
 
 (Your repo needs a [.travis.yml](https://github.com/timm/keys/blob/main/.travis.yml)
 that adds a "post-commit hook" to the  repo. This hook runs a test suite each time
@@ -105,9 +170,32 @@ three ways:
 - `cd src; ./eg.lua xxx` which runs just test `xxx`. This last call
   is very handy when writing and debugging just on example.
 
-### Documentation
 
-Code needs to be understood. It needs pretty prints that shows comments with the code.
+## Code Formatting
+
+Imagine a lecture room where your code is being  displayed for students to read  and  discuss.
+Or a book,  discussing code. For that to work:
+
+- The code has to be  short (functions, methods, less than a few dozen  lines).
+- The code has to be not too wide (less than 80 characters). Hence, this code uses 
+  two  spaces for tabs. FYI, to implement that in the VIM editor, add this line to
+  top of file:
+
+     -- vim: ts=2 sw=2 et :
+
+OPTIONAL: There are automatic style checking plugins for most editors such
+as (for Python)  the PEP8
+add-on  (also known as Pycodestyle) available in most programming editors that auto-formats
+the code every time you save it. FYI- PEP8 can be a little verbose
+(it refuses to let you write short one-line methods  as  one line) but you might find it useful.
+
+## Documentation
+
+Code needs to be understood. It needs pretty prints that shows comments with the code,
+and perhaps even
+syntax highlighting for the keywords in the code (though some prefer to show comments in the doco,
+but not the code--  its a matter of taste).
+
 There are  any number of tools for that purpose. Here:
 
 - We create a directory `./docs` containing a file `./docs/.nojeykll` and some
@@ -121,9 +209,10 @@ There are  any number of tools for that purpose. Here:
 Now that is the simplest path. Feel free to be more sophisticated:
 - e.g. Github supports [Jekyll](https://jekyllrb.com)
 - and there are more sophisticated ways to generate doco ranging from 
-  (e.g. [pdoc3](https://pdoc3.github.io/pdoc/)
-  to (e.g.) [Sphinx](https://www.sphinx-doc.org/en/master/)
-  to (e.g.) [Pandoc](https://pandoc.org).
+  [pdoc3](https://pdoc3.github.io/pdoc/)
+  to [Sphinx](https://www.sphinx-doc.org/en/master/)
+  to  [Pandoc](https://pandoc.org) and many more besides.  FYI: pdoc3 is  a personnel
+  favorite.
 
 No  matter what documentation framework you use, always know that the main cost
 of documentation is not setting up the framework. Rather, its organizing your

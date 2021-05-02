@@ -22,6 +22,7 @@ Unit tests. <br />
 Tim Menzies, (c) 2021      <br />
 <a href="https://doi.org/10.5281/zenodo.4728990"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg" /></a>
 <a href="https://travis-ci.com/timm/keys"><img alt="Build Status" src="https://travis-ci.com/timm/keys.svg?branch=main" /></a><br>
+<img alt="" src="https://img.shields.io/badge/linting-luac-brown" />
 <img alt="" src="https://img.shields.io/badge/language-lua,bash-orange" />
 <img alt="" src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet" />
 <a href="http://github.com/timm/keys/blob/main/LICENSE.md"><img alt="" src="https://img.shields.io/badge/license-mit-lightgrey" /></a><br>
@@ -50,11 +51,12 @@ Tim Menzies, (c) 2021      <br />
 <span class="kd">local</span> <span class="n">add</span> <span class="o">=</span> <span class="n">rows</span><span class="p">.</span><span class="n">add</span>
 <span class="kd">local</span> <span class="n">cli</span> <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;cli&quot;</span>
 <span class="kd">local</span> <span class="n">Some</span> <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;some&quot;</span>
+<span class="kd">local</span> <span class="n">Stats</span> <span class="o">=</span> <span class="nb">require</span> <span class="s2">&quot;stats&quot;</span>
+<span class="kd">local</span> <span class="n">Rand</span>  <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;rand&quot;</span><span class="p">)</span>
 
-<span class="nb">math.randomseed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">eg</span><span class="o">=</span><span class="p">{}</span>
-  
-<span class="kr">function</span> <span class="nc">eg</span><span class="p">.</span><span class="nf">some</span><span class="p">()</span></pre></div>
+<span class="kd">local</span> <span class="n">r</span><span class="o">=</span><span class="n">Rand</span><span class="p">.</span><span class="n">rand</span>
+
+<span class="kd">local</span> <span class="n">eg</span><span class="o">=</span><span class="p">{}</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -63,12 +65,16 @@ Tim Menzies, (c) 2021      <br />
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      <p>load data</p>
+      <p><a name=some>
+Test if we can approximate a million numbers with a few samples. </p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>  <span class="kd">local</span> <span class="n">t</span><span class="o">=</span><span class="p">{}</span>
-  <span class="kr">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="o">^</span><span class="mi">6</span> <span class="kr">do</span> <span class="n">t</span><span class="p">[</span><span class="o">#</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="kr">end</span>
-  <span class="kd">local</span> <span class="n">want</span><span class="o">=</span><span class="n">sd</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">eg</span><span class="p">.</span><span class="nf">lists</span><span class="p">()</span>
+  <span class="n">Rand</span><span class="p">.</span><span class="n">srand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="nb">assert</span><span class="p">(</span><span class="n">lib</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">,{</span><span class="s2">&quot;aa&quot;</span><span class="p">,</span><span class="s2">&quot;bb&quot;</span><span class="p">,</span><span class="s2">&quot;cc&quot;</span><span class="p">}))</span>
+  <span class="nb">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">lib</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;kk&quot;</span><span class="p">,{</span><span class="s2">&quot;aa&quot;</span><span class="p">,</span><span class="s2">&quot;bb&quot;</span><span class="p">,</span><span class="s2">&quot;cc&quot;</span><span class="p">}))</span>
+  <span class="nb">assert</span><span class="p">(</span><span class="mi">10</span> <span class="o">==</span> <span class="n">lib</span><span class="p">.</span><span class="n">any</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">})</span> 
+<span class="kr">end</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -77,18 +83,134 @@ Tim Menzies, (c) 2021      <br />
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
+      <p>How well does a new numbers  approximate
+a normal distribution?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">eg</span><span class="p">.</span><span class="nf">some1</span><span class="p">()</span>
+  <span class="n">Rand</span><span class="p">.</span><span class="n">srand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="kr">function</span> <span class="nf">normalcdf</span><span class="p">()</span>  <span class="c1">-- for -3 &lt;=x &lt;= x, approximates normal </span>
+     <span class="kd">local</span> <span class="n">x</span><span class="o">=-</span><span class="mi">3</span><span class="o">+</span><span class="n">r</span><span class="p">()</span><span class="o">*</span><span class="mi">6</span>
+     <span class="kr">return</span>  <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">math.exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.07056</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">3</span> <span class="o">-</span> <span class="mf">1.5976</span><span class="o">*</span><span class="n">x</span><span class="p">))</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>load data</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="kd">local</span> <span class="n">t</span><span class="o">=</span><span class="p">{}</span>
+  <span class="kr">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="o">^</span><span class="mi">3</span> <span class="kr">do</span> <span class="n">t</span><span class="p">[</span><span class="o">#</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalcdf</span><span class="p">()</span> <span class="kr">end</span>
+  <span class="kd">local</span> <span class="n">want</span><span class="o">=</span><span class="n">sd</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
       <p>try some approximations</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>  <span class="kr">for</span> <span class="n">max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span><span class="mi">50</span> <span class="kr">do</span>
     <span class="kd">local</span> <span class="n">s</span> <span class="o">=</span> <span class="n">isa</span><span class="p">(</span><span class="n">Some</span><span class="p">,{</span><span class="n">max</span><span class="o">=</span><span class="n">max</span><span class="p">})</span>
     <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">s</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="kr">end</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;%4s %4.0f&quot;</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">want</span> <span class="o">-</span> <span class="n">s</span><span class="p">:</span><span class="n">sd</span><span class="p">())</span><span class="o">/</span><span class="n">want</span><span class="o">//</span><span class="mi">1</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span>
-
-<span class="kr">function</span> <span class="nc">eg</span><span class="p">.</span><span class="nf">lists</span><span class="p">()</span>
-  <span class="nb">assert</span><span class="p">(</span><span class="n">lib</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">,{</span><span class="s2">&quot;aa&quot;</span><span class="p">,</span><span class="s2">&quot;bb&quot;</span><span class="p">,</span><span class="s2">&quot;cc&quot;</span><span class="p">}))</span>
-  <span class="nb">assert</span><span class="p">(</span><span class="ow">not</span> <span class="n">lib</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;kk&quot;</span><span class="p">,{</span><span class="s2">&quot;aa&quot;</span><span class="p">,</span><span class="s2">&quot;bb&quot;</span><span class="p">,</span><span class="s2">&quot;cc&quot;</span><span class="p">}))</span>
-  <span class="nb">assert</span><span class="p">(</span><span class="mi">30</span> <span class="o">==</span> <span class="n">lib</span><span class="p">.</span><span class="n">any</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">})</span> <span class="kr">end</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;%4s  %4.0f&quot;</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span>  <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">want</span> <span class="o">-</span> <span class="n">s</span><span class="p">:</span><span class="n">sd</span><span class="p">())</span><span class="o">/</span><span class="n">want</span><span class="o">//</span><span class="mi">1</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Same as some1, but reasoning  over  skewed (non-normal)
+data.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">eg</span><span class="p">.</span><span class="nf">some2</span><span class="p">()</span>
+  <span class="n">Rand</span><span class="p">.</span><span class="n">srand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>load data</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="kd">local</span> <span class="n">t</span><span class="o">=</span><span class="p">{}</span>
+  <span class="kr">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="o">^</span><span class="mi">3</span> <span class="kr">do</span> <span class="n">t</span><span class="p">[</span><span class="o">#</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">math.random</span><span class="p">()</span><span class="o">^</span><span class="mf">0.5</span> <span class="kr">end</span>
+  <span class="kd">local</span> <span class="n">want</span><span class="o">=</span><span class="n">sd</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>try some approximations</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="kr">for</span> <span class="n">max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="mi">500</span><span class="p">,</span><span class="mi">50</span> <span class="kr">do</span>
+    <span class="kd">local</span> <span class="n">s</span> <span class="o">=</span> <span class="n">isa</span><span class="p">(</span><span class="n">Some</span><span class="p">,{</span><span class="n">max</span><span class="o">=</span><span class="n">max</span><span class="p">})</span>
+    <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">s</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="kr">end</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;%4s  %4.0f&quot;</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span>  <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">want</span> <span class="o">-</span> <span class="n">s</span><span class="p">:</span><span class="n">sd</span><span class="p">())</span><span class="o">/</span><span class="n">want</span><span class="o">//</span><span class="mi">1</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p><a name=cliffs>
+Check how close we can get before being similar</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">eg</span><span class="p">.</span><span class="nf">cliffs</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>load data</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="kr">function</span> <span class="nf">load</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="p">{},{}</span>
+    <span class="kr">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span> <span class="kr">do</span> 
+      <span class="n">x</span><span class="p">[</span><span class="o">#</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">math.random</span><span class="p">()</span>
+      <span class="n">y</span><span class="p">[</span><span class="o">#</span><span class="n">x</span><span class="p">]</span>   <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="o">#</span><span class="n">x</span><span class="p">]</span> <span class="kr">end</span> 
+    <span class="kr">return</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>try some approximations</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="kr">for</span> <span class="n">n</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mi">32</span> <span class="kr">do</span>
+    <span class="kr">for</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.3</span><span class="p">,</span><span class="mf">0.025</span> <span class="kr">do</span>
+      <span class="kd">local</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="nb">load</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+      <span class="kr">if</span> <span class="ow">not</span> <span class="n">Stats</span><span class="p">.</span><span class="n">cliffsDelta</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="kr">then</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;for %5s items, things change after delta= %5s&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+        <span class="kr">break</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span>
 
 <span class="kr">function</span> <span class="nc">eg</span><span class="p">.</span><span class="nf">split</span><span class="p">()</span>
   <span class="kd">local</span> <span class="n">str</span> <span class="o">=</span> <span class="s2">&quot;a,b,c,d&quot;</span>
@@ -135,10 +257,10 @@ Tim Menzies, (c) 2021      <br />
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-4'>
+  <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-4'>#</a>
+        <a class='octothorpe' href='#section-12'>#</a>
       </div>
       <p>function eg.cli(     t)
   t= cli(&ldquo;./eg.lua&rdquo;, {c = {10, &ldquo;copyleft&rdquo;}, 

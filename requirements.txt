@@ -1,3 +1,10 @@
+# essential
 lua>=5.4
-pycco>= 0.6 # only if u want documentation
-gawk >= 5.1 # only if u want documentation
+
+# only if  you want to use  my documentation generation
+pycco>= 0.6 
+gawk >= 5.1 
+
+# only if you want my  coding environment
+tmux >= 3.1 
+vim >= 8.2  
