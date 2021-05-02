@@ -14,8 +14,11 @@
 
 ## Sharing  is Good
 
-The best code is used by the best people.
-The more code is shared, the more we all benefit from that work.
+Science is a community sharing a  set of ideas  and tools,
+where everyone does each other the courtesy of trying and
+critiquing and improving each other ideas.
+The more code is shared, the more we can understand it
+and, hence, learn  how to write better code.
 
 For code to be shared:
 
@@ -35,8 +38,8 @@ Git. Enough  said. Just do it.
 
 ### Open Source Licenses
 
-To add a license to your repo, add a  [LICENSE.md](https://github.com/timm/keys/blob/main/LICENSE.md)
-file to the root of your repo.
+(To add a license to your repo, add a  [LICENSE.md](https://github.com/timm/keys/blob/main/LICENSE.md)
+file to the root of your repo.)
 
 Open source licenses are licenses that comply with the Open Source Definition— 
 in brief, they allow software to be freely used, modified, and shared. 
@@ -56,14 +59,18 @@ to help you decide which one is right for you.
 
 ### Long Term Storage, Cite-able
 
-Your repo needs a "digital object idenitifier" badge that assigns a unique ID
+(Your repo needs a "digital object idenitifier" badge that assigns a unique ID
 to your code _and_ which backs up a copy of the code to some long term storage. 
 To check for that badge, look for something like:
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg)](https://doi.org/10.5281/zenodo.4728990)
 
-This badge makes the code "cite-able".
-Github repos are temporary, they  can be deleted. Developers need to
+This badge makes the code "cite-able".)
+
+Github repos are temporary, they  can be deleted. For
+someone to trust  code, they must trust they can  access
+it both now and in the  future.
+Developers need to
 registered their repo at some long-term storage facility  like Zenodo. There:
 
 - It you make a release in Github
@@ -75,10 +82,10 @@ For notes on that process, see [here](http://guides.github.com/activities/citabl
 
 ### Unit Tests
 
-Your repo needs a [.travis.yml](https://github.com/timm/keys/blob/main/.travis.yml)
+(Your repo needs a [.travis.yml](https://github.com/timm/keys/blob/main/.travis.yml)
 that adds a "post-commit hook" to the  repo. This hook runs a test suite each time
 the code is committed. This, in turn, updates a badge on your repo that  tells people
-your code has  tests and those tests are working.
+your code has  tests and those tests are working.)
 
 [![Build Status](https://travis-ci.com/timm/keys.svg?branch=main)](https://travis-ci.com/timm/keys)
 
@@ -114,7 +121,7 @@ There are  any number of tools for that purpose. Here:
 Now that is the simplest path. Feel free to be more sophisticated:
 - e.g. Github supports [Jekyll](https://jekyllrb.com)
 - and there are more sophisticated ways to generate doco ranging from 
-  (e.g. [pdoc3](https://pdoc3.github.io/pdoc/_
+  (e.g. [pdoc3](https://pdoc3.github.io/pdoc/)
   to (e.g.) [Sphinx](https://www.sphinx-doc.org/en/master/)
   to (e.g.) [Pandoc](https://pandoc.org).
 
