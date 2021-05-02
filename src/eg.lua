@@ -18,7 +18,7 @@ local Some = require "some"
 local Stats = require "stats"
 local Rand  = require("rand")
 
-local r=Rand.rand()
+local r=Rand.rand
 
 
 local eg={}
@@ -32,10 +32,30 @@ function eg.lists()
   assert(10 == lib.any {10,20,30}) 
 end
 
-function eg.some()
+-- How well does a new numbers  approximate
+-- a normal distribution?
+function eg.some1()
+  Rand.srand(1)
+  local function normalcdf()  -- for -3 <=x <= x, approximates normal 
+     local x=-3+r()*6
+     return  1/(1 + math.exp(-0.07056*x^3 - 1.5976*x)) end
   -- load data
   local t={}
-  for i=1,10^6 do t[#t+1] = math.random()^0.5 end
+  for i=1,10^3 do t[#t+1] = normalcdf() end
+  local want=sd(t)
+  -- try some approximations
+  for max=10,500,50 do
+    local s = isa(Some,{max=max})
+    for _,x in pairs(t) do s:add(x) end
+    printf("%4s  %4.0f", max,  100*(want - s:sd())/want//1) end end
+
+-- Same as some1, but reasoning  over  skewed (non-normal)
+-- data.
+function eg.some2()
+  Rand.srand(1)
+  -- load data
+  local t={}
+  for i=1,10^3 do t[#t+1] = math.random()^0.5 end
   local want=sd(t)
   -- try some approximations
   for max=10,500,50 do

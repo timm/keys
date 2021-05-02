@@ -33,7 +33,7 @@ function Some:has()
 -- Ensure the returned list of numbers is sorted.
 function Some:sd()
   local n, tmp = #self._has, self:has()
-  return (tmp[(.9*n)//1] - tmp[(.1*n)//1])/2.6 end
+  return (tmp[(.9*n)//1] - tmp[(.1*n)//1])/2.56 end
 
 -- -----------------------------
 -- And finally...
