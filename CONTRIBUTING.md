@@ -62,12 +62,13 @@ Here's the structure of this repo showing some of the standard bits:
 - `./requirements.txt` : lists code dependencies. Before trying to run this code,
    first check that you have all these dependancies.
 - `./src/` : place for the source code
-  - `./src/eg,lua` : all my unit tests
+  - `./src/eg.lua` : all my unit tests. Note that
+     - My `./travis.yml` gets all its  unit tests from `./src/eg.lua`.
+     - An alternate approach is to have a separate test directory `./tests` for all the unit
+     tests. That is a really good approach when  lots of people are writing lots of test files.
 
-FYI: a common approach is to have a separate test directory `./tests` for all the unit
-tests. That is a good approach when  lots of people are writing lots of test files.
-
-If you want to add more directories, feel free. But consider using  [standard directory names](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard#Directory_structure).
+If you want to add more directories, feel free. 
+But consider using  [standard directory names](https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard#Directory_structure).
 And where possible, do not clutter up the root.
 
 ## Version Control
