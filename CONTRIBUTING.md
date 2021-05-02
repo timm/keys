@@ -44,6 +44,8 @@ Here's the structure of this repo showing some of the standard bits:
    (e.g. for Mac, see [Macos.gitignore](https://github.com/github/gitignore/blob/master/Global/macOS.gitignore).
    To find the right things to ignore for your toolset, see e.g. [the gitignore repo](https://github.com/github/gitignore).
 - `./.travis.yml` : post-commit hook for running unit tests. Discussed  [below](#unit-tests).
+- `./CODE_OF_CONDCT.md` :  in an open source community, your greatest  resource is other programmers.
+   Be polite. Be helpful. Be inclusive. 
 - `./CONTRIBUTING.md` : notes on what is expected for code in this  repo (i.e. what you are reading  right now).
 - `./LICENSE.md` : a statement on how this work can be  shared
 - `./README.md` : some quick intro notes
