@@ -2,7 +2,12 @@
 
 <details> <summary>Contents</summary>
 
-  - [CONTRIBUTING](#contributing)
+    - [Sharing  is Good](#sharing--is-good)
+      - [Version Control.](#version-control.)
+      - [Open Source Licenses](#open-source-licenses)
+      - [Long Term Storage, Cite-able](#long-term-storage,-cite-able)
+      - [Unit Tests](#unit-tests)
+      - [Documentation](#documentation)
     - [Sharing  is Good](#sharing--is-good)
       - [Version Control.](#version-control.)
       - [Open Source Licenses](#open-source-licenses)
