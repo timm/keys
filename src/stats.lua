@@ -6,6 +6,7 @@
 
 -- -----------------------------
 local sk, sksplit, skdifferent, bootstrap, cliffsDelta
+local Num=require("num")
 
 function sk(nums,my)
   table.sort(nums,function (x,y) return x.mu < y.mu end)
@@ -26,12 +27,12 @@ function sksplit(nums,lo,hi,eps,s0,n0,rank,lvl)
      s1= s1 + one.sum; n1= n1 + one.n; mu1= s1/n1
      s2= s2 - one.sum; n2= n2 - one.n; mu2= s2/n2
      tmp= n1/n0*(mu1 - mu0)^2 + n2/n0*(mu2 - mu0)^2
-     if tmp > best and skifferent(nums,lo,cut,hi,eps) then
+     if tmp > best then
         cut=j
         best = tmp
         s1a,n1a,s2a,n2a = s1,n1,s2,n2
      end end
-  if cut then
+  if cut and skdifferent(nums,lo,cut,hi,eps) then
      rank = sksplit(nums,lo,   cut,eps,s1a,n1a,rank,lvl+1) + 1
      rank = sksplit(nums,cut+1,hi, eps,s2a,n2a,rank,lvl+1) 
   else
