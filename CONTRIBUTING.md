@@ -51,7 +51,13 @@ Here's the structure of this repo showing some of the standard bits:
    Be polite. Be helpful. Be inclusive. 
 - `./CONTRIBUTING.md` : notes on what is expected for code in this  repo (i.e. what you are reading  right now).
 - `./LICENSE.md` : a statement on how this work can be  shared
-- `./README.md` : some quick intro notes
+- `./README.md` : some quick intro notes. Also, good place to show your badges to let folks see, at a glance, what
+  this is all about. e.g.
+  - [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg)](https://doi.org/10.5281/zenodo.4728990) : code is available, forever, is  some long term storage facility;
+  - [![Build Status](https://travis-ci.com/timm/keys.svg?branch=main)](https://travis-ci.com/timm/keys) : code is being
+    tested, each  time it is committed;
+  - ![](https://img.shields.io/badge/linting-luac-brown) : each time the code is saved, we lint it for errors.
+  - and others beside.
 - `./data/` : place to store the demo data files
 - `./docs/` : contains documentation generated from the code
 - `./ell` : (Optional) contains shell programming tricks. To use, type `sh ell`.
