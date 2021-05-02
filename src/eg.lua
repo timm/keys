@@ -15,20 +15,43 @@ local sd = lib.sd
 local add = rows.add
 local cli = require "cli"
 local Some = require "some"
+local Stats = require "stats"
 
 math.randomseed(1)
 local eg={}
-  
+ 
+-- <a name=some>
+-- Test if we can approximate a million numbers with a few samples. 
+
 function eg.some()
   -- load data
   local t={}
-  for i=1,10^6 do t[#t+1] = i end
+  for i=1,10^6 do t[#t+1] = math.random()^0.5 end
   local want=sd(t)
   -- try some approximations
   for max=10,500,50 do
     local s = isa(Some,{max=max})
     for _,x in pairs(t) do s:add(x) end
-    printf("%4s %4.0f", max, 100*(want - s:sd())/want//1) end end
+    printf("%4s  %4.0f", max,  100*(want - s:sd())/want//1) end end
+
+-- <a name=cliffs>
+-- Check how close we can get before being similar
+
+function eg.cliffs()
+  -- load data
+  function load(d,n)
+    local x,y={},{}
+    for i=1,n do 
+      x[#x+1] = math.random()
+      y[#x]   = d*x[#x] end 
+    return x,y end
+  -- try some approximations
+  for n=32,1000,32 do
+    for d=1,1.3,0.025 do
+      local x,y = load(d,n)
+      if not Stats.cliffsDelta(x,y) then
+        printf("for %5s items, things change after delta= %5s", n, d);
+        break end end end end
 
 function eg.lists()
   assert(lib.has("bb",{"aa","bb","cc"}))

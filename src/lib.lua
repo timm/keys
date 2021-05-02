@@ -53,7 +53,7 @@ function mu(t,   sum)
 function sd(t,   sum,m,tmp) 
   local tmp,m = 0,mu(t)
   for _,x in pairs(t) do tmp = tmp+(m-x)^2 end
-  return (tmp/#t-1)^0.5 end
+  return (tmp/(#t-1))^0.5 end
 
 -- Cut the string `s` on separator `c`, defaults to "." 
 function split(s,     c,t)

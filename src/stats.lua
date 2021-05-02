@@ -5,6 +5,8 @@
 -- (c) Tim Menzies, 2021   
 
 -- -----------------------------
+local sk, sksplit, skdifferent, bootstrap, cliffsDelta
+
 function sk(nums,my)
   table.sort(nums,function (x,y) return x.mu < y.mu end)
   local all={}
@@ -42,6 +44,8 @@ function skdifferent(nums,lo,cut,hi,eps)
   for j=cut+1,hi do for _,v2 in pairs(nums[j]._all) do n2:add(v2) end end
   return (n2.mu - n1.mu) > eps and n1:different(n2) end
 
+-- <a name=cliffsdelta>
+-- Usually, are items in `xs` not smaller or greater than items in `ys`?
 function cliffsDelta(xs,ys,small)
   local lt,gt,n = 0,0,0
   for _,x in pairs(xs) do
@@ -70,3 +74,6 @@ function bootstrap(us,them,b,conf)
   for _ = 1,b  do
     if sample(yhat):delta(sample(zhat)) > tobs then more = more + 1 end end
   return more/b <= (conf or 0.05)  end
+
+return {sk=sk,cliffsDelta=cliffsDelta}
+
