@@ -16,20 +16,20 @@ local add = rows.add
 local cli = require "cli"
 local Some = require "some"
 local Stats = require "stats"
+local Rand  = require("rand")
 
-math.randomseed(1)
+local r=Rand.rand()
+
+
 local eg={}
  
 -- <a name=some>
 -- Test if we can approximate a million numbers with a few samples. 
 function eg.lists()
-  math.randomseed(1)
+  Rand.srand(1)
   assert(lib.has("bb",{"aa","bb","cc"}))
-  print(1)
   assert(not lib.has("kk",{"aa","bb","cc"}))
-  print(2)
-  print(lib.any {10,20,30}) 
-  assert(30 == lib.any {10,20,30}) 
+  assert(10 == lib.any {10,20,30}) 
 end
 
 function eg.some()

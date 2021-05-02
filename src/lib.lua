@@ -8,11 +8,13 @@
 local same, any, add, has, powerset, watch, split, printf
 local copy, isa, order, prinf, o, oo, ooo, rogues, csv, mu, sd
 
+local r=require("rand").rand
+
 -- Return something, unchanged
 function same(x) return x end
 
 -- Return any item a list
-function any(a) return a[1 + math.floor(#a*math.random())] end
+function any(a) return a[1 + #a*r()//1] end
 
 -- Return t1 with t2 added in.
 function add(t1,t2,   t3)
