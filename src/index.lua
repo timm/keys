@@ -11,11 +11,11 @@
 -- 
 -- How to hold and summarize  data:
 -- 
--- - num.lua : for numerics
--- - rows.lua : place to hold rows, and their  column summaries
--- - skip.lua : "summarize" by ignoring everything  you throw at it
--- - some.lua : reservoir sampler (keep a random sample)
--- - sym.lua : for symbols
+-- - [num](num.html) : for numerics
+-- - [row](row.html) : place to hold rows, and their  column summaries
+-- - [skip](skip.html) : "summarize" by ignoring everything  you throw at it
+-- - [some](some.lua): reservoir sampler (keep a random sample)
+-- - [sym](sym.lua} : for symbols
 -- 
 -- Utilities:
 -- 
