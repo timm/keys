@@ -51,6 +51,8 @@ Here's the structure of this repo showing some of the standard bits:
 - `./docs/` : contains documentation generated from the code
 - `./ell` : (Optional) contains shell programming tricks. To use, type `sh ell`.
      This file defines (e.g.)
+   - A `gp` command that is my "save to github shortcut". FYI, `gp` runs      
+     `git add *;git commit -am save;git push;git status`
    - A `vi` command that starts up VIM with all my preferred packages installed (using config files
      from `./etc/vimrc`);
    - A `vims` command that updates all my VIM packages.
