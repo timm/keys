@@ -1,4 +1,4 @@
-BEGIN { img="https://i.dlpng.com/static/png/6933553_preview.png"
+BEGIN { img="http://github.com/timm/keys/blob/main/etc/img/padlock.png"
         FS="\n"; RS=""    }
 NR==1 { next              }
 NR==2 { print "-- <img width=150 align=right src=\""img"\">"
