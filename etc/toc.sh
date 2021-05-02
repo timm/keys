@@ -1,18 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env gawk -f
 
-# It will read the input and:
-#
-# 1. Extract only the headers via grep (using $1 and $2 as first and last heading level)
-# 2. Extract the header text via sed and created ':' separated records of the form '###:Full Text:Full Text'
-# 3. Compose each TOC line via awk by replacing '#' with '  ' and stripping spaces and caps of reference
-
-
-echo "<details> <summary>Contents</summary>"
-echo ""
-
-grep -E "^#{${1:-1},${2:-2}} " | \
-sed -E 's/(#+) (.+)/\1:\2:\2/g' | \
-gawk -F ":" '{ gsub(/#/,"  ",$1); gsub(/[ ]/,"-",$3); print $1 "- [" $2 "](#" tolower($3) ")" }'
-
-echo ""
-echo "</details>"
+BEGIN {print "<details> <summary>Contents</summary>\n" }
+/^#/  {toc=""
+       txt  = $0;  sub(/^[#]*[ \t]*/, "",  txt); 
+       link = txt; gsub(/[ \t]+/,     "-", link); 
+       toc  = "- ["txt"](#"tolower(link)")" 
+       if      (/^####### /) {print "          " toc}
+       else if (/^###### /)  {print "        "   toc}
+       else if (/^##### /)   {print "      "     toc}
+       else if (/^#### /)    {print "    "       toc}
+       else if (/^### /)     {print "  "         toc}
+       else if (/^## /)      {print ""           toc};
+       next}
+END   {print "\n</details>\n" }
