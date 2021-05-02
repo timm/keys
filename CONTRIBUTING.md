@@ -91,9 +91,21 @@ three ways:
 Code needs to be understood. It needs pretty prints that shows comments with the code.
 There are  any number of tools for that purpose. Here:
 
-- We create a directory `./docs` containing a file `./docs/.nojeykll`;
+- We create a directory `./docs` containing a file `./docs/.nojeykll` and some
+  master index file `./docs/index.html`
+- We tell Github to serve `./docs` as a website (see  
+  see https://github.com/yourName/yourProject/settings/pages).
 - Then we use the `pycco` took to fill up that directory with html files
   that describe the code.
-- Then we tell Github to serve `./docs` as a website (see  
-  see https://github.com/yourName/yourProject/settings/pages).
+  - To see that documented, please go to [this project's doco site](http://menzies.us/keys).
 
+Now that is the simplest path. Feel free to be more sophisticated:
+- e.g. Github supports [Jekyll](https://jekyllrb.com)
+- and there are more sophisticated ways to generate doco ranging from 
+  (e.g. [pdoc3](https://pdoc3.github.io/pdoc/_
+  to (e.g.) [Sphinx](https://www.sphinx-doc.org/en/master/)
+  to (e.g.) [Pandoc](https://pandoc.org).
+
+No  matter what documentation framework you use, always know that the main cost
+of documentation is not setting up the framework. Rather, its organizing your
+thoughts to generate succinct, useful docs. Good luck with that.
