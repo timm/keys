@@ -5,9 +5,12 @@
 -- Tim Menzies, (c) 2021        
 
 -- -----------------------------
+-- ## Files
 -- Unit tests:
 -- 
--- - [eg](eg.html)
+-- - [eg](eg.html): test code. If `lua eg.lua` returns $?=0, then all tests pass.
+--   To run one test, use `lua eg.lua testname`. To get a list of all tests, use
+--   `lua eg.lua ?`.
 -- 
 -- How to hold and summarize  data:
 -- 
