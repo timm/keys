@@ -8,9 +8,10 @@
 -- ## Files
 -- Unit tests:
 -- 
--- - [eg](eg.html): test code. If `lua eg.lua` returns $?=0, then all tests pass.
---   To run one test, use `lua eg.lua testname`. To get a list of all tests, use
---   `lua eg.lua ?`.
+-- - [eg](eg.html): test code. 
+--   - If `lua eg.lua` returns $?=0, then all tests pass.
+--   - To run one test, use `lua eg.lua testname`. 
+--   - To get a list of all tests, use   `lua eg.lua ?`.
 -- 
 -- How to hold and summarize  data:
 -- 
@@ -32,7 +33,7 @@
 -- - [cli](cli.html)
 -- 
 -- -------------------
--- ## Notes
+-- ## About
 -- In two papers about _DUO_ (data miners using/used-by optimizers),
 -- Agrawal, Fu, Markus, Mathew, Menzies, Minku, Nair, Markus Wagner, and Yu 
 -- argued that _optimization_ and _data mining_ were very closely relate; i.e.
