@@ -23,6 +23,7 @@ local r=Rand.rand
 
 local eg={}
  
+-- ----
 -- <a name=some>
 -- Test if we can approximate a million numbers with a few samples. 
 function eg.lists()
@@ -32,6 +33,7 @@ function eg.lists()
   assert(10 == lib.any {10,20,30}) 
 end
 
+-- ----
 -- How well does a new numbers  approximate
 -- a normal distribution?
 function eg.some1()
@@ -63,6 +65,7 @@ function eg.some2()
     for _,x in pairs(t) do s:add(x) end
     printf("%4s  %4.0f", max,  100*(want - s:sd())/want//1) end end
 
+-- ----
 -- <a name=cliffs>
 -- Check how close we can get before being similar
 
@@ -82,35 +85,41 @@ function eg.cliffs()
         printf("for %5s items, things change after delta= %5s", n, d);
         break end end end end
 
+-- ----
 function eg.split()
   local str = "a,b,c,d"
   local t   = lib.split(str)
   assert(4 == #t)
   assert("b" == t[2]) end
 
+-- ----
 function eg.powerset(   s,t)
   s = {10,20,30,40,50,60,70,80,90,100,110,120,130,140,150}
   t = powerset(s) 
   assert(#t==2^(#s)) end
 
+-- ----
 function eg.copy()
   local t1={10,{20}}
   local t2=lib.copy(t1)
   t1[2][1]=30
   assert(t2[2][1] == 20) end
 
+-- ----
 function eg.csv()
   local n=0
   for row in lib.csv("../data/auto93.csv") do 
     n=n+1
     if n>1 then assert("number"==type(row[1]),tostring(n)) end end end
 
+-- ----
 function eg.num()
   local n = isa(Num)
   for _,v in pairs {600, 470, 170, 430, 300} do add(n,v) end
   assert(n.mu==394)
   assert(147.3 < n.sd and n.sd < 147.4) end
 
+-- ----
 function eg.sym()
   local s = isa(Sym)
   for _,v in pairs {"a","b","b","c","c","c","c"} do add(s,v) end
@@ -118,6 +127,7 @@ function eg.sym()
   assert("c"==s.mode)
   assert(1.37 <= s:ent() and s:ent() <=1.38)  end
 
+-- ----
 function eg.rows()
   local rows=isa(rows.Rows)
   for row in csv("../data/auto93.csv") do rows:add(row) end

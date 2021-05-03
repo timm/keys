@@ -6,9 +6,12 @@
 
 -- -----------------------------
 local same, any, add, has, powerset, watch, split, printf
-local copy, isa, order, prinf, o, oo, ooo, rogues, csv, mu, sd
+local order, prinf, o, oo, ooo, rogues, csv, mu, sd
 
 local r=require("rand").rand
+local srand=require("rand").srand
+local isa=require("isa").isa
+local copy=require("isa").copy
 
 -- Return something, unchanged
 function same(x) return x end
@@ -71,19 +74,6 @@ function copy(obj,   old,new)
   old[obj] = new
   for k, v in pairs(obj) do new[k] = copy(v, old) end
   return new end
-
--- Object creation, add a unique id, bind to metatable, 
--- maybe set some initial values.
-local _id=0
-function isa(klass,inits,      new)
-  new = copy(klass or {})
-  for k,v in pairs(inits or {}) do new[k] = v end
-  setmetatable(new, klass)
-  klass.__index = klass
-  _id = _id + 1
-  new._id = _id
-  new._isa = klass
-  return new end 
 
 -- Iterate on keys in sorted order
 function order(t,  i,keys)
@@ -162,5 +152,6 @@ function csv(file,     stream,tmp,t)
 return {same=same, any=any, add=add, has=has,
         powerset=powerset, watch=watch, split=split,
         copy=copy, isa=isa, order=order, printf=printf,
+        r=r, srand=srand,
         o=o, oo=oo, ooo=ooo, rogues=rogues, csv=csv,mu=mu,sd=sd}
         

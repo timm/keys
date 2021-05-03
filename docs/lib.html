@@ -42,9 +42,12 @@ Misc lua routines.   <br />
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">same</span><span class="p">,</span> <span class="n">any</span><span class="p">,</span> <span class="n">add</span><span class="p">,</span> <span class="n">has</span><span class="p">,</span> <span class="n">powerset</span><span class="p">,</span> <span class="n">watch</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">printf</span>
-<span class="kd">local</span> <span class="n">copy</span><span class="p">,</span> <span class="n">isa</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">prinf</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sd</span>
+<span class="kd">local</span> <span class="n">order</span><span class="p">,</span> <span class="n">prinf</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sd</span>
 
-<span class="kd">local</span> <span class="n">r</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;rand&quot;</span><span class="p">).</span><span class="n">rand</span></pre></div>
+<span class="kd">local</span> <span class="n">r</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;rand&quot;</span><span class="p">).</span><span class="n">rand</span>
+<span class="kd">local</span> <span class="n">srand</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;rand&quot;</span><span class="p">).</span><span class="n">srand</span>
+<span class="kd">local</span> <span class="n">isa</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;isa&quot;</span><span class="p">).</span><span class="n">isa</span>
+<span class="kd">local</span> <span class="n">copy</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;isa&quot;</span><span class="p">).</span><span class="n">copy</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -204,28 +207,6 @@ by the size minus one.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      <p>Object creation, add a unique id, bind to metatable, 
-maybe set some initial values.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="kd">local</span> <span class="n">_id</span><span class="o">=</span><span class="mi">0</span>
-<span class="kr">function</span> <span class="nf">isa</span><span class="p">(</span><span class="n">klass</span><span class="p">,</span><span class="n">inits</span><span class="p">,</span>      <span class="n">new</span><span class="p">)</span>
-  <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">klass</span> <span class="ow">or</span> <span class="p">{})</span>
-  <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">inits</span> <span class="ow">or</span> <span class="p">{})</span> <span class="kr">do</span> <span class="n">new</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> <span class="kr">end</span>
-  <span class="nb">setmetatable</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">klass</span><span class="p">)</span>
-  <span class="n">klass</span><span class="p">.</span><span class="n">__index</span> <span class="o">=</span> <span class="n">klass</span>
-  <span class="n">_id</span> <span class="o">=</span> <span class="n">_id</span> <span class="o">+</span> <span class="mi">1</span>
-  <span class="n">new</span><span class="p">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">_id</span>
-  <span class="n">new</span><span class="p">.</span><span class="n">_isa</span> <span class="o">=</span> <span class="n">klass</span>
-  <span class="kr">return</span> <span class="n">new</span> <span class="kr">end</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-13'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-13'>#</a>
-      </div>
       <p>Iterate on keys in sorted order</p>
     </div>
     <div class='code'>
@@ -239,10 +220,10 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-14'>
+  <div class='section' id='section-13'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-14'>#</a>
+        <a class='octothorpe' href='#section-13'>#</a>
       </div>
       <p>&ldquo;C&rdquo;-like printf</p>
     </div>
@@ -251,10 +232,10 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-15'>
+  <div class='section' id='section-14'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
+        <a class='octothorpe' href='#section-14'>#</a>
       </div>
       <p>Simple print of a flat table</p>
     </div>
@@ -263,10 +244,10 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-16'>
+  <div class='section' id='section-15'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-16'>#</a>
+        <a class='octothorpe' href='#section-15'>#</a>
       </div>
       <p>Simple translation table to string.</p>
     </div>
@@ -278,10 +259,10 @@ maybe set some initial values.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-17'>
+  <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-17'>#</a>
+        <a class='octothorpe' href='#section-16'>#</a>
       </div>
       <p>Nested translation table to string.
 Don&rsquo;t show private slots (those that start with <code>_</code>);
@@ -306,10 +287,10 @@ if <code>pre</code> is specified, then  print that as a prefix.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-18'>
+  <div class='section' id='section-17'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-18'>#</a>
+        <a class='octothorpe' href='#section-17'>#</a>
       </div>
       <p>Warn about locals that have escaped into the global space</p>
     </div>
@@ -329,10 +310,10 @@ if <code>pre</code> is specified, then  print that as a prefix.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-19'>
+  <div class='section' id='section-18'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-19'>#</a>
+        <a class='octothorpe' href='#section-18'>#</a>
       </div>
       <p>Return each row, split on &ldquo;,&rdquo;, maybe coercing strings to numbers,
 kills comments and whitespace.</p>
@@ -355,10 +336,10 @@ kills comments and whitespace.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-20'>
+  <div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
+        <a class='octothorpe' href='#section-19'>#</a>
       </div>
       <hr />
 <p>And finally&hellip;</p>
@@ -367,6 +348,7 @@ kills comments and whitespace.</p>
       <div class="highlight"><pre><span class="kr">return</span> <span class="p">{</span><span class="n">same</span><span class="o">=</span><span class="n">same</span><span class="p">,</span> <span class="n">any</span><span class="o">=</span><span class="n">any</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="n">add</span><span class="p">,</span> <span class="n">has</span><span class="o">=</span><span class="n">has</span><span class="p">,</span>
         <span class="n">powerset</span><span class="o">=</span><span class="n">powerset</span><span class="p">,</span> <span class="n">watch</span><span class="o">=</span><span class="n">watch</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="n">split</span><span class="p">,</span>
         <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">isa</span><span class="o">=</span><span class="n">isa</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">printf</span><span class="o">=</span><span class="n">printf</span><span class="p">,</span>
+        <span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">srand</span><span class="o">=</span><span class="n">srand</span><span class="p">,</span>
         <span class="n">o</span><span class="o">=</span><span class="n">o</span><span class="p">,</span> <span class="n">oo</span><span class="o">=</span><span class="n">oo</span><span class="p">,</span> <span class="n">ooo</span><span class="o">=</span><span class="n">ooo</span><span class="p">,</span> <span class="n">rogues</span><span class="o">=</span><span class="n">rogues</span><span class="p">,</span> <span class="n">csv</span><span class="o">=</span><span class="n">csv</span><span class="p">,</span><span class="n">mu</span><span class="o">=</span><span class="n">mu</span><span class="p">,</span><span class="n">sd</span><span class="o">=</span><span class="n">sd</span><span class="p">}</span>
 
 </pre></div>
