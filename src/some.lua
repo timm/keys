@@ -8,6 +8,7 @@
 local Some={_is="Some", max=256, n=0, unordered=true, _has={}}
 
 local r=math.random
+local ptile=require("lib").ptile
 
 -- <a name=reservoir>
 -- Keep the  first  (say) `max=256` numbers,
@@ -31,9 +32,9 @@ function Some:has()
   return self._has end
 
 -- Ensure the returned list of numbers is sorted.
-function Some:sd()
-  local n, tmp = #self._has, self:has()
-  return (tmp[(.9*n)//1] - tmp[(.1*n)//1])/2.56 end
+function Some:sd() 
+  local a=self:has()
+  return (ptile(.9,a) - ptile(.1,a))/2.56 end
 
 -- -----------------------------
 -- And finally...

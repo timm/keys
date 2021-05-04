@@ -6,7 +6,7 @@
 
 -- -----------------------------
 local same, any, add, has, powerset, watch, split, printf
-local order, prinf, o, oo, ooo, rogues, csv, mu, sd
+local ptile,order, prinf, o, oo, ooo, rogues, csv, mu, sd
 
 local r=require("rand").rand
 local srand=require("rand").srand
@@ -45,6 +45,9 @@ function watch(f,n)
   printf("%5.4f secs", (os.clock() - x)/n) end
 
 -- What is the mean of a list?
+function ptile(n,t) return t[(n*#t)//1] end
+
+ -- What is the mean of a list?
 function mu(t,   sum) 
   sum = 0
   for _,x in pairs(t) do sum=sum+x end
@@ -152,6 +155,6 @@ function csv(file,     stream,tmp,t)
 return {same=same, any=any, add=add, has=has,
         powerset=powerset, watch=watch, split=split,
         copy=copy, isa=isa, order=order, printf=printf,
-        r=r, srand=srand,
+        ptile=ptile, r=r, srand=srand,
         o=o, oo=oo, ooo=ooo, rogues=rogues, csv=csv,mu=mu,sd=sd}
         

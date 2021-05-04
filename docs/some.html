@@ -43,7 +43,8 @@ Reservoir sampling
     <div class='code'>
       <div class="highlight"><pre><span class="kd">local</span> <span class="n">Some</span><span class="o">=</span><span class="p">{</span><span class="n">_is</span><span class="o">=</span><span class="s2">&quot;Some&quot;</span><span class="p">,</span> <span class="n">max</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">unordered</span><span class="o">=</span><span class="kc">true</span><span class="p">,</span> <span class="n">_has</span><span class="o">=</span><span class="p">{}}</span>
 
-<span class="kd">local</span> <span class="n">r</span><span class="o">=</span><span class="nb">math.random</span></pre></div>
+<span class="kd">local</span> <span class="n">r</span><span class="o">=</span><span class="nb">math.random</span>
+<span class="kd">local</span> <span class="n">ptile</span><span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;lib&quot;</span><span class="p">).</span><span class="n">ptile</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -94,9 +95,9 @@ After which time, new numbers replace old numbers in the reservoir at probabilit
       <p>Ensure the returned list of numbers is sorted.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">sd</span><span class="p">()</span>
-  <span class="kd">local</span> <span class="n">n</span><span class="p">,</span> <span class="n">tmp</span> <span class="o">=</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_has</span><span class="p">,</span> <span class="n">self</span><span class="p">:</span><span class="n">has</span><span class="p">()</span>
-  <span class="kr">return</span> <span class="p">(</span><span class="n">tmp</span><span class="p">[(</span><span class="mf">.9</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">//</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">tmp</span><span class="p">[(</span><span class="mf">.1</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">//</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.56</span> <span class="kr">end</span></pre></div>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">sd</span><span class="p">()</span> 
+  <span class="kd">local</span> <span class="n">a</span><span class="o">=</span><span class="n">self</span><span class="p">:</span><span class="n">has</span><span class="p">()</span>
+  <span class="kr">return</span> <span class="p">(</span><span class="n">ptile</span><span class="p">(</span><span class="mf">.9</span><span class="p">,</span><span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="n">ptile</span><span class="p">(</span><span class="mf">.1</span><span class="p">,</span><span class="n">a</span><span class="p">))</span><span class="o">/</span><span class="mf">2.56</span> <span class="kr">end</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
