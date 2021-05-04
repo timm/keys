@@ -9,9 +9,9 @@
 -- Unit tests:
 -- 
 -- - [eg](eg.html): test code. 
---   - If "_lua eg.lua_" returns $?=0, then all tests pass.
---   - To run one test, use "_lua eg.lua testname_". 
---   - To get a list of all tests, use   "_lua eg.lua ?_".
+--   - If "`lua eg.lua`" returns $?=0, then all tests pass.
+--   - To run one test, use "`lua eg.lua testname`". 
+--   - To get a list of all tests, use   "`lua eg.lua ?`".
 -- 
 -- How to hold and summarize  data:
 -- 
