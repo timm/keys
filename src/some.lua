@@ -32,9 +32,7 @@ function Some:has()
   return self._has end
 
 -- Ensure the returned list of numbers is sorted.
-function Some:sd() 
-  local a=self:has()
-  return (ptile(.9,a) - ptile(.1,a))/2.56 end
+function Some:sd(  a) a=self:has();return(ptile(.9,a) - ptile(.1,a))/2.56 end
 
 -- -----------------------------
 -- And finally...

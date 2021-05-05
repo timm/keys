@@ -38,7 +38,7 @@ end
 -- a normal distribution?
 function eg.some1()
   Rand.srand(1)
-  local function normalcdf()  -- for -3 <=x <= x, approximates normal 
+  local function normalcdf()  -- for -3 <=x <= 3, approximates normal 
      local x=-3+r()*6
      return  1/(1 + math.exp(-0.07056*x^3 - 1.5976*x)) end
   -- load data
@@ -46,7 +46,7 @@ function eg.some1()
   for i=1,10^3 do t[#t+1] = normalcdf() end
   local want=sd(t)
   -- try some approximations
-  for max=10,500,50 do
+  for max=20,250,25 do
     local s = isa(Some,{max=max})
     for _,x in pairs(t) do s:add(x) end
     printf("%4s  %4.0f", max,  100*(want - s:sd())/want//1) end end
@@ -60,7 +60,7 @@ function eg.some2()
   for i=1,10^3 do t[#t+1] = math.random()^0.5 end
   local want=sd(t)
   -- try some approximations
-  for max=10,500,50 do
+  for max=20,250,25 do
     local s = isa(Some,{max=max})
     for _,x in pairs(t) do s:add(x) end
     printf("%4s  %4.0f", max,  100*(want - s:sd())/want//1) end end
