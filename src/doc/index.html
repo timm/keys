@@ -3,7 +3,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>Reference</title>
+    <title>rules3</title>
     <link rel="stylesheet" href="ldoc.css" type="text/css" />
 </head>
 <body>
@@ -24,23 +24,40 @@
 
 <div id="navigation">
 <br/>
-<h1>ldoc</h1>
+<h1>KEYS</h1>
 
 
 
 
-<h2>Functions</h2>
+<h2>Table functions </h2>
 <ul class="nowrap">
-    <li><a href="#dump">dump (o)</a></li>
-    <li><a href="#inc">inc (d, k, n)</a></li>
-    <li><a href="#subsets">subsets (s)</a></li>
-    <li><a href="#split">split (s, c)</a></li>
-    <li><a href="#csv">csv (file)</a></li>
-    <li><a href="#cli">cli (want, got)</a></li>
-    <li><a href="#EG.all">EG.all (my)</a></li>
-    <li><a href="#EG.dump">EG.dump (my)</a></li>
-    <li><a href="#EG.csv">EG.csv (my)</a></li>
-    <li><a href="#EG.poly">EG.poly (my)</a></li>
+    <li><a href="#Tab.pump">Tab.pump (o)</a></li>
+    <li><a href="#Tab.dump">Tab.dump (o)</a></li>
+    <li><a href="#Tab.inc">Tab.inc (d, k, n)</a></li>
+    <li><a href="#Tab.subsets">Tab.subsets (s)</a></li>
+</ul>
+<h2>File functions </h2>
+<ul class="nowrap">
+    <li><a href="#File.csv">File.csv (file)</a></li>
+</ul>
+<h2>Object functions </h2>
+<ul class="nowrap">
+    <li><a href="#Obj.new">Obj.new (self, name, o)</a></li>
+</ul>
+<h2>System functions </h2>
+<ul class="nowrap">
+    <li><a href="#Sys.cli">Sys.cli (want, got)</a></li>
+</ul>
+<h2>Class Num </h2>
+<ul class="nowrap">
+    <li><a href="#Num:new">Num:new (at, txt)</a></li>
+</ul>
+<h2>Eg functions </h2>
+<ul class="nowrap">
+    <li><a href="#Eg.all">Eg.all (my)</a></li>
+    <li><a href="#Eg.dump">Eg.dump (my)</a></li>
+    <li><a href="#Eg.csv">Eg.csv (my)</a></li>
+    <li><a href="#Eg.poly">Eg.poly (my)</a></li>
 </ul>
 <h2>Modules</h2>
 <ul class="nowrap">
@@ -52,22 +69,59 @@
 <div id="content">
 
 <h1>Module <code>rules3</code></h1>
-<p>Less is more</p>
+<p>Contrast set learning</p>
 <p>
-<ul>
-    <li><code>MY</code> : options</li>
-    <li><code>EG</code> : examples of this  code</li>
-</ul>
+
 </p>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">Rules3 v3.0 : Contrast set learning
+(c) 2021 Tim Menzies timm@ieee.org, unlicense.org
+
+The difference between things (in the same domain) is
+often shorter to describe than the things themselves.
+
+USAGE: ./rules.lua [OPTIONS]
+
+OPTIONS:
+
+    -h          print help
+    -data FILE  read data from FILE
+    +verbose    enable verbose mode
+</pre>
+    </ul>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2021</li>
+        <li><strong>License</strong>: unlicense.org</li>
+        <li><strong>Author</strong>: Tim Menzies</li>
+    </ul>
 
 
 
-    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+    <h2 class="section-header has-description"><a name="Table_functions"></a>Table functions </h2>
 
+          <div class="section-description">
+           Useful utilities for opening foobar format files.
+          </div>
     <dl class="function">
     <dt>
-    <a name = "dump"></a>
-    <strong>dump (o)</strong>
+    <a name = "Tab.pump"></a>
+    <strong>Tab.pump (o)</strong>
+    </dt>
+    <dd>
+    Convert a table to key, val pairs, then print it.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.dump"></a>
+    <strong>Tab.dump (o)</strong>
     </dt>
     <dd>
     Convert a table to key, val pairs.
@@ -80,8 +134,8 @@
 
 </dd>
     <dt>
-    <a name = "inc"></a>
-    <strong>inc (d, k, n)</strong>
+    <a name = "Tab.inc"></a>
+    <strong>Tab.inc (d, k, n)</strong>
     </dt>
     <dd>
     Add <code>n</code> (defaults to 1) to <code>d[k]</code> (self-initializing if needed).
@@ -94,8 +148,8 @@
 
 </dd>
     <dt>
-    <a name = "subsets"></a>
-    <strong>subsets (s)</strong>
+    <a name = "Tab.subsets"></a>
+    <strong>Tab.subsets (s)</strong>
     </dt>
     <dd>
     Return all subsets of  table <code>s</code> (including empty table)
@@ -107,23 +161,16 @@
 
 
 </dd>
+</dl>
+    <h2 class="section-header has-description"><a name="File_functions"></a>File functions </h2>
+
+          <div class="section-description">
+           Useful utilities for opening foobar format files.
+          </div>
+    <dl class="function">
     <dt>
-    <a name = "split"></a>
-    <strong>split (s, c)</strong>
-    </dt>
-    <dd>
-    return string <code>s</code> divided on <code>c</code> (defaults to comma)
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "csv"></a>
-    <strong>csv (file)</strong>
+    <a name = "File.csv"></a>
+    <strong>File.csv (file)</strong>
     </dt>
     <dd>
     Iterate over lines, split by commas.
@@ -135,12 +182,83 @@
 
 
 </dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Object_functions"></a>Object functions </h2>
+
+          <div class="section-description">
+           Useful utilities for opening foobar format files.
+          </div>
+    <dl class="function">
     <dt>
-    <a name = "cli"></a>
-    <strong>cli (want, got)</strong>
+    <a name = "Obj.new"></a>
+    <strong>Obj.new (self, name, o)</strong>
     </dt>
     <dd>
-    Search command line for flags matching.
+    Objects can have a name, and can print themselves
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="System_functions"></a>System functions </h2>
+
+          <div class="section-description">
+           Useful utilities for opening foobar format files.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Sys.cli"></a>
+    <strong>Sys.cli (want, got)</strong>
+    </dt>
+    <dd>
+    Search command line for flags matching keys in <code>want</code>.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Class_Num"></a>Class Num </h2>
+
+          <div class="section-description">
+          Num functions.
+ Useful utilities for opening foobar format files.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Num:new"></a>
+    <strong>Num:new (at, txt)</strong>
+    </dt>
+    <dd>
+    Numbers have standard deviation.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Eg_functions"></a>Eg functions </h2>
+
+          <div class="section-description">
+           Useful utilities for opening foobar format files.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Eg.all"></a>
+    <strong>Eg.all (my)</strong>
+    </dt>
+    <dd>
+    Run examples
 
 
 
@@ -150,22 +268,8 @@
 
 </dd>
     <dt>
-    <a name = "EG.all"></a>
-    <strong>EG.all (my)</strong>
-    </dt>
-    <dd>
-    Run all examples
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "EG.dump"></a>
-    <strong>EG.dump (my)</strong>
+    <a name = "Eg.dump"></a>
+    <strong>Eg.dump (my)</strong>
     </dt>
     <dd>
     Dump options
@@ -178,8 +282,8 @@
 
 </dd>
     <dt>
-    <a name = "EG.csv"></a>
-    <strong>EG.csv (my)</strong>
+    <a name = "Eg.csv"></a>
+    <strong>Eg.csv (my)</strong>
     </dt>
     <dd>
     Just show contents
@@ -192,8 +296,8 @@
 
 </dd>
     <dt>
-    <a name = "EG.poly"></a>
-    <strong>EG.poly (my)</strong>
+    <a name = "Eg.poly"></a>
+    <strong>Eg.poly (my)</strong>
     </dt>
     <dd>
     Demonstrate  polymorphism
@@ -212,7 +316,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-07-10 14:10:19 </i>
+<i style="float:right;">Last updated 2021-07-10 17:53:32 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -1,73 +1,79 @@
 #!/usr/bin/env lua
 -- vim: ts=2 sw=2 sts=2 et :
-
---- Less is more
----
---- - `MY` : options
---- - `EG` : examples of this  code
-
--- --------------------------------------------
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
-local dump,pump,new,inc,subsets,csv,
-      split,help,cli,EG,L,MY
 
-MY= {  -- options
-     data="../data/auto93.csv"
-    ,todo= ""
-    ,verbose=false
-    ,help=[[
-Less is more 
+--- Contrast set learning
+-- @author Tim Menzies
+-- @copyright 2021
+-- @license unlicense.org
 
---a  ]]}
+--- @usage
+local usage = [[
+Rules3 v3.0 : Contrast set learning
+(c) 2021 Tim Menzies timm@ieee.org, unlicense.org
 
-EG= {} -- examples
+The difference between things (in the same domain) is 
+often shorter to describe than the things themselves.
+
+USAGE: ./rules.lua [OPTIONS]
+
+OPTIONS:
+
+    -h          print help
+    -data FILE  read data from FILE
+    +verbose    enable verbose mode
+]] 
+
+local MY={data   = "../data/auto93.csv"
+         ,todo   = ""
+         ,verbose= false}
+
+----------------------------------------------------
+--- Table functions.
+-- Useful utilities for opening foobar format files.
+-- @section Table
+local Tab={}
+
+--- Convert a table to key, val pairs, then print it.
+function Tab.pump(o) print(Tab.dump(o)) end
 
 --- Convert a table to key, val pairs.
-function pump(o) print(dump(o)) end
-
---- Convert a table to key, val pairs.
-function dump(o)
-  local sep,s,keys
-  keys = {}
+function Tab.dump(o)
+  local sep, s, keys = "", (o._name or "") .."{", {}
   for key,_ in pairs(o) do keys[#keys+1] = key end
   table.sort(keys)
-  s,sep= (o._name or "").. "{",""
   for _,k in pairs(keys) do 
     s=s .. sep .. tostring(k).."= "..tostring(o[k])
     sep=", " end
   return s.."}" end
 
--- Objects can have a name, and can print themselves
-function new(self,name, o)
-  local o = o or {}
-  setmetatable(o, self)
-  self.__index = self
-  self.__tostring = function(x)  return dump(x) end
-  self._name =name
-  return o end
-
 --- Add `n` (defaults to 1) to `d[k]` (self-initializing if needed).
-function inc(d,k,n) 
+function Tab.inc(d,k,n) 
   d[k] = (no or 1) + (d[k] or 0); return d; end
 
 --- Return all subsets of  table `s` (including empty table)
-function subsets(s)
+function Tab.subsets(s)
   local t = {{}}
   for i = 1, #s do
   for j = 1, #t do t[#t+1] = {s[i],table.unpack(t[j])} end end
   return t end
 
---- return string `s` divided on `c` (defaults to comma)
-function split(s,c)
-  local t
-  t, c = {}, c or ","
-  for y in string.gmatch(s, "([^" ..c.. "]+)") do t[#t+1] = y end
-    return t end
+----------------------------------------------------
+--- File functions.
+-- Useful utilities for opening foobar format files.
+-- @section File
+local File={}
 
 --- Iterate over lines, split by commas.
-function csv(file)
+function File.csv(file)
+  local  function split(s,c)
+    local t
+    t, c = {}, c or ","
+    for y in string.gmatch(s, "([^" ..c.. "]+)") do t[#t+1] = y end
+      return t end
   local stream = file and io.input(file) or io.input()
   local tmp    = io.read()
+  ----------------------
   return function()
     if tmp then
       tmp = tmp:gsub("[\t\r ]*","") -- no whitespace
@@ -80,58 +86,86 @@ function csv(file)
     else
       io.close(stream) end end end
 
---- Search command line for flags matching.
-function cli(want,got)
-  function help(options)
-    local f2="  -%-10s  %s" 
-    local f1="  +%-10s" 
-    print("\n"..options.help.."\n")
-    for k,v in pairs(options) do
-      if k  ~= "help" then 
-        print(v==false and f1:format(k) or f2:format(k,v)) end end end   
-  --------------------------
+----------------------------------------------------
+--- Object functions.
+-- Useful utilities for opening foobar format files.
+-- @section Object
+local Obj={}
+
+--- Objects can have a name, and can print themselves
+function Obj.new(self,name, o)
+  local o = o or {}
+  setmetatable(o, self)
+  self.__index = self
+  self.__tostring = function(x)  return Tab.dump(x) end
+  self._name =name
+  return o end
+
+----------------------------------------------------
+--- System functions.
+-- Useful utilities for opening foobar format files.
+-- @section System
+local Sys={}
+
+--- Search command line for flags matching keys in `want`.
+function Sys.cli(want,got)
   for k,v in pairs(got) do
     local flag=v:sub(2,#v)
-    if   flag == "h" 
-    then help(want)
-    elseif want[flag]~=nil then 
+    if     flag == "h" 
+    then   print(usage); os.exit()
+    elseif want[flag] ~=  nil then 
       if v:sub(1,1) == "+" 
-      then want[flag]= true 
-      else want[flag]= tonumber(got[k+1]) or got[k+1] end end end 
+      then want[flag] = true 
+      else want[flag] = tonumber(got[k+1]) or got[k+1] end end end 
   return want end
 
--- --------------------------------------------
+----------------------------------------------------
+--- Num functions.
+-- Useful utilities for opening foobar format files.
+-- @type Num
+local Num={}
 
--- Run examples 
-function EG.all(my)
-  for k,v in pairs(EG) do 
+--- Numbers have standard deviation.
+function Num:new(at,txt) 
+    return Obj.new(self,"NUM",{at=at or 0, txt=txt or "",
+                           n=0, w=1, sd=0}) end
+
+----------------------------------------------------
+--- Eg functions.
+-- Useful utilities for opening foobar format files.
+-- @section Eg
+local Eg={}
+
+--- Run examples 
+function Eg.all(my)
+  for k,v in pairs(Eg) do 
     if   k ~="all" and (my.todo==k or my.todo=="")
     then print("\n-- "..k); v(my) end end end 
 
 --- Dump options
-function EG.dump(my)  print(dump(my))  end
+function Eg.dump(my)  print(Tab.dump(my))  end
   
 --- Just show contents
-function EG.csv(my) 
-  for x in csv("../data/auto93.csv") do pump(x) end end
+function Eg.csv(my) 
+  for x in File.csv("../data/auto93.csv") do Tab.pump(x) end end
 
 --- Demonstrate  polymorphism
-function  EG.poly(my)
-  local Dog,Point,p1,p2
-  Dog={}
-  function Dog:new(o) 
-    return new(self,"Dog",{coat='black',age=0}) end
-  function Dog:bark()  print(self.age) end
-  Point={}
-  function Point:new(o) 
-    return new(self,"Point",{x=1,y=2}) end
-  function Point:bark() print(self.x) end
-  p1 = Point:new({x=10})
-  p2 = Point:new({x=20, y=Dog:new()})
-  print(Point:new():bark())
-  print(Dog:new():bark())
+function  Eg.poly(my)
+  local dog,point,p1,p2
+  dog={}
+  function dog:new() 
+    return Obj.new(self,"DOG",{coat='black',age=0}) end
+  function dog:bark()  print(self.age) end
+  point={}
+  function point:new(o) 
+    return Obj.new(self,"POINT",o) end
+  function point:bark() print(self.y) end
+  p1 = point:new{x=10,y=100}
+  p2 = point:new{x=20, y=dog:new()}
+  point:new{x=20,y=-10}:bark()
+  dog:new():bark()
   print(p2) end
 
 -- --------------------------------------------
-EG.all(cli(MY,arg))
+Eg.all(Sys.cli(MY,arg))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
