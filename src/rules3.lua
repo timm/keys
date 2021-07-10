@@ -1,17 +1,33 @@
 #!/usr/bin/env lua
 -- vim: ts=2 sw=2 sts=2 et :
 
-local dump,new,inc,subsets,b4, csv,split,EG,L,MY
+--- Less is more
+---
+--- - `MY` : options
+--- - `EG` : examples of this  code
 
-MY= {data="../data/auto93.csv",
-     verbose=false,
-     b4={}}
-for k,_ in pairs(_ENV) do MY.b4[k]=k end
+-- --------------------------------------------
+local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
+local dump,pump,new,inc,subsets,csv,
+      split,help,cli,EG,L,MY
+
+MY= {  -- options
+     data="../data/auto93.csv"
+    ,todo= ""
+    ,verbose=false
+    ,help=[[
+Less is more 
+
+--a  ]]}
+
 EG= {} -- examples
-L = {} -- library
 
---- dump a flat table
-function dump(o,   sep,s,keys)
+--- Convert a table to key, val pairs.
+function pump(o) print(dump(o)) end
+
+--- Convert a table to key, val pairs.
+function dump(o)
+  local sep,s,keys
   keys = {}
   for key,_ in pairs(o) do keys[#keys+1] = key end
   table.sort(keys)
@@ -21,7 +37,7 @@ function dump(o,   sep,s,keys)
     sep=", " end
   return s.."}" end
 
---- new objects can have a name, and can print themselves
+-- Objects can have a name, and can print themselves
 function new(self,name, o)
   local o = o or {}
   setmetatable(o, self)
@@ -30,28 +46,33 @@ function new(self,name, o)
   self._name =name
   return o end
 
--- inc a table value 
-function inc(d,k,n) d[k] = (no or 1)  + (d[k] or 0) end
+--- Add `n` (defaults to 1) to `d[k]` (self-initializing if needed).
+function inc(d,k,n) 
+  d[k] = (no or 1) + (d[k] or 0); return d; end
 
+--- Return all subsets of  table `s` (including empty table)
 function subsets(s)
   local t = {{}}
   for i = 1, #s do
   for j = 1, #t do t[#t+1] = {s[i],table.unpack(t[j])} end end
   return t end
 
-function split(s,     c,t)
+--- return string `s` divided on `c` (defaults to comma)
+function split(s,c)
+  local t
   t, c = {}, c or ","
   for y in string.gmatch(s, "([^" ..c.. "]+)") do t[#t+1] = y end
     return t end
 
-function csv(file,     stream,tmp,t)
-  stream = file and io.input(file) or io.input()
-  tmp    = io.read()
+--- Iterate over lines, split by commas.
+function csv(file)
+  local stream = file and io.input(file) or io.input()
+  local tmp    = io.read()
   return function()
     if tmp then
       tmp = tmp:gsub("[\t\r ]*","") -- no whitespace
                :gsub("#.*","") -- no cots
-      t = split(tmp)
+      local t = split(tmp)
       tmp = io.read()
       if #t > 0 then
         for j,x in pairs(t) do t[j] = tonumber(x) or x end
@@ -59,16 +80,44 @@ function csv(file,     stream,tmp,t)
     else
       io.close(stream) end end end
 
-----------------------------------------------------------
---- EG.csv
--- just show contents
-function EG.csv() 
-  for x in L.csv("../data/auto93.csv") do L.show(x) end end
+--- Search command line for flags matching.
+function cli(want,got)
+  function help(options)
+    local f2="  -%-10s  %s" 
+    local f1="  +%-10s" 
+    print("\n"..options.help.."\n")
+    for k,v in pairs(options) do
+      if k  ~= "help" then 
+        print(v==false and f1:format(k) or f2:format(k,v)) end end end   
+  --------------------------
+  for k,v in pairs(got) do
+    local flag=v:sub(2,#v)
+    if   flag == "h" 
+    then help(want)
+    elseif want[flag]~=nil then 
+      if v:sub(1,1) == "+" 
+      then want[flag]= true 
+      else want[flag]= tonumber(got[k+1]) or got[k+1] end end end 
+  return want end
 
-----------------------------------------------------------
---- EG.poly
--- demonstrate  polymorphism
-function  EG.poly(    Dog,Point,p1,p2)
+-- --------------------------------------------
+
+-- Run examples 
+function EG.all(my)
+  for k,v in pairs(EG) do 
+    if   k ~="all" and (my.todo==k or my.todo=="")
+    then print("\n-- "..k); v(my) end end end 
+
+--- Dump options
+function EG.dump(my)  print(dump(my))  end
+  
+--- Just show contents
+function EG.csv(my) 
+  for x in csv("../data/auto93.csv") do pump(x) end end
+
+--- Demonstrate  polymorphism
+function  EG.poly(my)
+  local Dog,Point,p1,p2
   Dog={}
   function Dog:new(o) 
     return new(self,"Dog",{coat='black',age=0}) end
@@ -83,18 +132,6 @@ function  EG.poly(    Dog,Point,p1,p2)
   print(Dog:new():bark())
   print(p2) end
 
-EG.poly()
-
----------------------------------
-for k,v in pairs(arg) do
-  local flag=v:sub(2,#v)
-  if MY[flag]~=nil then 
-     if v:sub(1,1) == "+" then
-       MY[flag]= true 
-     else
-       MY[flag] = tonumber(arg[k+1]) or arg[k+1] end end end
-
-print(dump(MY))
-
-for k,_ in pairs(_ENV) do 
-  if not MY.b4[k] then print("-- ROGUE ["..k.."]") end end
+-- --------------------------------------------
+EG.all(cli(MY,arg))
+for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
