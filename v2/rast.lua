@@ -70,20 +70,18 @@ function Tab.subsets(s)
   for j = 1, #t do t[#t+1] = {s[i],table.unpack(t[j])} end end
   return t end
 
-function Tab.set1( c, x,  z )
-  c[x] = c[x] or {}
-  c[x][z.id] = z end
+function Tab.set1( c, y,  z )
+  c[y] = c[y] or {}
+  c[y][z.id] = z 
+  return c end
 
 function Tab.set2( c, x, y, z )
-  c[x]    = c[x] or {}
-  c[x][z.id] = c[x][y] or {}
-  c[x][y][z.id] = z end
+  c[x] = Tab.set1(c[x] or {}, y,z)
+  return c end
 
 function Tab.set3( c, w, x, y, z )
-  c[w]       = c[w] or {}
-  c[w][x]    = c[w][x] or {}
-  c[w][x][y] = c[w][x][y] or {}
-  c[w][x][y][z.id] = z end
+  c[w] = Tab.set2(c[w] or {}, x,y,z)
+  return c end 
 
 ----------------------------------------------------
 --- File I/O
