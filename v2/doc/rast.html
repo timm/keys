@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>keys</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>KEYS</h1>
+
+
+
+
+<h2>LUA tables </h2>
+<ul class="nowrap">
+    <li><a href="#Tab.pump">Tab.pump (o)</a></li>
+    <li><a href="#Tab.dump">Tab.dump (o)</a></li>
+    <li><a href="#Tab.inc">Tab.inc (d, k, n)</a></li>
+    <li><a href="#Tab.subsets">Tab.subsets (s)</a></li>
+</ul>
+<h2>File I/O </h2>
+<ul class="nowrap">
+    <li><a href="#File.csv">File.csv (file)</a></li>
+</ul>
+<h2>OO stuff </h2>
+<ul class="nowrap">
+    <li><a href="#Obj.new">Obj.new (self, name, o)</a></li>
+</ul>
+<h2>System tools </h2>
+<ul class="nowrap">
+    <li><a href="#Sys.cli">Sys.cli (want, got)</a></li>
+</ul>
+<h2>Class Row </h2>
+<ul class="nowrap">
+    <li><a href="#Row:new">Row:new (cells)</a></li>
+</ul>
+<h2>Class Rule </h2>
+<ul class="nowrap">
+    <li><a href="#Rule:new">Rule:new (t)</a></li>
+</ul>
+<h2>Unit  tests </h2>
+<ul class="nowrap">
+    <li><a href="#Eg.all">Eg.all (my)</a></li>
+    <li><a href="#Eg.dump">Eg.dump (my)</a></li>
+    <li><a href="#Eg.csv">Eg.csv (my)</a></li>
+    <li><a href="#Eg.poly">Eg.poly (my)</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>rast</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>rast</code></h1>
+<p>Contrast set learning</p>
+<p>
+
+</p>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">rast : Contrast set learning
+(c) 2021 Tim Menzies timm@ieee.org, unlicense.org
+
+The difference between things (in the same domain) is
+often shorter to describe than the things themselves.
+
+USAGE: ./rast.lua [OPTIONS]
+
+OPTIONS:
+
+    -h          print help
+    -data FILE  read data from FILE
+    +verbose    enable verbose mode
+</pre>
+    </ul>
+
+
+
+    <h2 class="section-header "><a name="LUA_tables"></a>LUA tables </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Tab.pump"></a>
+    <strong>Tab.pump (o)</strong>
+    </dt>
+    <dd>
+    Convert a table to key, val pairs, then print it.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.dump"></a>
+    <strong>Tab.dump (o)</strong>
+    </dt>
+    <dd>
+    Convert a table to key, val pairs.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.inc"></a>
+    <strong>Tab.inc (d, k, n)</strong>
+    </dt>
+    <dd>
+    Add <code>n</code> (defaults to 1) to <code>d[k]</code> (self-initializing if needed).
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.subsets"></a>
+    <strong>Tab.subsets (s)</strong>
+    </dt>
+    <dd>
+    Return all subsets of  table <code>s</code> (including empty table)
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="File_I_O"></a>File I/O </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "File.csv"></a>
+    <strong>File.csv (file)</strong>
+    </dt>
+    <dd>
+    Iterate over lines, split by commas.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="OO_stuff"></a>OO stuff </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Obj.new"></a>
+    <strong>Obj.new (self, name, o)</strong>
+    </dt>
+    <dd>
+    Objects can have a name, and can print themselves
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="System_tools"></a>System tools </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Sys.cli"></a>
+    <strong>Sys.cli (want, got)</strong>
+    </dt>
+    <dd>
+    Search command line for flags matching keys in <code>want</code>.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Class_Row"></a>Class Row </h2>
+
+          <div class="section-description">
+          Row
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Row:new"></a>
+    <strong>Row:new (cells)</strong>
+    </dt>
+    <dd>
+    Numbers have standard deviation.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Class_Rule"></a>Class Rule </h2>
+
+          <div class="section-description">
+          Ruke
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Rule:new"></a>
+    <strong>Rule:new (t)</strong>
+    </dt>
+    <dd>
+    Numbers have standard deviation.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Unit__tests"></a>Unit  tests </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Eg.all"></a>
+    <strong>Eg.all (my)</strong>
+    </dt>
+    <dd>
+    Run examples
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Eg.dump"></a>
+    <strong>Eg.dump (my)</strong>
+    </dt>
+    <dd>
+    Dump options
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Eg.csv"></a>
+    <strong>Eg.csv (my)</strong>
+    </dt>
+    <dd>
+    Just show contents
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Eg.poly"></a>
+    <strong>Eg.poly (my)</strong>
+    </dt>
+    <dd>
+    Demonstrate  polymorphism
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-07-11 00:29:40 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
