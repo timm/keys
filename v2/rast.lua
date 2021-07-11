@@ -54,15 +54,6 @@ function Tab.dump(o)
     sep=", " end
   return s.."}" end
 
---- Add `n` (defaults to 1) to `d[k]` (self-initializing if needed).
-function Tab.add(d,k,n) 
-  d[k] = (n or 1) + (d[k] or 0); return d; end
-
---- Add `x`  to a set at  `d[x.id]` (self-initializing if needed).
-function Tab.has(t,k,x) 
-  t[k] = t[k] or {}
-  t[k][x.id] = x; return t end
-
 --- Return all subsets of  table `s` (including empty table)
 function Tab.subsets(s)
   local t = {{}}
@@ -70,18 +61,27 @@ function Tab.subsets(s)
   for j = 1, #t do t[#t+1] = {s[i],table.unpack(t[j])} end end
   return t end
 
-function Tab.set1( c, y,  z )
-  c[y] = c[y] or {}
-  c[y][z.id] = z 
-  return c end
+--- Ensure `t` has sublists for keys. At `x.id`, add `x` to innermost.
+function Tab.sets(t, keys, x)
+  for  i=1,#keys do
+    local key = keys[i]
+    t[key] = t[key] or {}
+    t = t[key] 
+  end
+  t[x.id] = x end
 
-function Tab.set2( c, x, y, z )
-  c[x] = Tab.set1(c[x] or {}, y,z)
-  return c end
-
-function Tab.set3( c, w, x, y, z )
-  c[w] = Tab.set2(c[w] or {}, x,y,z)
-  return c end 
+--- Ensure `t` has sublists for keys. Increment `x.id` in innermost.
+function Tab.incs(t, keys)
+  local key
+  for  i=1,(#keys-1) do
+    key = keys[i]
+    t[key] = t[key] or {}
+    t = t[key] 
+  end
+  key = keys[#keys]
+  local new = 1 + (t[key] or 0) 
+  t[key] = new
+  return new end
 
 ----------------------------------------------------
 --- File I/O
