@@ -22,9 +22,11 @@ docs() {
 alias gp="git add *;git commit -am save;git push;git status"
 alias ls="ls -G"
 alias tmux="$(which tmux) -f $Ell/etc/tmux-conf "
-alias lldoc="ldoc -f markdown -a -p KEYS -t keys -S -o rast rast.lua "
+alias lldoc="lua ldoc.lua -f markdown -a -p KEYS -t keys -S -o rast rast.lua "
 alias vi="vim -u $Ell/etc/vimrc "
 alias vims="vim +PluginInstall +qall"         
+alias lldoc="ldoc  -d ../docs -o rast -f markdown -p KEYS -t rast rast.lua"
+
 
 here() { cd $1; basename `pwd`; }
 

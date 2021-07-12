@@ -29,8 +29,8 @@ local MY={data   = "../data/auto93.csv"
 ----------------------------------------------------
 --- Meta
 -- @section 
-
 local _id  = 0
+local Meta ={}
 
 --- Return a unique id
 function Meta.id() _id = _id+1;  return _id end
@@ -89,6 +89,8 @@ function Tab.incs(t, keys)
 local File={}
 
 --- Iterate over lines, split by commas.
+-- @param file string for the file name
+-- @return nil
 function File.csv(file)
   local  function split(s,c)
     local t
@@ -112,17 +114,20 @@ function File.csv(file)
 
 ----------------------------------------------------
 --- OO stuff
--- @section 
+-- @section OO
 local Obj={}
 
 --- Objects can have a name, and can print themselves
-function Obj.new(self,name, o)
-  local o = o or {}
-  setmetatable(o, self)
+-- @param name string
+-- @param t  table
+-- @return  t, attached to a metatable
+function Obj:new(name, t)
+  local t = t or {}
+  setmetatable(t, self)
   self.__index = self
   self.__tostring = function(x)  return Tab.dump(x) end
   self._name =name
-  return o end
+  return t end
 
 ----------------------------------------------------
 --- System tools
