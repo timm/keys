@@ -71,7 +71,7 @@ function Rule:add(pair)
 
 --- If the merge  of self and other is  the same as either, return nil.
 function Rule:merge(other)
-  out = Rule:new{counts=self.counts, goal=self.goal, want=self.want}
+  local out = Rule:new{counts=self.counts, goal=self.goal, want=self.want}
   for _,rule in pairs{self, other}  do
     for attr,vals in pairs(rule.has) do
       for _,val in pairs(vals) do  out:add{attr,val} end end end
