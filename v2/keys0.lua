@@ -24,12 +24,10 @@ OPTIONS:
 
 local MY={data   = "../data/auto93.csv"
          ,todo   = "hi"
-         ,verbose= false
-         ,usage  = usage}
+         ,k      = 2
+         ,verbose= false}
 
-local Eg=require("eg")
-local l=require("lib")
-local Meta,Tab,File,Obj,Sys=l.meta,l.tab,l.file,l.obj,l.sys
+local Lib=require("lib")
 
 ----------------------------------------------------
 --- Row
@@ -38,7 +36,7 @@ local Row={}
 
 --- Numbers have standard deviation.
 function Row:new(cells) 
-  return Obj.new(self,"Row",{cells=cells, id=Meta.id()}) end
+  return Lib.obj.new(self,"Row",{cells=cells, id=Lib.meta.id()}) end
 
 ----------------------------------------------------
 --- Rule
@@ -51,35 +49,61 @@ function goal.monitor(b,r) return r^2 / (b+r)  end
 function goal.explore(b,r) return 1  / (b+r) end
 
 --- Numbers have standard deviation.
-function Rule:new(t) 
-  return Obj.new(self,"Rule",{
-    tbl  = t.tbl,
-    want = t.want,
-    goal = t.goal or goal.optimize,
-    init = t.init or nil}) end
+function Rule:new(t,new) 
+  local new= Obj.new(self,"Rule",{
+    has    = {},
+    _score = nil,
+    counts = t.counts,
+    want   = t.want or self.want,
+    goal   = t.goal or goal.optimize,
+    init   = t.init or nil}) 
+  if init then new:add(init) end 
+  return new end
 
+--- If new  `(attr,val)` pair saturates `attr`, then delete `attr`
+function Rule:add(pair)
+  local attr,val             = pair[1],pair[2]
+  self._score          = nil
+  self.has[attr]       = self.has[attr] or {}
+  self.has[attr][val]  = true 
+  if   #self.has[attr] == #self.tbl.attrs[attr] 
+  then self.has[attr]  = nil end end
+
+--- If the merge  of self and other is  the same as either, return nil.
+function Rule:merge(other)
+  out = Rule:new{counts=self.counts, goal=self.goal, want=self.want}
+  for _,rule in pairs{self, other}  do
+    for attr,vals in pairs(rule.has) do
+      for _,val in pairs(vals) do  out:add{attr,val} end end end
+  if out.has then
+    if not Lib.tab.eq(out.has, self.has) then
+      if  not Lib.tab.eq(out.has, other.has) then
+         return out end end end end  
+        
 ----------------------------------------------------
---- Sample
--- @section Sample
-local Sample={}
+--- File
+-- @section File
 
-function Sample.read(src)
-   local t   = {rows={},klasses={}, attrs={},avs={},freqs={}}
-   local inc = Tab.incs
-   for lst in src do
-     if   t.names 
-     then row = Row:new(lst)
-          t.rows[1 + #t.rows] = row
-          local klass = lst[t.class]
-          inc(t.klasses, { klass } )
-          for pos,val in pairs(lst) do
-            if val ~= "?" then
-              inc(t.attrs,            {val,val})
-              inc(t.avs,          {pos,val,val})
-              inc(t.freqs,  {klass,pos,val,val}) end end
-     else t.names = lst
-          t.klass = #lst end end end
+--- For discretized data, count the classes, attributes, attributes in classes.
+function Lib.file.count(src)
+  local t,inc,klass,row
+  t   = {rows={},klasses={}, attrs={},avs={},freqs={}}
+  inc = Lib.tab.incs
+  for lst in src do 
+    if   t.names 
+    then row = Row:new(lst)
+         t.rows[1 + #t.rows] = row
+         klass = lst[t.klass]
+         inc(t.klasses, { klass } )
+         for pos,val in pairs(lst) do
+           if val ~= "?" then
+             inc(t.attrs,           {pos,val})
+             inc(t.avs,         {pos,val,val})
+             inc(t.freqs, {klass,pos,val,val}) end end
+    else t.names = lst
+         t.klass = #lst end end 
+  return t end
 
 -------------------------------------------------
-Eg.all(Sys.cli(MY, arg, usage))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
+return {usage=usage, my=MY, row=Row, rule=Rule}

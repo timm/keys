@@ -26,9 +26,22 @@ function Tab.dump(o)
   for key,_ in pairs(o) do keys[#keys+1] = key end
   table.sort(keys)
   for _,k in pairs(keys) do 
-    s=s .. sep .. tostring(k).."= "..tostring(o[k])
+    s=s .. sep .. tostring(k).."="..tostring(o[k])
     sep=", " end
   return s.."}" end
+
+--- Recursively, convert a table to a string of key, val pairs.
+function Tab.rump(t,pre,    indent)
+  local pre, indent = pre or "", indent or 0
+  if indent < 10 then
+    for k, v in pairs(t or {}) do
+      if not (type(k)=='string' and k:match("^_")) then
+        local fmt= pre..string.rep("|  ",indent)..tostring(k)..": "
+        if type(v) == "table" then
+          print(fmt)
+          Tab.rump(v, pre, indent+1)
+        else
+          print(fmt .. tostring(v)) end end end end end
 
 --- Return all subsets of  table `s` (including empty table)
 function Tab.subsets(s)
@@ -41,14 +54,38 @@ function Tab.subsets(s)
 function Tab.incs(t, keys)
   local key,new
   for i = 1, (#keys-1) do
-    key = keys[i]
+    key    = keys[i]
     t[key] = t[key] or {}
-    t = t[key] 
+    t      = t[key] 
   end
   key = keys[#keys]
   new = 1 + (t[key] or 0) 
   t[key] = new
   return new end
+
+--- Return  the  count of `keys` in `t` (default value is zero).
+function Tab.has(t, keys)
+  local key,new
+  for i = 1, (#keys-1) do
+    key = keys[i]
+    t   = t[key]
+    if not t then return 0 end 
+  end
+  key = keys[#keys]
+  return t[key] or 0 end
+
+--- deep compare  of contents
+function Tab.eq(t1,t2)
+  local ty1,ty2 = type(t1), type(t2)
+  if ty1 ~= ty2 then return false end
+  if ty1 ~= 'table' and ty2 ~= 'table' then return t1 == t2 end
+  for k1,v1 in pairs(t1) do
+    local v2 = t2[k1]
+    if v2 == nil or not Tab.eq(v1,v2) then return false end end
+  for k2,v2 in pairs(t2) do
+    local v1 = t1[k2]
+    if v1 == nil or not Tae.eq(v1,v2) then return false end end
+  return true end
 
 ----------------------------------------------------
 --- File I/O
@@ -88,13 +125,13 @@ local Obj={}
 -- @param name string
 -- @param t  table
 -- @return  t, attached to a metatable
-function Obj:new(name, t)
-  local t = t or {}
-  setmetatable(t, self)
+function Obj:new(name, new)
+  local new = new or {}
+  setmetatable(new, self)
   self.__index = self
   self.__tostring = function(x)  return Tab.dump(x) end
   self._name =name
-  return t end
+  return new end
 
 ----------------------------------------------------
 --- System tools
