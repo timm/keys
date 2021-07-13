@@ -55,9 +55,8 @@ function Rule:new(t,new)
     _score = nil,
     counts = t.counts,
     want   = t.want or self.want,
-    goal   = t.goal or goal.optimize,
-    init   = t.init or nil}) 
-  if init then new:add(init) end 
+    goal   = t.goal or goal.optimize})
+  if init then new:add(init or {}) end 
   return new end
 
 --- If new  `(attr,val)` pair saturates `attr`, then delete `attr`
@@ -69,12 +68,13 @@ function Rule:add(pair)
   if   #self.has[attr] == #self.tbl.attrs[attr] 
   then self.has[attr]  = nil end end
 
---- If the merge  of self and other is  the same as either, return nil.
+--- If the merge  of `self` and `other` is the same as either, return nil.
 function Rule:merge(other)
   local out = Rule:new{counts=self.counts, goal=self.goal, want=self.want}
   for _,rule in pairs{self, other}  do
     for attr,vals in pairs(rule.has) do
-      for _,val in pairs(vals) do  out:add{attr,val} end end end
+      for _,val in pairs(vals) do  
+        out:add{attr,val} end end end
   if out.has then
     if not Lib.tab.eq(out.has, self.has) then
       if  not Lib.tab.eq(out.has, other.has) then
