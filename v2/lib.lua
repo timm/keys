@@ -11,6 +11,13 @@ local Meta ={}
 --- Return a unique id
 function Meta.id() _id = _id+1;  return _id end
 
+--- Return `f` mapped over `t` (`f` is either a  function or a key to items in `t`).
+function Meta.map(f,t)
+  local t1={}
+  f = type(f)=="function" and f or (function(x) return x[f] end)
+  for k,v in pairs(t) do t1[k] = f(v) end
+  return t1
+end
 ----------------------------------------------------
 --- LUA tables 
 -- @section 
