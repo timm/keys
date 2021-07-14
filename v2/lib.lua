@@ -76,9 +76,7 @@ function Tab.has(t, keys)
 
 --- deep compare  of contents
 function Tab.eq(t1,t2)
-  local ty1,ty2 = type(t1), type(t2)
-  if ty1 ~= ty2 then return false end
-  if ty1 ~= 'table' and ty2 ~= 'table' then return t1 == t2 end
+  if type(t1)~='table' and type(t2)~='table' then return t1==t2 end
   for k1,v1 in pairs(t1) do
     local v2 = t2[k1]
     if v2 == nil or not Tab.eq(v1,v2) then return false end end
