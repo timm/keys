@@ -1,119 +1,249 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>index.lua</title>
-  <link rel="stylesheet" href="pycco.css">
+    <title>Reference</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
 </head>
 <body>
-<div id='container'>
-  <div id="background"></div>
-  <div class='section'>
-    <div class='docs'><h1>index.lua</h1></div>
-  </div>
-  <div class='clearall'>
-  <div class='section' id='section-0'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-0'>#</a>
-      </div>
-      <p><img width=150 align=right src="https://raw.githubusercontent.com/timm/keys/main/etc/img/padlock.png">
-Keys optimizer   <br />
-Tim Menzies, (c) 2021      <br />
-<a href="https://doi.org/10.5281/zenodo.4728990"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4728990.svg" /></a>
-<a href="https://travis-ci.com/timm/keys"><img alt="Build Status" src="https://travis-ci.com/timm/keys.svg?branch=main" /></a>
-<img alt="" src="https://img.shields.io/badge/linting-luac-brown" />
-<img alt="" src="https://img.shields.io/badge/language-lua,bash-orange" />
-<img alt="" src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet" />
-<a href="http://github.com/timm/keys/blob/main/LICENSE.md"><img alt="" src="https://img.shields.io/badge/license-mit-lightgrey" /></a><br>
-<a href="http://menzies.us/keys/index.html">docs</a> | <a href="http://github.com/timm/keys">github</a></p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span></span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-1'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-1'>#</a>
-      </div>
-      <hr />
-<h2>Files</h2>
-<p>Unit tests:</p>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>KEYS</h1>
+
+
+<h2>Contents</h2>
 <ul>
-<li><a href="eg.html">eg</a>: test code. </li>
-<li>If &ldquo;<code>lua eg.lua</code>&rdquo; returns $?=0, then all tests pass.</li>
-<li>To run one test, use &ldquo;<code>lua eg.lua testname</code>&rdquo;. </li>
-<li>To get a list of all tests, use   &ldquo;<code>lua eg.lua ?</code>&rdquo;.</li>
+<li><a href="#Class_Row">Class Row </a></li>
+<li><a href="#Class_Rule">Class Rule </a></li>
+<li><a href="#File">File </a></li>
 </ul>
-<p>How to hold and summarize  data:</p>
-<ul>
-<li><a href="num.html">num</a> : for numerics</li>
-<li><a href="row.html">row</a> : place to hold rows, and their  column summaries</li>
-<li><a href="skip.html">skip</a> : &ldquo;summarize&rdquo; by ignoring everything  you throw at it</li>
-<li><a href="some.lua">some</a>: reservoir sampler (keep a random sample)</li>
-<li><a href="sym.lua">sym</a> : for symbols</li>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>keys0</strong></li>
 </ul>
-<p>Utilities:</p>
-<ul>
-<li><a href="lib.html">lib</a> : misc utils</li>
-<li><a href="new.html">new</a>  : template for new files</li>
-<li><a href="rand.html">rand</a> : random number generator
- -<a href="stats.html">stats</a>: statistical routines</li>
-</ul>
-<p>Work in progress:</p>
-<ul>
-<li><a href="cli.html">cli</a></li>
-</ul>
-<hr />
-<h2>About</h2>
-<p>In two papers about <em>DUO</em> (data miners using/used-by optimizers),
-Agrawal, Fu, Markus, Mathew, Menzies, Minku, Nair, Markus Wagner, and Yu 
-argued that <em>optimization</em> and <em>data mining</em> were very closely relate; i.e.
-miners divide up a space;
-while optimizers suggest ways to move to better parts of that space.</p>
-<p>Missing in that paper was a reference implementation showing how to achieve all that. <code>KEYS</code> is that reference system. It is offered here as a learning guide for
-those interested in data mining and optimization. </p>
-<h2>An Invitation</h2>
-<p><code>KEYS</code> is very short (a few 100 lines of code) and written in a 
-very simple Python-like language (LUA). </p>
-<p>You are invited to recode <code>KEYS</code> in your favorite language.
-To start with, the file <code>eg.lua</code> offers unit tests. 
-It is suggested that you start at the top of that file and code up 
-the first example. Once you can passes that test, move to the second example. And so on.</p>
-<p>But more that that,
-when implementing this system, we challenge you to
-do better than what is offered here. 
-<code>`KEYS</code> made short-cuts to simplify the code.
-Some of those simplifications demonstrate interesting insights into the nature of data mining and optimization. 
-But some are those simplifications are just plain silly. 
-So your goal should be  to find and fix the silly bits. </p>
-<p>Good luck! Write a better <code>KEYS</code>! You can do it!</p>
-<h2>Why Study <code>KEYS</code>?</h2>
-<p>By combining the two technologies, said Agrawal et al., 
-it is possible for data miners to help optimizers (and vice versa)</p>
-<ul>
-<li><em>Transparency</em> : After optimizing,  data miners can generate succinct rules that 
-  summarize optimizer output. This is an very important, especially in this era
-  where AI is mistrusted and there are increasing demands 
-  for understandable AI (https://youtu.be/uaaC57tcci0);</li>
-<li><em>Focus</em> : Before optimizing, data miners can divide up a problem. This makes  optimizers run faster since they are focusing on smaller, more specific problems;</li>
-<li><em>Tuning</em> : Before data mining, optimizers can find  better parameter settings for a data miner, </li>
-<li><em>Advice</em> : After data mining, optimizers can take the learned model and use it to suggest how to improve some current situation.</li>
-<li><em>Simplicity</em> : under the hood, data miners and optimizers share many of the same data structures. So, if done
-  right, once you&rsquo;ve coded and optimizer you are half way to a data miner (and vice versa).</li>
-</ul>
-<h2>References</h2>
-<ul>
-<li>Vivek Nair, Amritanshu Agrawal, Jianfeng Chen, Wei Fu, George Mathew, Tim Menzies, Leandro Minku, Markus Wagner, and Zhe Yu. 2018. Data-driven search-based software engineering. In Proceedings of the 15th International Conference on Mining Software Repositories (MSR &lsquo;18). Association for Computing Machinery, New York, NY, USA, 341–352. DOI:https://doi.org/10.1145/3196398.3196442</li>
-<li>Agrawal, A., Menzies, T., Minku, L. L., Wagner, M., &amp; Yu, Z. (2020). Better software analytics via “DUO”: Data mining algorithms using/used-by optimizers. Empirical Software Engineering, 25(3), 2099-2136.</li>
-</ul>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
+
 </div>
+
+<div id="content">
+
+<h1>Module <code>keys0</code></h1>
+<p>Contrast set learning.</p>
+<p>
+
+</p>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">keys0 : Contrast set learning
+(c) 2021 Tim Menzies timm@ieee.org, unlicense.org
+
+The difference between things is often shortert
+to describe than the things themselves.
+
+USAGE: ./keys0.lua [OPTIONS]
+
+OPTIONS:
+
+  -h            print help
+  -data FILE    read data from FILE
+  -goal STR     one of optimizer, monitor, explode
+  +verbose      enable verbose mode
+</pre>
+    </ul>
+
+
+<h2><a href="#Class_Row">Class Row </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Row:new">Row:new (cells)</a></td>
+	<td class="summary">Numbers have standard deviation.</td>
+	</tr>
+</table>
+<h2><a href="#Class_Rule">Class Rule </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Rule:new">Rule:new (t, new)</a></td>
+	<td class="summary">Numbers have standard deviation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rule:add">Rule:add (pair)</a></td>
+	<td class="summary">If new  <code>(attr,val)</code> pair saturates <code>attr</code>, then delete <code>attr</code></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Rule:merge">Rule:merge (other)</a></td>
+	<td class="summary">If the merge  of <code>self</code> and <code>other</code> is the same as either, return nil.</td>
+	</tr>
+</table>
+<h2><a href="#File">File </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Lib.file.count">Lib.file.count (src)</a></td>
+	<td class="summary">For discretized data, count the classes, attributes, attributes in classes.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header has-description"><a name="Class_Row"></a>Class Row </h2>
+
+          <div class="section-description">
+          Row
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Row:new"></a>
+    <strong>Row:new (cells)</strong>
+    </dt>
+    <dd>
+    Numbers have standard deviation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cells</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Class_Rule"></a>Class Rule </h2>
+
+          <div class="section-description">
+          Rule
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Rule:new"></a>
+    <strong>Rule:new (t, new)</strong>
+    </dt>
+    <dd>
+    Numbers have standard deviation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+
+
+
+        </li>
+        <li><span class="parameter">new</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rule:add"></a>
+    <strong>Rule:add (pair)</strong>
+    </dt>
+    <dd>
+    If new  <code>(attr,val)</code> pair saturates <code>attr</code>, then delete <code>attr</code>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">pair</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Rule:merge"></a>
+    <strong>Rule:merge (other)</strong>
+    </dt>
+    <dd>
+    If the merge  of <code>self</code> and <code>other</code> is the same as either, return nil.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">other</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="File"></a>File </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Lib.file.count"></a>
+    <strong>Lib.file.count (src)</strong>
+    </dt>
+    <dd>
+    For discretized data, count the classes, attributes, attributes in classes.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">src</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-07-13 10:58:06 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
 </body>
+</html>

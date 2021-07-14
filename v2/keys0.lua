@@ -12,7 +12,7 @@ keys0 : Contrast set learning
 The difference between things is often shortert
 to describe than the things themselves.
 
-USAGE: ./keys0.lua [OPTIONS]
+USAGE: ./eg.lua [OPTIONS] [-x ACTION]
 
 OPTIONS:
 
@@ -20,10 +20,16 @@ OPTIONS:
   -data FILE    read data from FILE
   -goal STR     one of optimizer, monitor, explode
   +verbose      enable verbose mode
+  -go STR       run action 
+
+ACTION:
+
+  dump          show config
+  sample        convert FILE into frequency couts
 ]] 
 
 local MY={data   = "../data/auto93.csv"
-         ,todo   = "hi"
+         ,go     = "hi"
          ,k      = 2
          ,verbose= false}
 
