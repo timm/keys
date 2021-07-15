@@ -8,38 +8,48 @@ local Keys=require("keys0")
 ----------------------------------------------------
 --- Unit  tests
 local Eg={}
-Eg.go = {}
 
 --- Run examples 
-function Eg.all(my)
-  for k,v in pairs(Eg.go) do 
-    if   go.x==k or go.x==""
-    then v[2](my) end end end 
+Eg.all = {
+  "Run all (or some) examples.",
+  function(my)
+    local function one(k,v) 
+      local pre="\n---------------------------"
+      Lib.misc.color("green",pre .."\n-- "..k..pre); v[2](my) end 
+    if my.x=="all" then
+      for k,v in pairs(Eg) do 
+        if k~="all" then one(k,v) end end
+    else
+      for k,v in pairs(Eg) do 
+        if my.x==k or my.x=="" then one(k,v) end end end end }
 
-Eg.go.dump = {
+Eg.dump = {
   "show current options",  
   function (my)
     print(Lib.tab.dump(my))  end}
 
-Eg.go.sample = {
+Eg.sample = {
   "compute frequency counts for discrete data files", 
   function(my) 
     local t= Lib.file.count(Lib.file.csv("../data/vote.csv") )
-    Lib.tab.rump(t.attrs) 
+    Lib.tab.rump(t) 
     end}
 
-Eg.go.hi = {
+Eg.hi = {
   "print usage", 
   function (my) 
-     print("rast v1.0. usage:  ./rast.lua -h") end} 
+    print("rast v1.0. usage:  ./rast.lua -h") end} 
   
-Eg.go.csv = {
+Eg.csv = {
   "show rows in a file", 
   function (my) 
-      for x in Lib.file.csv("../data/auto93.csv") do 
-         Lib.Tab.pump(x) end end }
+    local n=0
+    for x in Lib.file.csv("../data/auto93.csv") do 
+      n = n + 1
+      if n>20 then return end
+      Lib.tab.pump(x) end end }
 
-Eg.go.poly = {
+Eg.poly = {
   "demonstrate polymorphism", 
   function(my)
     local dog,point,p1,p2
@@ -58,5 +68,5 @@ Eg.go.poly = {
     print(p2) end}
 
 ----------------------------------------------------
-Eg.all( Lib.sys.cli( Keys.my, arg, Keys.usage ))
+Eg.all[2]( Lib.sys.cli( Keys.my, arg, Keys.usage, Eg ))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end

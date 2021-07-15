@@ -14,10 +14,16 @@ function Meta.id() _id = _id+1;  return _id end
 --- Return `f` mapped over `t` (`f` is either a  function or a key to items in `t`).
 function Meta.map(f,t)
   local t1={}
-  f = type(f)=="function" and f or (function(x) return x[f] end)
+  f= type(f)=="function" and f or (function(x) return x[f] end)
   for k,v in pairs(t) do t1[k] = f(v) end
-  return t1
-end
+  return t1 end
+
+--- Sort `t` on `f`, (`f` is either a  function or a key to items in `t`).
+function Meta.sort(f,t)
+  f= type(f)=="function" and f or (function(x) return x[f] end)
+  table.sort(t, function(x,y)  return f(x) < f(y)  end)
+  return t end
+
 ----------------------------------------------------
 --- LUA tables 
 -- @section 
@@ -30,11 +36,14 @@ function Tab.pump(o) print(Tab.dump(o)) end
 --- Convert a table to key, val pairs.
 function Tab.dump(o)
   local sep, s, keys = "", (o._name or "") .."{", {}
-  for key,_ in pairs(o) do keys[#keys+1] = key end
-  table.sort(keys)
-  for _,k in pairs(keys) do 
-    s=s .. sep .. tostring(k).."="..tostring(o[k])
-    sep=", " end
+  if #o > 0 then
+    for _,v in pairs(o) do s=s .. sep .. tostring(v);sep=", " end
+  else
+    for key,_ in pairs(o) do keys[#keys+1] = key end
+    table.sort(keys)
+    for _,k in pairs(keys) do 
+      s=s .. sep .. tostring(k).."="..tostring(o[k])
+      sep=", " end end
   return s.."}" end
 
 --- Recursively, convert a table to a string of key, val pairs.
@@ -92,6 +101,11 @@ function Tab.eq(t1,t2)
     if v1 == nil or not Tae.eq(v1,v2) then return false end end
   return true end
 
+local Misc={}
+function Misc.color(s,...)
+  local all = {red=31, green=32, yellow=33, purple=34}
+  print('\27[1m\27['.. all[s] ..'m'..string.format(...)..'\27[0m') end
+
 ----------------------------------------------------
 --- File I/O
 -- @section 
@@ -144,11 +158,14 @@ function Obj:new(name, new)
 local Sys={}
 
 --- Search command line for flags matching keys in `want`.
-function Sys.cli(want, got, usage)
+function Sys.cli(want, got, usage, eg)
   for k,v in pairs(got) do
     local flag=v:sub(2,#v)
     if     flag == "h" 
-    then   print(usage); os.exit()
+    then   print(usage.."\nACTION:\n")
+           for k,v in pairs(eg) do 
+             print(string.format("  %-13s %s",k,v[1])) end
+           os.exit()
     elseif want[flag] ~=  nil then 
       if v:sub(1,1) == "+" 
       then want[flag] = true 
@@ -156,4 +173,4 @@ function Sys.cli(want, got, usage)
   return want end
 
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
-return {meta=Meta, tab=Tab, file=File, obj=Obj, sys=Sys}
+return {misc=Misc,meta=Meta, tab=Tab, file=File, obj=Obj, sys=Sys}

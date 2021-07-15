@@ -20,16 +20,11 @@ OPTIONS:
   -data FILE    read data from FILE
   -goal STR     one of optimizer, monitor, explode
   +verbose      enable verbose mode
-  -go STR       run action 
-
-ACTION:
-
-  dump          show config
-  sample        convert FILE into frequency couts
+  -x STR        run action 
 ]] 
 
 local MY={data   = "../data/auto93.csv"
-         ,go     = "hi"
+         ,x      = "hi"
          ,k      = 2
          ,verbose= false}
 
@@ -85,7 +80,30 @@ function Rule:merge(other)
     if not Lib.tab.eq(out.has, self.has) then
       if  not Lib.tab.eq(out.has, other.has) then
          return out end end end end  
-        
+     
+function Rule:show()
+  local function merge(pairs) 
+    local j,tmp=0,{}
+    while j <=#pairs do
+      a=pairs[j]
+      if j <#pairs then
+        b = pairs[j+1]
+        if a[2]==b[1] then 
+          j = j+1
+          a = {a[1],b[2]} end end
+      tmp[1 + #tmp] = a
+      j = j + 1
+    return tmp end
+  local function show1(x) 
+    return  x[1]==x[2] and tostring(x[1]) or 
+            string.format("[%s..%s]",x[1],x[2]) end 
+  s,sep1,sep2="","",""
+  for k,v in pairs(i.has)  do
+    s   = s sep1   
+    for val in i.has[v] do
+    sep1= "and "
+   
+end
 ----------------------------------------------------
 --- File
 -- @section File
