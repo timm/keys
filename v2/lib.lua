@@ -19,8 +19,13 @@ function Meta.map(f,t)
   for k,v in pairs(t) do t1[k] = f(v) end
   return t1 end
 
---- Sort `t` on `f`, (`f` is either a  function or a key to items in `t`).
+--- Sort `t` on `f` (default is to use the values themselves)
 function Meta.sort(f,t)
+  table.sort(t, f or function(x,y) return x<y end)
+  return t end
+
+--- Sort `t` on `f`, (`f` is either a  function or a key to items in `t`).
+function Meta.sortthis(f,t)
   f= type(f)=="function" and f or (function(x) return x[f] end)
   table.sort(t, function(x,y)  return f(x) < f(y)  end)
   return t end

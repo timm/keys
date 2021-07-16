@@ -26,6 +26,8 @@ OPTIONS:
 local MY={data   = "../data/auto93.csv"
          ,x      = "hi"
          ,k      = 2
+         ,m      = 1
+         ,top    = 10
          ,verbose= false}
 
 local Lib=require("lib")
@@ -72,18 +74,25 @@ function Rule:add(pair)
 --- If the merge  of `self` and `other` is the same as either, return nil.
 function Rule:merge(other)
   local out = Rule:new{counts=self.counts, goal=self.goal, want=self.want}
+  local eq  = Lib.tag.eg
   for _,rule in pairs{self, other}  do
     for attr,vals in pairs(rule.has) do
       for _,val in pairs(vals) do  
         out:add{attr,val} end end end
   if out.has then
-    if not Lib.tab.eq(out.has, self.has) then
-      if  not Lib.tab.eq(out.has, other.has) then
+    if not eq(out.has, self.has) then
+      if  not eq(out.has, other.has) then
          return out end end end end  
 
 function Rule:show()
-  local function merge(pairs) 
-    local j,tmp=0,{}
+  local sort,fmt = Lib.meta.sort, string.format
+  local show,merge,vals
+  -- -- --
+  function show(x) 
+    return x[1]==x[2] and fmt("%",x[1]) or fmt("[%s..%s]",x[1],x[2]) end 
+  -- -- --
+  function merge(pairs,    j,tmp) 
+    j,tmp = 1,{}
     while j <=#pairs do
       a=pairs[j]
       if j <#pairs then
@@ -92,25 +101,35 @@ function Rule:show()
       tmp[1 + #tmp] = a
       j = j + 1
     return tmp end end
-  ----------------------------
-  local function show1(x) 
-    return x[1]==x[2] and tostring(x[1]) or 
-           string.format("[%s..%s]",x[1],x[2]) end 
-  ----------------------------
-  local function ors(t)
-    local vals = {}
-    for _,val in pairs(t) do keys[1 + #keys] = val end
-    table.sort(vals, function (z1,z2) return z1[1] < z2[2] end)
-    local s,sep = "(",""
-    for _,val in pairs(merge(vals)) do s=s..sep..show1(val); sep=" or " end
+  -- -- --
+  function vals(x,       u) 
+    u = {}
+    for _,x in pairs(self.has[x]) do u[1 + #u] = x end
+    return sort(u, function(a,b) return a[1]<=b[1] end) end
+  -- -- --
+  function ors(t,     s,sep)
+    s,z = "(",""
+    for _,x in pairs(merge(vals(t))) do s=s..z..show(x);z=" or "end
     return s..")" end
-  ----------------------------
-  local keys = {}
-  for k,_ in pairs(i.has) do keys[1 + #keys] = k end
-  table.sort(keys)
-  local s,sep = "",""
-  for _,k in pairs(keys) do s=s..sep.."="..ors(i.has[k]); sep=" and " end
+  -- -- --
+  local s,z,u = "","",{}
+  for x,_ in pairs(self.has) do u[1 + #u] = x end
+  for _,x in pairs(sort(u)) do s=s..z.."="..ors(x);z=" and "end
   return s end
+
+function Rule:like(kl,my)
+  local has    = Lib.meta.has
+  local fs,kln = {}, has(self.counts.klasses,{kl})
+  local prior  = (kln + my.k) / (self.counts.n + my.m)
+  local all    = {}
+  for pos,vals in pairs(self.has) do
+    for val,_ in pairs(vals) do
+      local inc = has(self.counts, {kl,pos,val,val}) 
+      all[kl]   = inc + (all[kl] or 0) end end
+  local like = prior
+  for _,one in pairs(all) do
+    like = like * (one + the.m * prior) / (kln + the.m) end
+  return like end
 
 ----------------------------------------------------
 --- File
@@ -119,12 +138,12 @@ function Rule:show()
 --- For discretized data, count the classes, attributes, attributes in classes.
 function Lib.file.count(src)
   local t,inc,klass,row
-  t   = {rows={},klasses={}, attrs={},avs={},freqs={}}
+  t   = {n=0, klasses={}, attrs={},avs={},freqs={}}
   inc = Lib.tab.incs
   for lst in src do 
     if   t.names 
     then row = Row:new(lst)
-         t.rows[1 + #t.rows] = row
+         t.n = t.n + 1
          klass = lst[t.klass]
          inc(t.klasses, { klass } )
          for pos,val in pairs(lst) do
