@@ -62,7 +62,7 @@ function Rule:new(t,new)
 
 --- If new  `(attr,val)` pair saturates `attr`, then delete `attr`
 function Rule:add(pair)
-  local attr,val             = pair[1],pair[2]
+  local attr,lo,hi     = pair[1], pair[2][1], pair[2][2]
   self._score          = nil
   self.has[attr]       = self.has[attr] or {}
   self.has[attr][val]  = true 
@@ -80,7 +80,7 @@ function Rule:merge(other)
     if not Lib.tab.eq(out.has, self.has) then
       if  not Lib.tab.eq(out.has, other.has) then
          return out end end end end  
-     
+
 function Rule:show()
   local function merge(pairs) 
     local j,tmp=0,{}
@@ -88,22 +88,30 @@ function Rule:show()
       a=pairs[j]
       if j <#pairs then
         b = pairs[j+1]
-        if a[2]==b[1] then 
-          j = j+1
-          a = {a[1],b[2]} end end
+        if a[2]==b[1] then j=j+1; a={a[1],b[2]} end end
       tmp[1 + #tmp] = a
       j = j + 1
-    return tmp end
+    return tmp end end
+  ----------------------------
   local function show1(x) 
-    return  x[1]==x[2] and tostring(x[1]) or 
-            string.format("[%s..%s]",x[1],x[2]) end 
-  s,sep1,sep2="","",""
-  for k,v in pairs(i.has)  do
-    s   = s sep1   
-    for val in i.has[v] do
-    sep1= "and "
-   
-end
+    return x[1]==x[2] and tostring(x[1]) or 
+           string.format("[%s..%s]",x[1],x[2]) end 
+  ----------------------------
+  local function ors(t)
+    local vals = {}
+    for _,val in pairs(t) do keys[1 + #keys] = val end
+    table.sort(vals, function (z1,z2) return z1[1] < z2[2] end)
+    local s,sep = "(",""
+    for _,val in pairs(merge(vals)) do s=s..sep..show1(val); sep=" or " end
+    return s..")" end
+  ----------------------------
+  local keys = {}
+  for k,_ in pairs(i.has) do keys[1 + #keys] = k end
+  table.sort(keys)
+  local s,sep = "",""
+  for _,k in pairs(keys) do s=s..sep.."="..ors(i.has[k]); sep=" and " end
+  return s end
+
 ----------------------------------------------------
 --- File
 -- @section File

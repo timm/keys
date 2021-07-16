@@ -3,13 +3,14 @@
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 
 ----------------------------------------------------
---- Meta
+--- Meta fun
 -- @section 
-local _id  = 0
 local Meta ={}
 
+local id = 0
+
 --- Return a unique id
-function Meta.id() _id = _id+1;  return _id end
+function Meta.id() id = id+1; return id end
 
 --- Return `f` mapped over `t` (`f` is either a  function or a key to items in `t`).
 function Meta.map(f,t)
@@ -27,7 +28,6 @@ function Meta.sort(f,t)
 ----------------------------------------------------
 --- LUA tables 
 -- @section 
-
 local Tab={}
 
 --- Convert a table to key, val pairs, then print it.
@@ -142,7 +142,7 @@ local Obj={}
 
 --- Objects can have a name, and can print themselves
 -- @param name string
--- @param t  table
+-- @param new  table
 -- @return  t, attached to a metatable
 function Obj:new(name, new)
   local new = new or {}

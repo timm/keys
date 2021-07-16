@@ -29,73 +29,95 @@
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#Class_Row">Class Row </a></li>
-<li><a href="#Class_Rule">Class Rule </a></li>
-<li><a href="#File">File </a></li>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#LUA_tables">LUA tables </a></li>
+<li><a href="#File_I_O">File I/O </a></li>
+<li><a href="#OO_stuff">OO stuff </a></li>
+<li><a href="#System_tools">System tools </a></li>
 </ul>
 
 
 <h2>Modules</h2>
 <ul class="nowrap">
-  <li><strong>keys0</strong></li>
+  <li><strong>lib</strong></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>keys0</code></h1>
-<p>Contrast set learning.</p>
+<h1>Module <code>lib</code></h1>
+<p>Meta</p>
 <p>
 
 </p>
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">keys0 : Contrast set learning
-(c) 2021 Tim Menzies timm@ieee.org, unlicense.org
-
-The difference between things is often shortert
-to describe than the things themselves.
-
-USAGE: ./keys0.lua [OPTIONS]
-
-OPTIONS:
-
-  -h            print help
-  -data FILE    read data from FILE
-  -goal STR     one of optimizer, monitor, explode
-  +verbose      enable verbose mode
-</pre>
-    </ul>
 
 
-<h2><a href="#Class_Row">Class Row </a></h2>
+<h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Row:new">Row:new (cells)</a></td>
-	<td class="summary">Numbers have standard deviation.</td>
+	<td class="name" nowrap><a href="#Meta.id">Meta.id ()</a></td>
+	<td class="summary">Return a unique id</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Meta.map">Meta.map (f, t)</a></td>
+	<td class="summary">Return <code>f</code> mapped over <code>t</code> (<code>f</code> is either a  function or a key to items in <code>t</code>).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Meta.sort">Meta.sort (f, t)</a></td>
+	<td class="summary">Sort <code>t</code> on <code>f</code>, (<code>f</code> is either a  function or a key to items in <code>t</code>).</td>
 	</tr>
 </table>
-<h2><a href="#Class_Rule">Class Rule </a></h2>
+<h2><a href="#LUA_tables">LUA tables </a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Rule:new">Rule:new (t, new)</a></td>
-	<td class="summary">Numbers have standard deviation.</td>
+	<td class="name" nowrap><a href="#Tab.pump">Tab.pump (o)</a></td>
+	<td class="summary">Convert a table to key, val pairs, then print it.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Rule:add">Rule:add (pair)</a></td>
-	<td class="summary">If new  <code>(attr,val)</code> pair saturates <code>attr</code>, then delete <code>attr</code></td>
+	<td class="name" nowrap><a href="#Tab.dump">Tab.dump (o)</a></td>
+	<td class="summary">Convert a table to key, val pairs.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Rule:merge">Rule:merge (other)</a></td>
-	<td class="summary">If the merge  of <code>self</code> and <code>other</code> is the same as either, return nil.</td>
+	<td class="name" nowrap><a href="#Tab.rump">Tab.rump (t, pre, indent)</a></td>
+	<td class="summary">Recursively, convert a table to a string of key, val pairs.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Tab.subsets">Tab.subsets (s)</a></td>
+	<td class="summary">Return all subsets of  table <code>s</code> (including empty table)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Tab.incs">Tab.incs (t, keys)</a></td>
+	<td class="summary">Ensure <code>t</code> has sublists for keys.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Tab.has">Tab.has (t, keys)</a></td>
+	<td class="summary">Return  the  count of <code>keys</code> in <code>t</code> (default value is zero).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Tab.eq">Tab.eq (t1, t2)</a></td>
+	<td class="summary">deep compare  of contents</td>
 	</tr>
 </table>
-<h2><a href="#File">File </a></h2>
+<h2><a href="#File_I_O">File I/O </a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Lib.file.count">Lib.file.count (src)</a></td>
-	<td class="summary">For discretized data, count the classes, attributes, attributes in classes.</td>
+	<td class="name" nowrap><a href="#File.csv">File.csv (file)</a></td>
+	<td class="summary">Iterate over lines, split by commas.</td>
+	</tr>
+</table>
+<h2><a href="#OO_stuff">OO stuff </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Obj:new">Obj:new (name, new)</a></td>
+	<td class="summary">Objects can have a name, and can print themselves</td>
+	</tr>
+</table>
+<h2><a href="#System_tools">System tools </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Sys.cli">Sys.cli (want, got, usage, eg)</a></td>
+	<td class="summary">Search command line for flags matching keys in <code>want</code>.</td>
 	</tr>
 </table>
 
@@ -103,23 +125,66 @@ OPTIONS:
 <br/>
 
 
-    <h2 class="section-header has-description"><a name="Class_Row"></a>Class Row </h2>
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
 
-          <div class="section-description">
-          Row
-          </div>
     <dl class="function">
     <dt>
-    <a name = "Row:new"></a>
-    <strong>Row:new (cells)</strong>
+    <a name = "Meta.id"></a>
+    <strong>Meta.id ()</strong>
     </dt>
     <dd>
-    Numbers have standard deviation.
+    Return a unique id
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Meta.map"></a>
+    <strong>Meta.map (f, t)</strong>
+    </dt>
+    <dd>
+    Return <code>f</code> mapped over <code>t</code> (<code>f</code> is either a  function or a key to items in <code>t</code>).
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">cells</span>
+        <li><span class="parameter">f</span>
+
+
+
+        </li>
+        <li><span class="parameter">t</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Meta.sort"></a>
+    <strong>Meta.sort (f, t)</strong>
+    </dt>
+    <dd>
+    Sort <code>t</code> on <code>f</code>, (<code>f</code> is either a  function or a key to items in <code>t</code>).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">f</span>
+
+
+
+        </li>
+        <li><span class="parameter">t</span>
 
 
 
@@ -132,18 +197,59 @@ OPTIONS:
 
 </dd>
 </dl>
-    <h2 class="section-header has-description"><a name="Class_Rule"></a>Class Rule </h2>
+    <h2 class="section-header "><a name="LUA_tables"></a>LUA tables </h2>
 
-          <div class="section-description">
-          Rule
-          </div>
     <dl class="function">
     <dt>
-    <a name = "Rule:new"></a>
-    <strong>Rule:new (t, new)</strong>
+    <a name = "Tab.pump"></a>
+    <strong>Tab.pump (o)</strong>
     </dt>
     <dd>
-    Numbers have standard deviation.
+    Convert a table to key, val pairs, then print it.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">o</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.dump"></a>
+    <strong>Tab.dump (o)</strong>
+    </dt>
+    <dd>
+    Convert a table to key, val pairs.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">o</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.rump"></a>
+    <strong>Tab.rump (t, pre, indent)</strong>
+    </dt>
+    <dd>
+    Recursively, convert a table to a string of key, val pairs.
 
 
     <h3>Parameters:</h3>
@@ -153,7 +259,12 @@ OPTIONS:
 
 
         </li>
-        <li><span class="parameter">new</span>
+        <li><span class="parameter">pre</span>
+
+
+
+        </li>
+        <li><span class="parameter">indent</span>
 
 
 
@@ -166,16 +277,16 @@ OPTIONS:
 
 </dd>
     <dt>
-    <a name = "Rule:add"></a>
-    <strong>Rule:add (pair)</strong>
+    <a name = "Tab.subsets"></a>
+    <strong>Tab.subsets (s)</strong>
     </dt>
     <dd>
-    If new  <code>(attr,val)</code> pair saturates <code>attr</code>, then delete <code>attr</code>
+    Return all subsets of  table <code>s</code> (including empty table)
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">pair</span>
+        <li><span class="parameter">s</span>
 
 
 
@@ -188,16 +299,75 @@ OPTIONS:
 
 </dd>
     <dt>
-    <a name = "Rule:merge"></a>
-    <strong>Rule:merge (other)</strong>
+    <a name = "Tab.incs"></a>
+    <strong>Tab.incs (t, keys)</strong>
     </dt>
     <dd>
-    If the merge  of <code>self</code> and <code>other</code> is the same as either, return nil.
+    Ensure <code>t</code> has sublists for keys.  Increment <code>x.id</code> in innermost.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">other</span>
+        <li><span class="parameter">t</span>
+
+
+
+        </li>
+        <li><span class="parameter">keys</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.has"></a>
+    <strong>Tab.has (t, keys)</strong>
+    </dt>
+    <dd>
+    Return  the  count of <code>keys</code> in <code>t</code> (default value is zero).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+
+
+
+        </li>
+        <li><span class="parameter">keys</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Tab.eq"></a>
+    <strong>Tab.eq (t1, t2)</strong>
+    </dt>
+    <dd>
+    deep compare  of contents
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t1</span>
+
+
+
+        </li>
+        <li><span class="parameter">t2</span>
 
 
 
@@ -210,20 +380,96 @@ OPTIONS:
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="File"></a>File </h2>
+    <h2 class="section-header "><a name="File_I_O"></a>File I/O </h2>
 
     <dl class="function">
     <dt>
-    <a name = "Lib.file.count"></a>
-    <strong>Lib.file.count (src)</strong>
+    <a name = "File.csv"></a>
+    <strong>File.csv (file)</strong>
     </dt>
     <dd>
-    For discretized data, count the classes, attributes, attributes in classes.
+    Iterate over lines, split by commas.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">src</span>
+        <li><span class="parameter">file</span>
+         string for the file name
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        nil
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="OO_stuff"></a>OO stuff </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Obj:new"></a>
+    <strong>Obj:new (name, new)</strong>
+    </dt>
+    <dd>
+    Objects can have a name, and can print themselves
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         string
+        </li>
+        <li><span class="parameter">new</span>
+          table
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        t, attached to a metatable
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="System_tools"></a>System tools </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Sys.cli"></a>
+    <strong>Sys.cli (want, got, usage, eg)</strong>
+    </dt>
+    <dd>
+    Search command line for flags matching keys in <code>want</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">want</span>
+
+
+
+        </li>
+        <li><span class="parameter">got</span>
+
+
+
+        </li>
+        <li><span class="parameter">usage</span>
+
+
+
+        </li>
+        <li><span class="parameter">eg</span>
 
 
 
@@ -242,7 +488,7 @@ OPTIONS:
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-07-13 10:58:06 </i>
+<i style="float:right;">Last updated 2021-07-15 23:45:22 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
