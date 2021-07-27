@@ -1,0 +1,5 @@
+# sh  rquirements.txt
+set -x
+brew install lua luarocks
+luarocks install argparse
+sudo  pip install pygments

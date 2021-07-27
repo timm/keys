@@ -18,9 +18,9 @@ hi() {
   tput sgr0
 }
 
-if [ -z "$Ful" ]; then
-  Ful="$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )"
-  Ful="$Ful" bash --init-file "${BASH_SOURCE[0]}" -i
+if [ -z "$Keys" ]; then
+  Keys="$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )"
+  Keys="$Keys" bash --init-file "${BASH_SOURCE[0]}" -i
 else
   alias ..='cd ..'
   alias ...='cd ../../../'
@@ -32,11 +32,11 @@ else
   alias bye="gp; tmux detach"
   alias h="history"
   alias ls="ls -G"
-  alias tmux="tmux -f $Ful/etc/tmux-conf "
-  alias vi="vim -u $Ful/etc/vimrc "
+  alias tmux="tmux -f $Keys/etc/tmux-conf "
+  alias vi="vim -u $Keys/etc/vimrc "
   alias vims="vim +PluginInstall +qall"         
   alias nscript="enscript -2G -Elua --color --line-numbers -fHelvetica7 -o - keys| pstopdf -o keys.pdf"
-  alias pygment="pygmentize  -l lua  -O full,style=vs -O noclasses=True  -o $Ful/docs/keys.html $Ful/src/keys"
+  alias pygment="pygmentize  -l lua  -O full,style=vs -O noclasses=True  -o $Keys/docs/keys.html $Keys/src/keys"
 
 
   
