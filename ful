@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# vim: ts=2 sw=2 sts=2 et :
+  
+hi() { 
+  clear
+  tput bold; tput setaf 3
+  cat<<-'EOF'
+
+    |\__/,|   (`\    "The basful are always
+  _.|o o  |_   ) )   aggressive at heart."
+-(((---(((--------        -- Charles Cooley
+
+	EOF
+  tput bold; tput setaf 241
+  echo "Short cuts:"
+  alias | sed 's/alias /  /'
+  echo ""
+  tput sgr0
+}
+
+if [ -z "$Ful" ]; then
+  Ful="$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )"
+  Ful="$Ful" bash --init-file "${BASH_SOURCE[0]}" -i
+else
+  alias ..='cd ..'
+  alias ...='cd ../../../'
+  alias grep='grep --color=auto'
+  alias egrep='egrep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias gp="git add *;git commit -am save;git push;git status"
+  alias hello="git pull"
+  alias bye="gp; tmux detach"
+  alias h="history"
+  alias ls="ls -G"
+  alias tmux="tmux -f $Ful/etc/tmux-conf "
+  alias vi="vim -u $Ful/etc/vimrc "
+  alias vims="vim +PluginInstall +qall"         
+  alias nscript="enscript -2G -Elua --color --line-numbers -fHelvetica7 -o - keys| pstopdf -o keys.pdf"
+
+  
+  here() { cd $1; basename `pwd`; }
+  
+  PROMPT_COMMAND='echo -ne "🔐 $(git branch 2>/dev/null | grep '^*' | colrm 1 2):";PS1="$(here ..)/$(here .):\!\e[m ▶ "'
+  hi
+fi

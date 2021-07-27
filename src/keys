@@ -1,0 +1,51 @@
+#!/usr/bin/env lua
+-- vim: filetype=lua ts=2 sw=2 sts=2 et :
+local help=[[
+ ,-_|\   Contrast set learning
+/     \  (c) Tim Menzies, 2021, unlicense.org
+\_,-._*  Cluster, then reports, just the 
+     v   deltas between similar clusters.]]
+
+local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
+local argparse = require("argparse")
+local cli, config, sorted
+ 
+function config() return  {
+  bins=    {.5     ,'bins are of size n**BINS'},
+  cols=    {'x'    ,'columns to use for inference'},
+  data=    {'../data/auto2.csv', 'where to read data'},
+  far=     {.9     ,'where to look for far things'},
+  goaL=    {'best' ,'learning goals: best|rest|other'},
+  iota=    {.3     ,'small = sd**iota'},
+  k=       {2      ,'bayes low class frequency hack'},
+  m=       {1      ,'bayes low range frequency hack'},
+  p=       {2      ,'distance calculation exponent'},
+  samples= {20     ,'#samples to find far things?'},
+  seed=    {10013  , 'seed for random numbers'},
+  top=     {10     ,'focus on this many'},
+  unsafe=  {false  ,'run example, no protection'},
+  verbose= {false  ,'set verbose'},
+  xample=  {""     ,"'-x ls' lists all, '-x all' runs all"}}
+end
+
+function sorted(t,         i,keys)
+  i,keys = 0,{}
+  for k in pairs(t) do keys[#keys+1] = k end
+  table.sort(keys)
+  return function ()
+    if i < #keys then
+      i=i+1; return keys[i], t[keys[i]] end end
+end
+
+function cli(what,txt,t,       arg)
+  arg = argparse(what, txt)
+  for flag,v in sorted(t) do
+    if   v[1]==false
+    then arg:flag("--"..flag, v[2], v[1])
+    else if type(b4)==number 
+    then arg:option("--"..flag, v[2], v[1]):convert{tonumber}
+    else arg:option("--"..flag, v[2], v[1]) end end end
+  return arg:parse() end
+
+print(cli("./keys", help, config()).k)
+for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end

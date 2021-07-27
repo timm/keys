@@ -1,5 +1,6 @@
 # essential
 lua>=5.4
+argparse
 
 # only if  you want to use  my documentation generation
 pycco>= 0.6 
