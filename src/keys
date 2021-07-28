@@ -6,8 +6,8 @@ local about=[[
 /     \  (c) Tim Menzies, 2021, unlicense.org
 \_,-._*  Cluster, then report just the 
      v   deltas between nearby clusters.]]
--------------------------------------------------
 local argparse = require("argparse")
+local Obj={}
 
 local function config() return  {
   bins=    {.5     ,'bins are of size n**BINS'},
@@ -27,6 +27,18 @@ local function config() return  {
   verbose= {false  ,'set verbose'},
   xample=  {""     ,"'-x ls' lists all, '-x all' runs all"}} end
 
+-----------------------------------------------------------
+--- Columns
+local Num={}
+function Num:new(at,s)
+  return Obj.new(self,"Num",{
+    at = at or 0, txt = s or "", n = 0,_all = {},ok = false},
+    w = s:match("-") and -1 or 1})
+
+local Sym={}
+function  Sym:new(at,s)
+-----------------------------------------------------------
+--- Utils
 local function sorted(t,         i,keys)
   i,keys = 0,{}
   for k in pairs(t) do keys[#keys+1] = k end
@@ -34,6 +46,39 @@ local function sorted(t,         i,keys)
   return function ()
     if i < #keys then
       i=i+1; return keys[i], t[keys[i]] end end end
+
+local function pump(o) print(dump(o)) end
+local function dump(o)
+  local sep, s, keys = "", (o._name or "") .."{", {}
+  if #o > 0 then
+    for _,v in pairs(o) do s=s .. sep .. tostring(v);sep=", " end
+  else
+    for _,k in sorted(keys) do 
+      s=s .. sep .. tostring(k).."="..tostring(o[k])
+      sep=", " end end
+  return s.."}" end
+
+local function csv(file,       split,stream,tmp)
+  stream = file and io.input(file) or io.input()
+  tmp    = io.read()
+  return function(       t)
+    if tmp then
+      tmp = tmp:gsub("[\t\r ]*",""):gsub("#.*","")
+      t={}; for y in string.gmatch(tmp, "([^,]+)") do t[#t+1]=y end
+      tmp = io.read()
+      if #t > 0 then
+        for j,x in pairs(t) do t[j]=tonumber(x) or x end
+        return t end
+    else
+      io.close(stream) end end end
+
+function Obj:new(name, new)
+  local new = new or {}
+  setmetatable(new, self)
+  self.__tostring = dump 
+  self.__index    = self
+  self._name      = name
+  return new end
 
 local function cli(what,about,t,       arg)
   arg = argparse(what, about)
