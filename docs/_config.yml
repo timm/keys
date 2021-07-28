@@ -4,8 +4,8 @@ title: Keys
 email: 
 description: > # this means to ignore newlines until "baseurl:"
   Stuff and things
-baseurl: "/arctic-fox-theme" # the subpath of your site, e.g. /blog/
-url: "http://menzies.us/keys" # the base hostname & protocol for your site
+baseurl: "/keys" # the subpath of your site, e.g. /blog/
+url: "http://menzies.us" # the base hostname & protocol for your site
 twitter_username: timmenzies
 github_username: timm
 
