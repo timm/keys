@@ -22,232 +22,284 @@ td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5
 span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 body .hll { background-color: #ffffcc }
 body { background: #ffffff; }
-body .c { color: #008000 } /* Comment */
-body .err { border: 1px solid #FF0000 } /* Error */
-body .k { color: #0000ff } /* Keyword */
-body .ch { color: #008000 } /* Comment.Hashbang */
-body .cm { color: #008000 } /* Comment.Multiline */
-body .cp { color: #0000ff } /* Comment.Preproc */
-body .cpf { color: #008000 } /* Comment.PreprocFile */
-body .c1 { color: #008000 } /* Comment.Single */
-body .cs { color: #008000 } /* Comment.Special */
+body .c { color: #008800; font-style: italic } /* Comment */
+body .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+body .k { color: #000080; font-weight: bold } /* Keyword */
+body .ch { color: #008800; font-style: italic } /* Comment.Hashbang */
+body .cm { color: #008800; font-style: italic } /* Comment.Multiline */
+body .cp { color: #008080 } /* Comment.Preproc */
+body .cpf { color: #008800; font-style: italic } /* Comment.PreprocFile */
+body .c1 { color: #008800; font-style: italic } /* Comment.Single */
+body .cs { color: #008800; font-weight: bold } /* Comment.Special */
+body .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
 body .ge { font-style: italic } /* Generic.Emph */
-body .gh { font-weight: bold } /* Generic.Heading */
-body .gp { font-weight: bold } /* Generic.Prompt */
+body .gr { color: #aa0000 } /* Generic.Error */
+body .gh { color: #999999 } /* Generic.Heading */
+body .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+body .go { color: #888888 } /* Generic.Output */
+body .gp { color: #555555 } /* Generic.Prompt */
 body .gs { font-weight: bold } /* Generic.Strong */
-body .gu { font-weight: bold } /* Generic.Subheading */
-body .kc { color: #0000ff } /* Keyword.Constant */
-body .kd { color: #0000ff } /* Keyword.Declaration */
-body .kn { color: #0000ff } /* Keyword.Namespace */
-body .kp { color: #0000ff } /* Keyword.Pseudo */
-body .kr { color: #0000ff } /* Keyword.Reserved */
-body .kt { color: #2b91af } /* Keyword.Type */
-body .s { color: #a31515 } /* Literal.String */
-body .nc { color: #2b91af } /* Name.Class */
-body .ow { color: #0000ff } /* Operator.Word */
-body .sa { color: #a31515 } /* Literal.String.Affix */
-body .sb { color: #a31515 } /* Literal.String.Backtick */
-body .sc { color: #a31515 } /* Literal.String.Char */
-body .dl { color: #a31515 } /* Literal.String.Delimiter */
-body .sd { color: #a31515 } /* Literal.String.Doc */
-body .s2 { color: #a31515 } /* Literal.String.Double */
-body .se { color: #a31515 } /* Literal.String.Escape */
-body .sh { color: #a31515 } /* Literal.String.Heredoc */
-body .si { color: #a31515 } /* Literal.String.Interpol */
-body .sx { color: #a31515 } /* Literal.String.Other */
-body .sr { color: #a31515 } /* Literal.String.Regex */
-body .s1 { color: #a31515 } /* Literal.String.Single */
-body .ss { color: #a31515 } /* Literal.String.Symbol */
+body .gu { color: #aaaaaa } /* Generic.Subheading */
+body .gt { color: #aa0000 } /* Generic.Traceback */
+body .kc { color: #000080; font-weight: bold } /* Keyword.Constant */
+body .kd { color: #000080; font-weight: bold } /* Keyword.Declaration */
+body .kn { color: #000080; font-weight: bold } /* Keyword.Namespace */
+body .kp { color: #000080; font-weight: bold } /* Keyword.Pseudo */
+body .kr { color: #000080; font-weight: bold } /* Keyword.Reserved */
+body .kt { color: #000080; font-weight: bold } /* Keyword.Type */
+body .m { color: #0000FF } /* Literal.Number */
+body .s { color: #0000FF } /* Literal.String */
+body .na { color: #FF0000 } /* Name.Attribute */
+body .nt { color: #000080; font-weight: bold } /* Name.Tag */
+body .ow { font-weight: bold } /* Operator.Word */
+body .w { color: #bbbbbb } /* Text.Whitespace */
+body .mb { color: #0000FF } /* Literal.Number.Bin */
+body .mf { color: #0000FF } /* Literal.Number.Float */
+body .mh { color: #0000FF } /* Literal.Number.Hex */
+body .mi { color: #0000FF } /* Literal.Number.Integer */
+body .mo { color: #0000FF } /* Literal.Number.Oct */
+body .sa { color: #0000FF } /* Literal.String.Affix */
+body .sb { color: #0000FF } /* Literal.String.Backtick */
+body .sc { color: #800080 } /* Literal.String.Char */
+body .dl { color: #0000FF } /* Literal.String.Delimiter */
+body .sd { color: #0000FF } /* Literal.String.Doc */
+body .s2 { color: #0000FF } /* Literal.String.Double */
+body .se { color: #0000FF } /* Literal.String.Escape */
+body .sh { color: #0000FF } /* Literal.String.Heredoc */
+body .si { color: #0000FF } /* Literal.String.Interpol */
+body .sx { color: #0000FF } /* Literal.String.Other */
+body .sr { color: #0000FF } /* Literal.String.Regex */
+body .s1 { color: #0000FF } /* Literal.String.Single */
+body .ss { color: #0000FF } /* Literal.String.Symbol */
+body .il { color: #0000FF } /* Literal.Number.Integer.Long */
 
   </style>
 </head>
 <body>
 <h2></h2>
 
-<div class="highlight" style="background: #ffffff"><pre style="line-height: 125%;"><span></span><span style="color: #0000ff">#!/usr/bin/env lua</span>
-<span style="color: #008000">-- vim: filetype=lua ts=2 sw=2 sts=2 et :</span>
-<span style="color: #0000ff">local</span> b4={}; <span style="color: #0000ff">for</span> k,_ <span style="color: #0000ff">in</span> pairs(_ENV) <span style="color: #0000ff">do</span> b4[k]=k <span style="color: #0000ff">end</span>
-<span style="color: #0000ff">local</span> about=<span style="color: #a31515">[[</span>
-<span style="color: #a31515"> ,-_|\   Contrast set learning</span>
-<span style="color: #a31515">/     \  (c) Tim Menzies, 2021, unlicense.org</span>
-<span style="color: #a31515">\_,-._*  Cluster, then report just the </span>
-<span style="color: #a31515">     v   deltas between nearby clusters.]]</span>
-<span style="color: #0000ff">local</span> argparse = require(<span style="color: #a31515">&quot;argparse&quot;</span>)
-<span style="color: #0000ff">local</span> Obj={}
+<div class="highlight"><pre><span></span><span class="cp">#!/usr/bin/env lua</span>
+<span class="c1">-- vim: filetype=lua ts=2 sw=2 sts=2 et :</span>
+<span class="kd">local</span> <span class="n">b4</span><span class="o">=</span><span class="p">{};</span> <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">_</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">_ENV</span><span class="p">)</span> <span class="kr">do</span> <span class="n">b4</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">k</span> <span class="kr">end</span>
+<span class="kd">local</span> <span class="n">about</span><span class="o">=</span><span class="s">[[</span>
+<span class="s"> ,-_|\   Contrast set learning</span>
+<span class="s">/     \  (c) Tim Menzies, 2021, unlicense.org</span>
+<span class="s">\_,-._*  Cluster, then report just the </span>
+<span class="s">     v   deltas between nearby clusters.]]</span>
+<span class="kd">local</span> <span class="n">argparse</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;argparse&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">Obj</span><span class="o">=</span><span class="p">{}</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> config() <span style="color: #0000ff">return</span> {
-  bins=    {.5     ,<span style="color: #a31515">&#39;Bins are of size n**BINS&#39;</span>},
-  cols=    {<span style="color: #a31515">&#39;x&#39;</span>    ,<span style="color: #a31515">&#39;Columns to use for inference&#39;</span>},
-  data=    {<span style="color: #a31515">&#39;../data/auto2.csv&#39;</span>, 
-                   <span style="color: #a31515">&#39;Where to read data&#39;</span>},
-  far=     {.9     ,<span style="color: #a31515">&#39;Where to look for far things&#39;</span>},
-  goaL=    {<span style="color: #a31515">&#39;best&#39;</span> ,<span style="color: #a31515">&#39;Learning goals: best|rest|other&#39;</span>},
-  iota=    {.3     ,<span style="color: #a31515">&#39;Small = sd**iota&#39;</span>},
-  k=       {2      ,<span style="color: #a31515">&#39;Bayes low class frequency hack&#39;</span>},
-  m=       {1      ,<span style="color: #a31515">&#39;Bayes low range frequency hack&#39;</span>},
-  p=       {2      ,<span style="color: #a31515">&#39;Distance calculation exponent&#39;</span>},
-  samples= {20     ,<span style="color: #a31515">&#39;Number of samples to find far things&#39;</span>},
-  seed=    {10013  ,<span style="color: #a31515">&#39;Seed for random numbers&#39;</span>},
-  top=     {10     ,<span style="color: #a31515">&#39;Focus on this many&#39;</span>},
-  unsafe=  {<span style="color: #0000ff">false</span>  ,<span style="color: #a31515">&#39;Run examples, no protection&#39;</span>},
-  verbose= {<span style="color: #0000ff">false</span>  ,<span style="color: #a31515">&#39;Set verbose&#39;</span>},
-  xample=  {<span style="color: #a31515">&quot;&quot;</span>     ,<span style="color: #a31515">&quot;&#39;-x ls&#39; lists all, &#39;-x all&#39; runs all&quot;</span>}} <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">config</span><span class="p">()</span> <span class="kr">return</span> <span class="p">{</span>
+  <span class="n">bins</span><span class="o">=</span>    <span class="p">{</span><span class="mf">.5</span>     <span class="p">,</span><span class="s1">&#39;Bins are of size n**BINS&#39;</span><span class="p">},</span>
+  <span class="n">cols</span><span class="o">=</span>    <span class="p">{</span><span class="s1">&#39;x&#39;</span>    <span class="p">,</span><span class="s1">&#39;Columns to use for inference&#39;</span><span class="p">},</span>
+  <span class="n">data</span><span class="o">=</span>    <span class="p">{</span><span class="s1">&#39;../data/auto2.csv&#39;</span><span class="p">,</span> 
+                   <span class="s1">&#39;Where to read data&#39;</span><span class="p">},</span>
+  <span class="n">far</span><span class="o">=</span>     <span class="p">{</span><span class="mf">.9</span>     <span class="p">,</span><span class="s1">&#39;Where to look for far things&#39;</span><span class="p">},</span>
+  <span class="n">goaL</span><span class="o">=</span>    <span class="p">{</span><span class="s1">&#39;best&#39;</span> <span class="p">,</span><span class="s1">&#39;Learning goals: best|rest|other&#39;</span><span class="p">},</span>
+  <span class="n">iota</span><span class="o">=</span>    <span class="p">{</span><span class="mf">.3</span>     <span class="p">,</span><span class="s1">&#39;Small = sd**iota&#39;</span><span class="p">},</span>
+  <span class="n">k</span><span class="o">=</span>       <span class="p">{</span><span class="mi">2</span>      <span class="p">,</span><span class="s1">&#39;Bayes low class frequency hack&#39;</span><span class="p">},</span>
+  <span class="n">m</span><span class="o">=</span>       <span class="p">{</span><span class="mi">1</span>      <span class="p">,</span><span class="s1">&#39;Bayes low range frequency hack&#39;</span><span class="p">},</span>
+  <span class="n">p</span><span class="o">=</span>       <span class="p">{</span><span class="mi">2</span>      <span class="p">,</span><span class="s1">&#39;Distance calculation exponent&#39;</span><span class="p">},</span>
+  <span class="n">samples</span><span class="o">=</span> <span class="p">{</span><span class="mi">20</span>     <span class="p">,</span><span class="s1">&#39;Number of samples to find far things&#39;</span><span class="p">},</span>
+  <span class="n">seed</span><span class="o">=</span>    <span class="p">{</span><span class="mi">10013</span>  <span class="p">,</span><span class="s1">&#39;Seed for random numbers&#39;</span><span class="p">},</span>
+  <span class="n">top</span><span class="o">=</span>     <span class="p">{</span><span class="mi">10</span>     <span class="p">,</span><span class="s1">&#39;Focus on this many&#39;</span><span class="p">},</span>
+  <span class="n">unsafe</span><span class="o">=</span>  <span class="p">{</span><span class="kc">false</span>  <span class="p">,</span><span class="s1">&#39;Run examples, no protection&#39;</span><span class="p">},</span>
+  <span class="n">verbose</span><span class="o">=</span> <span class="p">{</span><span class="kc">false</span>  <span class="p">,</span><span class="s1">&#39;Set verbose&#39;</span><span class="p">},</span>
+  <span class="n">xample</span><span class="o">=</span>  <span class="p">{</span><span class="s2">&quot;&quot;</span>     <span class="p">,</span><span class="s2">&quot;&#39;-x ls&#39; lists all, &#39;-x all&#39; runs all&quot;</span><span class="p">}}</span> <span class="kr">end</span>
 
-<span style="color: #008000">--[[</span>
+<span class="cm">--[[ -------------------------------------------------------</span>
 
-<span style="color: #008000">&lt;h1&gt;asds&lt;/h1&gt;</span>
+<span class="cm">Columns</span>
+<span class="cm">=======</span>
 
-<span style="color: #008000">asd</span>
-<span style="color: #008000">asd</span>
-<span style="color: #008000">asd</span>
-<span style="color: #008000">asd</span>
+<span class="cm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lorem</span>
+<span class="cm">orci, facilisis ac sapien quis, maximus suscipit neque. Cras accumsan,</span>
+<span class="cm">leo ac volutpat lobortis, lectus dolor auctor leo, at scelerisque</span>
+<span class="cm">libero magna sit amet tellus. Etiam pulvinar vel massa sed placerat.</span>
+<span class="cm">Phasellus malesuada arcu metus, condimentum accumsan mauris interdum</span>
+<span class="cm">a. Nulla facilisi. Proin sit amet augue at lectus molestie vestibulum.</span>
+<span class="cm">In imperdiet elit nunc, sit amet hendrerit elit mattis et. Quisque</span>
+<span class="cm">dictum arcu tempus urna convallis, non dignissim purus accumsan. In</span>
+<span class="cm">varius nec justo nec blandit. Nullam semper non odio sed ornare.</span>
+<span class="cm">Quisque laoreet eget libero vel consequat. In hac habitasse platea</span>
+<span class="cm">dictumst. Fusce sed bibendum risus, vitae sagittis nibh.</span>
 
-<span style="color: #008000">--]]</span>
-<span style="color: #008000">-----------------------------------------------------------</span>
-<span style="color: #008000">--- Columns</span>
-<span style="color: #0000ff">local</span> Num={}
-<span style="color: #0000ff">function</span> <span style="color: #2b91af">Num</span>:new(at,s)
-  <span style="color: #0000ff">return</span> Obj.new(self,<span style="color: #a31515">&quot;Num&quot;</span>,{
-    at = at <span style="color: #0000ff">or</span> 0, txt = s <span style="color: #0000ff">or</span> <span style="color: #a31515">&quot;&quot;</span>, n = 0,_all = {},ok = <span style="color: #0000ff">false</span>,
-    w = s:match(<span style="color: #a31515">&quot;-&quot;</span>) <span style="color: #0000ff">and</span> -1 <span style="color: #0000ff">or</span> 1}) <span style="color: #0000ff">end</span>
+<span class="cm">Cras molestie sed tortor eleifend venenatis. Aliquam molestie bibendum</span>
+<span class="cm">magna eget porta. Sed at elementum arcu, sit amet volutpat nisl.</span>
+<span class="cm">Quisque sit amet lectus nisl. Suspendisse aliquet aliquet iaculis. Ut</span>
+<span class="cm">vitae elit bibendum, volutpat odio ac, tincidunt augue. Nunc eget</span>
+<span class="cm">vehicula orci.</span>
 
-<span style="color: #0000ff">function</span> <span style="color: #2b91af">Num</span>:add(x)
-  <span style="color: #0000ff">if</span>  x ~= <span style="color: #a31515">&quot;?&quot;</span> <span style="color: #0000ff">then</span>
-    self.n = self.n + 1
-    self._all[ 1 + #self._all] = x
-    self.ok= <span style="color: #0000ff">false</span> <span style="color: #0000ff">end</span>
-  <span style="color: #0000ff">return</span> x <span style="color: #0000ff">end</span> 
+<span class="cm">Proin bibendum ac odio ac mattis. Donec metus dui, ornare sit amet</span>
+<span class="cm">erat euismod, congue convallis magna. Duis eu nibh vulputate, ornare</span>
+<span class="cm">metus et, maximus orci. Proin risus ipsum, blandit quis venenatis et,</span>
+<span class="cm">blandit et enim. Vivamus interdum vehicula elit, in mattis velit</span>
+<span class="cm">ullamcorper at. Praesent imperdiet nunc lorem, in finibus orci</span>
+<span class="cm">elementum ut. Pellentesque habitant morbi tristique senectus et netus</span>
+<span class="cm">et malesuada fames ac turpis egestas. Aenean et velit sed nunc viverra</span>
+<span class="cm">dictum sed at lectus. Fusce placerat pharetra mattis. Nullam eu</span>
+<span class="cm">pharetra tortor, sed maximus tortor. Maecenas feugiat commodo mauris</span>
+<span class="cm">sit amet commodo. Vivamus porta, nibh nec mollis feugiat, massa felis</span>
+<span class="cm">maximus nibh, id condimentum risus odio quis dolor.</span>
 
-<span style="color: #008000">-----------------------------------------------------------</span>
-<span style="color: #008000">--- Utils</span>
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> sorted(t,         i,keys)
-  i,keys = 0,{}
-  <span style="color: #0000ff">for</span> k <span style="color: #0000ff">in</span> pairs(t) <span style="color: #0000ff">do</span> keys[#keys+1] = k <span style="color: #0000ff">end</span>
-  table.sort(keys)
-  <span style="color: #0000ff">return</span> <span style="color: #0000ff">function</span> ()
-    <span style="color: #0000ff">if</span> i &lt; #keys <span style="color: #0000ff">then</span>
-      i=i+1; <span style="color: #0000ff">return</span> keys[i], t[keys[i]] <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span>
+<span class="cm">Proin nulla enim, condimentum facilisis ultricies at, iaculis at sem.</span>
+<span class="cm">Suspendisse id velit purus. Curabitur a ornare metus. Quisque a orci</span>
+<span class="cm">non leo porttitor bibendum nec quis nisl. Praesent maximus porta</span>
+<span class="cm">iaculis. Duis pulvinar dapibus commodo. Fusce tempor lacinia sem</span>
+<span class="cm">laoreet maximus. Sed at ex faucibus, semper mi ac, condimentum dolor.</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> map(a,f,     b)
-  b, f = {}, f <span style="color: #0000ff">or</span> <span style="color: #0000ff">function</span>(z) <span style="color: #0000ff">return</span> z <span style="color: #0000ff">end</span>
-  <span style="color: #0000ff">for</span> i,v <span style="color: #0000ff">in</span> pairs(a <span style="color: #0000ff">or</span> {}) <span style="color: #0000ff">do</span> b[i] = f(v) <span style="color: #0000ff">end</span> 
-  <span style="color: #0000ff">return</span> b <span style="color: #0000ff">end</span> 
+<span class="cm">Aliquam ut rutrum purus, a iaculis massa. Duis libero lectus, molestie</span>
+<span class="cm">nec tempor et, scelerisque non velit. Cras porttitor augue id viverra</span>
+<span class="cm">sollicitudin. Suspendisse elit nibh, sagittis nec dolor non, hendrerit</span>
+<span class="cm">posuere nunc. Ut et ex metus. Nullam iaculis imperdiet ipsum, at</span>
+<span class="cm">eleifend nulla bibendum iaculis. Etiam in purus eget urna semper</span>
+<span class="cm">sodales. Sed consequat, diam eget eleifend rhoncus, leo ex auctor</span>
+<span class="cm">ligula, aliquet egestas diam dolor vel massa.</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> copy(t) <span style="color: #0000ff">return</span> type(t)~=<span style="color: #a31515">&#39;table&#39;</span> <span style="color: #0000ff">and</span> t <span style="color: #0000ff">or</span> map(t,copy) <span style="color: #0000ff">end</span>
+<span class="cm">--]]</span>
+<span class="kd">local</span> <span class="n">Num</span><span class="o">=</span><span class="p">{}</span>
+<span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="n">at</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="n">Obj</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="s2">&quot;Num&quot;</span><span class="p">,{</span>
+    <span class="n">at</span> <span class="o">=</span> <span class="n">at</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">s</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">_all</span> <span class="o">=</span> <span class="p">{},</span><span class="n">ok</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">s</span><span class="p">:</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">})</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> fmt(s,...) <span style="color: #0000ff">return</span> io.write(s:format(...)) <span style="color: #0000ff">end</span> 
+<span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="kr">if</span>  <span class="n">x</span> <span class="o">~=</span> <span class="s2">&quot;?&quot;</span> <span class="kr">then</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">_all</span><span class="p">[</span> <span class="mi">1</span> <span class="o">+</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_all</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">ok</span><span class="o">=</span> <span class="kc">false</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="n">x</span> <span class="kr">end</span> 
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> color(s,...)
-  <span style="color: #0000ff">local</span> col={red=31, green=32, yellow=33, purple=34}
-  print(<span style="color: #a31515">&#39;\27[1m\27[&#39;</span>.. col[s] ..<span style="color: #a31515">&#39;m&#39;</span>..string.format(...)..<span style="color: #a31515">&#39;\27[0m&#39;</span>) <span style="color: #0000ff">end</span>
+<span class="c1">-----------------------------------------------------------</span>
+<span class="c1">--- Utils</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">sorted</span><span class="p">(</span><span class="n">t</span><span class="p">,</span>         <span class="n">i</span><span class="p">,</span><span class="n">keys</span><span class="p">)</span>
+  <span class="n">i</span><span class="p">,</span><span class="n">keys</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,{}</span>
+  <span class="kr">for</span> <span class="n">k</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">keys</span><span class="p">[</span><span class="o">#</span><span class="n">keys</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span> <span class="kr">end</span>
+  <span class="nb">table.sort</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="kr">function</span> <span class="p">()</span>
+    <span class="kr">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="o">#</span><span class="n">keys</span> <span class="kr">then</span>
+      <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="kr">return</span> <span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">function</span> dump(o)
-  <span style="color: #0000ff">local</span> sep, s, keys = <span style="color: #a31515">&quot;&quot;</span>, (o._name <span style="color: #0000ff">or</span> <span style="color: #a31515">&quot;&quot;</span>) ..<span style="color: #a31515">&quot;{&quot;</span>, {}
-  <span style="color: #0000ff">for</span> key,_ <span style="color: #0000ff">in</span> pairs(o) <span style="color: #0000ff">do</span> keys[#keys+1] = key <span style="color: #0000ff">end</span>
-  table.sort(keys)
-  <span style="color: #0000ff">for</span> _,k <span style="color: #0000ff">in</span> pairs(keys) <span style="color: #0000ff">do</span> 
-    s=s .. sep .. tostring(k)..<span style="color: #a31515">&quot;=&quot;</span>..tostring(o[k])
-    sep=<span style="color: #a31515">&quot;, &quot;</span> <span style="color: #0000ff">end</span> 
-  <span style="color: #0000ff">return</span> s..<span style="color: #a31515">&quot;}&quot;</span> <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">map</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">f</span><span class="p">,</span>     <span class="n">b</span><span class="p">)</span>
+  <span class="n">b</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">f</span> <span class="ow">or</span> <span class="kr">function</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="kr">return</span> <span class="n">z</span> <span class="kr">end</span>
+  <span class="kr">for</span> <span class="n">i</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">a</span> <span class="ow">or</span> <span class="p">{})</span> <span class="kr">do</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="kr">end</span> 
+  <span class="kr">return</span> <span class="n">b</span> <span class="kr">end</span> 
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> rump(t,pre,    indent,fmt)
-  pre, indent = pre <span style="color: #0000ff">or</span> <span style="color: #a31515">&quot;&quot;</span>, indent <span style="color: #0000ff">or</span> 0
-  <span style="color: #0000ff">if</span> indent &lt; 10 <span style="color: #0000ff">then</span>
-    <span style="color: #0000ff">for</span> k, v <span style="color: #0000ff">in</span> pairs(t <span style="color: #0000ff">or</span> {}) <span style="color: #0000ff">do</span>
-      <span style="color: #0000ff">if</span> <span style="color: #0000ff">not</span> (type(k)==<span style="color: #a31515">&#39;string&#39;</span> <span style="color: #0000ff">and</span> k:match(<span style="color: #a31515">&quot;^_&quot;</span>)) <span style="color: #0000ff">then</span>
-        fmt= pre..string.rep(<span style="color: #a31515">&quot;|  &quot;</span>,indent)..tostring(k)..<span style="color: #a31515">&quot;: &quot;</span>
-        <span style="color: #0000ff">if</span> type(v) == <span style="color: #a31515">&quot;table&quot;</span> <span style="color: #0000ff">then</span>
-          print(fmt)
-          rump(v, pre, indent+1)
-        <span style="color: #0000ff">else</span>
-          print(fmt .. tostring(v)) <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">copy</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">~=</span><span class="s1">&#39;table&#39;</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">or</span> <span class="n">map</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">copy</span><span class="p">)</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> pump(o) print(dump(o)) <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">fmt</span><span class="p">(</span><span class="n">s</span><span class="p">,...)</span> <span class="kr">return</span> <span class="nb">io.write</span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="n">format</span><span class="p">(...))</span> <span class="kr">end</span> 
 
-<span style="color: #0000ff">local</span> seed = 10013
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> park_miller_randomizer(     mult,mod)
-  mult, mod = 16807.0, 2147483647.0
-  seed = (mult * seed) % mod 
-  <span style="color: #0000ff">return</span> seed / mod <span style="color: #0000ff">end</span> 
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">color</span><span class="p">(</span><span class="n">s</span><span class="p">,...)</span>
+  <span class="kd">local</span> <span class="n">col</span><span class="o">=</span><span class="p">{</span><span class="n">red</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span> <span class="n">green</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">yellow</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">purple</span><span class="o">=</span><span class="mi">34</span><span class="p">}</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\27</span><span class="s1">[1m</span><span class="se">\27</span><span class="s1">[&#39;</span><span class="o">..</span> <span class="n">col</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">..</span><span class="s1">&#39;m&#39;</span><span class="o">..</span><span class="nb">string.format</span><span class="p">(...)</span><span class="o">..</span><span class="s1">&#39;</span><span class="se">\27</span><span class="s1">[0m&#39;</span><span class="p">)</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> rand(lo,hi) 
-  lo,hi = lo <span style="color: #0000ff">or</span> 0, hi <span style="color: #0000ff">or</span> 1
-  <span style="color: #0000ff">return</span> lo + (hi-lo)*park_miller_randomizer() <span style="color: #0000ff">end</span>
+<span class="kr">function</span> <span class="nf">dump</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">sep</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">_name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">..</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="p">{}</span>
+  <span class="kr">for</span> <span class="n">key</span><span class="p">,</span><span class="n">_</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="kr">do</span> <span class="n">keys</span><span class="p">[</span><span class="o">#</span><span class="n">keys</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span> <span class="kr">end</span>
+  <span class="nb">table.sort</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+  <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">k</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="kr">do</span> 
+    <span class="n">s</span><span class="o">=</span><span class="n">s</span> <span class="o">..</span> <span class="n">sep</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">..</span><span class="s2">&quot;=&quot;</span><span class="o">..</span><span class="nb">tostring</span><span class="p">(</span><span class="n">o</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;, &quot;</span> <span class="kr">end</span> 
+  <span class="kr">return</span> <span class="n">s</span><span class="o">..</span><span class="s2">&quot;}&quot;</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> csv(file,       split,stream,tmp)
-  stream = file <span style="color: #0000ff">and</span> io.input(file) <span style="color: #0000ff">or</span> io.input()
-  tmp    = io.read()
-  <span style="color: #0000ff">return</span> <span style="color: #0000ff">function</span>(       t)
-    <span style="color: #0000ff">if</span> tmp <span style="color: #0000ff">then</span>
-      tmp = tmp:gsub(<span style="color: #a31515">&quot;[\t\r ]*&quot;</span>,<span style="color: #a31515">&quot;&quot;</span>):gsub(<span style="color: #a31515">&quot;#.*&quot;</span>,<span style="color: #a31515">&quot;&quot;</span>)
-      t={}; <span style="color: #0000ff">for</span> y <span style="color: #0000ff">in</span> string.gmatch(tmp, <span style="color: #a31515">&quot;([^,]+)&quot;</span>) <span style="color: #0000ff">do</span> t[#t+1]=y <span style="color: #0000ff">end</span>
-      tmp = io.read()
-      <span style="color: #0000ff">if</span> #t &gt; 0 <span style="color: #0000ff">then</span>
-        <span style="color: #0000ff">for</span> j,x <span style="color: #0000ff">in</span> pairs(t) <span style="color: #0000ff">do</span> t[j]=tonumber(x) <span style="color: #0000ff">or</span> x <span style="color: #0000ff">end</span>
-        <span style="color: #0000ff">return</span> t <span style="color: #0000ff">end</span>
-    <span style="color: #0000ff">else</span>
-      io.close(stream) <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">rump</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">pre</span><span class="p">,</span>    <span class="n">indent</span><span class="p">,</span><span class="n">fmt</span><span class="p">)</span>
+  <span class="n">pre</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="n">pre</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">indent</span> <span class="ow">or</span> <span class="mi">0</span>
+  <span class="kr">if</span> <span class="n">indent</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="kr">then</span>
+    <span class="kr">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span> <span class="ow">or</span> <span class="p">{})</span> <span class="kr">do</span>
+      <span class="kr">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;string&#39;</span> <span class="ow">and</span> <span class="n">k</span><span class="p">:</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;^_&quot;</span><span class="p">))</span> <span class="kr">then</span>
+        <span class="n">fmt</span><span class="o">=</span> <span class="n">pre</span><span class="o">..</span><span class="nb">string.rep</span><span class="p">(</span><span class="s2">&quot;|  &quot;</span><span class="p">,</span><span class="n">indent</span><span class="p">)</span><span class="o">..</span><span class="nb">tostring</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">..</span><span class="s2">&quot;: &quot;</span>
+        <span class="kr">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span> <span class="kr">then</span>
+          <span class="nb">print</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+          <span class="n">rump</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">pre</span><span class="p">,</span> <span class="n">indent</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="kr">else</span>
+          <span class="nb">print</span><span class="p">(</span><span class="n">fmt</span> <span class="o">..</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">function</span> <span style="color: #2b91af">Obj</span>:new(name, new)
-  <span style="color: #0000ff">local</span> new = new <span style="color: #0000ff">or</span> {}
-  setmetatable(new, self)
-  self.__tostring = dump 
-  self.__index    = self
-  self._name      = name
-  <span style="color: #0000ff">return</span> new <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">pump</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="nb">print</span><span class="p">(</span><span class="n">dump</span><span class="p">(</span><span class="n">o</span><span class="p">))</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> cli(what,about,t,       arg,b4)
-  arg = argparse(what, about)
-  <span style="color: #0000ff">for</span> flag,v <span style="color: #0000ff">in</span> sorted(t) <span style="color: #0000ff">do</span>
-    flag = <span style="color: #a31515">&quot;--&quot;</span>..flag
-    b4 =<span style="color: #a31515">&quot; (default: &quot;</span>..tostring(v[1])..<span style="color: #a31515">&quot;)&quot;</span>
-    <span style="color: #0000ff">if</span>     v[1]==<span style="color: #0000ff">false</span>
-    <span style="color: #0000ff">then</span>   arg:flag(flag, v[2],  v[1])
-    <span style="color: #0000ff">elseif</span> type(v[1])==<span style="color: #a31515">&quot;number&quot;</span>
-    <span style="color: #0000ff">then</span>   arg:option(flag, v[2]..b4, v[1],tonumber)
-    <span style="color: #0000ff">else</span>   arg:option(flag, v[2]    , v[1]) <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span> 
-  <span style="color: #0000ff">return</span> arg:parse() <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">10013</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">park_miller_randomizer</span><span class="p">(</span>     <span class="n">mult</span><span class="p">,</span><span class="n">mod</span><span class="p">)</span>
+  <span class="n">mult</span><span class="p">,</span> <span class="n">mod</span> <span class="o">=</span> <span class="mf">16807.0</span><span class="p">,</span> <span class="mf">2147483647.0</span>
+  <span class="n">seed</span> <span class="o">=</span> <span class="p">(</span><span class="n">mult</span> <span class="o">*</span> <span class="n">seed</span><span class="p">)</span> <span class="o">%</span> <span class="n">mod</span> 
+  <span class="kr">return</span> <span class="n">seed</span> <span class="o">/</span> <span class="n">mod</span> <span class="kr">end</span> 
 
-<span style="color: #008000">-----------------------------------------------------------</span>
-<span style="color: #008000">--- Unit tests</span>
-<span style="color: #0000ff">local</span> Eg={}
-Eg.one= {
-  txt = <span style="color: #a31515">&quot;demo&quot;</span>,
-  fun = <span style="color: #0000ff">function</span> (the) 
-        <span style="color: #0000ff">for</span> k,v <span style="color: #0000ff">in</span> sorted(Eg) <span style="color: #0000ff">do</span> print(k, v.txt) <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span>}
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">rand</span><span class="p">(</span><span class="n">lo</span><span class="p">,</span><span class="n">hi</span><span class="p">)</span> 
+  <span class="n">lo</span><span class="p">,</span><span class="n">hi</span> <span class="o">=</span> <span class="n">lo</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">hi</span> <span class="ow">or</span> <span class="mi">1</span>
+  <span class="kr">return</span> <span class="n">lo</span> <span class="o">+</span> <span class="p">(</span><span class="n">hi</span><span class="o">-</span><span class="n">lo</span><span class="p">)</span><span class="o">*</span><span class="n">park_miller_randomizer</span><span class="p">()</span> <span class="kr">end</span>
 
-Eg.two= {
-  txt = <span style="color: #a31515">&quot;two two&quot;</span>,
-  fun = <span style="color: #0000ff">function</span>  (the) print(the.seed) <span style="color: #0000ff">end</span> }
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span>       <span class="n">split</span><span class="p">,</span><span class="n">stream</span><span class="p">,</span><span class="n">tmp</span><span class="p">)</span>
+  <span class="n">stream</span> <span class="o">=</span> <span class="n">file</span> <span class="ow">and</span> <span class="nb">io.input</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">io.input</span><span class="p">()</span>
+  <span class="n">tmp</span>    <span class="o">=</span> <span class="nb">io.read</span><span class="p">()</span>
+  <span class="kr">return</span> <span class="kr">function</span><span class="p">(</span>       <span class="n">t</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="n">tmp</span> <span class="kr">then</span>
+      <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">:</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;[</span><span class="se">\t\r</span><span class="s2"> ]*&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">):</span><span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;#.*&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+      <span class="n">t</span><span class="o">=</span><span class="p">{};</span> <span class="kr">for</span> <span class="n">y</span> <span class="kr">in</span> <span class="nb">string.gmatch</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="s2">&quot;([^,]+)&quot;</span><span class="p">)</span> <span class="kr">do</span> <span class="n">t</span><span class="p">[</span><span class="o">#</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">y</span> <span class="kr">end</span>
+      <span class="n">tmp</span> <span class="o">=</span> <span class="nb">io.read</span><span class="p">()</span>
+      <span class="kr">if</span> <span class="o">#</span><span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="kr">then</span>
+        <span class="kr">for</span> <span class="n">j</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span> <span class="n">t</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="nb">tonumber</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span> <span class="kr">end</span>
+        <span class="kr">return</span> <span class="n">t</span> <span class="kr">end</span>
+    <span class="kr">else</span>
+      <span class="nb">io.close</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span> <span class="kr">end</span>
 
-<span style="color: #008000">-----------------------------------------------------------</span>
-<span style="color: #008000">--- Start up</span>
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> run(name,fails,the,      fun,txt)
-  the  = copy(the)
-  seed = the.seed
-  fun  = Eg[name].fun
-  txt  = Eg[name].txt
-  <span style="color: #0000ff">if</span>     the.unsafe==<span style="color: #0000ff">true</span> 
-  <span style="color: #0000ff">then</span>   print(<span style="color: #a31515">&quot;unsafe:&quot;</span>); fun(the); os.exit(0)
-  <span style="color: #0000ff">elseif</span> pcall(<span style="color: #0000ff">function</span> () fun(the) <span style="color: #0000ff">end</span>)
-  <span style="color: #0000ff">then</span>   color(<span style="color: #a31515">&quot;green&quot;</span>,<span style="color: #a31515">&quot;%-15s  %s\n&quot;</span>,name,txt)
-  <span style="color: #0000ff">else</span>   color(<span style="color: #a31515">&quot;red&quot;</span>,  <span style="color: #a31515">&quot;%-15s  %s\n&quot;</span>,name,txt); fails=fails+1 <span style="color: #0000ff">end</span> 
-  <span style="color: #0000ff">return</span> fails <span style="color: #0000ff">end</span>
+<span class="kr">function</span> <span class="nc">Obj</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">new</span> <span class="o">=</span> <span class="n">new</span> <span class="ow">or</span> <span class="p">{}</span>
+  <span class="nb">setmetatable</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">self</span><span class="p">)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">__tostring</span> <span class="o">=</span> <span class="n">dump</span> 
+  <span class="n">self</span><span class="p">.</span><span class="n">__index</span>    <span class="o">=</span> <span class="n">self</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">_name</span>      <span class="o">=</span> <span class="n">name</span>
+  <span class="kr">return</span> <span class="n">new</span> <span class="kr">end</span>
 
-<span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> main(the,      fails)
-  fails= 0
-  <span style="color: #0000ff">if</span>     the.xample==<span style="color: #a31515">&quot;all&quot;</span> 
-  <span style="color: #0000ff">then</span>   <span style="color: #0000ff">for</span> name,meta <span style="color: #0000ff">in</span> sorted(Eg) <span style="color: #0000ff">do</span>
-         fails=run(name, fails, the) <span style="color: #0000ff">end</span> 
-  <span style="color: #0000ff">elseif</span> the.xample==<span style="color: #a31515">&quot;ls&quot;</span> 
-  <span style="color: #0000ff">then</span>   print(<span style="color: #a31515">&quot;\nexamples:&quot;</span>)
-         <span style="color: #0000ff">for</span> x,y <span style="color: #0000ff">in</span> sorted(Eg) <span style="color: #0000ff">do</span> fmt(<span style="color: #a31515">&quot;  %-15s  %s\n&quot;</span>,x,y.txt) <span style="color: #0000ff">end</span> 
-  <span style="color: #0000ff">elseif</span> the.xample <span style="color: #0000ff">and</span> Eg[the.xample] 
-  <span style="color: #0000ff">then</span>   fails = run(the.xample, fails, the) <span style="color: #0000ff">end</span>
-  os.exit(fails) <span style="color: #0000ff">end</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">cli</span><span class="p">(</span><span class="n">what</span><span class="p">,</span><span class="n">about</span><span class="p">,</span><span class="n">t</span><span class="p">,</span>       <span class="n">arg</span><span class="p">,</span><span class="n">b4</span><span class="p">)</span>
+  <span class="n">arg</span> <span class="o">=</span> <span class="n">argparse</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">about</span><span class="p">)</span>
+  <span class="kr">for</span> <span class="n">flag</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="n">sorted</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="kr">do</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="o">..</span><span class="n">flag</span>
+    <span class="n">b4</span> <span class="o">=</span><span class="s2">&quot; (default: &quot;</span><span class="o">..</span><span class="nb">tostring</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">..</span><span class="s2">&quot;)&quot;</span>
+    <span class="kr">if</span>     <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="kc">false</span>
+    <span class="kr">then</span>   <span class="n">arg</span><span class="p">:</span><span class="n">flag</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>  <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="kr">elseif</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">==</span><span class="s2">&quot;number&quot;</span>
+    <span class="kr">then</span>   <span class="n">arg</span><span class="p">:</span><span class="n">option</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">..</span><span class="n">b4</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="nb">tonumber</span><span class="p">)</span>
+    <span class="kr">else</span>   <span class="n">arg</span><span class="p">:</span><span class="n">option</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>    <span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="kr">end</span> <span class="kr">end</span> 
+  <span class="kr">return</span> <span class="n">arg</span><span class="p">:</span><span class="n">parse</span><span class="p">()</span> <span class="kr">end</span>
+
+<span class="c1">-----------------------------------------------------------</span>
+<span class="c1">--- Unit tests</span>
+<span class="kd">local</span> <span class="n">Eg</span><span class="o">=</span><span class="p">{}</span>
+<span class="n">Eg</span><span class="p">.</span><span class="n">one</span><span class="o">=</span> <span class="p">{</span>
+  <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;demo&quot;</span><span class="p">,</span>
+  <span class="n">fun</span> <span class="o">=</span> <span class="kr">function</span> <span class="p">(</span><span class="n">the</span><span class="p">)</span> 
+        <span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="kr">in</span> <span class="n">sorted</span><span class="p">(</span><span class="n">Eg</span><span class="p">)</span> <span class="kr">do</span> <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">.</span><span class="n">txt</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span><span class="p">}</span>
+
+<span class="n">Eg</span><span class="p">.</span><span class="n">two</span><span class="o">=</span> <span class="p">{</span>
+  <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;two two&quot;</span><span class="p">,</span>
+  <span class="n">fun</span> <span class="o">=</span> <span class="kr">function</span>  <span class="p">(</span><span class="n">the</span><span class="p">)</span> <span class="nb">print</span><span class="p">(</span><span class="n">the</span><span class="p">.</span><span class="n">seed</span><span class="p">)</span> <span class="kr">end</span> <span class="p">}</span>
+
+<span class="c1">-----------------------------------------------------------</span>
+<span class="c1">--- Start up</span>
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">run</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">fails</span><span class="p">,</span><span class="n">the</span><span class="p">,</span>      <span class="n">fun</span><span class="p">,</span><span class="n">txt</span><span class="p">)</span>
+  <span class="n">the</span>  <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">the</span><span class="p">)</span>
+  <span class="n">seed</span> <span class="o">=</span> <span class="n">the</span><span class="p">.</span><span class="n">seed</span>
+  <span class="n">fun</span>  <span class="o">=</span> <span class="n">Eg</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">fun</span>
+  <span class="n">txt</span>  <span class="o">=</span> <span class="n">Eg</span><span class="p">[</span><span class="n">name</span><span class="p">].</span><span class="n">txt</span>
+  <span class="kr">if</span>     <span class="n">the</span><span class="p">.</span><span class="n">unsafe</span><span class="o">==</span><span class="kc">true</span> 
+  <span class="kr">then</span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unsafe:&quot;</span><span class="p">);</span> <span class="n">fun</span><span class="p">(</span><span class="n">the</span><span class="p">);</span> <span class="nb">os.exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+  <span class="kr">elseif</span> <span class="nb">pcall</span><span class="p">(</span><span class="kr">function</span> <span class="p">()</span> <span class="n">fun</span><span class="p">(</span><span class="n">the</span><span class="p">)</span> <span class="kr">end</span><span class="p">)</span>
+  <span class="kr">then</span>   <span class="n">color</span><span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="s2">&quot;%-15s  %s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">txt</span><span class="p">)</span>
+  <span class="kr">else</span>   <span class="n">color</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>  <span class="s2">&quot;%-15s  %s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">txt</span><span class="p">);</span> <span class="n">fails</span><span class="o">=</span><span class="n">fails</span><span class="o">+</span><span class="mi">1</span> <span class="kr">end</span> 
+  <span class="kr">return</span> <span class="n">fails</span> <span class="kr">end</span>
+
+<span class="kd">local</span> <span class="kr">function</span> <span class="nf">main</span><span class="p">(</span><span class="n">the</span><span class="p">,</span>      <span class="n">fails</span><span class="p">)</span>
+  <span class="n">fails</span><span class="o">=</span> <span class="mi">0</span>
+  <span class="kr">if</span>     <span class="n">the</span><span class="p">.</span><span class="n">xample</span><span class="o">==</span><span class="s2">&quot;all&quot;</span> 
+  <span class="kr">then</span>   <span class="kr">for</span> <span class="n">name</span><span class="p">,</span><span class="n">meta</span> <span class="kr">in</span> <span class="n">sorted</span><span class="p">(</span><span class="n">Eg</span><span class="p">)</span> <span class="kr">do</span>
+         <span class="n">fails</span><span class="o">=</span><span class="n">run</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fails</span><span class="p">,</span> <span class="n">the</span><span class="p">)</span> <span class="kr">end</span> 
+  <span class="kr">elseif</span> <span class="n">the</span><span class="p">.</span><span class="n">xample</span><span class="o">==</span><span class="s2">&quot;ls&quot;</span> 
+  <span class="kr">then</span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">examples:&quot;</span><span class="p">)</span>
+         <span class="kr">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="kr">in</span> <span class="n">sorted</span><span class="p">(</span><span class="n">Eg</span><span class="p">)</span> <span class="kr">do</span> <span class="n">fmt</span><span class="p">(</span><span class="s2">&quot;  %-15s  %s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">.</span><span class="n">txt</span><span class="p">)</span> <span class="kr">end</span> 
+  <span class="kr">elseif</span> <span class="n">the</span><span class="p">.</span><span class="n">xample</span> <span class="ow">and</span> <span class="n">Eg</span><span class="p">[</span><span class="n">the</span><span class="p">.</span><span class="n">xample</span><span class="p">]</span> 
+  <span class="kr">then</span>   <span class="n">fails</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">the</span><span class="p">.</span><span class="n">xample</span><span class="p">,</span> <span class="n">fails</span><span class="p">,</span> <span class="n">the</span><span class="p">)</span> <span class="kr">end</span>
+  <span class="nb">os.exit</span><span class="p">(</span><span class="n">fails</span><span class="p">)</span> <span class="kr">end</span>
   
-main( cli(<span style="color: #a31515">&quot;./keys&quot;</span>, about, config()) )
-<span style="color: #0000ff">for</span> k,_ <span style="color: #0000ff">in</span> pairs(_ENV) <span style="color: #0000ff">do</span> <span style="color: #0000ff">if</span> <span style="color: #0000ff">not</span> b4[k] <span style="color: #0000ff">then</span> print(<span style="color: #a31515">&quot;?? &quot;</span>..k) <span style="color: #0000ff">end</span> <span style="color: #0000ff">end</span>
+<span class="n">main</span><span class="p">(</span> <span class="n">cli</span><span class="p">(</span><span class="s2">&quot;./keys&quot;</span><span class="p">,</span> <span class="n">about</span><span class="p">,</span> <span class="n">config</span><span class="p">())</span> <span class="p">)</span>
+<span class="kr">for</span> <span class="n">k</span><span class="p">,</span><span class="n">_</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">_ENV</span><span class="p">)</span> <span class="kr">do</span> <span class="kr">if</span> <span class="ow">not</span> <span class="n">b4</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="kr">then</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;?? &quot;</span><span class="o">..</span><span class="n">k</span><span class="p">)</span> <span class="kr">end</span> <span class="kr">end</span>
 </pre></div>
 </body>
 </html>

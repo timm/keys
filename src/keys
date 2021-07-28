@@ -27,7 +27,56 @@ local function config() return {
   verbose= {false  ,'Set verbose'},
   xample=  {""     ,"'-x ls' lists all, '-x all' runs all"}} end
 
---- ## Columns --------------------------------------------
+--[[ -------------------------------------------------------
+
+Columns
+=======
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lorem
+orci, facilisis ac sapien quis, maximus suscipit neque. Cras accumsan,
+leo ac volutpat lobortis, lectus dolor auctor leo, at scelerisque
+libero magna sit amet tellus. Etiam pulvinar vel massa sed placerat.
+Phasellus malesuada arcu metus, condimentum accumsan mauris interdum
+a. Nulla facilisi. Proin sit amet augue at lectus molestie vestibulum.
+In imperdiet elit nunc, sit amet hendrerit elit mattis et. Quisque
+dictum arcu tempus urna convallis, non dignissim purus accumsan. In
+varius nec justo nec blandit. Nullam semper non odio sed ornare.
+Quisque laoreet eget libero vel consequat. In hac habitasse platea
+dictumst. Fusce sed bibendum risus, vitae sagittis nibh.
+
+Cras molestie sed tortor eleifend venenatis. Aliquam molestie bibendum
+magna eget porta. Sed at elementum arcu, sit amet volutpat nisl.
+Quisque sit amet lectus nisl. Suspendisse aliquet aliquet iaculis. Ut
+vitae elit bibendum, volutpat odio ac, tincidunt augue. Nunc eget
+vehicula orci.
+
+Proin bibendum ac odio ac mattis. Donec metus dui, ornare sit amet
+erat euismod, congue convallis magna. Duis eu nibh vulputate, ornare
+metus et, maximus orci. Proin risus ipsum, blandit quis venenatis et,
+blandit et enim. Vivamus interdum vehicula elit, in mattis velit
+ullamcorper at. Praesent imperdiet nunc lorem, in finibus orci
+elementum ut. Pellentesque habitant morbi tristique senectus et netus
+et malesuada fames ac turpis egestas. Aenean et velit sed nunc viverra
+dictum sed at lectus. Fusce placerat pharetra mattis. Nullam eu
+pharetra tortor, sed maximus tortor. Maecenas feugiat commodo mauris
+sit amet commodo. Vivamus porta, nibh nec mollis feugiat, massa felis
+maximus nibh, id condimentum risus odio quis dolor.
+
+Proin nulla enim, condimentum facilisis ultricies at, iaculis at sem.
+Suspendisse id velit purus. Curabitur a ornare metus. Quisque a orci
+non leo porttitor bibendum nec quis nisl. Praesent maximus porta
+iaculis. Duis pulvinar dapibus commodo. Fusce tempor lacinia sem
+laoreet maximus. Sed at ex faucibus, semper mi ac, condimentum dolor.
+
+Aliquam ut rutrum purus, a iaculis massa. Duis libero lectus, molestie
+nec tempor et, scelerisque non velit. Cras porttitor augue id viverra
+sollicitudin. Suspendisse elit nibh, sagittis nec dolor non, hendrerit
+posuere nunc. Ut et ex metus. Nullam iaculis imperdiet ipsum, at
+eleifend nulla bibendum iaculis. Etiam in purus eget urna semper
+sodales. Sed consequat, diam eget eleifend rhoncus, leo ex auctor
+ligula, aliquet egestas diam dolor vel massa.
+
+--]]
 local Num={}
 function Num:new(at,s)
   return Obj.new(self,"Num",{
