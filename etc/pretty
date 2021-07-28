@@ -1,0 +1,10 @@
+#!/usr/bin/env gawk -f
+# vim: filetype=awk :
+
+/usr.bin.env/      {next}
+/vim.*filetype.*=/ {next}
+
+gsub(/--\[\[/,"")  {if (Code) { print "```\n" }; Code=0 ;print $0; next}
+gsub(/--\]\]/,"")  {Code=1;     print "\n\n```lua"   ; next}
+1
+END {if(Code) print("```")}

@@ -27,8 +27,7 @@ local function config() return {
   verbose= {false  ,'Set verbose'},
   xample=  {""     ,"'-x ls' lists all, '-x all' runs all"}} end
 
------------------------------------------------------------
---- Columns
+--- ## Columns --------------------------------------------
 local Num={}
 function Num:new(at,s)
   return Obj.new(self,"Num",{
