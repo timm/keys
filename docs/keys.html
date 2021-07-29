@@ -72,16 +72,6 @@ body .ss { color: #a31515 } /* Literal.String.Symbol */
 <span style="color: #a31515">/     \  (c) Tim Menzies, 2021, unlicense.org</span>
 <span style="color: #a31515">\_,-._*  Cluster, then report just the </span>
 <span style="color: #a31515">     v   deltas between nearby clusters.]]</span>
-<span style="color: #0000ff">local</span> argparse = require(<span style="color: #a31515">&quot;argparse&quot;</span>)
-<span style="color: #0000ff">local</span> Obj = {}
-<span style="color: #0000ff">local</span> Num,Sym
-<span style="color: #0000ff">local</span> sorted,sort,map,copy,per <span style="color: #008000">-- lists</span>
-<span style="color: #0000ff">local</span> fmt,color,dump,rump,pump <span style="color: #008000">-- strings</span>
-<span style="color: #0000ff">local</span> round,Seed,rand <span style="color: #008000">-- maths</span>
-<span style="color: #0000ff">local</span> csv             <span style="color: #008000">-- files</span>
-<span style="color: #0000ff">local</span> run,cli,maina   <span style="color: #008000">-- main</span>
-<span style="color: #0000ff">local</span> Eg              <span style="color: #008000">-- unit  tests</span>
-
 <span style="color: #0000ff">local</span> <span style="color: #0000ff">function</span> config() <span style="color: #0000ff">return</span> {
   bins= {.5     ,<span style="color: #a31515">&#39;Bins are of size n**BINS&#39;</span>},
   cols= {<span style="color: #a31515">&#39;x&#39;</span>    ,<span style="color: #a31515">&#39;Columns to use for inference&#39;</span>},
@@ -100,18 +90,22 @@ body .ss { color: #a31515 } /* Literal.String.Symbol */
   loud= {<span style="color: #0000ff">false</span>  ,<span style="color: #a31515">&#39;Set verbose&#39;</span>},
   eg=   {<span style="color: #a31515">&quot;&quot;</span>     ,<span style="color: #a31515">&quot;&#39;-x ls&#39; lists all, &#39;-x all&#39; runs all&quot;</span>}} <span style="color: #0000ff">end</span>
 
-<span style="color: #008000">--- Num ---------------------------------------------------</span>
+<span style="color: #008000">-----------------------------------------------------------</span>
+<span style="color: #0000ff">local</span> argparse = require(<span style="color: #a31515">&quot;argparse&quot;</span>)
+<span style="color: #0000ff">local</span> Obj,Num,Sym = {},{},{}   <span style="color: #008000">-- objects</span>
+<span style="color: #0000ff">local</span> sorted,sort,map,copy,per <span style="color: #008000">-- lists</span>
+<span style="color: #0000ff">local</span> fmt,color,dump,rump,pump <span style="color: #008000">-- strings</span>
+<span style="color: #0000ff">local</span> round,Seed,rand <span style="color: #008000">-- maths</span>
+<span style="color: #0000ff">local</span> csv             <span style="color: #008000">-- files</span>
+<span style="color: #0000ff">local</span> run,cli,main    <span style="color: #008000">-- main</span>
+<span style="color: #0000ff">local</span> Eg              <span style="color: #008000">-- unit  tests</span>
 
-Num={}
+<span style="color: #008000">--- Num ---------------------------------------------------</span>
 <span style="color: #0000ff">function</span> <span style="color: #2b91af">Num</span>:new(at,s,      w)
   s = s <span style="color: #0000ff">or</span> <span style="color: #a31515">&quot;&quot;</span>
   <span style="color: #0000ff">return</span> Obj.new(self,<span style="color: #a31515">&quot;Num&quot;</span>,{
-    at   = at <span style="color: #0000ff">or</span> 0, 
-    s    = s,
-    n    = 0,  
-    _all = {}, 
-    ok   = <span style="color: #0000ff">false</span>,
-    w    = s:match(<span style="color: #a31515">&quot;-&quot;</span>) <span style="color: #0000ff">and</span> -1 <span style="color: #0000ff">or</span> 1}) <span style="color: #0000ff">end</span>
+    s =s,     n=0,        _all= {}, 
+    ok=<span style="color: #0000ff">false</span>, at=at <span style="color: #0000ff">or</span> 0, w=s:match(<span style="color: #a31515">&quot;-&quot;</span>) <span style="color: #0000ff">and</span> -1 <span style="color: #0000ff">or</span> 1}) <span style="color: #0000ff">end</span>
 
 <span style="color: #0000ff">function</span> <span style="color: #2b91af">Num</span>:mid() <span style="color: #0000ff">return</span> per(self:all(),.5) <span style="color: #0000ff">end</span>
 <span style="color: #0000ff">function</span> <span style="color: #2b91af">Num</span>:var() <span style="color: #0000ff">return</span> per(self:all(),.5) <span style="color: #0000ff">end</span>
@@ -159,8 +153,8 @@ Num={}
 <span style="color: #0000ff">function</span> fmt(s,...) <span style="color: #0000ff">return</span> io.write(s:format(...)) <span style="color: #0000ff">end</span> 
 
 <span style="color: #0000ff">function</span> color(s,...)
-  <span style="color: #0000ff">local</span> col={red=31, green=32, yellow=33, purple=34}
-  print(<span style="color: #a31515">&#39;\27[1m\27[&#39;</span>.. col[s] ..<span style="color: #a31515">&#39;m&#39;</span>..string.format(...)..<span style="color: #a31515">&#39;\27[0m&#39;</span>) <span style="color: #0000ff">end</span>
+  <span style="color: #0000ff">local</span> x={red=31, green=32, yellow=33, purple=34}
+  print(<span style="color: #a31515">&#39;\27[1m\27[&#39;</span>..x[s]..<span style="color: #a31515">&#39;m&#39;</span>..string.format(...)..<span style="color: #a31515">&#39;\27[0m&#39;</span>) <span style="color: #0000ff">end</span>
 
 <span style="color: #0000ff">function</span> dump(o,     sep,s)
   sep, s = <span style="color: #a31515">&quot;&quot;</span>, (o._name <span style="color: #0000ff">or</span> <span style="color: #a31515">&quot;&quot;</span>) ..<span style="color: #a31515">&quot;{&quot;</span>
