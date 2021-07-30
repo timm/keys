@@ -5,7 +5,8 @@ local about=[[
  ,-_|\   Contrast set learning
 /     \  (c) Tim Menzies, 2021, unlicense.org
 \_,-._*  Cluster, then report just the 
-     v   deltas between nearby clusters.]]
+     v   deltas between nearby clusters.  ]]
+
 local function config() return {
   bins= {.5     ,'Bins are of size n**BINS'},
   cols= {'x'    ,'Columns to use for inference'},
@@ -22,17 +23,16 @@ local function config() return {
   some= {20     ,'Number of samples to find far things'},
   seed= {10013  ,'Seed for random numbers'},
   top=  {10     ,'Focus on this many'},
-  un=   {false  ,'Run eegs, no protection'} } end
+  un=   {false  ,'Run egs, no protection'} } end
 
 -----------------------------------------------------------
 local argparse = require("argparse")
-local Obj,Num,Sym = {},{},{}   -- objects
+local Obj,Num,Sym,Eg = {},{},{},{}  -- objects
 local sorted,sort,map,copy,per -- lists
 local fmt,color,dump,rump,pump -- strings
-local round,Seed,rand -- maths
-local csv             -- files
-local run,cli,main    -- main
-local Eg              -- unit  tests
+local round,Seed,rand          -- maths
+local csv                      -- files
+local run,cli,main             -- mains, unit tests
 
 --- Num ---------------------------------------------------
 function Num:new(at,s,      w)
@@ -165,6 +165,17 @@ function cli(what,about,t,       arg,b4)
   return arg:parse() end
 
 --- main -------------------------------------------------
+function run(txt,fails,the,      it)
+  the  = copy(the)
+  Seed = the.seed
+  it   = Eg[txt]
+  if     the.un==true 
+  then   print("unsafe:"); it.fun(the)
+  elseif pcall(function () it.fun(the); end)
+  then   color("green","✔ % -15s  %s",txt,it.txt); fails=fails+0
+  else   color("red",  "✘ %-15s  %s" ,txt,it.txt); fails=fails+1 end 
+  return fails end
+
 function main(the,      fails)
   fails= 0
   if     the.eg=="all"
@@ -178,19 +189,7 @@ function main(the,      fails)
   for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
   os.exit(fails) end
 
-function run(txt,fails,the,      it)
-  the  = copy(the)
-  Seed = the.seed
-  it   = Eg[txt]
-  if     the.un==true 
-  then   print("unsafe:"); it.fun(the); os.exit(0)
-  elseif pcall(function () it.fun(the); end)
-  then   color("green","✔ % -15s  %s",txt,it.txt)
-  else   color("red",  "✘ %-15s  %s",txt,it.txt); fails=fails+1 end 
-  return fails end
-
 --- unit tests ---------------------------------------------
-Eg={}
 Eg.sorted= {
   txt = "sorting items",
   fun = function(_) 
