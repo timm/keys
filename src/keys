@@ -11,18 +11,18 @@ local function config() return {
   cols= {'x'    ,'Columns to use for inference'},
   data= {'../data/auto2.csv' 
                 ,'Where to read data'},
+  eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
   far=  {.9     ,'Where to look for far things'},
   goaL= {'best' ,'Learning goals: best|rest|other'},
   iota= {.3     ,'Small = sd**iota'},
   k=    {2      ,'Bayes low class frequency hack'},
+  loud= {false  ,'Set verbose'},
   m=    {1      ,'Bayes low range frequency hack'},
   p=    {2      ,'Distance calculation exponent'},
   some= {20     ,'Number of samples to find far things'},
   seed= {10013  ,'Seed for random numbers'},
   top=  {10     ,'Focus on this many'},
-  un=   {false  ,'Run eegs, no protection'},
-  loud= {false  ,'Set verbose'},
-  eg=   {""     ,"'-x ls' lists all, '-x all' runs all"}} end
+  un=   {false  ,'Run eegs, no protection'} } end
 
 -----------------------------------------------------------
 local argparse = require("argparse")
@@ -38,8 +38,8 @@ local Eg              -- unit  tests
 function Num:new(at,s,      w)
   s = s or ""
   return Obj.new(self,"Num",{
-    s =s,     n=0,        _all= {}, 
-    ok=false, at=at or 0, w=s:match("-") and -1 or 1}) end
+    s=s, n=0, _all= {}, ok=false, at=at or 0, 
+    w=s:match("-") and -1 or 1}) end
 
 function Num:mid() return per(self:all(),.5) end
 function Num:var() return per(self:all(),.5) end
@@ -125,7 +125,7 @@ function round(num, decimals,      mult)
 Seed = 10013
 function rand(lo,hi,     mult,mod)
   lo,hi = lo or 0, hi or 1
-  mult, mod = 16807.0, 2147483647.0
+  mult, mod = 16807, 2147483647
   Seed = (mult * Seed) % mod 
   return lo + (hi-lo) * Seed / mod end 
 
