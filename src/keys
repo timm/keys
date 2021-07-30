@@ -27,31 +27,73 @@ local function config() return {
 
 -----------------------------------------------------------
 local argparse = require("argparse")
-local Obj,Num,Sym,Eg = {},{},{},{}  -- objects
+local Obj,Eg       = {},{}     -- two of the usual objects
+local Skip,Num,Sym = {},{},{}  -- columns
+local Row,Rows     = {},{}     -- places to store data
+local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
 local sorted,sort,map,copy,per -- lists
 local fmt,color,dump,rump,pump -- strings
 local round,Seed,rand          -- maths
 local csv                      -- files
 local run,cli,main             -- mains, unit tests
 
+--- columns, general---------------------------------------
+function goalp(s)  return s:find("+") or s:find("-") or klassp(s) end
+function klassp(s) return s:find("!") end
+function nump(s)   return s:sub(1,1):match("[A-Z]") end
+function weight(s) return s:find("-") and -1 or 1 end
+function skipp(s)  return s:find("?") end
+
+function merged(i,j,         k)
+  k= i:merge(j)
+  if k:var() < (i.n*i:var() + j.n*j:var()) / (i.n + j.n) then 
+    return k end end
+
+function adds(a,i) 
+  i = i or (type(a[1])=="number" and Num or Sym):new()
+  for _,x in pairs(a) do i:add(x) end 
+  return i end
+
+--- Skip ---------------------------------------------------
+function Skip:new(at,s) 
+  return Obj.new(self,"Skip",{
+    n=0, s=s or "", at=at or 0}) end
+function Skip: add(x) return  x end
+
+--- Sym ---------------------------------------------------
+function Sym:new(at,s)  
+  return Obj.new(self,"Sym",{
+    n=0,s=s or "",at=at or 0,
+    has={},mode=0,most=0}) end
+
+function Sym:add(x)
+  if x ~= "?" then
+    i.n = i.n+ 1
+    self.has[x] = 1+ (self.has[x] or 0)
+    if self.has[x] > self.most  then
+      self.most, self.mode = self.has[x], x end  end
+  return  x end
+
+function Sym:var(x,     e,p)
+  e= 0
+  p= function(n) return n/self.n end
+  for _,v in pairs(self.has) do e=e - p(v)*math.log(p(v),2) end 
+  return e end
+
 --- Num ---------------------------------------------------
 function Num:new(at,s,      w)
-  s = s or ""
+  s= s or ""
   return Obj.new(self,"Num",{
-    s=s, n=0, _all= {}, ok=false, at=at or 0, 
-    w=s:match("-") and -1 or 1}) end
+    n=0,s=s,at=at or 0,
+    _all={}, ok=false, w=weight(s)}) end
 
 function Num:mid() return per(self:all(),.5) end
-function Num:var() return per(self:all(),.5) end
+function Num:var() a=self:all(); return (per(a,.9)-per(a,.1))/2.54 end
 
 function Num:all()
   if     not self.ok 
   then   self.ok=true; self._all = sort(self._all) end
   return self._all end
-
-function Num:adds(a) 
-  for _,x in pairs(a) do self:add(x) end 
-  return self end
 
 function Num:add(x)
   if  x ~= "?" then
@@ -59,6 +101,36 @@ function Num:add(x)
     self._all[ 1 + #self._all] = x
     self.ok= false end
   return x end 
+
+function Num:merge(other,      new)
+  new = copy(self)
+  for _,v in other._all do new:add(x) end
+  return new end
+
+--- row and rows  --------------------------------------------------
+-- What kind of column should be created from `s`?
+function Rows:new(inits)
+  x = Obj:new(self,"Rows",{rows={},cols={all={},names={},x={},y={}}})
+  for _,row in pairs(inits) do x:add(row) end  
+  return x end
+
+function Rows:add(a)
+   a = a._name=="Rows"and a.cells or a
+   return  #(i.cols.names) > 0 and self:data(a) or self:header(a) end
+
+function Rows:data(a)
+  for at=1,#a do a[at]= self.cols.all[at]:add(a[i]) end
+  self.rows[ 1 + #self.rows] = Row:new(a,self) end
+
+function Rows:header(a)
+  self.cols.names=a
+  for at,txt in pairs(a)  do
+    new  = skipp(txt) and Skip or (nump(txt) and Num or Sym)(at,txt) 
+    self.cols.all[1+#self.cols.all] = new
+    if not skipp(txt) then
+      tmp= self.cols[goalp(txt) and  "y" or "x"]
+      tmp[1+#tmp] = new
+      if klassp(txt) then i.cols.klass = new end end end end
 
 --- lists --------------------------------------------------
 function sorted(t,         i,keys)
@@ -78,7 +150,14 @@ function map(a,f,     b)
   for i,v in pairs(a or {}) do b[i] = f(v) end 
   return b end 
 
-function copy(t) return type(t)~='table' and t or map(t,copy) end
+function copy(obj, seen,      s, res)
+  if type(obj) ~= 'table' then return obj end
+  if seen and seen[obj] then return seen[obj] end
+  s = seen or {}
+  res = setmetatable({}, getmetatable(obj))
+  s[obj] = res
+  for k, v in pairs(obj) do res[copy(k, s)] = copy(v, s) end
+    return res end
 
 function per(a,p) 
   return a[math.max(1,math.floor(#a*(p or .5)))] end
@@ -144,7 +223,7 @@ function csv(file,       split,stream,tmp)
     else
       io.close(stream) end end end
 
-function Obj:new(name, new)
+function Obj.new(self, name, new)
   new = new or {}
   setmetatable(new, self)
   self.__tostring = dump 
@@ -223,6 +302,21 @@ Eg.rand={
         a={}
         for i=1,10 do a[1+#a] = round(rand(),2) end 
         pump(sort(a)) end}
+        
+Eg.meta={
+  txt="meta",
+  fun=function(_,      a)
+        print(goalp("asdas+"))
+        print(goalp("asdas")  )
+        print(klassp("asa!"))
+        print(klassp("asa"))
+        print(nump("Aadas"))
+        print(nump("aadas"))
+        print(weight("asdas-"))
+        print(weight("asdas+"))
+        print(skipp("asdsa?"))
+        print(skipp("asdsa")) end}
+                
 
 ----------------------------------------------------------- 
 main( cli("./keys", about, config()) )
