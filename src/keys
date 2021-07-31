@@ -1,5 +1,20 @@
 #!/usr/bin/env lua
--- vim: filetype=lua ts=2 sw=2 sts=2 et :
+--vim: filetype=lua ts=2 sw=2 sts=2 et :
+
+--[[ # Contrast sets
+The best thing to do with lots of data is  throw
+most of it away. The lesson of features selection
+research  is that tables of data conatains noise and if
+we delete  the noisey columns, then performance goes
+up. Similarly, the lesson of semi-supervised 
+learning is that
+tables of data containing  many
+many dimensions can be  approximated  by
+a  lower dimensional manifold, without a discernible
+loss in performance.
+Manifold learners  assume that highr-dimensional
+data sets
+--]]
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 local about=[[
  ,-_|\   Contrast set learning
@@ -25,6 +40,12 @@ local function config() return {
   top=  {10     ,'Focus on this many'},
   un=   {false  ,'Run egs, no protection'} } end
 
+--[[
+asds
+das
+
+das
+--]]
 -----------------------------------------------------------
 local argparse = require("argparse")
 local Obj,Eg       = {},{}     -- two of the usual objects
@@ -362,5 +383,5 @@ Eg.csv={
         for row in csv(the.data) do t:add(row) end
         rump(t.cols.all[2])
       end}
------------------------------------------------------------ 
+-----------------------------------------------------------
 main( cli("./keys", about, config()) )

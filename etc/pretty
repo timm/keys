@@ -1,10 +1,34 @@
-#!/usr/bin/env gawk -f
-# vim: filetype=awk :
+#!/usr/bin/env bash
 
-/usr.bin.env/      {next}
-/vim.*filetype.*=/ {next}
+noPara1()  { gawk '
+  BEGIN {RS=""; FS="\n"}
+  NR==1 { next }
+        { print($0 "\n")  }' 
+}
 
-gsub(/--\[\[/,"")  {if (Code) { print "```\n" }; Code=0 ;print $0; next}
-gsub(/--\]\]/,"")  {Code=1;     print "\n\n```lua"   ; next}
-1
-END {if(Code) print("```")}
+classify() { gawk '
+  /^--\[\[/,/--\]\]/ { print "DOC " $0; next }
+  /^-- /             { print "DOC " $0; next;}
+                     { print "CODE "$0}' 
+}
+
+apply() { gawk '
+      { now=$1
+        gsub(/(DOC |CODE )/,"");
+        apply(now,b4,last) 
+        last=$0
+        b4=now} 
+END   { apply(now,b4,last)
+        if (now=="CODE") print "```" }
+
+function apply(now,b4,last) {
+  gsub(/^(-- |--\[\[[ \t]*|--\]\])/,"",last)
+  if  (now==b4)  
+     print(last)
+  else {
+   if (last !~ /^[ \t]*$/) last=last "\n"
+   if (now=="CODE") {printf(last); print"\n```lua"}
+   if (now=="DOC")  {printf(last);  print"```\n" }}}' 
+}
+
+cat $1 | noPara1 | classify  | apply
