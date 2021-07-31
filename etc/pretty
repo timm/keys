@@ -31,4 +31,10 @@ function apply(now,b4,last) {
    if (now=="DOC")  {printf(last);  print"```\n" }}}' 
 }
 
+cat<<EOF
+---
+Title: $1
+---
+
+EOF
 cat $1 | noPara1 | classify  | apply
