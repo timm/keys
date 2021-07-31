@@ -1,5 +1,6 @@
 ---
-Title: keys
+title: keys
+layout: page
 ---
 
 
