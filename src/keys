@@ -74,6 +74,15 @@ function Sym:add(x)
       self.most, self.mode = self.has[x], x end  end
   return  x end
 
+function Sym:merge(other)
+  new=copy(self)
+  for k,v in pairs(other.has) do 
+     new.n = new.n + v
+     new.has[k] = v + (new.has[k] or 0) end
+  for k,v in pairs(new.has) do
+    if v > new.most then new.mode, new.most = k,v end end 
+  return new end
+
 function Sym:var(x,     e,p)
   e= 0
   p= function(n) return n/self.n end
