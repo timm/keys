@@ -31,7 +31,7 @@ local about=[[
 \_,-._*  Cluster, then report just the 
      v   deltas between nearby clusters.  ]]
 
-local function config() return {
+local function command_line_flags() return {
   bins= {.5     ,'Bins are of size n**BINS'},
   cols= {'x'    ,'Columns to use for inference'},
   data= {'../data/auto2.csv' 

@@ -13,6 +13,7 @@ classify() { gawk '
 }
 
 apply() { gawk '
+  BEGIN {top=1}
       { now=$1
         gsub(/(DOC |CODE )/,"");
         apply(now,b4,last) 
@@ -28,13 +29,26 @@ function apply(now,b4,last) {
   else {
    if (last !~ /^[ \t]*$/) last=last "\n"
    if (now=="CODE") {printf(last); print"\n```lua"}
-   if (now=="DOC")  {printf(last);  print"```\n" }}}' 
+   if (now=="DOC")  {printf(last)
+                    if (!top)   print"```\n" }
+                    top=0}}' 
 }
 
-cat<<EOF
+touch ../docs/style.css
+
+f=${1%.*}
+shift
+title="$@"
+(cat<<EOF
 ---
-Title: $1
+title: "$title"
 ---
 
 EOF
-cat $1 | noPara1 | classify  | apply
+cat $f | noPara1 | classify  | apply) > $f.md
+pandoc --highlight-style pygments --css ../docs/style.css -s $f.md -o $f.html
+rm $f.md
+cp $f.html ../docs
+git add ../docs/$f.html
+open ../docs/$f.html
+

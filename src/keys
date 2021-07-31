@@ -1,20 +1,58 @@
 #!/usr/bin/env lua
 --vim: filetype=lua ts=2 sw=2 sts=2 et :
 
---[[ # Contrast sets
-The best thing to do with lots of data is  throw
-most of it away. The lesson of features selection
-research  is that tables of data conatains noise and if
-we delete  the noisey columns, then performance goes
-up. Similarly, the lesson of semi-supervised 
-learning is that
-{% marginnote "margin-note-id" "Random thought when drinking" %} 
-tables of data containing  many
+--[[ 
+timm@ieee.org
+
+## Keys 101
+What do we now know about  AI that we did not know before?
+And how can we use that  to simplify how we  do AI?
+
+Well, one hard won lesson over the last two 
+decades [^kohavi95] [^hall03] is that
+the best thing to do with lots of data is  (carefully)  throw
+most of it away [^simple21]. 
+
+[^kohavi95]: Ron Kohavi and George H. John. 1997. Wrappers for feature subset selection. Artif. Intell. 97, 1–2 (Dec. 1997), 273–324. DOI:https://doi.org/10.1016/S0004-3702(97)00043-X
+[^hall03]: M. A. Hall and G. Holmes, "Benchmarking attribute selection techniques for discrete class data mining," in IEEE Transactions on Knowledge and Data Engineering, vol. 15, no. 6, pp. 1437-1447, Nov.-Dec. 2003, doi: 10.1109/TKDE.2003.1245283.
+[^simple21]:  T. Menzies, "Shockingly Simple:"KEYS" for Better AI for SE" in IEEE Software, vol. 38, no. 02, pp. 114-118, 2021.
+doi: 10.1109/MS.2020.3043014
+
+The lesson of features selection
+is that tables of data contain many weak attributes;
+e.g. those with noise
+(and if 
+we delete  the noise, then performance goes
+up). Also, strange  to say, it is also useful to replace
+many  strong attributes with just a few since if data is divided
+too much too sooner, then any sub-division will not have enough
+data to make reasonable decisions.
+
+![](img/tree.png){.rimg200}
+
+Similarly, the lesson of semi-supervised 
+learning is that 
+tables iof data containing  many
 many dimensions can be  approximated  by
 a  lower dimensional manifold, without a discernible
 loss in performance.
 Manifold learners  assume that highr-dimensional
 data sets
+
+But  what about deep learning, you might ask.
+Isn't everything improved by 
+the use  of CPU-intensive  modeling
+where no one can  the model output?
+Well, maybe so, but maybe  there is  too much
+trust being  placed  in that one technology[^yadhia21].
+And  even  in that  field,
+some researchers are  reasoning  that there
+are simpler forms  of DL[^lottery] [^oneclass].
+
+[^yedida21]:  R. Yedida and T. Menzies, "On the Value of Oversampling for Deep Learning in Software Defect Prediction," in IEEE Transactions on Software Engineering, doi: 10.1109/TSE.2021.3079841.
+[^lottery]:  Frankle, Jonathan and Michael Carbin. "The lottery ticket hypothesis: Finding sparse, trainable neural networks." 7th International Conference on Learning Representations, May 2019, New Orleans, Louisiana, ICLR, May 2019
+[^oneclass]:  I.  Sucholutsky and M. Schonlau, “‘Less than one’-shot learning: Learning N classes from M < N samples,” 2020, arXiv:2009.08449.
+
 --]]
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 local about=[[
