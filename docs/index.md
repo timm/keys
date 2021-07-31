@@ -11,6 +11,7 @@ research  is that tables of data conatains noise and if
 we delete  the noisey columns, then performance goes
 up. Similarly, the lesson of semi-supervised 
 learning is that
+{% marginnote "margin-note-id" "Random thought when drinking" %} 
 tables of data containing  many
 many dimensions can be  approximated  by
 a  lower dimensional manifold, without a discernible
