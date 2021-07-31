@@ -63,7 +63,7 @@ function Skip: add(x) return  x end
 --- Sym ---------------------------------------------------
 function Sym:new(at,s)  
   return Obj.new(self,"Sym",{
-    n=0,s=s or "",at=at or 0,
+    n=0, s=s or "", at=at or 0,
     has={},mode=0,most=0}) end
 
 function Sym:add(x)
@@ -84,7 +84,7 @@ function Sym:var(x,     e,p)
 function Num:new(at,s,      w)
   s= s or ""
   return Obj.new(self,"Num",{
-    n=0,s=s,at=at or 0,
+    n=0, s=s, at=at or 0,
     _all={}, ok=false, w=weight(s)}) end
 
 function Num:mid() return per(self:all(),.5) end
@@ -110,24 +110,30 @@ function Num:merge(other,      new)
 
 --- row and rows  --------------------------------------------------
 -- What kind of column should be created from `s`?
-function Rows:new(inits)
-  x= Obj:new(self,"Rows",{
-       rows={},cols={all={},names={},x={},y={}}})
-  for _,row in pairs(inits) do x:add(row) end  
+function Row:new(a,rows)
+  return Obj.new(self,"Row",{cells=a, rows=rows}) end
+
+function Rows:new(inits,     x)
+  x= Obj.new(self,"Rows",{
+      rows={},
+      cols={all={},names={},x={},y={}}})
+  for _,row in pairs(inits or {}) do x:add(row) end  
   return x end
 
 function Rows:add(a)
-   a = a._name=="Rows"and a.cells or a
-   return  #(i.cols.names) > 0 and self:data(a) or self:header(a) end
+   a= a._name=="Rows"and a.cells or a
+   if #(self.cols.names) > 0 then self:data(a) else self:header(a) end
+end
 
 function Rows:data(a)
-  for at=1,#a do a[at]= self.cols.all[at]:add(a[i]) end
+  for _,col in pairs(self.cols.all) do a[col.at]=col:add(a[col.at]) end
   self.rows[ 1 + #self.rows] = Row:new(a,self) end
 
-function Rows:header(a)
+function Rows:header(a,   what,new,tmp)
   self.cols.names=a
   for at,txt in pairs(a)  do
-    new  = skipp(txt) and Skip or (nump(txt) and Num or Sym)(at,txt) 
+    what = skipp(txt) and Skip or (nump(txt) and Num or Sym)
+    new  = what:new(at,txt) 
     self.cols.all[1+#self.cols.all] = new
     if not skipp(txt) then
       tmp= self.cols[goalp(txt) and  "y" or "x"]
@@ -342,9 +348,10 @@ Eg.sym={
 
 Eg.csv={
   txt="csv",
-  fun=function(the)
+  fun=function(the,       t)
         t = Rows:new()
-        for row in csv(the.data) do t:add(pump(row)) end
+        for row in csv(the.data) do t:add(row) end
+        rump(t.cols.all[2])
       end}
 ----------------------------------------------------------- 
 main( cli("./keys", about, config()) )
