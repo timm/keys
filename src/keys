@@ -33,7 +33,7 @@ local Row,Rows     = {},{}     -- places to store data
 local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
 local sorted,sort,map,copy,per -- lists
 local fmt,color,dump,rump,pump -- strings
-local round,Seed,rand          -- maths
+local round,Seed,rand,normal   -- maths
 local csv                      -- files
 local run,cli,main             -- mains, unit tests
 
@@ -68,7 +68,7 @@ function Sym:new(at,s)
 
 function Sym:add(x)
   if x ~= "?" then
-    i.n = i.n+ 1
+    self.n = self.n+ 1
     self.has[x] = 1+ (self.has[x] or 0)
     if self.has[x] > self.most  then
       self.most, self.mode = self.has[x], x end  end
@@ -88,7 +88,8 @@ function Num:new(at,s,      w)
     _all={}, ok=false, w=weight(s)}) end
 
 function Num:mid() return per(self:all(),.5) end
-function Num:var() a=self:all(); return (per(a,.9)-per(a,.1))/2.54 end
+function Num:var(   a) 
+   a=self:all(); return (per(a,.9)-per(a,.1))/2.54 end
 
 function Num:all()
   if     not self.ok 
@@ -110,7 +111,8 @@ function Num:merge(other,      new)
 --- row and rows  --------------------------------------------------
 -- What kind of column should be created from `s`?
 function Rows:new(inits)
-  x = Obj:new(self,"Rows",{rows={},cols={all={},names={},x={},y={}}})
+  x= Obj:new(self,"Rows",{
+       rows={},cols={all={},names={},x={},y={}}})
   for _,row in pairs(inits) do x:add(row) end  
   return x end
 
@@ -200,6 +202,10 @@ function pump(o) print(dump(o)) end
 function round(num, decimals,      mult)
   mult = 10^(decimals or 0)
   return math.floor(num * mult + 0.5) / mult end
+
+function normal(mu,sd)
+  local sqrt, log, cos, pi = math.sqrt, math.log, math.cos, math.pi
+  return mu+sd*sqrt(-2*log(rand()))*cos(2*pi*rand()) end
 
 Seed = 10013
 function rand(lo,hi,     mult,mod)
@@ -305,18 +311,40 @@ Eg.rand={
         
 Eg.meta={
   txt="meta",
-  fun=function(_,      a)
-        print(goalp("asdas+"))
-        print(goalp("asdas")  )
-        print(klassp("asa!"))
-        print(klassp("asa"))
-        print(nump("Aadas"))
-        print(nump("aadas"))
-        print(weight("asdas-"))
-        print(weight("asdas+"))
-        print(skipp("asdsa?"))
-        print(skipp("asdsa")) end}
+  fun=function(_)
+        assert(      goalp( "word+"))
+        assert(nil== goalp( "word"))
+        assert(      klassp("word!"))
+        assert(nil== klassp("word"))
+        assert(      nump(  "Word"))
+        assert(nil== nump(  "word"))
+        assert(-1 == weight("word-"))
+        assert( 1 == weight("word+"))
+        assert(      skipp( "word?"))
+        assert(nil== skipp( "word")) end}
                 
+Eg.num={
+  txt="num",
+  fun=function(_,    mu,sd,eps, n,num)
+        num=Num:new()
+        n,mu, sd, eps = 1000, 10, 1, .05
+        for i=1,n do num:add(normal(mu,sd)) end
+        assert(math.abs(sd - num:var()) < eps)
+        assert(math.abs(mu - num:mid()) < eps) end }
 
+Eg.sym={
+  txt="sym",
+  fun=function(_,        e0,e1,eps)
+        e0, eps = 1.3787834, 0.0001
+        assert(0==adds({"a","a","a","a"}):var())
+        e1 =adds({"a","a","a","a","b","b","c"}):var()
+        assert(math.abs(e1 - e0) < eps) end }
+
+Eg.csv={
+  txt="csv",
+  fun=function(the)
+        t = Rows:new()
+        for row in csv(the.data) do t:add(pump(row)) end
+      end}
 ----------------------------------------------------------- 
 main( cli("./keys", about, config()) )
