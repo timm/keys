@@ -12,6 +12,11 @@ we delete  the noisey columns, then performance goes
 up. Similarly, the lesson of semi-supervised 
 learning is that 
 tables of data containing  many
+oing to_ intersect[^1]!
+
+
+[^1]: See Euclid's 5<sup>th</sup> postulate.
+
 many dimensions can be  approximated  by
 a  lower dimensional manifold, without a discernible
 loss in performance.
