@@ -28,13 +28,12 @@ function apply(now,b4,last) {
      print(last)
   else {
    if (last !~ /^[ \t]*$/) last=last "\n"
-   if (now=="CODE") {printf(last); print"\n```lua"}
+   if (now=="CODE") {printf(last); print"\n```lua\n"}
    if (now=="DOC")  {printf(last)
                     if (!top)   print"```\n" }
                     top=0}}' 
 }
 
-touch ../docs/style.css
 
 f=${1%.*}
 shift
@@ -46,9 +45,10 @@ title: "$title"
 
 EOF
 cat $f | noPara1 | classify  | apply) > $f.md
-pandoc --highlight-style pygments --css ../docs/style.css -s $f.md -o $f.html
+pandoc -f markdown  --template=../docs/ez.html --toc  --mathjax \
+       --highlight-style pygments --css style.css -s $f.md -o $f.html
 rm $f.md
-cp $f.html ../docs
+mv $f.html ../docs
 git add ../docs/$f.html
 open ../docs/$f.html
 
