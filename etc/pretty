@@ -44,11 +44,10 @@ title: "$title"
 ---
 
 EOF
-cat $f | noPara1 | classify  | apply) > $f.md
-pandoc -f markdown  --template=../docs/ez.html --toc  --mathjax \
+cat $f | noPara1 | classify  | apply) > ../docs/$f.md
+cd ../docs
+pandoc -f markdown  --template=ez.html --toc  --mathjax \
        --highlight-style pygments --css style.css -s $f.md -o $f.html
-rm $f.md
-mv $f.html ../docs
-git add ../docs/$f.html
-open ../docs/$f.html
+git add $f.html
+open $f.html
 
