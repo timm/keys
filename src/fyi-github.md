@@ -1,9 +1,7 @@
 aa
 
-## How to tell others how to...
-
-### ... test this code?
-1.  Write a [,travis-yml](https://github.com/timm/keys/blob/main/.travis.yml)
+## ... test this code?
+1.  Write a [.travis-yml](https://github.com/timm/keys/blob/main/.travis.yml)
     file that shows how to install and run the code
     (returning a `$?=0` if all tests pass).
 2.  Register the repo with 
