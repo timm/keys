@@ -1,0 +1,13 @@
+xbody {
+  padding: 15px;
+  font-family:  Georgia, Garamond, Verdana, Trebuchet MS, Times New Roman, Helvetica; }
+
+.rimg100 {width:100px; float:right; margin:3px; padding:3px;}
+.rimg150 {width:150px; float:right; margin:3px; padding:3px;}
+.rimg200 {width:200px; float:right; margin:3px; padding:3px;}
+.rimg300 {width:300px; float:right; margin:3px; padding:3px;}
+.rimg400 {width:400px; float:right; margin:3px; padding:3px;}
+.rimg500 {width:500px; float:right; margin:3px; padding:3px;}
+
+.lua { margin:0px; padding:0px; font-size: x-small; line-height: 2px; 
+       background-color: #eee; }
