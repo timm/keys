@@ -9,7 +9,7 @@ timm@ieee.org
 [http://menzies.us](http://menzies.us)  
 Sat Jul 31, 2021
 
-## Why this code?
+## Scared of AI?
 ![](img/deer.png){.rimg150} 
 Are you trapped like a deer in the headlights, frozen and terrified,
 by on-coming AI software? Well, then  you are not  a software
@@ -17,23 +17,42 @@ engineer. When  SE people are worried about software, they change
 it. Opaque  systems are refactored into simpler and more maintainable
 code.  Complexity is removed. Simplicity is installed.
 
-So lets practice refactoring AI tools.  Lets start with a  simple
-object model that supports a range of AI tools written in a Python-line
-language (Lua).  This code has been extracted and refactored from
-a dozen Ph.D. projects.  It supports:
+## Lets Fix  AI.
+Time to start practicing  refactoring AI tools.  Start with a  simple
+object model then do some mixing-and-matching  to  implement
+an interesting range of functionality. Here's what you
+have already (in under 500 lines of code):
 
 - Explainable AI that generated tiny symbolic  descriptions of data;
 - Single and  multi-objective  reasoning so we can handle classification,
   regression, and optimization tasks; 
 - Semi-supervised learning where we guess most of the labels from 
   a few samples.
+- (Well... not really. Currently,  this   is more  an aspirational
+  statement. But a man's reach should exceed his grasp, or what's a
+  heaven for?)
 
-Adult learners are invited to implement the code in their favorite
-language, then try some mixing and  matching of functionality. Once
-that task is completed, AI tools will not longer be  an opaque black
-box. Rather, it will an object library  that you can mix  and match
-and  extend, as required, for your next project.
+There's nothing magical about my code. Its certainly not
+the absolute optimum way to implementing  all these tasks.
+In fact, the best thing  I  can say about  this code is that  it
+is short and easy to change. Treat it as a  challenge of
+something  you  can do better than me.
+To practice refactoring  AI tools, start with the
+few hundreds (or so) lines  of code shown  below.
+Implement
+them in your  favorite language. Then
+try  splashing our a little- mix and match  some  functionality.
+Pull
+out some code then   add in something different. 
+Test that addition. See if it works better than my
+stuff. Have fun with it!
 
+And  when  you do, be a software engineering.  Try  and come up with
+some  underling  object  model that lets you  handle not just your
+new idea, but also a  whole product line of variations around that
+idea.
+
+## Why "Keys?"
 But why is it called *keys*? Well, the "key" to simpler AI is "keys".
 Many results show that  systems often exhibit the same effect
 [^simple21];  i.e.  a few key features control the rest.  Just to
@@ -64,6 +83,7 @@ So how can we be less but better with AI?  What do we now know about
 AI that we did not know before?  And how can we use that  to simplify
 how we  do AI?
 
+## Manifolds
 ![](img/cluster.png){.rimg300} 
 One lesson learned over the last two decades is that the best thing
 to do with lots of data is (carefully) throw most of it away
@@ -77,7 +97,7 @@ examples.  So when we cluster similar examples, then we do not to
 reason separately about each example.  Rather, we just cluster the
 data and reason about a  few examples per cluster.
 
-
+## Feature Selection
 Since the underlying dimensional it of the data is
 usually very small, then we can safely (and usefully)
 superfluous attributes. This is called feature selection
@@ -91,6 +111,7 @@ superfluous attributes. This is called feature selection
   Why? Well, if data is divided too much too soon, then sub-division
   become data starved and can make  mistakes.  <br clear=all>
 
+## Sub-sampling 
 Better yet, if we are trying to understand the difference between
 neighboring clusters,  then there will very few differences. This
 means we can reduce the data even more using range selection.  If
@@ -119,6 +140,7 @@ techniques for discrete class data mining," in IEEE Transactions
 on Knowledge and Data Engineering, vol. 15, no. 6, pp. 1437-1447,
 Nov.-Dec. 2003, doi: 10.1109/TKDE.2003.1245283.
 
+## Measuring Dim
 ![](img/dim.png){.rimg300} 
 It  is somewhat  startling  just how much little data is needed to
 approximate an entire data set.  To see this, consider the following
@@ -145,10 +167,12 @@ https://zenodo.org/search?page=1&size=20&q=seacraft
 http://archive.ics.uci.edu/ml. Irvine, CA: University of California,
 School of Information and Computer Science.
 
+## Low-Dim SE
 Why is the SE data so less complex than data from other sources.
 That is  a puzzle, but there are some promising explanations for
 why  that is so:
 
+### Low Reach
 ![](img/zhang.png){.rimg400} 
 One explanation is that when code runs, it only visits the
 states approved by the combination of its internal logic -- and
@@ -162,6 +186,7 @@ and  M.  Kim,  “Bigfuzz:Efficient fuzz testing for data analytics
 using framework abstraction,” in the 2020 35th IEEE/ACM International
 Conference on Automated Software Engineering (ASE), 2020, pp. 722–733
 
+### Naturalness
 ![](img/zipf.png){.rimg300} 
 Another explanation is   _naturalness_; i.e. that prgramming language
 have the same repetitive  properties as natural language, If a
@@ -185,24 +210,23 @@ and Premkumar Devanbu. 2016. "On the naturalness of software".
 Commun. ACM 59, 5 (May 2016), 122–131.
 DOI:https://doi.org/10.1145/2902362
 
-![](img/powerlaw.png){.rimg300} 
-As to power laws, distributing
-drawn from software data exhibit the long tailed
-distributions associated with power laws.
-To see why,  suppose programmer2  most understands a
-small region  of the code written by programmer1.  That programmer
-would tend to make  most changes around  that region.  If programmer3
+### Power Laws
+![](img/powerlaw.png){.rimg300} As to power laws, distributing drawn
+from software data exhibit the long tailed distributions associated
+with power laws.  To see why,  suppose programmer2  most understands
+a small region  of the code written by programmer1.  That programmer
+Would tend to make  most changes around  that region.  If programmer3
 does  the  same  for  programmer2's code,  and  programmer4 does
 the same for programmer3's code then that, over time, that team
-would  spend most of
- their time working on a tiny portion of the overall code
- base [^lin15].
+would  spend most of their time working on a tiny portion of the
+overall code base [^lin15].
 
 [^lin15]: Z. Lin and J. Whitehead, “Why power laws? an explanation
 from fine-grained code changes,” inProceedings of the 12th Working
 Conference on Mining Software Repositories, ser. MSR ’15.    IEEE
 Press, 2015, p.68–75.
 
+## Deep Learning
 But  what about deep learning, you might ask.  Isn't everything
 improved by the use  of CPU-intensive  modeling where no one can
 the model output?  Well, maybe so, but maybe  there is  too much
@@ -210,6 +234,8 @@ trust being  placed  in that one technology[^yedida21].  And  even
 in that  field, some researchers are  reasoning  that finding
 analogous to the above
 [^lottery] [^oneclass], i.e. that DL models can be dramatically simplified.
+
+XXX more here
 
 [^yedida21]: R. Yedida and T. Menzies, "On the Value of Oversampling
 for Deep Learning in Software Defect Prediction," in IEEE Transactions
@@ -221,6 +247,15 @@ Orleans, Louisiana, ICLR, May 2019
 [^oneclass]: I.  Sucholutsky and M. Schonlau, “‘Less than one’-shot
 learning: Learning N classes from M < N samples,” 2020, arXiv:2009.08449.
 
+## Explanation
+
+explanation is everything . better  say a bduction. enoigh ymb9lsm. "A"s have
+subsets. How  find? kakas 2002. use  abduction  as a design principle
+not a im-lentation principle. got to heiristics. got to
+data mining. clusers
+
+in anyc ase, what  expmanations a re not is just running a  trace.
+isually a different inferences
 --]]
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 local about=[[
