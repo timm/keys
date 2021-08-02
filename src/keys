@@ -153,6 +153,7 @@ function Rows:new(inits,     x)
   for _,row in pairs(inits or {}) do x:add(row) end  
   return x end
 
+-- asdasd asdas 
 function Rows:read(f) 
   for row in csv(f) do self:add(row) end 
   return self end
