@@ -31,9 +31,10 @@ local Obj,Eg       = {},{}     -- two of the usual objects
 local Skip,Num,Sym = {},{},{}  -- columns
 local Row,Rows     = {},{}     -- places to store data
 local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
+local fun                      -- meta
 local sorted,sort,map,copy,per -- lists
 local fmt,color,dump,rump,pump -- strings
-local round,Seed,rand,normal   -- maths
+local rnd,Seed,rand,normal   -- maths
 local csv                      -- files
 local run,cli,main             -- mains, unit tests
 
@@ -119,7 +120,7 @@ function Num:merge(other,      new)
   for _,v in other._all do new:add(x) end
   return new end
 
-function Num:norm(x)
+function Num:norm(x,    a)
   if x =="?" then return x end
   a = self:all()
   return (x-a[1]) / (a[#a] - a[1] + 1E-32) end
@@ -141,9 +142,8 @@ function Row:dist(other,the,       a,b,d,n)
     n   = n + 1
     a,b = self.cells[col.at], other.cells[col.at]
     if    a=="?" and b=="?" 
-    then  d = d+1
-    else  print(col:dist(a,b))
-          d = d + col:dist(a.b)^the.p end end
+    then  d = d + 1
+    else  d = d + col:dist(a,b)^the.p end end
   return  (d/n)^(1/the.p) end
 
 function Rows:new(inits,     x)
@@ -187,11 +187,17 @@ function sorted(t,         i,keys)
       i=i+1; return keys[i], t[keys[i]] end end end
 
 function sort(a,f)
-  table.sort(a, f or function(x,y) return x<y end)
+  f = fun(f)
+  table.sort(a, function(x,y) return f(x)<f(y) end)
   return a end
 
+function fun(f)
+  if not f             then return function(z) return z    end end
+  if type(f)=="string" then return function(z) return z[f] end end
+  return f end
+
 function map(a,f,     b)
-  b, f = {}, f or function(z) return z end
+  b, f = {}, fun(f)
   for i,v in pairs(a or {}) do b[i] = f(v) end 
   return b end 
 
@@ -242,7 +248,7 @@ function rump(t,pre,    indent,fmt)
 function pump(o) print(dump(o)) end
 
 --- maths -------------------------------------------------
-function round(num, decimals,      mult)
+function rnd(num, decimals,      mult)
   mult = 10^(decimals or 0)
   return math.floor(num * mult + 0.5) / mult end
 
@@ -324,6 +330,12 @@ Eg.sorted= {
          for x,y in sorted{mm=10,zz=2,cc=3,aa=1} do 
            return assert(x=="aa" and y==1)  end end}
 
+Eg.sort= {
+  txt= "more sorting",
+  fun= function(_,       t) 
+         t= sort({{k=10,v=1},{k=3,v=20},{k=1,v=10},{k=5,v=5}},"k")
+         assert(5==t[3].v) end}
+
 Eg.map= {
   txt="meta map functions",
   fun=function(_,  f) 
@@ -342,15 +354,14 @@ Eg.num={
   txt="number",
   fun=function(_,     n)
         n=Num:new()
-        for i=1,10000 do n:add(round(rand(),2)) end
+        for i=1,10000 do n:add(rnd(rand(),2)) end
         n:var() end }
         
 Eg.rand={
   txt="random numbers",
   fun=function(_,      a)
-        a={}
-        for i=1,10 do a[1+#a] = round(rand(),2) end 
-        pump(sort(a)) end}
+        a={}; for i=1,10 do a[1+#a]=rnd(rand(),2) end 
+        assert(0.08 == sort(a)[3] ) end}
         
 Eg.meta={
   txt="column header types",
@@ -389,13 +400,6 @@ Eg.csv={
         for row in csv(the.data) do 
           n  = n or #row
           assert(n==#row)  end end}
-
-Eg.rows={
-  txt="loading rows",
-  fun=function(the,       t)
-        t = Rows:new():read(the.data)
-        rump(t.cols.all[2])
-      end}
 
 Eg.dist={
   txt="checking distances",
