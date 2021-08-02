@@ -134,11 +134,11 @@ function Num:dist(x,y)
 --- row and rows  --------------------------------------------------
 -- What kind of column should be created from `s`?
 function Row:new(a,rows)
-  return Obj.new(self,"Row",{cells=a, rows=rows}) end
+  return Obj.new(self,"Row",{cells=a, _rows=rows}) end
 
 function Row:dist(other,the,       a,b,d,n)
   d,n=0,1E-32
-  for _,col in pairs(self.rows.cols[the.cols]) do
+  for _,col in pairs(self._rows.cols[the.cols]) do
     n   = n + 1
     a,b = self.cells[col.at], other.cells[col.at]
     if    a=="?" and b=="?" 
@@ -177,6 +177,8 @@ function Rows:header(a,   what,new,tmp)
       tmp[1+#tmp] = new
       if klassp(txt) then i.cols.klass = new end end end end
 
+--- knn --------------------------------------------------
+
 --- lists --------------------------------------------------
 function sorted(t,         i,keys)
   i,keys = 0,{}
@@ -192,9 +194,8 @@ function sort(a,f)
   return a end
 
 function fun(f)
-  if not f             then return function(z) return z    end end
   if type(f)=="string" then return function(z) return z[f] end end
-  return f end
+  return f and f or function(z) return z end end
 
 function map(a,f,     b)
   b, f = {}, fun(f)
@@ -278,12 +279,15 @@ function csv(file,       split,stream,tmp)
     else
       io.close(stream) end end end
 
+local id=0
 function Obj.new(self, name, new)
   new = new or {}
   setmetatable(new, self)
   self.__tostring = dump 
   self.__index    = self
   self._name      = name
+  id = id + 1
+  new._id = id
   return new end
 
 function cli(what,about,t,       arg,b4)
@@ -348,14 +352,14 @@ Eg.copy= {
                a={1,{2,{3,{4},5},6},7}
                b=copy(a)
                a[2][2][2][1]=10 
-        assert(b[2][2][2][1]==4)   end}
+        assert(b[2][2][2][1]==4) end}
 
 Eg.num={
   txt="number",
   fun=function(_,     n)
         n=Num:new()
         for i=1,10000 do n:add(rnd(rand(),2)) end
-        n:var() end }
+        n:var() end}
         
 Eg.rand={
   txt="random numbers",
@@ -384,7 +388,7 @@ Eg.num={
         n,mu, sd, eps = 1000, 10, 1, .05
         for i=1,n do num:add(normal(mu,sd)) end
         assert(math.abs(sd - num:var()) < eps)
-        assert(math.abs(mu - num:mid()) < eps) end }
+        assert(math.abs(mu - num:mid()) < eps) end}
 
 Eg.sym={
   txt="entropy",
@@ -392,7 +396,7 @@ Eg.sym={
         e0, eps = 1.3787834, 0.0001
         assert(0==adds({"a","a","a","a"}):var())
         e1 =adds({"a","a","a","a","b","b","c"}):var()
-        assert(math.abs(e1 - e0) < eps) end }
+        assert(math.abs(e1 - e0) < eps) end}
 
 Eg.csv={
   txt="loading csv",
@@ -403,11 +407,17 @@ Eg.csv={
 
 Eg.dist={
   txt="checking distances",
-  fun=function(the,       t)
-        t = Rows:new():read(the.data)
-        for _,row1 in pairs(t.rows) do
-          for _,row2 in pairs(t.rows) do
-            row1:dist(row2,the) end end
-      end}
+  fun=function(the,       t,a)
+    t = Rows:new():read(the.data)
+    for i,row1 in pairs(t.rows) do
+      a={}
+      for j,row2 in pairs(t.rows) do
+        if i ~= j then
+          a[1 + #a]= {r1=row1, r2=row2,
+                     dist=row1:dist(row2,the)} end end
+      a = sort(a,"dist")
+      assert(a[1].dist < a[#a].dist)
+      end end}
+
 -----------------------------------------------------------
 main( cli("./keys", about, config()) )
