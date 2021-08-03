@@ -24,19 +24,22 @@ local function config() return {
   goaL= {'best' ,'Learning goals: best|rest|other'},
   iota= {.3     ,'Small = sd**iota'},
   k=    {2      ,'Bayes low class frequency hack'},
+  knn=  {2      ,'Number of neighbors for knn'},
+  kadd= {"mode", "combination rule of knn"},
   loud= {false  ,'Set verbose'},
   m=    {1      ,'Bayes low range frequency hack'},
   p=    {2      ,'Distance calculation exponent'},
   some= {20     ,'Number of samples to find far things'},
   seed= {10013  ,'Seed for random numbers'},
   top=  {10     ,'Focus on this many'},
-  un=   {false  ,'Run egs, no protection'} } end
+  un=   {false  ,'Run egs, no protection (unsafe mode)'} } end
 
 -----------------------------------------------------------
 local argparse = require("argparse")
 local Obj,Eg       = {},{}     -- two of the usual objects
 local Skip,Num,Sym = {},{},{}  -- columns
 local Row,Rows     = {},{}     -- places to store data
+local Err,Abcd     = {},{}     -- accumulators for results
 local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
 local fun                      -- meta
 local sorted,sort,map,copy,per -- lists
@@ -143,6 +146,8 @@ function Num:dist(x,y)
 function Row:new(a,rows)
   return Obj.new(self,"Row",{cells=a, _rows=rows}) end
 
+function Row:klass() return self.cells[_rows.cols.all.klass] end
+
 function Row:dist(other,the,       a,b,d,n)
   d,n=0,1E-32
   for _,col in pairs(self._rows.cols[the.cols]) do
@@ -183,11 +188,78 @@ function Rows:header(a,   what,new,tmp)
     if not skipp(txt) then
       tmp= self.cols[goalp(txt) and  "y" or "x"]
       tmp[1+#tmp] = new
-      if klassp(txt) then i.cols.klass = new end end end end
+      if klassp(txt) then self.cols.klass = new end end end end
 
---- knn --------------------------------------------------
+function Rows:neighbors(row1,the,    a)
+  a={}
+  for _,row2 in pairs(self.rows) do
+    if row1._id ~= row2._id then
+       a[ 1+#a ] = {row=row2, dist=row1:dist(row2,the)} end end
+  return sort(a,"dist") end
 
+-- stats, number classes ---------------------------------
+local z=1E-32
+local p=function (z) return math.floor(100*z) end
+
+function Err:new(data,rx)
+  return Obj.new(self,"Err",{
+    data = data or "data", rx= rx or "rx", _mre=Num()}) end 
+
+function Err:add(want,got) mre:add(math.abs(want-got)/want) end
+function Err:mre() return p(self._mre:mid()) end
+
+-- stats, discrete classes ---------------------------------
+function Abcd:new(data,rx)
+  return Obj.new(self,"Abcd",{
+    data = data or "data", rx= rx or "rx",
+    known={}, a={}, b={}, c={}, d={}, yes=0, no=0}) end
+
+function Abcd:exists(x) 
+  if inc(self.known,x) == 1 then 
+    self.a[x] = self.yes + self.no
+    self.b[x] = 0
+    self.c[x] = 0
+    self.d[x] = 0 end end
+
+function Abcd:add(want,got) 
+  self:exists(want) 
+  self:exists(got)  
+  if   want==got then self.yes=self.yes+1 else self.no=self.no+1 end
+  for x,_ in pairs( self.known ) do 
+    if   want==x
+    then inc(want==got and self.d or self.b, x)
+    else inc(got ==x   and self.c or self.a, x) end end end
+
+function Abcd:pd(x)   b,d=self.b[x],self.d[x]; return p(d/(b+d+z)) end
+function Abcd:pf(x)   a,c=self.a[x],self.c[x]; return p(c/(a+c+z)) end
+function Abcd:acc(x)  return  p(self.yes / (self.yes + self.no+z)) end
+function Abcd:prec(x) c,d=self.c[x],self.d[x]; return p(d/(c+d+z)) end
+
+function Abcd:f(x)    
+  return p(2*self:prec(x)*self:pd(x)/(self:prec(x) + self:pd(x) + z)) end
+
+function Abcd:g(x)    
+  return p(2*(1-self:pf(x))*self:pd(x)/((1-self:pf(x))+self:pd(x)+z)) end
+
+function Abcd:pn(x) 
+  a,b,c,d = self.a[x],self.b[x],self.c[x],self.d[x]
+  return p((b+d)/(a+c+z)) end
+
+--------------------------------  
+function knn(row,t,the,      a,s)  
+  a = t:neighbors(row,the)
+  s = Sym()
+  for i=1,the.knn do s:add( a[i]:klass() ) end
+  funs = {mode = function() return s.mode end}
+  return funs[the.kadd]() end
+  
 --- lists --------------------------------------------------
+function shuffle(a)
+  for i = #a, 2, -1 do
+    local j = math.random(i)
+    a[i], a[j] = a[j], a[i] end 
+  return a end
+
 function sorted(t,         i,keys)
   i,keys = 0,{}
   for k in pairs(t) do keys[#keys+1] = k end
@@ -221,6 +293,10 @@ function copy(obj, seen,      s, res)
 
 function per(a,p) 
   return a[math.max(1,math.floor(#a*(p or .5)))] end
+
+function inc(t,k,n)
+  t[k] = (t[k] or 0) + (n or 1)
+  return t[k] end
 
 --- strings -----------------------------------------------
 function fmt(s,...) return io.write(s:format(...)) end 
@@ -311,29 +387,25 @@ function cli(what,about,t,       arg,b4)
   return arg:parse() end
 
 --- main -------------------------------------------------
-function run(txt,fails,the,      it)
+local fails=0
+function run(txt,the,      it)
   the  = copy(the)
   Seed = the.seed
   it   = Eg[txt]
   if     the.un==true 
   then   print("unsafe:"); it.fun(the)
   elseif pcall(function () it.fun(the); end)
-  then   color("green","✔ % -15s  %s",txt,it.txt); fails=fails+0
-  else   color("red",  "✘ %-15s  %s" ,txt,it.txt); fails=fails+1 end 
-  return fails end
+  then   color("green","✔ % -15s  %s",txt,it.txt); 
+  else   color("red",  "✘ %-15s  %s" ,txt,it.txt); fails=fails+1 end end
 
-function main(the,      fails)
-  fails= 0
+function main(the)
   if     the.eg=="all"
-  then   for txt,meta in sorted(Eg) do
-           fails=run(txt, fails, the) end 
+  then   for txt,meta in sorted(Eg) do run(txt, the) end 
   elseif the.eg=="ls" 
   then   print("\neegs:")
          for x,y in sorted(Eg) do fmt("  %-15s  %s\n",x,y.txt) end 
   elseif the.eg and Eg[the.eg] 
-  then   fails = run(the.eg, fails, the) end
-  for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
-  os.exit(fails) end
+  then   run(the.eg, the) end end
 
 --- unit tests ---------------------------------------------
 Eg.sorted= {
@@ -418,14 +490,13 @@ Eg.dist={
   fun=function(the,       t,a)
     t = Rows:new():read(the.data)
     for i,row1 in pairs(t.rows) do
-      a={}
-      for j,row2 in pairs(t.rows) do
-        if i ~= j then
-          a[1 + #a]= {r1=row1, r2=row2,
-                     dist=row1:dist(row2,the)} end end
-      a = sort(a,"dist")
+      fmt("%3s %s", i, i%20==0 and "\n" or "")
+      a = t:neighbors(row1,the)
       assert(a[1].dist < a[#a].dist)
       end end}
 
+
 -----------------------------------------------------------
 main( cli("./keys", about, config()) )
+for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
+os.exit(fails) 
