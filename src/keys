@@ -139,6 +139,8 @@ function Num:dist(x,y)
 function Row:new(a,rows)
   return Obj.new(self,"Row",{cells=a, _rows=rows}) end
 
+function Row:klass() return self.cells[_rows.cols.all.klass] end
+
 function Row:dist(other,the,       a,b,d,n)
   d,n=0,1E-32
   for _,col in pairs(self._rows.cols[the.cols]) do
@@ -237,10 +239,10 @@ function Abcd:pn(x)
   return p((b+d)/(a+c+z)) end
 
 --------------------------------  
-function knn(row,t,the)  
+function knn(row,t,the,      a,s)  
   a = t:neighbors(row,the)
   s = Sym()
-  for i=1,the.knn do s:add(a[i].cells[t.cols.klass.at]) end
+  for i=1,the.knn do s:add( a[i]:klass() ) end
   funs = {mode = function() return s.mode end}
   return funs[the.kadd]() end
   
