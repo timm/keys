@@ -7,6 +7,13 @@ local about=[[
 \_,-._*  Cluster, then report just the 
      v   deltas between nearby clusters.  ]]
 
+---------------------------------------------------------
+-- ## Config system
+-- Machine learners are controlled by many options and
+-- these all need to be configurable from the command line.
+-- The `config` function returns a nested list which we
+-- `argparse` turns into one command-line flag for all
+-- these 
 local function config() return {
   bins= {.5     ,'Bins are of size n**BINS'},
   cols= {'x'    ,'Columns to use for inference'},
