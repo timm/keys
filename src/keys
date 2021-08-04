@@ -1,19 +1,37 @@
 #!/usr/bin/env lua
 --vim: filetype=lua ts=2 sw=2 sts=2 et :
-local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
+
 local about=[[
  ,-_|\   Contrast set learning
 /     \  (c) Tim Menzies, 2021, unlicense.org
 \_,-._*  Cluster, then report just the 
      v   deltas between nearby clusters.  ]]
-
+---------------------------------------------------
+-- To find rogue  globals (at end of  file), first
+-- trap a list of  current globals.
+local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 ---------------------------------------------------------
+-- ## Globals in this module.
+-- Upper case names are classes.
+local argparse = require("argparse")
+local Obj,Eg       = {},{}     -- two of the usual objects
+local Skip,Num,Sym = {},{},{}  -- columns
+local Row,Rows     = {},{}     -- places to store data
+local Err,Abcd     = {},{}     -- accumulators for results
+local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
+local fun                      -- meta
+local sorted,sort,map,copy,per,shuffle,inc,max -- lists
+local fmt,color,dump,rump,pump,linem,printm    -- strings
+local rnd,Seed,rand,normal   -- maths
+local knn                      -- learners
+local csv                      -- files
+local run,cli,main             -- mains, unit tests
+
+-------------------------------------------------------
 -- ## Config system
--- Machine learners are controlled by many options and
--- these all need to be configurable from the command line.
--- The `config` function returns a nested list which we
--- `argparse` turns into one command-line flag for all
--- these 
+-- Machine learners are controlled by many options.
+-- `config()` returns a nested list which 
+-- `argparse` turns into command-line flags (e.g. ``--bins``).
 local function config() return {
   bins= {.5     ,'Bins are of size n**BINS'},
   cols= {'x'    ,'Columns to use for inference'},
@@ -34,21 +52,24 @@ local function config() return {
   top=  {10     ,'Focus on this many'},
   un=   {false  ,'Run egs, no protection (unsafe mode)'} } end
 
------------------------------------------------------------
-local argparse = require("argparse")
-local Obj,Eg       = {},{}     -- two of the usual objects
-local Skip,Num,Sym = {},{},{}  -- columns
-local Row,Rows     = {},{}     -- places to store data
-local Err,Abcd     = {},{}     -- accumulators for results
-local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
-local fun                      -- meta
-local sorted,sort,map,copy,per -- lists
-local fmt,color,dump,rump,pump -- strings
-local rnd,Seed,rand,normal   -- maths
-local csv                      -- files
-local run,cli,main             -- mains, unit tests
-
---- columns, general---------------------------------------
+-- `cli()` maps `config` to either `:flags` or `:options`.
+-- By convention, boolean options  default  to false
+-- and their  command-line  flag flips them to `true`.
+-- Also, if reading  a numeric option from  command line,
+-- remember to coerce it to a number.
+function cli(what,about,config,       arg,b4)
+  arg = argparse(what, about)
+  for flag,v in sorted(config) do
+    flag = "--"..flag
+    b4 =" (default: "..tostring(v[1])..")"
+    if     v[1]==false
+    then   arg:flag(flag, v[2],  v[1]) -- handling Boolean
+    elseif type(v[1])=="number"
+    then   arg:option(flag, v[2]..b4, v[1],tonumber) -- coerce nums
+    else   arg:option(flag, v[2]    , v[1]) end end 
+  return arg:parse() end
+-------------------------------------------------------------
+-- ## columns, general
 function goalp(s)  return s:find("+") or s:find("-") or klassp(s) end
 function klassp(s) return s:find("!") end
 function nump(s)   return s:sub(1,1):match("[A-Z]") end
@@ -199,14 +220,13 @@ function Rows:neighbors(row1,the,    a)
 
 -- stats, number classes ---------------------------------
 local z=1E-32
-local p=function (z) return math.floor(100*z) end
 
 function Err:new(data,rx)
   return Obj.new(self,"Err",{
     data = data or "data", rx= rx or "rx", _mre=Num()}) end 
 
 function Err:add(want,got) mre:add(math.abs(want-got)/want) end
-function Err:mre() return p(self._mre:mid()) end
+function Err:mre() return self._mre:mid() end
 
 -- stats, discrete classes ---------------------------------
 function Abcd:new(data,rx)
@@ -230,20 +250,27 @@ function Abcd:add(want,got)
     then inc(want==got and self.d or self.b, x)
     else inc(got ==x   and self.c or self.a, x) end end end
 
-function Abcd:pd(x)   b,d=self.b[x],self.d[x]; return p(d/(b+d+z)) end
-function Abcd:pf(x)   a,c=self.a[x],self.c[x]; return p(c/(a+c+z)) end
-function Abcd:acc(x)  return  p(self.yes / (self.yes + self.no+z)) end
-function Abcd:prec(x) c,d=self.c[x],self.d[x]; return p(d/(c+d+z)) end
-
-function Abcd:f(x)    
-  return p(2*self:prec(x)*self:pd(x)/(self:prec(x) + self:pd(x) + z)) end
-
-function Abcd:g(x)    
-  return p(2*(1-self:pf(x))*self:pd(x)/((1-self:pf(x))+self:pd(x)+z)) end
-
-function Abcd:pn(x) 
-  a,b,c,d = self.a[x],self.b[x],self.c[x],self.d[x]
-  return p((b+d)/(a+c+z)) end
+function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
+  p= function (z) return math.floor(100*z+0.5) end
+  z= function (z) return z==0 and "" or z end
+  out= {{"data","rx","n","a","b","c","d","acc","prec",
+         "pd","pf","f","g","class"}}
+  linem(out)
+  for x in sorted( self.known ) do
+    pd,pf,pn,prec,g,f,acc = 0,0,0,0,0,0,0
+    a= self.a[x]; b= self.b[x]; c= self.c[x]; d= self.d[x];
+    if b+d > 0     then pd   = d     / (b+d)        end
+    if a+c > 0     then pf   = c     / (a+c)        end
+    if a+c > 0     then pn   = (b+d) / (a+c)        end
+    if c+d > 0     then prec = d     / (c+d)        end
+    if 1-pf+pd > 0 then g=2*(1-pf) * pd / (1-pf+pd) end 
+    if prec+pd > 0 then f=2*prec*pd / (prec + pd)   end
+    if self.yes + self.no > 0 then 
+       acc= self.yes / (self.yes + self.no) end
+    out[#out+1] = {self.data, self.rx, self.yes+self.no, 
+                   z(a),z(b),z(c),z(d),p(acc),p(prec), p(pd), p(pf), 
+                   p(f),p(g),x} end
+  printm(out) end
 
 --------------------------------  
 function knn(row,t,the,      a,s)  
@@ -298,6 +325,8 @@ function inc(t,k,n)
   t[k] = (t[k] or 0) + (n or 1)
   return t[k] end
 
+function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
+
 --- strings -----------------------------------------------
 function fmt(s,...) return io.write(s:format(...)) end 
 
@@ -331,6 +360,20 @@ function rump(t,pre,    indent,fmt)
           print(fmt .. tostring(v)) end end end end end
 
 function pump(o) print(dump(o)) end
+
+function linem(m)
+  m[#m+1]={}
+  for i,x in pairs(m[#m-1]) do 
+    m[#m][i] = string.rep("-",math.max(2,#tostring(x))) end end
+    
+function printm(m,     most,s)
+  most = {}
+  for _,row in pairs(m) do
+    for i,x in pairs(row) do max(most,i, #tostring(x)) end end
+  for _,row in pairs(m) do
+    s=""
+    for i,x in pairs(row) do fmt("%s%".. most[i].."s", s,x);s=" | " end 
+    print("") end end
 
 --- maths -------------------------------------------------
 function rnd(num, decimals,      mult)
@@ -373,18 +416,6 @@ function Obj.new(self, name, new)
   id = id + 1
   new._id = id
   return new end
-
-function cli(what,about,t,       arg,b4)
-  arg = argparse(what, about)
-  for flag,v in sorted(t) do
-    flag = "--"..flag
-    b4 =" (default: "..tostring(v[1])..")"
-    if     v[1]==false
-    then   arg:flag(flag, v[2],  v[1])
-    elseif type(v[1])=="number"
-    then   arg:option(flag, v[2]..b4, v[1],tonumber)
-    else   arg:option(flag, v[2]    , v[1]) end end 
-  return arg:parse() end
 
 --- main -------------------------------------------------
 local fails=0
@@ -495,6 +526,24 @@ Eg.dist={
       assert(a[1].dist < a[#a].dist)
       end end}
 
+Eg.abcd={
+  txt="collecting stats on discrete classes",
+  fun=function(the,    a)
+    a = Abcd:new()
+    for i=1,6 do a:add('y','y') end
+    for i=1,2 do a:add('n','n') end
+    for i=1,5 do a:add('m','m') end
+    a:add('m','n')
+    a:report()
+end 
+    
+}
+ 
+--   db |    rx |   num |     a |     b |     c |     d |  acc |  pre |   pd |   pf |    f |    g | class
+-- ---- |  ---- |  ---- |  ---- |  ---- |  ---- |  ---- | ---- | ---- | ---- | ---- | ---- | ---- |-----
+-- data |    rx |    14 |    11 |       |     1 |     2 | 0.93 | 0.67 | 1.00 | 0.08 | 0.80 | 0.96 | no
+-- data |    rx |    14 |     8 |       |       |     6 | 0.93 | 1.00 | 1.00 | 0.00 | 1.00 | 1.00 | yes
+-- data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00 | 0.91 | 0.91 | maybe
 
 -----------------------------------------------------------
 main( cli("./keys", about, config()) )
