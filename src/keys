@@ -10,7 +10,7 @@ local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 --       ./keys --bins 10 --loud
 --
 -- Boolean options have no  arguments (e.g. `loud`). Mentioning
--- booleans on the command line will set that option to `true`.
+-- booleans    on the command line will set that option to `true`.
 --  
 -- The `--eg X` runs the unit tests. Use `--eg ls`  to list those
 -- tests. ``--eg all``  will run all tests. 
@@ -103,7 +103,8 @@ function nump(s)   return s:sub(1,1):match("[A-Z]") end
 function weight(s) return s:find("-") and -1 or 1 end
 function skipp(s)  return s:find("?") end
 
--- Other functions that apply to all columns are:
+-- Each column (except for `Skip`) needs its own version of the
+-- following:
 --
 -- - `:add()`  : add `x` to the column;
 -- - `:dist()` : returns probability that `x` belongs to the
@@ -113,7 +114,8 @@ function skipp(s)  return s:find("?") end
 -- - `:new()`  : returns a new column
 -- - `:var()` : reports how values can vary around the `mid`.
 
--- Also, `adds()` lets you create one or update a `col`umn with a list of
+-- The following functions work for all columns.
+--  `adds()` lets you create one or update a `col`umn with a list of
 -- column `a`  (and if creating, then it guesses column type from the
 -- first entry).
 function adds(a,col) 
@@ -130,8 +132,8 @@ function merged(i,j,         k)
 ------------------------------------------------------------
 -- ## Specific Columns
 -- ### Skip 
+-- Columns for data that we just want to ignore.
 
---
 function Skip:new(at,s) 
   return Obj.new(self,"Skip",{
     n=0, s=s or "", at=at or 0}) end

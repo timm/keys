@@ -1,64 +1,293 @@
 ---
-title: "SE for AI- less but better"
+title: ""
 ---
 
 
 ```{.lua .numberLines}
 
-local function config() return {
-  bins= {.5     ,'Bins are of size n**BINS'},
-  cols= {'x'    ,'Columns to use for inference'},
-  data= {'../data/auto2.csv' 
-                ,'Where to read data'},
-  eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
-  far=  {.9     ,'Where to look for far things'},
-  goaL= {'best' ,'Learning goals: best|rest|other'},
-  iota= {.3     ,'Small = sd**iota'},
-  k=    {2      ,'Bayes low class frequency hack'},
-  loud= {false  ,'Set verbose'},
-  m=    {1      ,'Bayes low range frequency hack'},
-  p=    {2      ,'Distance calculation exponent'},
-  some= {20     ,'Number of samples to find far things'},
-  seed= {10013  ,'Seed for random numbers'},
-  top=  {10     ,'Focus on this many'},
-  un=   {false  ,'Run egs, no protection'} } end
-
------------------------------------------------------------
 local argparse = require("argparse")
-local Obj,Eg       = {},{}     -- two of the usual objects
-local Skip,Num,Sym = {},{},{}  -- columns
-local Row,Rows     = {},{}     -- places to store data
-local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
-local sorted,sort,map,copy,per -- lists
-local fmt,color,dump,rump,pump -- strings
-local round,Seed,rand,normal   -- maths
-local csv                      -- files
-local run,cli,main             -- mains, unit tests
+local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
+-----------------------------------------------
+```
 
---- columns, general---------------------------------------
-function goalp(s)  return s:find("+") or s:find("-") or klassp(s) end
+## About
+All the `options` are available as command line flags, e.g.
+
+```{.lua .numberLines}
+
+--
+```
+
+      ./keys --bins 10 --loud
+
+```{.lua .numberLines}
+
+--
+```
+
+Boolean options have no  arguments (e.g. `loud`). Mentioning
+booleans on the command line will set that option to `true`.
+ 
+The `--eg X` runs the unit tests. Use `--eg ls`  to list those
+tests. ``--eg all``  will run all tests. 
+
+```{.lua .numberLines}
+
+--
+```
+
+If a test  crashes,
+and  you  want to see  the  stacktrace, run the  test again in 
+`un`safe mode; e.g
+
+```{.lua .numberLines}
+
+--
+```
+
+    ./bins --un --eg abcd
+
+```{.lua .numberLines}
+
+--
+local about={
+   synopsis = "To summarize something, show its delta to adjacent concepts.",
+   usage    = "./keys",
+   author   = "Tim Menzies",
+   copyright= "(c) Tim Menzies, 2021, unlicense.org",
+   options  = {
+        bins= {.5     ,'Bins are of size n**BINS'},
+        cols= {'x'    ,'Columns to use for inference'},
+        data= {'../data/auto2.csv' 
+                      ,'Where to read data'},
+        eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
+        far=  {.9     ,'Where to look for far things'},
+        goaL= {'best' ,'Learning goals: best|rest|other'},
+        iota= {.3     ,'Small = sd**iota'},
+        k=    {2      ,'Bayes low class frequency hack'},
+        knn=  {2      ,'Number of neighbors for knn'},
+        kadd= {"mode", "combination rule of knn"},
+        loud= {false  ,'Set verbose'},
+        m=    {1      ,'Bayes low range frequency hack'},
+        p=    {2      ,'Distance calculation exponent'},
+        some= {20     ,'Number of samples to find far things'},
+        seed= {10013  ,'Seed for random numbers'},
+        top=  {10     ,'Focus on this many'},
+        un=   {false  ,'Run egs, no protection (unsafe mode)'}}}
+      
+---------------------------------------------------------
+```
+
+##  Classes
+
+```{.lua .numberLines}
+
+```
+
+`Obj`  is  the class creation factor. `Eg` stores the
+unit and  system tests.
+
+```{.lua .numberLines}
+
+local Obj,Eg       = {},{}     
+```
+
+Columns. `Skip` is for columns we want to ignoe
+the  others are for columns of  `Num`bers  or  `Sym`bols.
+
+```{.lua .numberLines}
+
+local Skip,Num,Sym = {},{},{}  
+```
+
+`Rows` is a  container  classes that holds
+`Row`s and column summaries.
+
+```{.lua .numberLines}
+
+local Row,Rows     = {},{}    
+```
+
+Reporting.
+
+```{.lua .numberLines}
+
+local Err,Abcd     = {},{}   
+```
+
+## Functions
+
+```{.lua .numberLines}
+
+```
+
+For columns.
+
+```{.lua .numberLines}
+
+local goalp,klassp,nump,weight,skipp,merged,adds 
+```
+
+Meta functions
+
+```{.lua .numberLines}
+
+local fun,locals            
+```
+
+ For lists.
+
+```{.lua .numberLines}
+
+local sorted,sort,map,copy,per,shuffle,inc,max 
+```
+
+ For strings.
+
+```{.lua .numberLines}
+
+local fmt,color,dump,rump,pump,linem,printm   
+```
+
+For maths.
+
+```{.lua .numberLines}
+
+local rnd,Seed,rand,normal   
+```
+
+ Learner functions
+
+```{.lua .numberLines}
+
+local knn                   
+```
+
+ For  files.
+
+```{.lua .numberLines}
+
+local csv                  
+```
+
+ Code  called at start-up.
+
+```{.lua .numberLines}
+
+local run,main        
+
+-------------------------------------------------------------
+```
+
+## columns, general
+
+```{.lua .numberLines}
+
+```
+
+This code reads tables of data where line1 shows the name
+for each column. For example:
+
+```{.lua .numberLines}
+
+--
+```
+
+    name?, Age, Shoesize, Job,  Salary+ YearsOnJob-
+    tim,   21,  10,       prof, 100,     100
+    jane,  60,  10,       hod,  1000,    10
+    ...    ..   ..        ..    ..       ..
+
+```{.lua .numberLines}
+
+--
+```
+
+Note that the row1 names have magic symbols.
+Numerics start with uppercase. Goals to be minimize or
+maximized end with `-` and `+` (respectively). Columns
+to be ignored contain `?`. Columns usually have a `weight`
+of "1" unless we are minimizing them in which case that is "-1".
+
+```{.lua .numberLines}
+
+--
+
 function klassp(s) return s:find("!") end
+function goalp(s)  return s:find("+") or s:find("-") or klassp(s) end
 function nump(s)   return s:sub(1,1):match("[A-Z]") end
 function weight(s) return s:find("-") and -1 or 1 end
 function skipp(s)  return s:find("?") end
+```
+
+Other functions that apply to all columns are:
+
+```{.lua .numberLines}
+
+--
+```
+
+- `:add()`  : add `x` to the column;
+- `:dist()` : returns probability that `x` belongs to the
+- `:like()` : returns distance between two values in this column.
+- `:merge()` : combine two columns
+- `:mid()` : return the central tendency of a  column
+- `:new()`  : returns a new column
+- `:var()` : reports how values can vary around the `mid`.
+
+```{.lua .numberLines}
+
+```
+
+Also, `adds()` lets you create one or update a `col`umn with a list of
+column `a`  (and if creating, then it guesses column type from the
+first entry).
+
+```{.lua .numberLines}
+
+function adds(a,col) 
+  col = col or (type(a[1])=="number" and Num or Sym):new()
+  for _,x in pairs(a) do col:add(x) end 
+  return col end
+```
+
+Finally, `merged()` checks if life is simpler if we combine two columns.
+
+```{.lua .numberLines}
 
 function merged(i,j,         k)
   k= i:merge(j)
   if k:var() < (i.n*i:var() + j.n*j:var()) / (i.n + j.n) then 
     return k end end
 
-function adds(a,i) 
-  i = i or (type(a[1])=="number" and Num or Sym):new()
-  for _,x in pairs(a) do i:add(x) end 
-  return i end
+------------------------------------------------------------
+```
 
---- Skip ---------------------------------------------------
+## Specific Columns
+### Skip 
+
+```{.lua .numberLines}
+
+
+--
 function Skip:new(at,s) 
   return Obj.new(self,"Skip",{
     n=0, s=s or "", at=at or 0}) end
+
 function Skip: add(x) return  x end
 
---- Sym ---------------------------------------------------
+function Skip: like(x,_) return 1 end
+
+------------------------------------------------------------
+```
+
+### Sym
+Symbolic columns keep symbol counts (in `has`) and know
+the `mode` (most common) value.
+
+```{.lua .numberLines}
+
+
 function Sym:new(at,s)  
   return Obj.new(self,"Sym",{
     n=0, s=s or "", at=at or 0,
@@ -117,7 +346,7 @@ function Num:merge(other,      new)
   for _,v in other._all do new:add(x) end
   return new end
 
-function Num:norm(x)
+function Num:norm(x,    a)
   if x =="?" then return x end
   a = self:all()
   return (x-a[1]) / (a[#a] - a[1] + 1E-32) end
@@ -136,17 +365,18 @@ What kind of column should be created from `s`?
 ```{.lua .numberLines}
 
 function Row:new(a,rows)
-  return Obj.new(self,"Row",{cells=a, rows=rows}) end
+  return Obj.new(self,"Row",{cells=a, _rows=rows}) end
+
+function Row:klass() return self.cells[_rows.cols.all.klass] end
 
 function Row:dist(other,the,       a,b,d,n)
   d,n=0,1E-32
-  for _,col in pairs(self.rows.cols[the.cols]) do
+  for _,col in pairs(self._rows.cols[the.cols]) do
     n   = n + 1
     a,b = self.cells[col.at], other.cells[col.at]
     if    a=="?" and b=="?" 
-    then  d = d+1
-    else  print(col:dist(a,b))
-          d = d + col:dist(a.b)^the.p end end
+    then  d = d + 1
+    else  d = d + col:dist(a,b)^the.p end end
   return  (d/n)^(1/the.p) end
 
 function Rows:new(inits,     x)
@@ -155,6 +385,11 @@ function Rows:new(inits,     x)
       cols={all={},names={},x={},y={}}})
   for _,row in pairs(inits or {}) do x:add(row) end  
   return x end
+```
+
+asdasd asdas 
+
+```{.lua .numberLines}
 
 function Rows:read(f) 
   for row in csv(f) do self:add(row) end 
@@ -178,9 +413,92 @@ function Rows:header(a,   what,new,tmp)
     if not skipp(txt) then
       tmp= self.cols[goalp(txt) and  "y" or "x"]
       tmp[1+#tmp] = new
-      if klassp(txt) then i.cols.klass = new end end end end
+      if klassp(txt) then self.cols.klass = new end end end end
 
+function Rows:neighbors(row1,the,    a)
+  a={}
+  for _,row2 in pairs(self.rows) do
+    if row1._id ~= row2._id then
+       a[ 1+#a ] = {row=row2, dist=row1:dist(row2,the)} end end
+  return sort(a,"dist") end
+```
+
+stats, number classes ---------------------------------
+
+```{.lua .numberLines}
+
+local z=1E-32
+
+function Err:new(data,rx)
+  return Obj.new(self,"Err",{
+    data = data or "data", rx= rx or "rx", _mre=Num()}) end 
+
+function Err:add(want,got) mre:add(math.abs(want-got)/want) end
+function Err:mre() return self._mre:mid() end
+```
+
+stats, discrete classes ---------------------------------
+
+```{.lua .numberLines}
+
+function Abcd:new(data,rx)
+  return Obj.new(self,"Abcd",{
+    data = data or "data", rx= rx or "rx",
+    known={}, a={}, b={}, c={}, d={}, yes=0, no=0}) end
+
+function Abcd:exists(x) 
+  if inc(self.known,x) == 1 then 
+    self.a[x] = self.yes + self.no
+    self.b[x] = 0
+    self.c[x] = 0
+    self.d[x] = 0 end end
+
+function Abcd:add(want,got) 
+  self:exists(want) 
+  self:exists(got)  
+  if   want==got then self.yes=self.yes+1 else self.no=self.no+1 end
+  for x,_ in pairs( self.known ) do 
+    if   want==x
+    then inc(want==got and self.d or self.b, x)
+    else inc(got ==x   and self.c or self.a, x) end end end
+
+function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
+  p   = function (z) return math.floor(100*z+0.5) end
+  z   = function (z) return z==0 and "" or z end
+  out = {{"data","rx","n","a","b","c","d","acc","prec",
+          "pd","pf","f","g","class"}}
+  linem(out)
+  for x in sorted( self.known ) do
+    pd,pf,pn,prec,g,f,acc = 0,0,0,0,0,0,0
+    a= self.a[x]; b= self.b[x]; c= self.c[x]; d= self.d[x];
+    if b+d > 0     then pd   = d     / (b+d)        end
+    if a+c > 0     then pf   = c     / (a+c)        end
+    if a+c > 0     then pn   = (b+d) / (a+c)        end
+    if c+d > 0     then prec = d     / (c+d)        end
+    if 1-pf+pd > 0 then g=2*(1-pf) * pd / (1-pf+pd) end 
+    if prec+pd > 0 then f=2*prec*pd / (prec + pd)   end
+    if self.yes + self.no > 0 then 
+       acc= self.yes / (self.yes + self.no) end
+    out[#out+1] = {self.data, self.rx, self.yes+self.no, 
+                   z(a),z(b),z(c),z(d),p(acc),p(prec), p(pd), p(pf), 
+                   p(f),p(g),x} end
+  printm(out) end
+
+--------------------------------  
+function knn(row,t,the,      a,s)  
+  a = t:neighbors(row,the)
+  s = Sym()
+  for i=1,the.knn do s:add( a[i]:klass() ) end
+  funs = {mode = function() return s.mode end}
+  return funs[the.kadd]() end
+  
 --- lists --------------------------------------------------
+function shuffle(a)
+  for i = #a, 2, -1 do
+    local j = math.random(i)
+    a[i], a[j] = a[j], a[i] end 
+  return a end
+
 function sorted(t,         i,keys)
   i,keys = 0,{}
   for k in pairs(t) do keys[#keys+1] = k end
@@ -190,11 +508,31 @@ function sorted(t,         i,keys)
       i=i+1; return keys[i], t[keys[i]] end end end
 
 function sort(a,f)
-  table.sort(a, f or function(x,y) return x<y end)
+  f = fun(f)
+  table.sort(a, function(x,y) return f(x)<f(y) end)
   return a end
 
+function per(a,p) 
+  return a[math.max(1,math.floor(#a*(p or .5)))] end
+
+function inc(t,k,n)
+  t[k] = (t[k] or 0) + (n or 1)
+  return t[k] end
+
+function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
+-------------------------------------------------------
+```
+
+## Metas
+
+```{.lua .numberLines}
+
+function fun(f)
+  if type(f)=="string" then return function(z) return z[f] end end
+  return f and f or function(z) return z end end
+
 function map(a,f,     b)
-  b, f = {}, f or function(z) return z end
+  b, f = {}, fun(f)
   for i,v in pairs(a or {}) do b[i] = f(v) end 
   return b end 
 
@@ -207,8 +545,24 @@ function copy(obj, seen,      s, res)
   for k, v in pairs(obj) do res[copy(k, s)] = copy(v, s) end
     return res end
 
-function per(a,p) 
-  return a[math.max(1,math.floor(#a*(p or .5)))] end
+function exports(out,i)
+  i,out = 1,out or {}
+  while true do
+    local s, x = debug.getlocal(2, i)
+    if s== nil then break end
+    if s:sub(1,1):match("^[A-Z]") then out[s]=x end
+    i = 1 + i end
+  return out end
+
+local id=0
+function Obj.new(self, name, new)
+  new = setmetatable(new or {}, self)
+  self.__tostring = dump 
+  self.__index    = self
+  self._name      = name
+  id = id + 1
+  new._id = id
+  return new end
 
 --- strings -----------------------------------------------
 function fmt(s,...) return io.write(s:format(...)) end 
@@ -244,8 +598,22 @@ function rump(t,pre,    indent,fmt)
 
 function pump(o) print(dump(o)) end
 
+function linem(m)
+  m[#m+1]={}
+  for i,x in pairs(m[#m-1]) do 
+    m[#m][i] = string.rep("-",math.max(2,#tostring(x))) end end
+    
+function printm(m,     most,s)
+  most = {}
+  for _,row in pairs(m) do
+    for i,x in pairs(row) do max(most,i, #tostring(x)) end end
+  for _,row in pairs(m) do
+    s=""
+    for i,x in pairs(row) do fmt("%s%".. most[i].."s", s,x);s=" | " end 
+    print("") end end
+
 --- maths -------------------------------------------------
-function round(num, decimals,      mult)
+function rnd(num, decimals,      mult)
   mult = 10^(decimals or 0)
   return math.floor(num * mult + 0.5) / mult end
 
@@ -274,51 +642,47 @@ function csv(file,       split,stream,tmp)
         return t end
     else
       io.close(stream) end end end
-
-function Obj.new(self, name, new)
-  new = new or {}
-  setmetatable(new, self)
-  self.__tostring = dump 
-  self.__index    = self
-  self._name      = name
-  return new end
-
-function cli(what,about,t,       arg,b4)
-  arg = argparse(what, about)
-  for flag,v in sorted(t) do
-    flag = "--"..flag
-    b4 =" (default: "..tostring(v[1])..")"
-    if     v[1]==false
-    then   arg:flag(flag, v[2],  v[1])
-    elseif type(v[1])=="number"
-    then   arg:option(flag, v[2]..b4, v[1],tonumber)
-    else   arg:option(flag, v[2]    , v[1]) end end 
-  return arg:parse() end
-
 --- main -------------------------------------------------
-function run(txt,fails,the,      it)
+local fails=0
+function run(txt,the,      it)
   the  = copy(the)
   Seed = the.seed
   it   = Eg[txt]
   if     the.un==true 
   then   print("unsafe:"); it.fun(the)
   elseif pcall(function () it.fun(the); end)
-  then   color("green","✔ % -15s  %s",txt,it.txt); fails=fails+0
-  else   color("red",  "✘ %-15s  %s" ,txt,it.txt); fails=fails+1 end 
-  return fails end
+  then   color("green","✔ % -15s  %s",txt,it.txt); 
+  else   color("red",  "✘ %-15s  %s" ,txt,it.txt); fails=fails+1 end end
 
-function main(the,      fails)
-  fails= 0
+function main(the)
   if     the.eg=="all"
-  then   for txt,meta in sorted(Eg) do
-           fails=run(txt, fails, the) end 
+  then   for txt,meta in sorted(Eg) do run(txt, the) end 
   elseif the.eg=="ls" 
   then   print("\neegs:")
          for x,y in sorted(Eg) do fmt("  %-15s  %s\n",x,y.txt) end 
   elseif the.eg and Eg[the.eg] 
-  then   fails = run(the.eg, fails, the) end
-  for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
-  os.exit(fails) end
+  then   run(the.eg, the) end end
+```
+
+`cli()` creates  command line flags by mapping `config` to `:flags`
+or `:options` calls to `argparse`.  By convention, boolean options
+default  to false and their  command-line  flag flips them to `true`.
+Also, if reading  a numeric option from  command line, remember to
+coerce it to a number.
+
+```{.lua .numberLines}
+
+local function cli(about,       arg,b4)
+  arg = argparse(about.usage, about.synopsis)
+  for flag,v in sorted(about.options) do
+    flag = "--"..flag
+    b4 =" (default: "..tostring(v[1])..")"
+    if     v[1]==false
+    then   arg:flag(flag, v[2],  v[1]) -- handling Boolean
+    elseif type(v[1])=="number"
+    then   arg:option(flag, v[2]..b4, v[1],tonumber) -- coerce nums
+    else   arg:option(flag, v[2]    , v[1]) end end 
+  return arg:parse() end
 
 --- unit tests ---------------------------------------------
 Eg.sorted= {
@@ -326,6 +690,12 @@ Eg.sorted= {
   fun = function(_) 
          for x,y in sorted{mm=10,zz=2,cc=3,aa=1} do 
            return assert(x=="aa" and y==1)  end end}
+
+Eg.sort= {
+  txt= "more sorting",
+  fun= function(_,       t) 
+         t= sort({{k=10,v=1},{k=3,v=20},{k=1,v=10},{k=5,v=5}},"k")
+         assert(5==t[3].v) end}
 
 Eg.map= {
   txt="meta map functions",
@@ -339,21 +709,20 @@ Eg.copy= {
                a={1,{2,{3,{4},5},6},7}
                b=copy(a)
                a[2][2][2][1]=10 
-        assert(b[2][2][2][1]==4)   end}
+        assert(b[2][2][2][1]==4) end}
 
 Eg.num={
   txt="number",
   fun=function(_,     n)
         n=Num:new()
-        for i=1,10000 do n:add(round(rand(),2)) end
-        n:var() end }
+        for i=1,10000 do n:add(rnd(rand(),2)) end
+        n:var() end}
         
 Eg.rand={
   txt="random numbers",
   fun=function(_,      a)
-        a={}
-        for i=1,10 do a[1+#a] = round(rand(),2) end 
-        pump(sort(a)) end}
+        a={}; for i=1,10 do a[1+#a]=rnd(rand(),2) end 
+        assert(0.08 == sort(a)[3] ) end}
         
 Eg.meta={
   txt="column header types",
@@ -376,7 +745,7 @@ Eg.num={
         n,mu, sd, eps = 1000, 10, 1, .05
         for i=1,n do num:add(normal(mu,sd)) end
         assert(math.abs(sd - num:var()) < eps)
-        assert(math.abs(mu - num:mid()) < eps) end }
+        assert(math.abs(mu - num:mid()) < eps) end}
 
 Eg.sym={
   txt="entropy",
@@ -384,7 +753,7 @@ Eg.sym={
         e0, eps = 1.3787834, 0.0001
         assert(0==adds({"a","a","a","a"}):var())
         e1 =adds({"a","a","a","a","b","b","c"}):var()
-        assert(math.abs(e1 - e0) < eps) end }
+        assert(math.abs(e1 - e0) < eps) end}
 
 Eg.csv={
   txt="loading csv",
@@ -393,22 +762,39 @@ Eg.csv={
           n  = n or #row
           assert(n==#row)  end end}
 
-Eg.rows={
-  txt="loading rows",
-  fun=function(the,       t)
-        t = Rows:new():read(the.data)
-        rump(t.cols.all[2])
-      end}
-
 Eg.dist={
   txt="checking distances",
-  fun=function(the,       t)
-        t = Rows:new():read(the.data)
-        for _,row1 in pairs(t.rows) do
-          for _,row2 in pairs(t.rows) do
-            row1:dist(row2,the) end end
-      end}
+  fun=function(the,       t,a)
+    t = Rows:new():read(the.data)
+    for i,row1 in pairs(t.rows) do
+      fmt("%3s %s", i, i%20==0 and "\n" or "")
+      a = t:neighbors(row1,the)
+      assert(a[1].dist < a[#a].dist)
+      end end}
+
+Eg.abcd={
+  txt="collecting stats on discrete classes",
+  fun=function(the,    a)
+    a = Abcd:new()
+    for i=1,6 do a:add('y','y') end
+    for i=1,2 do a:add('n','n') end
+    for i=1,5 do a:add('m','m') end
+    a:add('m','n')
+    a:report() end }
+ ```
+
+  db |    rx |   num |     a |     b |     c |     d |  acc |  pre |   pd |   pf |    f |    g | class
+---- |  ---- |  ---- |  ---- |  ---- |  ---- |  ---- | ---- | ---- | ---- | ---- | ---- | ---- |-----
+data |    rx |    14 |    11 |       |     1 |     2 | 0.93 | 0.67 | 1.00 | 0.08 | 0.80 | 0.96 | no
+data |    rx |    14 |     8 |       |       |     6 | 0.93 | 1.00 | 1.00 | 0.00 | 1.00 | 1.00 | yes
+data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00 | 0.91 | 0.91 | maybe
+
+```{.lua .numberLines}
+
+
 -----------------------------------------------------------
-main( cli("./keys", about, config()) )
+main( cli(about))
+for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
+os.exit(fails) 
 
 ```

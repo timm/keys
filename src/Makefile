@@ -8,11 +8,13 @@ help: # print options
       gsub(/:/,"",s);      \
       print "\tmake " s "\t" $$0 }  ' Makefile
 
-html: ../docs/keys.html  # sadas
-../docs/keys.html : keys
-	bash ../etc/pretty keys  
+#html: ../docs/keys.html  # sadas
+#../docs/keys.html : keys
+#	bash ../etc/pretty keys  
 
-../docs/%1.html: ../src/%1 # doc
+docs: ../docs/keys.html
+
+../docs/keys.html: ../src/keys # doc
 	- rm $@
-	pycco ../docs -l lua $<
+	pycco -d ../docs -l lua $<
 	cp ../etc/pycco.css ../docs
