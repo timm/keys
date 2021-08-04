@@ -251,10 +251,10 @@ function Abcd:add(want,got)
     else inc(got ==x   and self.c or self.a, x) end end end
 
 function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
-  p= function (z) return math.floor(100*z+0.5) end
-  z= function (z) return z==0 and "" or z end
-  out= {{"data","rx","n","a","b","c","d","acc","prec",
-         "pd","pf","f","g","class"}}
+  p   = function (z) return math.floor(100*z+0.5) end
+  z   = function (z) return z==0 and "" or z end
+  out = {{"data","rx","n","a","b","c","d","acc","prec",
+          "pd","pf","f","g","class"}}
   linem(out)
   for x in sorted( self.known ) do
     pd,pf,pn,prec,g,f,acc = 0,0,0,0,0,0,0
@@ -534,10 +534,7 @@ Eg.abcd={
     for i=1,2 do a:add('n','n') end
     for i=1,5 do a:add('m','m') end
     a:add('m','n')
-    a:report()
-end 
-    
-}
+    a:report() end }
  
 --   db |    rx |   num |     a |     b |     c |     d |  acc |  pre |   pd |   pf |    f |    g | class
 -- ---- |  ---- |  ---- |  ---- |  ---- |  ---- |  ---- | ---- | ---- | ---- | ---- | ---- | ---- |-----
