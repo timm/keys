@@ -14,7 +14,7 @@ help: # print options
 
 docs: ../docs/keys.html
 
-../docs/keys.html: ../src/keys # doc
+../docs/%1.html: ../src/%1 # doc
 	- rm $@
 	pycco -d ../docs -l lua $<
 	cp ../etc/pycco.css ../docs

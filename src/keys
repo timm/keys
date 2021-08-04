@@ -48,7 +48,6 @@ local about={
       
 ---------------------------------------------------------
 -- ##  Classes
-
 -- `Obj`  is  the class creation factor. `Eg` stores the
 -- unit and  system tests.
 local Obj,Eg       = {},{}     
