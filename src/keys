@@ -1,55 +1,51 @@
 #!/usr/bin/env lua
 --vim: filetype=lua ts=2 sw=2 sts=2 et :
 
--- ## Overview
+local argparse = require("argparse")
+local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
+-----------------------------------------------
+-- ## About
+-- All the `options` are available as command line flags, e.g.
+--
+--       ./keys --bins 10 --loud
+--
+-- Boolean options have no  arguments (e.g. `loud`). Mentioning
+-- booleans on the command line will set that option to `true`.
+--  
+-- The `--eg X` runs the unit tests. Use `--eg ls`  to list those
+-- tests. ``--eg all``  will run all tests. 
+--
+-- If a test  crashes,
+-- and  you  want to see  the  stacktrace, run the  test again in 
+-- `un`safe mode; e.g
+--
+--     ./bins --un --eg abcd
+--
 local about={
-   synopsis = "Contrast set learning.",
+   synopsis = "To summarize something, show its delta to adjacent concepts.",
    usage    = "./keys",
    author   = "Tim Menzies",
    copyright= "(c) Tim Menzies, 2021, unlicense.org",
-   help      = "To summarize something, show its delta to adjacent concepts.",
-   options   = {
-
-     bins= {.5     ,'Bins are of size n**BINS'},
-     cols= {'x'    ,'Columns to use for inference'},
-     data= {'../data/auto2.csv' 
-                   ,'Where to read data'},
-     eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
-     far=  {.9     ,'Where to look for far things'},
-     goaL= {'best' ,'Learning goals: best|rest|other'},
-     iota= {.3     ,'Small = sd**iota'},
-     k=    {2      ,'Bayes low class frequency hack'},
-     knn=  {2      ,'Number of neighbors for knn'},
-     kadd= {"mode", "combination rule of knn"},
-     loud= {false  ,'Set verbose'},
-     m=    {1      ,'Bayes low range frequency hack'},
-     p=    {2      ,'Distance calculation exponent'},
-     some= {20     ,'Number of samples to find far things'},
-     seed= {10013  ,'Seed for random numbers'},
-     top=  {10     ,'Focus on this many'},
-     un=   {false  ,'Run egs, no protection (unsafe mode)'}}} 
-   
--- `cli()` creates  command line flags by mapping `config` to `:flags`
--- or `:options` calls to `argparse`.  By convention, boolean options
--- default  to false and their  command-line  flag flips them to `true`.
--- Also, if reading  a numeric option from  command line, remember to
--- coerce it to a number.
-
-local argparse = require("argparse")
-local function cli(about,       arg,b4)
-  arg = argparse(about.usage, about.synopsis..about.help)
-  for flag,v in sorted(about.options) do
-    flag = "--"..flag
-    b4 =" (default: "..tostring(v[1])..")"
-    if     v[1]==false
-    then   arg:flag(flag, v[2],  v[1]) -- handling Boolean
-    elseif type(v[1])=="number"
-    then   arg:option(flag, v[2]..b4, v[1],tonumber) -- coerce nums
-    else   arg:option(flag, v[2]    , v[1]) end end 
-  return arg:parse() end
----------------------------------------------------------
--- Small detail. Log globals seen `b4` this code (so after, we can find rogue  variables).
-local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
+   options  = {
+        bins= {.5     ,'Bins are of size n**BINS'},
+        cols= {'x'    ,'Columns to use for inference'},
+        data= {'../data/auto2.csv' 
+                      ,'Where to read data'},
+        eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
+        far=  {.9     ,'Where to look for far things'},
+        goaL= {'best' ,'Learning goals: best|rest|other'},
+        iota= {.3     ,'Small = sd**iota'},
+        k=    {2      ,'Bayes low class frequency hack'},
+        knn=  {2      ,'Number of neighbors for knn'},
+        kadd= {"mode", "combination rule of knn"},
+        loud= {false  ,'Set verbose'},
+        m=    {1      ,'Bayes low range frequency hack'},
+        p=    {2      ,'Distance calculation exponent'},
+        some= {20     ,'Number of samples to find far things'},
+        seed= {10013  ,'Seed for random numbers'},
+        top=  {10     ,'Focus on this many'},
+        un=   {false  ,'Run egs, no protection (unsafe mode)'}}}
+      
 ---------------------------------------------------------
 -- ##  Classes
 
@@ -69,7 +65,7 @@ local Err,Abcd     = {},{}
 -- For columns.
 local goalp,klassp,nump,weight,skipp,merged,adds 
 -- Meta functions
-local fun            
+local fun,locals            
 --  For lists.
 local sorted,sort,map,copy,per,shuffle,inc,max 
 --  For strings.
@@ -315,6 +311,17 @@ function sort(a,f)
   table.sort(a, function(x,y) return f(x)<f(y) end)
   return a end
 
+function per(a,p) 
+  return a[math.max(1,math.floor(#a*(p or .5)))] end
+
+function inc(t,k,n)
+  t[k] = (t[k] or 0) + (n or 1)
+  return t[k] end
+
+function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
+-------------------------------------------------------
+
+-- ## Metas
 function fun(f)
   if type(f)=="string" then return function(z) return z[f] end end
   return f and f or function(z) return z end end
@@ -333,14 +340,25 @@ function copy(obj, seen,      s, res)
   for k, v in pairs(obj) do res[copy(k, s)] = copy(v, s) end
     return res end
 
-function per(a,p) 
-  return a[math.max(1,math.floor(#a*(p or .5)))] end
+function exports(out,i)
+  i,out = 1,out or {}
+  while true do
+    local s, x = debug.getlocal(2, i)
+    if s== nil then break end
+    if s:sub(1,1):match("^[A-Z]") then out[s]=x end
+    i = 1 + i end
+  return out end
 
-function inc(t,k,n)
-  t[k] = (t[k] or 0) + (n or 1)
-  return t[k] end
+local id=0
+function Obj.new(self, name, new)
+  new = setmetatable(new or {}, self)
+  self.__tostring = dump 
+  self.__index    = self
+  self._name      = name
+  id = id + 1
+  new._id = id
+  return new end
 
-function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
 
 --- strings -----------------------------------------------
 function fmt(s,...) return io.write(s:format(...)) end 
@@ -420,18 +438,6 @@ function csv(file,       split,stream,tmp)
         return t end
     else
       io.close(stream) end end end
-
-local id=0
-function Obj.new(self, name, new)
-  new = new or {}
-  setmetatable(new, self)
-  self.__tostring = dump 
-  self.__index    = self
-  self._name      = name
-  id = id + 1
-  new._id = id
-  return new end
-
 --- main -------------------------------------------------
 local fails=0
 function run(txt,the,      it)
@@ -452,6 +458,23 @@ function main(the)
          for x,y in sorted(Eg) do fmt("  %-15s  %s\n",x,y.txt) end 
   elseif the.eg and Eg[the.eg] 
   then   run(the.eg, the) end end
+
+-- `cli()` creates  command line flags by mapping `config` to `:flags`
+-- or `:options` calls to `argparse`.  By convention, boolean options
+-- default  to false and their  command-line  flag flips them to `true`.
+-- Also, if reading  a numeric option from  command line, remember to
+-- coerce it to a number.
+local function cli(about,       arg,b4)
+  arg = argparse(about.usage, about.synopsis)
+  for flag,v in sorted(about.options) do
+    flag = "--"..flag
+    b4 =" (default: "..tostring(v[1])..")"
+    if     v[1]==false
+    then   arg:flag(flag, v[2],  v[1]) -- handling Boolean
+    elseif type(v[1])=="number"
+    then   arg:option(flag, v[2]..b4, v[1],tonumber) -- coerce nums
+    else   arg:option(flag, v[2]    , v[1]) end end 
+  return arg:parse() end
 
 --- unit tests ---------------------------------------------
 Eg.sorted= {
