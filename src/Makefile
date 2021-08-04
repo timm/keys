@@ -12,4 +12,7 @@ html: ../docs/keys.html  # sadas
 ../docs/keys.html : keys
 	bash ../etc/pretty keys  
 
-
+../docs/%1.html: ../src/%1 # doc
+	- rm $@
+	pycco ../docs -l lua $<
+	cp ../etc/pycco.css ../docs
