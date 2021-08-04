@@ -1,65 +1,44 @@
 #!/usr/bin/env lua
 --vim: filetype=lua ts=2 sw=2 sts=2 et :
 
-local about=[[
- ,-_|\   Contrast set learning
-/     \  (c) Tim Menzies, 2021, unlicense.org
-\_,-._*  Cluster, then report just the 
-     v   deltas between nearby clusters.  ]]
----------------------------------------------------
--- To find rogue  globals (at end of  file), first
--- trap a list of  current globals.
-local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
----------------------------------------------------------
--- ## Globals in this module.
--- Upper case names are classes.
+-- ## Overview
+local about={
+   synopsis = "Contrast set learning.",
+   usage    = "./keys",
+   author   = "Tim Menzies",
+   copyright= "(c) Tim Menzies, 2021, unlicense.org",
+   help      = "To summarize something, show its delta to adjacent concepts.",
+   options   = {
+
+     bins= {.5     ,'Bins are of size n**BINS'},
+     cols= {'x'    ,'Columns to use for inference'},
+     data= {'../data/auto2.csv' 
+                   ,'Where to read data'},
+     eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
+     far=  {.9     ,'Where to look for far things'},
+     goaL= {'best' ,'Learning goals: best|rest|other'},
+     iota= {.3     ,'Small = sd**iota'},
+     k=    {2      ,'Bayes low class frequency hack'},
+     knn=  {2      ,'Number of neighbors for knn'},
+     kadd= {"mode", "combination rule of knn"},
+     loud= {false  ,'Set verbose'},
+     m=    {1      ,'Bayes low range frequency hack'},
+     p=    {2      ,'Distance calculation exponent'},
+     some= {20     ,'Number of samples to find far things'},
+     seed= {10013  ,'Seed for random numbers'},
+     top=  {10     ,'Focus on this many'},
+     un=   {false  ,'Run egs, no protection (unsafe mode)'}}} 
+   
+-- `cli()` creates  command line flags by mapping `config` to `:flags`
+-- or `:options` calls to `argparse`.  By convention, boolean options
+-- default  to false and their  command-line  flag flips them to `true`.
+-- Also, if reading  a numeric option from  command line, remember to
+-- coerce it to a number.
+
 local argparse = require("argparse")
-local Obj,Eg       = {},{}     -- two of the usual objects
-local Skip,Num,Sym = {},{},{}  -- columns
-local Row,Rows     = {},{}     -- places to store data
-local Err,Abcd     = {},{}     -- accumulators for results
-local goalp,klassp,nump,weight,skipp,merged,adds -- column meta
-local fun                      -- meta
-local sorted,sort,map,copy,per,shuffle,inc,max -- lists
-local fmt,color,dump,rump,pump,linem,printm    -- strings
-local rnd,Seed,rand,normal   -- maths
-local knn                      -- learners
-local csv                      -- files
-local run,cli,main             -- mains, unit tests
-
--------------------------------------------------------
--- ## Config system
--- Machine learners are controlled by many options.
--- `config()` returns a nested list which 
--- `argparse` turns into command-line flags (e.g. ``--bins``).
-local function config() return {
-  bins= {.5     ,'Bins are of size n**BINS'},
-  cols= {'x'    ,'Columns to use for inference'},
-  data= {'../data/auto2.csv' 
-                ,'Where to read data'},
-  eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
-  far=  {.9     ,'Where to look for far things'},
-  goaL= {'best' ,'Learning goals: best|rest|other'},
-  iota= {.3     ,'Small = sd**iota'},
-  k=    {2      ,'Bayes low class frequency hack'},
-  knn=  {2      ,'Number of neighbors for knn'},
-  kadd= {"mode", "combination rule of knn"},
-  loud= {false  ,'Set verbose'},
-  m=    {1      ,'Bayes low range frequency hack'},
-  p=    {2      ,'Distance calculation exponent'},
-  some= {20     ,'Number of samples to find far things'},
-  seed= {10013  ,'Seed for random numbers'},
-  top=  {10     ,'Focus on this many'},
-  un=   {false  ,'Run egs, no protection (unsafe mode)'} } end
-
--- `cli()` maps `config` to either `:flags` or `:options`.
--- By convention, boolean options  default  to false
--- and their  command-line  flag flips them to `true`.
--- Also, if reading  a numeric option from  command line,
--- remember to coerce it to a number.
-function cli(usage,helptext,config,       arg,b4)
-  arg = argparse(usage, helptext)
-  for flag,v in sorted(config) do
+local function cli(about,       arg,b4)
+  arg = argparse(about.usage, about.synopsis..about.help)
+  for flag,v in sorted(about.options) do
     flag = "--"..flag
     b4 =" (default: "..tostring(v[1])..")"
     if     v[1]==false
@@ -68,6 +47,42 @@ function cli(usage,helptext,config,       arg,b4)
     then   arg:option(flag, v[2]..b4, v[1],tonumber) -- coerce nums
     else   arg:option(flag, v[2]    , v[1]) end end 
   return arg:parse() end
+---------------------------------------------------------
+-- Small detail. Log globals seen `b4` this code (so after, we can find rogue  variables).
+local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
+---------------------------------------------------------
+-- ##  Classes
+
+-- `Obj`  is  the class creation factor. `Eg` stores the
+-- unit and  system tests.
+local Obj,Eg       = {},{}     
+-- Columns. `Skip` is for columns we want to ignoe
+-- the  others are for columns of  `Num`bers  or  `Sym`bols.
+local Skip,Num,Sym = {},{},{}  
+-- `Rows` is a  container  classes that holds
+-- `Row`s and column summaries.
+local Row,Rows     = {},{}    
+-- Reporting.
+local Err,Abcd     = {},{}   
+-- ## Functions
+
+-- For columns.
+local goalp,klassp,nump,weight,skipp,merged,adds 
+-- Meta functions
+local fun            
+--  For lists.
+local sorted,sort,map,copy,per,shuffle,inc,max 
+--  For strings.
+local fmt,color,dump,rump,pump,linem,printm   
+-- For maths.
+local rnd,Seed,rand,normal   
+--  Learner functions
+local knn                   
+--  For  files.
+local csv                  
+--  Code  called at start-up.
+local run,main        
+
 -------------------------------------------------------------
 -- ## columns, general
 function goalp(s)  return s:find("+") or s:find("-") or klassp(s) end
@@ -543,6 +558,6 @@ Eg.abcd={
 -- data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00 | 0.91 | 0.91 | maybe
 
 -----------------------------------------------------------
-main( cli("./keys", about, config()) )
+main( cli(about))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
 os.exit(fails) 
