@@ -57,8 +57,8 @@ local function config() return {
 -- and their  command-line  flag flips them to `true`.
 -- Also, if reading  a numeric option from  command line,
 -- remember to coerce it to a number.
-function cli(what,about,config,       arg,b4)
-  arg = argparse(what, about)
+function cli(usage,helptext,config,       arg,b4)
+  arg = argparse(usage, helptext)
   for flag,v in sorted(config) do
     flag = "--"..flag
     b4 =" (default: "..tostring(v[1])..")"
