@@ -367,9 +367,9 @@ function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
 -- ## Functions
 
 -- ### List Functions
-function shuffle(a)
+function shuffle(a,     j)
   for i = #a, 2, -1 do
-    local j = math.random(i)
+    j = rand(1,i)
     a[i], a[j] = a[j], a[i] end 
   return a end
 
@@ -663,7 +663,7 @@ Eg.abcd={
 
 local function classify(the,rx,fun,       t,results,row)
   t = Rows:new()
-  results = Abcd:new(the.data,data,rx)
+  results = Abcd:new(the.data,rx)
   for row0 in csv(the.data) do
     if #t.rows > the.wait then
       row = Row:new( row0, t)
