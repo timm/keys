@@ -1,4 +1,4 @@
-.PHONY: help pdf
+.PHONY: help pdf docs
 
 help: # print options
 	@echo "options:";
@@ -14,7 +14,7 @@ help: # print options
 
 docs: ../docs/keys.html
 
-../docs/%1.html: ../src/%1 # doc
+../docs/keys.html: ../src/keys # doc
 	- rm $@
 	pycco -d ../docs -l lua $<
 	cp ../etc/pycco.css ../docs
