@@ -1,6 +1,12 @@
 #!/usr/bin/env lua
 --vim: filetype=lua ts=2 sw=2 sts=2 et :
 
+-- 
+--       ,-_|\   keys
+--      /     \  (c) Tim Menzies, 2021, unlicense.org
+--      \_,-._*  Cluster, then report just the 
+--           v   deltas between nearby clusters.  
+
 local argparse = require("argparse")
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -----------------------------------------------
