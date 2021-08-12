@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install lua
         run: |
-          apt install lua ;\
+          sudo apt install lua5.4 ;\
           lua -v
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
