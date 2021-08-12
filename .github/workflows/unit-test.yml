@@ -11,8 +11,13 @@ jobs:
         uses: actions/checkout@v2
       - name: Install lua
         run: |
-          sudo apt install lua5.4 ;\
-          lua -v
+          cd ls ${{ github.workspace }}; \
+          curl -R -O http://www.lua.org/ftp/lua-5.4.3.tar.gz; \
+          tar zxf lua-5.4.3.tar.gz; \
+          cd lua-5.4.3; \
+          make linux test ; \
+          cd ../src ; \
+          ../lua-5.4.3/src/lua keys --eg all 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
 
