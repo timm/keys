@@ -82,11 +82,11 @@ local goalp,klassp,nump,weight,skipp,merged,adds
 -- Meta functions
 local fun,locals            
 --  For lists.
-local sorted,sort,map,copy,per,shuffle,inc,max 
+local eq,sorted,sort,map,copy,per,shuffle,inc,max 
 --  For strings.
 local fmt,color,dump,rump,pump,linem,printm   
 -- For maths.
-local rnd,Seed,rand,normal   
+local rnd,Seed,rand,randi,normal   
 --  For  files.
 local csv                  
 --  Code  called at start-up.
@@ -264,13 +264,21 @@ function Rows:new(inits,     x)
   for _,row in pairs(inits or {}) do x:add(row) end  
   return x end
 
+-- clone a copy 
+function  Rows:clone(inits,    t)
+  t = Rows:new({self.cols.names})
+  for _,x in pairs(inits or {}) do 
+    t:add(x) end
+  return t end
+
+-- Read from a file
 function Rows:read(f) 
   for row in csv(f) do self:add(row) end 
   return self end
 
 -- If this is row1, create the header. Else, add new data.
 function Rows:add(a)
-   a= a._name=="Row"and a.cells or a
+   a = (a._name and a._name=="Row" and a.cells) or a
    if   #(self.cols.names) > 0 
    then return self:data(a) 
    else return self:header(a) end end
@@ -389,9 +397,18 @@ function Abcd:report(stats,     all,m)
 -- ## Functions
 
 -- ### List Functions
+function eq(a,b,    ta,tb)
+   ta, tb = type(a), type(b)
+   if ta ~= tb                              then return false end
+   if ta ~= 'table' and tb ~= 'table'       then return t1 == t2 end
+   for k,v in pairs(a) do if not eq(v,b[k]) then return false end end
+   for k,v in pairs(b) do if not eq(v,a[k]) then return false end end
+   return true
+end
+
 function shuffle(a,     j)
   for i = #a, 2, -1 do
-    j = rand(1,i)
+    j = randi(1,i)
     a[i], a[j] = a[j], a[i] end 
   return a end
 
@@ -514,6 +531,8 @@ function normal(mu,sd)
   return mu+sd*sqrt(-2*log(rand()))*cos(2*pi*rand()) end
 
 Seed = 10013
+function randi(lo,hi) return math.floor(rand(lo,hi)) end
+
 function rand(lo,hi,     mult,mod)
   lo,hi = lo or 0, hi or 1
   mult, mod = 16807, 2147483647
@@ -576,6 +595,12 @@ local function cli(about,       arg,b4)
 
 -----------------------------------------------------
 -- ## Unit Tests
+
+Eg.shuffle= {
+  txt = "shuffling items",
+  fun = function(_,     x) 
+          x= shuffle({10,20,30,40,50,60})
+          assert(x[1] == 20) end }
 
 Eg.sorted= {
   txt = "sorting items",
@@ -654,9 +679,19 @@ Eg.csv={
           n  = n or #row
           assert(n==#row)  end end}
 
+Eg.clone={
+  txt="cloning a table",
+  fun=function(the,       t1,t2)
+    the.data =  "../data/weathernom.csv"
+    t1 = Rows:new():read(the.data)
+    t2 = t1:clone(t1.rows)
+    assert(eq(t1.cols, t2.cols))
+  end }
+
 Eg.dist={
   txt="checking distances",
   fun=function(the,       t,a)
+    the.data =  "../data/auto2.csv"
     t = Rows:new():read(the.data)
     for i,row1 in pairs(t.rows) do
       fmt("%3s %s", i, i%20==0 and "\n" or "")
@@ -684,10 +719,36 @@ Eg.abcd={
 -- data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00 | 0.91 | 0.91 | maybe
 -- ```
 
-local function classify(the,rx,fun,       t,results,row)
+local function  rows(file,      t)
+  t={}
+  for row in csv(file) do t[1+#t] = row end
+  return t end
+
+local function classincify(t,the,rx,fun,       t2,rows)
+  results = Abcd:new(the.data,rx)
+  rows = shuffle(t.rows)
+  some = t:clone()
+  for i=1,n do some:add(rows[i]) end
+  for i=n+1,#rows do
+    row = Row:new( rows[i], some)
+    results:add( row:klass(), fun(some, row,the) ) 
+  end
+  return results end
+
+Eg.knndiabetes={
+  txt="checking distances",
+  fun=function(the,       t,a)
+    the.data =  "../data/diabetes.csv"
+    t = Rows:new():read(the.data)
+    t.rows = shuffle(t.rows)
+    print(#t.rows)
+    end}
+
+
+local function classify(rows,the,rx,fun,       t,results,row)
   t = Rows:new()
   results = Abcd:new(the.data,rx)
-  for row0 in csv(the.data) do
+  for _,row0 in pairs(rows) do
     if #t.rows > the.wait then
       row = Row:new( row0, t)
       results:add( row:klass(), fun(t, row,the) ) 
@@ -700,7 +761,8 @@ Eg.knn={
   txt="test nearest neighbor",
   fun=function(the, results)
         the.data = "../data/diabetes.csv"
-        results= classify(the, "knn"..tostring(the.knn), 
+        results= classify(rows(the.data),
+                            the, "knn"..tostring(the.knn), 
                   function (t,row,the) 
                     return t:knn(row,the) end) 
         results:report() end}
