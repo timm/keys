@@ -12,11 +12,12 @@ jobs:
       - name: Install lua
         run: |
           cd ${{ github.workspace }} |
-          curl -R -O http://www.lua.org/ftp/lua-5.4.3.tar.gz |
-          tar zxf lua-5.4.3.tar.gz | 
-          cd lua-5.4.3 | 
-          make linux test |
-          cd .. |
+          curl -R -O http://www.lua.org/ftp/lua-5.4.3.tar.gz -o ${{ github.workspace }}/lua.tar.gz |
+          tar zxf -o ${{ github.workspace }}/lua.ar.gz | 
+          cd ${{ github.workspace }}/ lua-5.4.3 | 
+          make |
+          make test |
+          cd ${{ github.workspace }}/src |
           cd src |
-          ../lua-5.4.3/src/lua keys --eg all
+          ${{ github.workspace }}/lua-5.4.3/src/lua keys --eg all
       - run: echo "🍏 This job's status is ${{ job.status }}."
