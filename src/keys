@@ -33,7 +33,11 @@ local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -- this way, different parts  of the code could use different  config
 -- settings.
 local about={
-   synopsis = "To summarize something, show its delta to adjacent concepts.",
+   synopsis = [[
+ ,-_|\   keys
+/     \  (c) Tim Menzies, 2021, unlicense.org
+\_,-._*  Cluster, then report just the 
+     v   deltas between nearby clusters.  ]],
    usage    = "./keys",
    author   = "Tim Menzies",
    copyright= "(c) Tim Menzies, 2021, unlicense.org",
@@ -346,12 +350,11 @@ function Abcd:add(want,got)
     then inc(want==got and self.d or self.b, x)
     else inc(got ==x   and self.c or self.a, x) end end end
 
-function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
+function Abcd:stats(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
   p   = function (z) return math.floor(100*z+0.5) end
   z   = function (z) return z==0 and "" or z end
   out = {{"data","rx","n","a","b","c","d","acc","prec",
           "pd","pf","f","g","class"}}
-  linem(out)
   for x in sorted( self.known ) do
     pd,pf,pn,prec,g,f,acc = 0,0,0,0,0,0,0
     a= self.a[x]; b= self.b[x]; c= self.c[x]; d= self.d[x];
@@ -363,10 +366,23 @@ function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
     if prec+pd > 0 then f=2*prec*pd / (prec + pd)   end
     if self.yes + self.no > 0 then 
        acc= self.yes / (self.yes + self.no) end
-    out[#out+1] = {self.data, self.rx, self.yes+self.no, 
-                   z(a),z(b),z(c),z(d),p(acc),p(prec), p(pd), p(pf), 
-                   p(f),p(g),x} end
-  printm(out) end
+    out[x] = {data=self.data, rx=self.rx, n=self.yes+self.no, 
+              a=z(a),b=z(b),c=z(c),d=z(d),acc=p(acc),
+              prec=p(prec), pd=p(pd), pf=p(pf), 
+              f=p(f),g=p(g),klass=x} end
+  return out end
+
+function Abcd:report(stats,     all,m)
+  stats = stats or self:stats()
+  m     = {}
+  all   = {"data","rx","n","a","b","c","d",
+           "acc","prec","pd","pf","f","g","klass"}
+  m[1]  = all
+  linem(m)
+  for _,klass in pairs(stats) do
+    m[1+#m] = {}
+    for i,s in sorted(all) do m[#m][i]=klass[s] end end
+  printm(m) end
 
 --- xxxx make this symbolic. change printm  for that
 --------------------------------------------------------
@@ -546,6 +562,7 @@ function main(the)
 -- Also, if reading  a numeric option from  command line, remember to
 -- coerce it to a number.
 local function cli(about,       arg,b4)
+  --arg = argparse(about.usage, about.synopsis)
   arg = argparse(about.usage, about.synopsis)
   for flag,v in sorted(about.options) do
     flag = "--"..flag
