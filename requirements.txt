@@ -1,7 +1,7 @@
-# sudo sh  rquirements.txt
+# sh  rquirements.txt
 set -x
 brew install lua luarocks pandoc
-luarocks install argparse 
-luarocks install penlight 
-luarocks install markdown
+sudo luarocks install argparse 
+sudo luarocks install penlight 
+sudo luarocks install markdown
 
