@@ -11,6 +11,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Install lua
         run: |
-          cd ${{ github.workspace }}/etc ; \
-          ls
+          lua -v
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
+
+
+
+
+
