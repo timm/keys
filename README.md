@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.com/timm/keys.svg?branch=main)](https://travis-ci.com/timm/keys)
 
+
+![example workflow](https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg)
 
 #keys
 Inference = cluster, discretize, contrast
