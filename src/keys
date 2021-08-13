@@ -6,7 +6,7 @@
 --      /     \  (c) Tim Menzies, 2021, unlicense.org
 --      \_,-._*  Cluster, then report just the 
 --           v   deltas between nearby clusters.  
---
+
 local argparse = require("argparse")
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -----------------------------------------------
@@ -23,9 +23,9 @@ local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 --
 -- If a test  crashes,
 -- and  you  want to see  the  stacktrace, run the  test again in 
--- `un`safe mode; e.g
+-- `wild` mode; e.g
 --
---     ./bins --un --eg abcd
+--     ./bins --wild --eg abcd
 --
 -- ### The `the` variable.
 -- The config  options  are never set  globally. Rather, they
@@ -42,25 +42,30 @@ local about={
    author   = "Tim Menzies",
    copyright= "(c) Tim Menzies, 2021, unlicense.org",
    options  = {
-        bins= {.5     ,'Bins are of size n**BINS'},
+        bins= { .5    ,'Bins are of size n**BINS'},
+        bootstrap={512, 'number of bootstrap samples'},
         cols= {'x'    ,'Columns to use for inference'},
+        conf=  {0.05,   "confidence for bootstraps"},
+        cliffs={ .147 ,"threshold for small effect"},
         data= {'../data/auto2.csv' 
                       ,'Where to read data'},
         eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
-        far=  {.9     ,'Where to look for far things'},
+        far=  { .9    ,'Where to look for far things'},
         goaL= {'best' ,'Learning goals: best|rest|other'},
-        iota= {.3     ,'Small = sd**iota'},
+        iota= { .3    ,'Small = sd**iota'},
         k=    {2      ,'Bayes low class frequency hack'},
         knn=  {2      ,'Number of neighbors for knn'},
         kadd= {"mode", "combination rule of knn"},
         loud= {false  ,'Set verbose'},
         m=    {1      ,'Bayes low range frequency hack'},
         p=    {2      ,'Distance calculation exponent'},
+        sames={256    ,"max size of samples for nonparametric stats"},
         some= {20     ,'Number of samples to find far things'},
         seed= {10013  ,'Seed for random numbers'},
         top=  {10     ,'Focus on this many'},
-        un=   {false  ,'Run egs, no protection (unsafe mode)'},
+        wild= {false  ,'Run egs, no protection (wild mode)'},
         wait= {10     ,'Pause before thinking'}}}
+      
 ---------------------------------------------------------
 -- ##  Classes
 -- `Obj`  is  the class creation factor. `Eg` stores the
@@ -75,12 +80,15 @@ local Row,Rows     = {},{}
 -- Reporting.
 local Err,Abcd     = {},{}   
 -- ## Functions
+
 -- For columns.
 local goalp,klassp,nump,weight,skipp,merged,adds 
 -- Meta functions
 local fun,locals            
 --  For lists.
-local eq,sorted,sort,map,copy,per,shuffle,inc,max 
+local eq,sorted,sort,map,copy,per,shuffle,inc,max
+--  For Stats on lists.
+local sample,samples,cliffsDelta ,same,rank,bootstrap
 --  For strings.
 local fmt,color,dump,rump,pump,linem,printm   
 -- For maths.
@@ -92,7 +100,7 @@ local run,main
 
 -------------------------------------------------------------
 -- ## columns, general
---
+
 -- This code reads tables of data where line1 shows the name
 -- for each column. For example:
 --
@@ -107,6 +115,7 @@ local run,main
 -- to be ignored contain `?`. Columns usually have a `weight`
 -- of "1" unless we are minimizing them in which case that is "-1".
 --
+
 function klassp(s) return s:find("!") end
 function goalp(s)  return s:find("+") or s:find("-") or klassp(s) end
 function nump(s)   return s:sub(1,1):match("[A-Z]") end
@@ -233,6 +242,15 @@ function Num:dist(x,y)
   elseif y=="?" then x=self:norm(x); y = x>.5 and 0 or 1 
   else               x,y = self:norm(x), self:norm(y) end
   return math.abs(x-y) end
+ 
+-- Returns the `mu` delta, mitigated by the  joint variance.
+function Num:delta(other,    y,z,e)
+  y, z, e = self, other, 1E-32
+  return (y:mid() -z:mid()) / (e+(y:var()/y.n + z:var()/z.n)^0.5) end
+
+-- are two distributions the same?
+function Num:same(other,the)
+  return same(self:all(), other:all(), the) end
 
 --------------------------------------------------
 -- ## Row
@@ -374,7 +392,8 @@ function Abcd:stats(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
     out[x] = {data=self.data, rx=self.rx, n=self.yes+self.no, 
               a=z(a),b=z(b),c=z(c),d=z(d),acc=p(acc),
               prec=p(prec), pd=p(pd), pf=p(pf), 
-              f=p(f),g=p(g),klass=x} end
+              f=p(f),g=p(g),klass=x} 
+    end
   return out end
 
 function Abcd:report(stats,     all,m)
@@ -397,17 +416,32 @@ function Abcd:report(stats,     all,m)
 function eq(a,b,    ta,tb)
    ta, tb = type(a), type(b)
    if ta ~= tb                              then return false end
-   if ta ~= 'table' and tb ~= 'table'       then return t1 == t2 end
+   if ta ~= 'table' and tb ~= 'table'       then return a == b end
    for k,v in pairs(a) do if not eq(v,b[k]) then return false end end
    for k,v in pairs(b) do if not eq(v,a[k]) then return false end end
    return true
 end
 
-function shuffle(a,     j)
+-- shuffles, in place the table `a`
+function shuffle(a,n,    j)
   for i = #a, 2, -1 do
     j = randi(1,i)
-    a[i], a[j] = a[j], a[i] end 
-  return a end
+    a[i], a[j] = a[j], a[i] end
+  if n then
+    b={}
+    for i=1,n do b[i] = a[i] end
+    return b
+  return a end 
+
+-- pull one items from `t`
+function sample(t) 
+  return t[randi(1,#t)] end
+
+-- samples with replacement, from list `t`.
+function samples(t,n,    t1)
+  t1 = {}
+  for i=1,n or #t do t1[i] = sample(t) end
+  return t1 end
 
 function sorted(t,         i,keys)
   i,keys = 0,{}
@@ -431,8 +465,59 @@ function inc(t,k,n)
 
 function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
 
--- ### Meta Functions
+-- ### Stats (on lists)
+-- bottom up clustering 
+function rank(nums,sorted,the)
+  if not sorted then 
+    table.sort(nums, function (x,y) return x:mid() < y:mid() end) end
+  j,tmp = 0,{}
+  while j<#nums do
+    j = j + 1
+    a= nums[j]
+    if j<#nums then
+      b = nums[j+1]
+      if a:same(b,the) then
+        a = a:merge(b)
+        j = j+1 end end
+    tmp[1+#tmp] = a
+    a.rank = #tmp end
+  return #tmp==#nums and nums or rank(tmp,true,the)
+end
 
+function same(xs,ys, the)
+  if #xs > the.samples then xs = shuffle(xs, the.samples) end
+  if #ys > the.samples then ys = shuffle(ys, the.samples) end
+  return cliffsDelta(xs,ys) or not bootstrap(xs,ys, the) end
+
+-- Non parametric effect size test (i.e. are two distributions
+-- different by more than a small amount)
+function cliffsDelta(xs,ys,the,       lt,gt)
+  lt,g = 0,0
+  for _,x in pairs(xs) do
+    for _,y in pairs(ys) do
+      if y > x then gt = gt + 1 end
+      if y < x then lt = lt + 1 end end end
+  return math.abs(gt - lt)/(#xs * #ys) <= the.cliffs end
+
+-- Non parametric "significance"  test (i.e. is it possible to
+-- distinguish if an item belongs to one population of another).
+-- Uses a sampling with replacement. Warning: slow for large
+-- populations. Apply an effect size test first before considering
+-- using this.
+function bootstrap(us,them,the,     x,y,z,yhat,zhat,tobs,more)
+  x,y,z, yhat,zhat = Num:new(), Num:new(), Num:new(), {}, {}
+  for _,v in pairs(us)   do x:add(v); y:add(v)        end
+  for _,v in pairs(them) do x:add(v); z:add(v)        end
+  for _,v in pairs(us)   do yhat[1+#yhat] = v - y.mu + x.mu end
+  for _,v in pairs(them) do zhat[1+#zhat] = v - z.mu + x.mu end
+  more = 0
+  tobs= y:delta(z)
+  for _ = 1,the.bootstrap  do
+    if   adds(samples(yhat)):delta(adds(samples(zhat))) > tobs 
+    then more = more + 1 end end
+  return more/the.bootstrap <= the.conf end
+
+-- ### Meta Functions
 function fun(f)
   if type(f)=="string" then return function(z) return z[f] end end
   return f and f or function(z) return z end end
@@ -477,17 +562,14 @@ function color(s,...)
   local x={red=31, green=32, yellow=33, purple=34}
   print('\27[1m\27['..x[s]..'m'..string.format(...)..'\27[0m') end
 
-function dump(o,     sep,s)
-  sep, s = "", (o._name or "") .."{"
-  if (#o > 0) then
-    for i=1,#o do
-      s=s .. sep .. tostring(o[i])
-      sep=", " end 
-  else
-    for k,v in sorted(o) do 
-      if k:sub(1,1) ~= "_" then
-        s=s .. sep .. tostring(k).."="..tostring(v)
-        sep=", " end end end
+function dump(t,     sep,s)
+  if (#t > 0) then
+    return table.concat(t,",") end
+  sep, s = "", (t._name or "") .."{"
+  for k,v in sorted(t) do 
+    if k:sub(1,1) ~= "_" then
+      s=s .. sep .. tostring(k).."="..tostring(v)
+      sep=", " end end 
   return s.."}" end
 
 function rump(t,pre,    indent,fmt)
@@ -557,8 +639,8 @@ function run(txt,the,      it)
   the  = copy(the)
   Seed = the.seed
   it   = Eg[txt]
-  if     the.un==true 
-  then   print("unsafe:"); it.fun(the)
+  if     the.wild==true 
+  then   color("yellow", "now running wild:"); it.fun(the)
   elseif pcall(function () it.fun(the); end)
   then   color("green","✔ % -15s  %s",txt,it.txt); 
   else   color("red",  "✘ %-15s  %s" ,txt,it.txt); fails=fails+1 end end
@@ -596,8 +678,22 @@ local function cli(about,       arg,b4)
 Eg.shuffle= {
   txt = "shuffling items",
   fun = function(_,     x) 
-          x= shuffle({10,20,30,40,50,60})
-          assert(x[1] == 20) end }
+          x= shuffle({"a","b","c","d","e",
+                     "f","g","h","i","j",
+                     "0","1","2","3","4","5",
+                     "6","7","8","9" }) 
+          print(table.concat(x))
+          assert(x[1] == "2") end }
+
+Eg.samples= {
+  txt = "sample items, with replacement",
+  fun = function(_,     x) 
+          x= samples({"a","b","c","d","e",
+                     "f","g","h","i","j",
+                     "0","1","2","3","4","5",
+                     "6","7","8","9" }) 
+          print(table.concat(x))
+          assert(x[1] == "b") end }
 
 Eg.sorted= {
   txt = "sorting items",
@@ -608,8 +704,7 @@ Eg.sorted= {
 Eg.sort= {
   txt= "more sorting",
   fun= function(_,       t) 
-         t= sort({  {k=10,v=1}, {k=3,v=20}, 
-                    {k=1,v=10},  {k=5,v=5} },"k")
+         t= sort({{k=10,v=1},{k=3,v=20},{k=1,v=10},{k=5,v=5}},"k")
          assert(5==t[3].v) end}
 
 Eg.map= {
@@ -717,41 +812,50 @@ Eg.abcd={
 -- data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00 | 0.91 | 0.91 | maybe
 -- ```
 
-local function  rows(file,      t)
+local function  file2rows(file,      t)
   t={}
   for row in csv(file) do t[1+#t] = row end
   return t end
 
-local function classincify(t,the,rx,fun,       t2,rows)
+local function classinc(n,all,the,rx,fun,       results,rows,some,row)
   results = Abcd:new(the.data,rx)
-  rows = shuffle(t.rows)
-  some = t:clone()
+  rows = shuffle(all.rows)
+  some = all:clone()
+  n    = math.min(n,#all.rows)
   for i=1,n do some:add(rows[i]) end
   for i=n+1,#rows do
-    row = Row:new( rows[i], some)
+    row = Row:new( rows[i].cells, some)
     results:add( row:klass(), fun(some, row,the) ) 
   end
   return results end
 
-Eg.knndiabetes={
-  txt="checking distances",
-  fun=function(the,       t,a)
+-- do it stochastic. pick variants at random
+Eg.incKnnDiabetes={
+  txt="ncrementalDiabetes",
+  fun=function(the,       all,results)
     the.data =  "../data/diabetes.csv"
-    t = Rows:new():read(the.data)
-    t.rows = shuffle(t.rows)
-    print(#t.rows)
-    end}
+    all = Rows:new():read(the.data)
+    pos,neg={},{}
+    for _,n in pairs({32,64,128,256,512}) do
+       pos[n], neg[n] = Num:new(), Num:new()
+       for i = 1,20 do
+         print(n,i)
+         stats = classinc(n, all, the, "inckk"..tostring(the.knn),
+                          function (some,row,the) return some:knn(row,the) end
+                          ):stats()
+         pos[n]:add(stats.positive.pd)
+         neg[n]:add(stats.negative.pd) end end end}
 
 
-local function classify(rows,the,rx,fun,       t,results,row)
-  t = Rows:new()
+local function classify(rows,the,rx,fun,       tFromRows,results,row)
+  tFromRows = Rows:new()
   results = Abcd:new(the.data,rx)
   for _,row0 in pairs(rows) do
-    if #t.rows > the.wait then
-      row = Row:new( row0, t)
-      results:add( row:klass(), fun(t, row,the) ) 
+    if #tFromRows.rows > the.wait then
+      row = Row:new( row0, tFromRows)
+      results:add( row:klass(), fun(tFromRows, row,the) ) 
     end
-    t:add(row0) 
+    tFromRows:add(row0) 
   end 
   return results end
 
@@ -759,10 +863,9 @@ Eg.knn={
   txt="test nearest neighbor",
   fun=function(the, results)
         the.data = "../data/diabetes.csv"
-        results= classify(rows(the.data),
-                            the, "knn"..tostring(the.knn), 
-                  function (t,row,the) 
-                    return t:knn(row,the) end) 
+        results= classify(file2rows(the.data),
+                          the, "knn"..tostring(the.knn), 
+                          function (t,row,the) return t:knn(row,the) end) 
         results:report() end}
 
 ------------------------------------------------------------
@@ -770,5 +873,3 @@ Eg.knn={
 main( cli(about))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
 os.exit(fails) 
-
--- Done
