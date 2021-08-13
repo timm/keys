@@ -1,13 +1,12 @@
-BEGIN      { no=1 }
-/^[ \t]*$/ { if(no) {
-               no=0;
-               print "---"
-               print "title: "FILENAME
-               print "layout: page"
-               print "---\n"
-               next }}
-no         { next }
-           { /^--/ ? comments($0) : code($0) }
+BEGIN { header($0,Fname) }
+      { /^--/ ? comment($0) : code($0) }
+
+function  header(b4,name) {
+  if (getline > 0) {
+    if (! /^[ \t]*$/) 
+      header($0,name)
+    else {
+      print "---\ntitle: "FILENAME"\nlayout: page\n---\n" }}}
 
 function comments(b4,tail) {
   if(tail) print(tail)
