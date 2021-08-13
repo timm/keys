@@ -86,7 +86,7 @@ local goalp,klassp,nump,weight,skipp,merged,adds
 -- Meta functions
 local fun,locals            
 --  For lists.
-local eq,sorted,sort,map,copy,per,shuffle,inc,max
+local eq,top,sorted,sort,map,copy,per,shuffle,inc,max
 --  For Stats on lists.
 local sample,samples,cliffsDelta ,same,rank,bootstrap
 --  For strings.
@@ -208,6 +208,11 @@ function Num:new(at,s,      w)
 
 function Num:mid() 
   return per(self:all(),.5) end
+
+function Num:mu(    sum) 
+  sum=0
+  for _,x in pairs(self._all) do sum = sum+x end
+  return sum/self.n end
 
 -- variance  of numerics  is the  standard deviation.
 function Num:var(   a) 
@@ -427,11 +432,7 @@ function shuffle(a,n,    j)
   for i = #a, 2, -1 do
     j = randi(1,i)
     a[i], a[j] = a[j], a[i] end
-  if n then
-    b={}
-    for i=1,n do b[i] = a[i] end
-    return b
-  return a end 
+  return n and top(a, n) or a end
 
 -- pull one items from `t`
 function sample(t) 
@@ -442,6 +443,11 @@ function samples(t,n,    t1)
   t1 = {}
   for i=1,n or #t do t1[i] = sample(t) end
   return t1 end
+
+function top(a,n,         b) 
+  b={}
+  for i=1, math.min(n,#a) do b[i] = a[i] end
+  return b end
 
 function sorted(t,         i,keys)
   i,keys = 0,{}
@@ -492,7 +498,7 @@ function same(xs,ys, the)
 -- Non parametric effect size test (i.e. are two distributions
 -- different by more than a small amount)
 function cliffsDelta(xs,ys,the,       lt,gt)
-  lt,g = 0,0
+  lt,gt = 0,0
   for _,x in pairs(xs) do
     for _,y in pairs(ys) do
       if y > x then gt = gt + 1 end
@@ -504,17 +510,20 @@ function cliffsDelta(xs,ys,the,       lt,gt)
 -- Uses a sampling with replacement. Warning: slow for large
 -- populations. Apply an effect size test first before considering
 -- using this.
-function bootstrap(us,them,the,     x,y,z,yhat,zhat,tobs,more)
+function bootstrap(us,them,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,more)
   x,y,z, yhat,zhat = Num:new(), Num:new(), Num:new(), {}, {}
-  for _,v in pairs(us)   do x:add(v); y:add(v)        end
-  for _,v in pairs(them) do x:add(v); z:add(v)        end
-  for _,v in pairs(us)   do yhat[1+#yhat] = v - y.mu + x.mu end
-  for _,v in pairs(them) do zhat[1+#zhat] = v - z.mu + x.mu end
+  for _,v in pairs(us)   do x:add(v); y:add(v)              end
+  for _,v in pairs(them) do x:add(v); z:add(v)              end
+  xmu, ymu, zmu = x:mu(), y:mu(), z:mu()
+  if ymu > zmu then return bootstrap(them,us) end
+  for _,v in pairs(us)   do yhat[1+#yhat] = v - ymu + xmu end
+  for _,v in pairs(them) do zhat[1+#zhat] = v - zmu + xmu end
   more = 0
   tobs= y:delta(z)
   for _ = 1,the.bootstrap  do
     if   adds(samples(yhat)):delta(adds(samples(zhat))) > tobs 
     then more = more + 1 end end
+  print(tobs, more, the.bootstrap, the.conf)
   return more/the.bootstrap <= the.conf end
 
 -- ### Meta Functions
@@ -675,6 +684,15 @@ local function cli(about,       arg,b4)
 -----------------------------------------------------
 -- ## Unit Tests
 
+Eg.top= {
+  txt = "shuffling items",
+  fun = function(_,     x) 
+          x= top({"a","b","c","d","e",
+                     "f","g","h","i","j",
+                     "0","1","2","3","4","5",
+                     "6","7","8","9" },8) 
+          assert(x[#x] == "h") end }
+
 Eg.shuffle= {
   txt = "shuffling items",
   fun = function(_,     x) 
@@ -771,6 +789,18 @@ Eg.csv={
         for row in csv(the.data) do 
           n  = n or #row
           assert(n==#row)  end end}
+
+Eg.cliffs={
+  txt="nonparametric effect size",
+  fun=function(the,     a,b,n)
+        for _,n in pairs {10,20,40,80} do --,160,320,640} do
+          print(n)
+          for _, delta in pairs {1,1.025,1.05,1.1,1.15,1.2,1.4,1.8} do
+            a,b = {}, {}
+            for i=1,n do a[i] = randi(1,100); b[i]=a[i]*delta  end
+            print("\t",delta, n, 
+                      cliffsDelta(a,b,the),
+                      bootstrap(a,b,the)) end end end }
 
 Eg.clone={
   txt="cloning a table",
