@@ -3,7 +3,13 @@ title: ""
 ---
 
 
+      ,-_|\   keys
+     /     \  (c) Tim Menzies, 2021, unlicense.org
+     \_,-._*  Cluster, then report just the 
+          v   deltas between nearby clusters.  
+
 ```{.lua .numberLines}
+
 
 local argparse = require("argparse")
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
@@ -26,7 +32,7 @@ All the `options` are available as command line flags, e.g.
 ```
 
 Boolean options have no  arguments (e.g. `loud`). Mentioning
-booleans on the command line will set that option to `true`.
+booleans    on the command line will set that option to `true`.
  
 The `--eg X` runs the unit tests. Use `--eg ls`  to list those
 tests. ``--eg all``  will run all tests. 
@@ -50,8 +56,22 @@ and  you  want to see  the  stacktrace, run the  test again in
 ```{.lua .numberLines}
 
 --
+```
+
+### The `the` variable.
+The config  options  are never set  globally. Rather, they
+are carried  around in  a local variable  called `the`. In
+this way, different parts  of the code could use different  config
+settings.
+
+```{.lua .numberLines}
+
 local about={
-   synopsis = "To summarize something, show its delta to adjacent concepts.",
+   synopsis = [[
+ ,-_|\   keys
+/     \  (c) Tim Menzies, 2021, unlicense.org
+\_,-._*  Cluster, then report just the 
+     v   deltas between nearby clusters.  ]],
    usage    = "./keys",
    author   = "Tim Menzies",
    copyright= "(c) Tim Menzies, 2021, unlicense.org",
@@ -73,17 +93,13 @@ local about={
         some= {20     ,'Number of samples to find far things'},
         seed= {10013  ,'Seed for random numbers'},
         top=  {10     ,'Focus on this many'},
-        un=   {false  ,'Run egs, no protection (unsafe mode)'}}}
+        un=   {false  ,'Run egs, no protection (unsafe mode)'},
+        wait= {10     ,'Pause before thinking'}}}
       
 ---------------------------------------------------------
 ```
 
 ##  Classes
-
-```{.lua .numberLines}
-
-```
-
 `Obj`  is  the class creation factor. `Eg` stores the
 unit and  system tests.
 
@@ -139,7 +155,7 @@ local fun,locals
 
 ```{.lua .numberLines}
 
-local sorted,sort,map,copy,per,shuffle,inc,max 
+local eq,sorted,sort,map,copy,per,shuffle,inc,max 
 ```
 
  For strings.
@@ -153,14 +169,7 @@ For maths.
 
 ```{.lua .numberLines}
 
-local rnd,Seed,rand,normal   
-```
-
- Learner functions
-
-```{.lua .numberLines}
-
-local knn                   
+local rnd,Seed,rand,randi,normal   
 ```
 
  For  files.
@@ -220,7 +229,8 @@ function weight(s) return s:find("-") and -1 or 1 end
 function skipp(s)  return s:find("?") end
 ```
 
-Other functions that apply to all columns are:
+Each column (except for `Skip`) needs its own version of the
+following:
 
 ```{.lua .numberLines}
 
@@ -239,7 +249,8 @@ Other functions that apply to all columns are:
 
 ```
 
-Also, `adds()` lets you create one or update a `col`umn with a list of
+The following functions work for all columns.
+ `adds()` lets you create one or update a `col`umn with a list of
 column `a`  (and if creating, then it guesses column type from the
 first entry).
 
@@ -265,11 +276,11 @@ function merged(i,j,         k)
 
 ## Specific Columns
 ### Skip 
+Columns for data that we just want to ignore.
 
 ```{.lua .numberLines}
 
 
---
 function Skip:new(at,s) 
   return Obj.new(self,"Skip",{
     n=0, s=s or "", at=at or 0}) end
@@ -309,6 +320,11 @@ function Sym:merge(other)
   for k,v in pairs(new.has) do
     if v > new.most then new.mode, new.most = k,v end end 
   return new end
+```
+
+Variance of symbols is called entropy.
+
+```{.lua .numberLines}
 
 function Sym:var(x,     e,p)
   e= 0
@@ -318,14 +334,28 @@ function Sym:var(x,     e,p)
 
 function Sym:dist(x,y) return x==y and 0 or 1 end
 
---- Num ---------------------------------------------------
+------------------------------------------------------------
+```
+
+### Num
+
+```{.lua .numberLines}
+
+
 function Num:new(at,s,      w)
   s= s or ""
   return Obj.new(self,"Num",{
     n=0, s=s, at=at or 0,
     _all={}, ok=false, w=weight(s   )}) end
 
-function Num:mid() return per(self:all(),.5) end
+function Num:mid() 
+  return per(self:all(),.5) end
+```
+
+variance  of numerics  is the  standard deviation.
+
+```{.lua .numberLines}
+
 function Num:var(   a) 
    a=self:all(); return (per(a,.9)-per(a,.1))/2.54 end
 
@@ -350,6 +380,12 @@ function Num:norm(x,    a)
   if x =="?" then return x end
   a = self:all()
   return (x-a[1]) / (a[#a] - a[1] + 1E-32) end
+```
+
+ If any value missing, guess a value of the other that
+maximizes the distance.
+
+```{.lua .numberLines}
 
 function Num:dist(x,y)
   if     x=="?" then y=self:norm(y); x = y>.5 and 0 or 1 
@@ -357,17 +393,19 @@ function Num:dist(x,y)
   else               x,y = self:norm(x), self:norm(y) end
   return math.abs(x-y) end
 
---- row and rows  --------------------------------------------------
+--------------------------------------------------
 ```
 
-What kind of column should be created from `s`?
+## Row
+Store one example.
 
 ```{.lua .numberLines}
 
 function Row:new(a,rows)
   return Obj.new(self,"Row",{cells=a, _rows=rows}) end
 
-function Row:klass() return self.cells[_rows.cols.all.klass] end
+function Row:klass() 
+  return self.cells[self._rows.cols.klass.at] end
 
 function Row:dist(other,the,       a,b,d,n)
   d,n=0,1E-32
@@ -378,31 +416,68 @@ function Row:dist(other,the,       a,b,d,n)
     then  d = d + 1
     else  d = d + col:dist(a,b)^the.p end end
   return  (d/n)^(1/the.p) end
+```
+
+Store many  examples, summarized in columns.
+
+```{.lua .numberLines}
 
 function Rows:new(inits,     x)
   x= Obj.new(self,"Rows",{
-      rows={},
+      rows={}, keep=true,
       cols={all={},names={},x={},y={}}})
   for _,row in pairs(inits or {}) do x:add(row) end  
   return x end
 ```
 
-asdasd asdas 
+clone a copy 
+
+```{.lua .numberLines}
+
+function  Rows:clone(inits,    t)
+  t = Rows:new({self.cols.names})
+  for _,x in pairs(inits or {}) do 
+    t:add(x) end
+  return t end
+```
+
+Read from a file
 
 ```{.lua .numberLines}
 
 function Rows:read(f) 
   for row in csv(f) do self:add(row) end 
   return self end
+```
+
+If this is row1, create the header. Else, add new data.
+
+```{.lua .numberLines}
 
 function Rows:add(a)
-   a= a._name=="Rows"and a.cells or a
-   if #(self.cols.names) > 0 then self:data(a) else self:header(a) end
-end
+   a = (a._name and a._name=="Row" and a.cells) or a
+   if   #(self.cols.names) > 0 
+   then return self:data(a) 
+   else return self:header(a) end end
+```
 
-function Rows:data(a)
-  for _,col in pairs(self.cols.all) do a[col.at]=col:add(a[col.at]) end
-  self.rows[ 1 + #self.rows] = Row:new(a,self) end
+Update the column summaries. Maybe  keep the new row.
+
+```{.lua .numberLines}
+
+function Rows:data(a,    row)
+  for _,col in pairs(self.cols.all) do 
+     a[col.at]=col:add(a[col.at]) end
+  if self.keep then
+    row = Row:new(a,self) 
+    self.rows[ 1 + #self.rows] = Row:new(a,self) end 
+  return row end
+```
+
+Read the magic symbols, make the appropriate columns,
+store them in the right  places.
+
+```{.lua .numberLines}
 
 function Rows:header(a,   what,new,tmp)
   self.cols.names=a
@@ -413,14 +488,25 @@ function Rows:header(a,   what,new,tmp)
     if not skipp(txt) then
       tmp= self.cols[goalp(txt) and  "y" or "x"]
       tmp[1+#tmp] = new
-      if klassp(txt) then self.cols.klass = new end end end end
+      if klassp(txt) then self.cols.klass = new end end end 
+  return a end
 
 function Rows:neighbors(row1,the,    a)
   a={}
   for _,row2 in pairs(self.rows) do
     if row1._id ~= row2._id then
-       a[ 1+#a ] = {row=row2, dist=row1:dist(row2,the)} end end
+       a[ 1+#a ] = {row=row2, dist=row2:dist(row1,the)} end end
   return sort(a,"dist") end
+
+function  Rows:knn(row,the,     a,stats,kadd)
+  stats=Sym:new()
+  for k,v in pairs(self:neighbors(row,the)) do
+    if  k> the.knn then break end
+    stats:add(v.row:klass()) 
+  end
+  kadd={mode=function() return stats.mode end}
+  return kadd[the.kadd]()
+end
 ```
 
 stats, number classes ---------------------------------
@@ -433,8 +519,11 @@ function Err:new(data,rx)
   return Obj.new(self,"Err",{
     data = data or "data", rx= rx or "rx", _mre=Num()}) end 
 
-function Err:add(want,got) mre:add(math.abs(want-got)/want) end
-function Err:mre() return self._mre:mid() end
+function Err:add(want,got) 
+  mre:add(math.abs(want-got)/want) end
+
+function Err:mre() 
+  return self._mre:mid() end
 ```
 
 stats, discrete classes ---------------------------------
@@ -462,12 +551,11 @@ function Abcd:add(want,got)
     then inc(want==got and self.d or self.b, x)
     else inc(got ==x   and self.c or self.a, x) end end end
 
-function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
+function Abcd:stats(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
   p   = function (z) return math.floor(100*z+0.5) end
   z   = function (z) return z==0 and "" or z end
   out = {{"data","rx","n","a","b","c","d","acc","prec",
           "pd","pf","f","g","class"}}
-  linem(out)
   for x in sorted( self.known ) do
     pd,pf,pn,prec,g,f,acc = 0,0,0,0,0,0,0
     a= self.a[x]; b= self.b[x]; c= self.c[x]; d= self.d[x];
@@ -479,23 +567,50 @@ function Abcd:report(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
     if prec+pd > 0 then f=2*prec*pd / (prec + pd)   end
     if self.yes + self.no > 0 then 
        acc= self.yes / (self.yes + self.no) end
-    out[#out+1] = {self.data, self.rx, self.yes+self.no, 
-                   z(a),z(b),z(c),z(d),p(acc),p(prec), p(pd), p(pf), 
-                   p(f),p(g),x} end
-  printm(out) end
+    out[x] = {data=self.data, rx=self.rx, n=self.yes+self.no, 
+              a=z(a),b=z(b),c=z(c),d=z(d),acc=p(acc),
+              prec=p(prec), pd=p(pd), pf=p(pf), 
+              f=p(f),g=p(g),klass=x} end
+  return out end
 
---------------------------------  
-function knn(row,t,the,      a,s)  
-  a = t:neighbors(row,the)
-  s = Sym()
-  for i=1,the.knn do s:add( a[i]:klass() ) end
-  funs = {mode = function() return s.mode end}
-  return funs[the.kadd]() end
-  
---- lists --------------------------------------------------
-function shuffle(a)
+function Abcd:report(stats,     all,m)
+  stats = stats or self:stats()
+  m     = {}
+  all   = {"data","rx","n","a","b","c","d",
+           "acc","prec","pd","pf","f","g","klass"}
+  m[1]  = all
+  linem(m)
+  for _,klass in pairs(stats) do
+    m[1+#m] = {}
+    for i,s in sorted(all) do m[#m][i]=klass[s] end end
+  printm(m) end
+
+--- xxxx make this symbolic. change printm  for that
+--------------------------------------------------------
+```
+
+## Functions
+
+```{.lua .numberLines}
+
+```
+
+### List Functions
+
+```{.lua .numberLines}
+
+function eq(a,b,    ta,tb)
+   ta, tb = type(a), type(b)
+   if ta ~= tb                              then return false end
+   if ta ~= 'table' and tb ~= 'table'       then return t1 == t2 end
+   for k,v in pairs(a) do if not eq(v,b[k]) then return false end end
+   for k,v in pairs(b) do if not eq(v,a[k]) then return false end end
+   return true
+end
+
+function shuffle(a,     j)
   for i = #a, 2, -1 do
-    local j = math.random(i)
+    j = randi(1,i)
     a[i], a[j] = a[j], a[i] end 
   return a end
 
@@ -520,12 +635,12 @@ function inc(t,k,n)
   return t[k] end
 
 function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
--------------------------------------------------------
 ```
 
-## Metas
+### Meta Functions
 
 ```{.lua .numberLines}
+
 
 function fun(f)
   if type(f)=="string" then return function(z) return z[f] end end
@@ -545,7 +660,7 @@ function copy(obj, seen,      s, res)
   for k, v in pairs(obj) do res[copy(k, s)] = copy(v, s) end
     return res end
 
-function exports(out,i)
+local function exports(out,i)
   i,out = 1,out or {}
   while true do
     local s, x = debug.getlocal(2, i)
@@ -563,8 +678,12 @@ function Obj.new(self, name, new)
   id = id + 1
   new._id = id
   return new end
+```
 
---- strings -----------------------------------------------
+### String functions
+
+```{.lua .numberLines}
+
 function fmt(s,...) return io.write(s:format(...)) end 
 
 function color(s,...)
@@ -611,8 +730,12 @@ function printm(m,     most,s)
     s=""
     for i,x in pairs(row) do fmt("%s%".. most[i].."s", s,x);s=" | " end 
     print("") end end
+```
 
---- maths -------------------------------------------------
+### Maths Functions
+
+```{.lua .numberLines}
+
 function rnd(num, decimals,      mult)
   mult = 10^(decimals or 0)
   return math.floor(num * mult + 0.5) / mult end
@@ -622,13 +745,19 @@ function normal(mu,sd)
   return mu+sd*sqrt(-2*log(rand()))*cos(2*pi*rand()) end
 
 Seed = 10013
+function randi(lo,hi) return math.floor(rand(lo,hi)) end
+
 function rand(lo,hi,     mult,mod)
   lo,hi = lo or 0, hi or 1
   mult, mod = 16807, 2147483647
   Seed = (mult * Seed) % mod 
   return lo + (hi-lo) * Seed / mod end 
+```
 
---- file --------------------------------------------------
+### File functions
+
+```{.lua .numberLines}
+
 function csv(file,       split,stream,tmp)
   stream = file and io.input(file) or io.input()
   tmp    = io.read()
@@ -642,7 +771,12 @@ function csv(file,       split,stream,tmp)
         return t end
     else
       io.close(stream) end end end
---- main -------------------------------------------------
+```
+
+###  Start-up functions
+
+```{.lua .numberLines}
+
 local fails=0
 function run(txt,the,      it)
   the  = copy(the)
@@ -673,6 +807,7 @@ coerce it to a number.
 ```{.lua .numberLines}
 
 local function cli(about,       arg,b4)
+  --arg = argparse(about.usage, about.synopsis)
   arg = argparse(about.usage, about.synopsis)
   for flag,v in sorted(about.options) do
     flag = "--"..flag
@@ -684,7 +819,20 @@ local function cli(about,       arg,b4)
     else   arg:option(flag, v[2]    , v[1]) end end 
   return arg:parse() end
 
---- unit tests ---------------------------------------------
+-----------------------------------------------------
+```
+
+## Unit Tests
+
+```{.lua .numberLines}
+
+
+Eg.shuffle= {
+  txt = "shuffling items",
+  fun = function(_,     x) 
+          x= shuffle({10,20,30,40,50,60})
+          assert(x[1] == 20) end }
+
 Eg.sorted= {
   txt = "sorting items",
   fun = function(_) 
@@ -762,15 +910,27 @@ Eg.csv={
           n  = n or #row
           assert(n==#row)  end end}
 
+Eg.clone={
+  txt="cloning a table",
+  fun=function(the,       t1,t2)
+    the.data =  "../data/weathernom.csv"
+    t1 = Rows:new():read(the.data)
+    t2 = t1:clone(t1.rows)
+    assert(eq(t1.cols, t2.cols))
+  end }
+
 Eg.dist={
   txt="checking distances",
   fun=function(the,       t,a)
+    the.data =  "../data/auto2.csv"
     t = Rows:new():read(the.data)
     for i,row1 in pairs(t.rows) do
       fmt("%3s %s", i, i%20==0 and "\n" or "")
       a = t:neighbors(row1,the)
-      assert(a[1].dist < a[#a].dist)
-      end end}
+      assert(a[1].dist < a[#a].dist) end
+    assert(t.cols.all[1].most==8)
+    assert(t.cols.all[1].mode=="Chevrolet")
+    end}
 
 Eg.abcd={
   txt="collecting stats on discrete classes",
@@ -783,16 +943,71 @@ Eg.abcd={
     a:report() end }
  ```
 
-  db |    rx |   num |     a |     b |     c |     d |  acc |  pre |   pd |   pf |    f |    g | class
+```
+db |    rx |   num |     a |     b |     c |     d |  acc |  pre |   pd |   pf |    f |    g | class
 ---- |  ---- |  ---- |  ---- |  ---- |  ---- |  ---- | ---- | ---- | ---- | ---- | ---- | ---- |-----
 data |    rx |    14 |    11 |       |     1 |     2 | 0.93 | 0.67 | 1.00 | 0.08 | 0.80 | 0.96 | no
 data |    rx |    14 |     8 |       |       |     6 | 0.93 | 1.00 | 1.00 | 0.00 | 1.00 | 1.00 | yes
 data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00 | 0.91 | 0.91 | maybe
+```
 
 ```{.lua .numberLines}
 
 
------------------------------------------------------------
+local function  rows(file,      t)
+  t={}
+  for row in csv(file) do t[1+#t] = row end
+  return t end
+
+local function classincify(t,the,rx,fun,       t2,rows)
+  results = Abcd:new(the.data,rx)
+  rows = shuffle(t.rows)
+  some = t:clone()
+  for i=1,n do some:add(rows[i]) end
+  for i=n+1,#rows do
+    row = Row:new( rows[i], some)
+    results:add( row:klass(), fun(some, row,the) ) 
+  end
+  return results end
+
+Eg.knndiabetes={
+  txt="checking distances",
+  fun=function(the,       t,a)
+    the.data =  "../data/diabetes.csv"
+    t = Rows:new():read(the.data)
+    t.rows = shuffle(t.rows)
+    print(#t.rows)
+    end}
+
+local function classify(rows,the,rx,fun,       t,results,row)
+  t = Rows:new()
+  results = Abcd:new(the.data,rx)
+  for _,row0 in pairs(rows) do
+    if #t.rows > the.wait then
+      row = Row:new( row0, t)
+      results:add( row:klass(), fun(t, row,the) ) 
+    end
+    t:add(row0) 
+  end 
+  return results end
+
+Eg.knn={
+  txt="test nearest neighbor",
+  fun=function(the, results)
+        the.data = "../data/diabetes.csv"
+        results= classify(rows(the.data),
+                            the, "knn"..tostring(the.knn), 
+                  function (t,row,the) 
+                    return t:knn(row,the) end) 
+        results:report() end}
+
+------------------------------------------------------------
+```
+
+## Start-up
+
+```{.lua .numberLines}
+
 main( cli(about))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
 os.exit(fails) 
