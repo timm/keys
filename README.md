@@ -7,4 +7,6 @@ href="https://zenodo.org/badge/latestdoi/318809834"><img src="https://zenodo.org
 
 #keys
 
+![Jokes Card](https://readme-jokes.vercel.app/api)
+
 Inference = cluster, discretize, contrast
