@@ -43,7 +43,7 @@ local about={
    copyright= "(c) Tim Menzies, 2021, unlicense.org",
    options  = {
         bins= { .5    ,'Bins are of size n**BINS'},
-        bootstrap={512, 'number of bootstrap samples'},
+        bootstrap={512,'number of bootstrap samples'},
         cols= {'x'    ,'Columns to use for inference'},
         conf=  {0.05,   "confidence for bootstraps"},
         cliffs={ .147 ,"threshold for small effect"},
@@ -212,7 +212,7 @@ function Num:mid()
 function Num:mu(    sum) 
   sum=0
   for _,x in pairs(self._all) do sum = sum+x end
-  return sum/self.n end
+  return sum/#self._all end
 
 -- variance  of numerics  is the  standard deviation.
 function Num:var(   a) 
@@ -232,7 +232,7 @@ function Num:add(x)
 
 function Num:merge(other,      new)
   new = copy(self)
-  for _,v in other._all do new:add(x) end
+  for _,x in pairs(other._all) do new:add(x) end
   return new end
 
 function Num:norm(x,    a)
@@ -250,12 +250,24 @@ function Num:dist(x,y)
  
 -- Returns the `mu` delta, mitigated by the  joint variance.
 function Num:delta(other,    y,z,e)
-  y, z, e = self, other, 1E-32
-  return (y:mid() -z:mid()) / (e+(y:var()/y.n + z:var()/z.n)^0.5) end
+  y, z, e = self, other, 0
+  return math.abs(y:mu() - z:mu()) / (
+         (e + y:var()^2/y.n + z:var()^2/z.n)^.5) end
 
 -- are two distributions the same?
-function Num:same(other,the)
+function Num:same(other, the)
   return same(self:all(), other:all(), the) end
+
+function Num:tile(t,width,ps,    s,where)
+  s = {}
+  for i = 1, width or 32 do s[i]=" " end
+  where = function(n) return math.floor(width*self:norm(n)) end
+  map(t,  function(x) s[where(x)] = "*" end)
+  return {rank= self.rank or 0,
+          str = table.concat(s), 
+          mid = per(self:all()),
+          per = map(ps or {.25, .5, .75}, 
+                    function (p) return per(self:all(),p) end)} end
 
 --------------------------------------------------
 -- ## Row
@@ -457,7 +469,7 @@ function sorted(t,         i,keys)
     if i < #keys then
       i=i+1; return keys[i], t[keys[i]] end end end
 
-function sort(a,f)
+function sort(a, f)
   f = fun(f)
   table.sort(a, function(x,y) return f(x)<f(y) end)
   return a end
@@ -473,27 +485,28 @@ function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
 
 -- ### Stats (on lists)
 -- bottom up clustering 
-function rank(nums,sorted,the)
-  if not sorted then 
-    table.sort(nums, function (x,y) return x:mid() < y:mid() end) end
-  j,tmp = 0,{}
-  while j<#nums do
-    j = j + 1
-    a= nums[j]
-    if j<#nums then
-      b = nums[j+1]
-      if a:same(b,the) then
-        a = a:merge(b)
-        j = j+1 end end
+function rank(nums,the,         tmp,j,a,b)
+  table.sort(nums, function (x,y) return x:mid() < y:mid() end) 
+  print("")
+  map(nums, function(t) print("::",t:mid()) end)
+  j,tmp = 1,{}
+  while j <= #nums do
+    a = nums[j]
+    if j < #nums then
+       b = nums[j+1]
+       if a:same(b,the) then
+         a = a:merge(b)
+         j = j+1 end end
     tmp[1+#tmp] = a
-    a.rank = #tmp end
-  return #tmp==#nums and nums or rank(tmp,true,the)
+    tmp[#tmp].rank = #tmp
+    j = j + 1 end
+  return #tmp < #nums and rank(tmp,the) or tmp
 end
 
 function same(xs,ys, the)
-  if #xs > the.samples then xs = shuffle(xs, the.samples) end
-  if #ys > the.samples then ys = shuffle(ys, the.samples) end
-  return cliffsDelta(xs,ys) or not bootstrap(xs,ys, the) end
+  if #xs > the.sames then xs = shuffle(xs, the.sames) end
+  if #ys > the.sames then ys = shuffle(ys, the.sames) end
+  return cliffsDelta(xs,ys,the) and bootstrap(xs,ys, the) end
 
 -- Non parametric effect size test (i.e. are two distributions
 -- different by more than a small amount)
@@ -510,21 +523,19 @@ function cliffsDelta(xs,ys,the,       lt,gt)
 -- Uses a sampling with replacement. Warning: slow for large
 -- populations. Apply an effect size test first before considering
 -- using this.
-function bootstrap(us,them,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,more)
-  x,y,z, yhat,zhat = Num:new(), Num:new(), Num:new(), {}, {}
-  for _,v in pairs(us)   do x:add(v); y:add(v)              end
-  for _,v in pairs(them) do x:add(v); z:add(v)              end
+function bootstrap(y0,z0,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,n)
+  x, y, z, yhat, zhat = Num:new(), Num:new(), Num:new(), {}, {}
+  for _,y1 in pairs(y0) do x:add(y1); y:add(y1)           end
+  for _,z1 in pairs(z0) do x:add(z1); z:add(z1)           end
   xmu, ymu, zmu = x:mu(), y:mu(), z:mu()
-  if ymu > zmu then return bootstrap(them,us) end
-  for _,v in pairs(us)   do yhat[1+#yhat] = v - ymu + xmu end
-  for _,v in pairs(them) do zhat[1+#zhat] = v - zmu + xmu end
-  more = 0
-  tobs= y:delta(z)
-  for _ = 1,the.bootstrap  do
-    if   adds(samples(yhat)):delta(adds(samples(zhat))) > tobs 
-    then more = more + 1 end end
-  print(tobs, more, the.bootstrap, the.conf)
-  return more/the.bootstrap <= the.conf end
+  for _,y1 in pairs(y0) do yhat[1+#yhat] = y1 - ymu + xmu end
+  for _,z1 in pairs(z0) do zhat[1+#zhat] = z1 - zmu + xmu end
+  tobs = y:delta(z)
+  n = 0
+  for _= 1,the.bootstrap do
+    if adds( samples(yhat) ):delta(adds( samples(zhat) )) > tobs 
+    then n = n + 1 end end
+  return n / the.bootstrap >= the.conf end
 
 -- ### Meta Functions
 function fun(f)
@@ -790,17 +801,95 @@ Eg.csv={
           n  = n or #row
           assert(n==#row)  end end}
 
+local function same1(a,b,the,n)
+  the.sames=n
+  return same(a,b,the)
+end
+
 Eg.cliffs={
   txt="nonparametric effect size",
   fun=function(the,     a,b,n)
-        for _,n in pairs {10,20,40,80} do --,160,320,640} do
+        for _,n in pairs {20,40,80,160,320,640,1280} do
           print(n)
-          for _, delta in pairs {1,1.025,1.05,1.1,1.15,1.2,1.4,1.8} do
-            a,b = {}, {}
-            for i=1,n do a[i] = randi(1,100); b[i]=a[i]*delta  end
+          for _, delta in pairs {1,1.01,1.025,1.05,
+                                 1.1,1.15,1.2,1.4,1.8} do
+            a,b={},{}
+            for i=1,n do a[i] = randi(1,100)^.5; b[i]=a[i]*delta  end
             print("\t",delta, n, 
                       cliffsDelta(a,b,the),
-                      bootstrap(a,b,the)) end end end }
+                      bootstrap(  a,b,the),
+                      same(       a,b,the),
+                      same1(      a,b,the,128)) end end end }
+
+Eg.rank={
+  txt="numbers",
+  fun=function (the,      t,t1,t2,t3,t4,t5)       
+        t1= adds {
+                  0.34,  0.49,  0.51,  0.6,
+                  0.34,  0.49,  0.51,  0.6,
+                  0.34,  0.49,  0.51,  0.6,
+                  0.34,  0.49,  0.51,  0.6,
+                  0.34,  0.49,  0.51,  0.6,
+                  0.34,  0.49,  0.51,  0.6,
+                  0.34,  0.49,  0.51,  0.6}
+        t2= adds {
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9}
+        t3= adds {
+                  0.15,  0.25,  0.4,   0.35,
+                  0.15,  0.25,  0.4,   0.35,
+                  0.15,  0.25,  0.4,   0.35,
+                  0.15,  0.25,  0.4,   0.35,
+                  0.15,  0.25,  0.4,   0.35,
+                  0.15,  0.25,  0.4,   0.35,
+                  0.15,  0.25,  0.4,   0.35}
+        t4= adds {
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9,
+                  0.6,   0.7,   0.8,   0.9}
+        t5= adds {
+                  0.1,   0.2,   0.3,   0.4,
+                  0.1,   0.2,   0.3,   0.4,
+                  0.1,   0.2,   0.3,   0.4,
+                  0.1,   0.2,   0.3,   0.4,
+                  0.1,   0.2,   0.3,   0.4,
+                  0.1,   0.2,   0.3,   0.4,
+                  0.1,   0.2,   0.3,   0.4}
+        t = {t1, t2, t3, t4, t5}
+        t = rank(t,the)
+        print(#t) 
+      end }
+
+Eg.rank1={
+  txt="numbers",
+  fun=function (the,      t,t1,t2,t3,t4,t5,t6,t7,t8,t9)       
+        t1,t2,t3 = Num:new(), Num:new(), Num:new()
+        t4,t5,t6 = Num:new(), Num:new(), Num:new()
+        t7,t8,t9 = Num:new(), Num:new(), Num:new()
+        for i=1,20 do t1:add(  math.floor(randi(1,100)^.5) ) end
+        for _,x in pairs(t1._all) do 
+          t5:add(1.01*x) 
+          t8:add(1.01*x) 
+          t9:add(1.01*x) 
+          t2:add(1.05*x) 
+          t3:add(1.4*x) 
+          t6:add(1.4*x) 
+          t4:add(1.5*x) 
+          t7:add(3.5*x) 
+        end
+        t= {t1,t2,t3,t4,t5,t6,t7,t8,t9}
+        for _,t1 in pairs(rank(t, the)) do 
+          print(t1:mid(), t1.rank) end
+      end }
 
 Eg.clone={
   txt="cloning a table",
