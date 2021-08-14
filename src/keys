@@ -695,6 +695,17 @@ local function cli(about,       arg,b4)
 -----------------------------------------------------
 -- ## Unit Tests
 
+Eg.eq={
+  txt="recursive equals",
+  fun=function(_,      a,b)
+         a={10,{d=100},{c=30},{1,{2,{3,{4,6}}}}}
+         b={10,{d=100},{c=30},{1,{2,{3,{4,6}}}}}
+         c={10,{d=100},{c=30},{1,{2,{3,{4,10 -- difference here
+                           }}}}}
+         print(eq(a,b))
+         print(not eq(a,c))
+      end}
+
 Eg.top= {
   txt = "shuffling items",
   fun = function(_,     x) 
@@ -809,7 +820,7 @@ end
 Eg.cliffs={
   txt="nonparametric effect size",
   fun=function(the,     a,b,n)
-        for _,n in pairs {20,40,80,160,320,640,1280} do
+        for _,n in pairs {20,40,80,160,320,640} do
           print(n)
           for _, delta in pairs {1,1.01,1.025,1.05,
                                  1.1,1.15,1.2,1.4,1.8} do
@@ -897,7 +908,8 @@ Eg.clone={
     the.data =  "../data/weathernom.csv"
     t1 = Rows:new():read(the.data)
     t2 = t1:clone(t1.rows)
-    assert(eq(t1.cols, t2.cols))
+    assert(eq(t1.cols[2], t2.cols[2]))
+    rump(t1.rows)
   end }
 
 Eg.dist={
