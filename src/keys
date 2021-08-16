@@ -984,22 +984,29 @@ local function classinc(n,all,the,rx,fun,       results,rows,some,row)
 
 
 -- -- do it stochastic. pick variants at random
--- Eg.incKnnDiabetes={
---   txt="ncrementalDiabetes",
---   fun=function(the,       all,results,pos,neg,stats)
---     the.data =  "../data/diabetes.csv"
---     all = Rows:new():read(the.data)
---     pos,neg={},{}
---     for _,n in pairs({32,64,128,256,512}) do
---        pos[n], neg[n] = Num:new(), Num:new()
---        for i = 1,20 do
---          print(n,i)
---          stats = classinc(n, all, the, "inckk"..tostring(the.knn),
---                           function (some,row,the) return some:knn(row,the) end
---                           ):stats()
---          pos[n]:add(stats.positive.pd)
---          neg[n]:add(stats.negative.pd) end end end}
---     return l end
+Eg.incKnnDiabetes={
+  txt="ncrementalDiabetes",
+  fun=function(the,       t0,t,row,log,all,pos,neg,stats)
+    the.data =  "../data/diabetes.csv"
+    t0 = Rows:new():read(the.data)
+    pos,neg = {},{}
+    for _,n in pairs {32,64} do --128,256,512}) do
+      pos[n], neg[n] = Num:new(), Num:new()
+      for i = 1,5 do
+        print(n,i)
+        t   = t0:clone()
+        log = Abcd:new()
+        all = shuffle(t0.rows)
+        for i = 1,n do 
+          row = all[i]
+          t:add(row) end
+        print(222)
+        for i = n+1, #all do 
+          row = all[i]
+          log:add(row:klass(), t:knn(row,the)) end
+        stats,_ = log:stats()
+        pos[n]:add(stats.positive.pd)
+        neg[n]:add(stats.negative.pd) end end end}
 
 Eg.knn={
   txt="basic nearest neighbor",
@@ -1012,8 +1019,7 @@ Eg.knn={
             log:add(row:klass(), t:knn(row, the))
           end
           t:add(row) end
-        log:report()
-        end}
+        log:report() end}
 
 Eg.knns={
   txt="test the 'Learn' pattern", 
@@ -1023,10 +1029,8 @@ Eg.knns={
         l= Learn:new {
              train = function (x,the) t:add(x) end,
              test  = function (x,the) return t:knn(x,the) end}
-        for row in csv(the.data, t) do 
-          l:inc(row, the) end
-        l.log:report() 
-        end}
+        for row in csv(the.data, t) do l:inc(row, the) end
+        l.log:report() end}
 
 ------------------------------------------------------------
 -- ## Start-up
