@@ -46,7 +46,7 @@ local about={
         bootstrap={512,'number of bootstrap samples'},
         cols= {'x'    ,'Columns to use for inference'},
         conf=  {0.05,   "confidence for bootstraps"},
-        cliffs={ .239 ,"threshold between small and medium effect "},
+        cliffs={ .147 ,"small effect "},
         data= {'../data/auto2.csv' 
                       ,'Where to read data'},
         eg=   {""     ,"'-x ls' lists all, '-x all' runs all"},
@@ -59,7 +59,7 @@ local about={
         loud= {false  ,'Set verbose'},
         m=    {1      ,'Bayes low range frequency hack'},
         p=    {2      ,'Distance calculation exponent'},
-        sames={256    ,"max size of samples for nonparametric stats"},
+        sames={256    ,"max size of nonparametric samples"},
         some= {20     ,'Number of samples to find far things'},
         seed= {10013  ,'Seed for random numbers'},
         top=  {10     ,'Focus on this many'},
@@ -76,15 +76,15 @@ local Obj,Eg       = {},{}
 local Skip,Num,Sym = {},{},{}  
 -- `Rows` is a  container  classes that holds
 -- `Row`s and column summaries.
-local Row,Rows     = {},{}    
+local Row,Rows      = {},{}    
 -- Reporting.
-local Err,Abcd     = {},{}   
+local Err,Abcd,Rank = {},{},{}   
 -- ## Functions
 
 -- For columns.
 local goalp,klassp,nump,weight,skipp,merged,adds 
 -- Meta functions
-local fun,locals            
+local fun,locals,scottKnot            
 --  For lists.
 local eq,top,sorted,sort,map,copy,per,shuffle,inc,max
 --  For Stats on lists.
@@ -248,7 +248,6 @@ function Num:dist(x,y)
   else               x,y = self:norm(x), self:norm(y) end
   return math.abs(x-y) end
  
--- Returns the `mu` delta, mitigated by the  joint variance.
 function Num:delta(other,    y,z,e)
   y, z, e = self, other, 0
   return math.abs(y:mu() - z:mu()) / (
@@ -443,7 +442,40 @@ function Abcd:report(      stats,head,all,m,klass)
     for i,s in sorted(all) do m[#m][i]=klass[s] end end
   printm(m) end
 
---- make this symbolic. Change printm  for that
+-- Rank ------------------------------------------------------
+function scottKnot(nums,the,      mu,cohen,merge,div)
+  function merge(lo,hi,    out)
+    out = nums[lo]
+    for i = lo+1, hi do out = out:merge(nums[i]) end
+    return out, out:mu(), out:var()*the.iota end
+
+  function div(lo, hi, rank, mu,
+                     n,cut,best,l,r,lmu,lmu1,rmu,rmu1,now)
+    best = 0
+    for j = lo,hi do
+      if j < hi  then
+        l, lmu, _ = merge(lo,  j)
+        r, rmu, _ = merge(j+1, hi)
+        n         = l.n + r.n
+        now       = l.n/n*(lmu-mu)^2 + r.n/n*(rmu-mu)^2
+        print(lmu,rmu,cohen,now,best)
+        if now > best then
+          if math.abs(lmu - rmu) >= cohen then
+            if not l:same(r) then
+              cut,best,lmu1,rmu1 = j,now,lmu,rmu end end  end end
+    end
+    if cut then
+      rank = div(lo,    cut, rank, lmu1) + 1
+      rank = div(cut+1, hi,  rank, rmu1) 
+    else
+      for i = lo,hi do nums[i].rank = rank end end
+    return rank end
+  -------------------
+  table.sort(nums, function (x,y) return x:mu() < y:mu() end) 
+  _, mu, cohen = merge(1,#nums)
+  div(1, #nums, 1, mu)
+  return nums end
+
 --------------------------------------------------------
 -- ## Functions
 
@@ -504,7 +536,6 @@ function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
 -- ### Stats (on lists)
 -- bottom up clustering 
 function rank(nums,the,         tmp,j,a,b)
-  table.sort(nums, function (x,y) return x:mid() < y:mid() end) 
   print("")
   map(nums, function(t) print("::",t:mid()) end)
   j,tmp = 1,{}
@@ -863,43 +894,13 @@ Eg.cliffs={
 Eg.rank={
   txt="numbers",
   fun=function (the,      t,t1,t2,t3,t4,t5)       
-        t1= adds {0.34,  0.49,  0.51,  0.6,
-                  0.34,  0.49,  0.51,  0.6,
-                  0.34,  0.49,  0.51,  0.6,
-                  0.34,  0.49,  0.51,  0.6,
-                  0.34,  0.49,  0.51,  0.6,
-                  0.34,  0.49,  0.51,  0.6,
-                  0.34,  0.49,  0.51,  0.6}
-        t2= adds {0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9}
-        t3= adds {0.15,  0.25,  0.4,   0.35,
-                  0.15,  0.25,  0.4,   0.35,
-                  0.15,  0.25,  0.4,   0.35,
-                  0.15,  0.25,  0.4,   0.35,
-                  0.15,  0.25,  0.4,   0.35,
-                  0.15,  0.25,  0.4,   0.35,
-                  0.15,  0.25,  0.4,   0.35}
-        t4= adds {0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9,
-                  0.6,   0.7,   0.8,   0.9}
-        t5= adds {0.1,   0.2,   0.3,   0.4,
-                  0.1,   0.2,   0.3,   0.4,
-                  0.1,   0.2,   0.3,   0.4,
-                  0.1,   0.2,   0.3,   0.4,
-                  0.1,   0.2,   0.3,   0.4,
-                  0.1,   0.2,   0.3,   0.4,
-                  0.1,   0.2,   0.3,   0.4}
+        t1= adds { 0.34,  0.49,  0.51,  0.6}
+        t2= adds { 0.6,   0.7,   0.8,   0.9}
+        t3= adds { 0.15,  0.25,  0.4,   0.35}
+        t4= adds { 0.6,   0.7,   0.8,   0.9}
+        t5= adds { 0.1,   0.2,   0.3,   0.4}
         t = {t1, t2, t3, t4, t5}
-        t = rank(t,the)
+        t = scottKnot(t,the)
         print(#t) 
       end }
 
