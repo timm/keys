@@ -345,12 +345,12 @@ function Rows:neighbors(row1,the,    a)
        a[ 1+#a ] = {row=row2, dist=row2:dist(row1,the)} end end
   return sort(a,"dist") end
 
-function Rows:knn(row,the,     a,stats,kadd)
+function Rows:knn(row,the,     a,stats,kadd,all,one)
   stats=Sym:new()
-  for k,v in pairs(self:neighbors(row,the)) do
-    if  k> the.knn then break end
-    stats:add(v.row:klass()) 
-  end
+  all= self:neighbors(row,the)
+  for i = 1,the.knn do 
+    one = all[i].row
+    stats:add( one:klass() ) end
   kadd={mode=function() return stats.mode end}
   return kadd[the.kadd]()
 end
@@ -373,7 +373,6 @@ function Learn:test(row,the,       want,got)
   if self.n > the.wait then
     want = row:klass()
     got  = self.tester(row,the)
-    print(">>",got)
     self.log:add( want, got) end end
 
 -- stats, number classes ---------------------------------
@@ -403,7 +402,6 @@ function Abcd:exists(x)
     self.d[x] = 0 end end
 
 function Abcd:add(want,got) 
-  print(want,got)
   self:exists(want) 
   self:exists(got)  
   if   want==got then self.yes=self.yes+1 else self.no=self.no+1 end
@@ -417,7 +415,7 @@ function Abcd:stats(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
   z   = function (z) return z==0 and "" or z end
   out = {{"data","rx","n","a","b","c","d","acc","prec",
           "pd","pf","f","g","class"}}
-  for x,_ in pairs( self.known ) do
+  for x in sorted( self.known ) do
     pd,pf,pn,prec,g,f,acc = 0,0,0,0,0,0,0
     a= self.a[x]; b= self.b[x]; c= self.c[x]; d= self.d[x];
     if b+d > 0     then pd   = d     / (b+d)        end
@@ -428,7 +426,7 @@ function Abcd:stats(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
     if prec+pd > 0 then f=2*prec*pd / (prec + pd)   end
     if self.yes + self.no > 0 then 
        acc= self.yes / (self.yes + self.no) end
-    out[x] = {data=self.data, rx=self.rx, n=self.yes+self.no, 
+    out[x] = {data=self.data, rx=self.rx, n=self.b[x]+self.d[x],
               a=z(a),b=z(b),c=z(c),d=z(d),acc=p(acc),
               prec=p(prec), pd=p(pd), pf=p(pf), 
               f=p(f),g=p(g),klass=x} 
@@ -602,8 +600,8 @@ function Obj.new(self, name, new)
   self.__tostring = dump 
   self.__index    = self
   self._name      = name
-  --id = id + 1
-  --new._id = id
+  id = id + 1
+  new._id = id
   return new end
 
 -- ### String functions
@@ -670,7 +668,7 @@ function rand(lo,hi,     mult,mod)
   return lo + (hi-lo) * Seed / mod end 
 
 -- ### File functions
-function csv(file,       split,stream,tmp)
+function csv(file,rows,      split,stream,tmp)
   stream = file and io.input(file) or io.input()
   tmp    = io.read()
   return function(       t)
@@ -680,7 +678,7 @@ function csv(file,       split,stream,tmp)
       tmp = io.read()
       if #t > 0 then
         for j,x in pairs(t) do t[j]=tonumber(x) or x end
-        return t end
+        return rows and Row:new(t,rows) or t end
     else
       io.close(stream) end end end
 
@@ -935,7 +933,7 @@ Eg.clone={
     the.data =  "../data/weathernom.csv"
     t1 = Rows:new():read(the.data)
     t2 = t1:clone(t1.rows)
-    assert(eq(t1.cols, t2.cols))
+    assert(t1.cols.all[1].has.rainy  == t2.cols.all[1].has.rainy)
   end }
 
 Eg.dist={
@@ -1007,14 +1005,29 @@ local function classinc(n,all,the,rx,fun,       results,rows,some,row)
 
 Eg.knn={
   txt="test nearest neighbor",
+  fun=function(the,    t,l,  row,log)
+        the.data = "../data/diabetes.csv"
+        log=Abcd:new()
+        t= Rows:new()
+        for row in csv(the.data,t) do
+          if #t.rows > 10 then
+            log:add(row:klass(), t:knn(row, the))
+          end
+          t:add(row) end
+        log:report()
+        end}
+
+Eg.knns={
+  txt="test nearest neighbor",
   fun=function(the,    t,l)
         the.data = "../data/diabetes.csv"
         t= Rows:new()
         l= Learn:new {
              train = function (x,the) t:add(x) end,
              test  = function (x,the) return t:knn(x,the) end}
-        for x in csv(the.data) do l:inc(Row:new(x,t),the) end
-        --l.log:report() 
+        for row in csv(the.data,t) do 
+            l:inc(row, the) end
+        l.log:report() 
         end}
 
 ------------------------------------------------------------

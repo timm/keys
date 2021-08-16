@@ -83,6 +83,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 "Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'majutsushi/tagbar'
 Plugin 'nielsmadan/harlequin'
 Plugin 'tbastos/vim-lua'
 Plugin 'airblade/vim-gitgutter'
@@ -122,7 +123,7 @@ filetype plugin on
 "let g:autopep8_ignore="E261,E302,E704,E701,E401"
 "autocmd FileType python noremap <buffer> <F8> :call Autopep8()<CR>
 colorscheme harlequin
-nmap <F9> :!../../gold -t %<C-M>p
+nmap <F9> :TagbarToggle<CR>
 nnoremap <Leader><space> :noh<cr>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 set titlestring=%{expand(\"%:p:h\")}
