@@ -78,7 +78,7 @@ local Skip,Num,Sym = {},{},{}
 -- `Row`s and column summaries.
 local Row,Rows      = {},{}    
 -- Reporting.
-local Err,Abcd,Rank = {},{},{}   
+local Err,Abcd = {},{},{}   
 -- ## Functions
 
 -- For columns.
@@ -88,11 +88,11 @@ local fun,locals,scottKnot
 --  For lists.
 local eq,top,sorted,sort,map,copy,per,shuffle,inc,max
 --  For Stats on lists.
-local sample,samples,cliffsDelta ,same,rank,bootstrap
+local sample,samples,cliffsDelta ,same,bootstrap
 --  For strings.
 local fmt,color,dump,rump,pump,linem,printm   
 -- For maths.
-local rnd,Seed,rand,randi,normal   
+local rnd,Seed,rand,randi,normal,merges   
 --  For  files.
 local csv                  
 --  Code  called at start-up.
@@ -230,11 +230,6 @@ function Num:add(x)
     self.ok= false end
   return x end 
 
-function Num:merge(other,      new)
-  new = copy(self)
-  for _,x in pairs(other._all) do new:add(x) end
-  return new end
-
 function Num:norm(x,    a)
   if x =="?" then return x end
   a = self:all()
@@ -258,15 +253,31 @@ function Num:same(other, the)
   return same(self:all(), other:all(), the) end
 
 function Num:tile(t,width,ps,    s,where)
+  a= self:all()
   s = {}
-  for i = 1, width or 32 do s[i]=" " end
+  for i = 1, (width or 32) do s[i]=" " end
   where = function(n) return math.floor(width*self:norm(n)) end
-  map(t,  function(x) s[where(x)] = "*" end)
+  pos   = function(p) return a[1] + p*(a[#a] - a[1]) end
+  for p=.1,.3,.01 do s[where(pos(p))] ="-" end 
+  for p=.7,.9,.01 do s[where(pos(p))] ="-" end 
+  s[where(self:mid())] = "|"
   return {rank= self.rank or 0,
           str = table.concat(s), 
           mid = per(self:all()),
           per = map(ps or {.25, .5, .75}, 
                     function (p) return per(self:all(),p) end)} end
+
+function Num:merge(other,      new)
+  new = copy(self)
+  for _,x in pairs(other._all) do new:add(x) end
+  return new end
+
+function merges(nums,lo,hi,    out)
+  lo = lo or 1
+  hi = hi or #nums
+  out = nums[lo]
+  for i = lo+1, hi do out = out:merge(nums[i]) end
+  return out end
 
 --------------------------------------------------
 -- ## Row
@@ -443,37 +454,35 @@ function Abcd:report(      stats,head,all,m,klass)
   printm(m) end
 
 -- Rank ------------------------------------------------------
-function scottKnot(nums,the,      mu,cohen,merge,div)
-  function merge(lo,hi,    out)
-    out = nums[lo]
-    for i = lo+1, hi do out = out:merge(nums[i]) end
+function scottKnot(nums,the,      _,mu,cohen,summary,div)
+  function summary(lo,hi,    out)
+    out = merges(nums,lo,hi)
     return out, out:mu(), out:var()*the.iota end
 
-  function div(lo, hi, rank, mu,
-                     n,cut,best,l,r,lmu,lmu1,rmu,rmu1,now)
+  function recurse(lo, hi, rank, mu,
+               _,n,cut,best,l,r,lmu,lmu1,rmu,rmu1,now)
     best = 0
     for j = lo,hi do
       if j < hi  then
-        l, lmu, _ = merge(lo,  j)
-        r, rmu, _ = merge(j+1, hi)
+        l, lmu, _ = summary(lo,  j)
+        r, rmu, _ = summary(j+1, hi)
         n         = l.n + r.n
         now       = l.n/n*(lmu-mu)^2 + r.n/n*(rmu-mu)^2
-        print(lmu,rmu,cohen,now,best)
         if now > best then
           if math.abs(lmu - rmu) >= cohen then
-            if not l:same(r) then
-              cut,best,lmu1,rmu1 = j,now,lmu,rmu end end  end end
+            if not l:same(r,the) then
+              cut,best,lmu1,rmu1 = j,now,lmu,rmu end end end end
     end
     if cut then
-      rank = div(lo,    cut, rank, lmu1) + 1
-      rank = div(cut+1, hi,  rank, rmu1) 
+      rank = recurse(lo,    cut, rank, lmu1) + 1
+      rank = recurse(cut+1, hi,  rank, rmu1) 
     else
       for i = lo,hi do nums[i].rank = rank end end
     return rank end
   -------------------
   table.sort(nums, function (x,y) return x:mu() < y:mu() end) 
-  _, mu, cohen = merge(1,#nums)
-  div(1, #nums, 1, mu)
+  _, mu, cohen = summary(1,#nums)
+  recurse(1, #nums, 1, mu)
   return nums end
 
 --------------------------------------------------------
@@ -533,24 +542,6 @@ function inc(t,k,n)
 
 function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
 
--- ### Stats (on lists)
--- bottom up clustering 
-function rank(nums,the,         tmp,j,a,b)
-  print("")
-  map(nums, function(t) print("::",t:mid()) end)
-  j,tmp = 1,{}
-  while j <= #nums do
-    a = nums[j]
-    if j < #nums then
-       b = nums[j+1]
-       if a:same(b,the) then
-         a = a:merge(b)
-         j = j+1 end end
-    tmp[1+#tmp] = a
-    tmp[#tmp].rank = #tmp
-    j = j + 1 end
-  return #tmp < #nums and rank(tmp,the) or tmp
-end
 
 function same(xs,ys, the)
   if #xs > the.sames then xs = shuffle(xs, the.sames) end
@@ -891,6 +882,14 @@ Eg.cliffs={
                       same1(      a,b,the,128)) 
                       end end end }
 
+Eg.same={
+  txt="numbers",
+  fun=function (the,      t,t1,t2)
+        t1= adds { 0.34,  0.49,  0.51,  0.6}
+        t2= adds { 0.1,   0.2,   0.3,   0.4}
+        print(t1:same(t2,the))
+      end }
+
 Eg.rank={
   txt="numbers",
   fun=function (the,      t,t1,t2,t3,t4,t5)       
@@ -900,8 +899,11 @@ Eg.rank={
         t4= adds { 0.6,   0.7,   0.8,   0.9}
         t5= adds { 0.1,   0.2,   0.3,   0.4}
         t = {t1, t2, t3, t4, t5}
+        ts = merges(t)
         t = scottKnot(t,the)
-        print(#t) 
+        for i=1,#t do
+          num= t[i]
+          print(num:tile(num._all,30).str) end
       end }
 
 Eg.rank1={
@@ -922,7 +924,7 @@ Eg.rank1={
           t7:add(3.5*x) 
         end
         t= {t1,t2,t3,t4,t5,t6,t7,t8,t9}
-        for _,t1 in pairs(rank(t, the)) do 
+        for _,t1 in pairs(scottKnot(t, the)) do 
           print(t1:mid(), t1.rank) end
       end }
 
