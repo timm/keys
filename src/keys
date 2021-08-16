@@ -413,9 +413,8 @@ function Abcd:add(want,got)
 function Abcd:stats(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
   p   = function (z) return math.floor(100*z+0.5) end
   z   = function (z) return z==0 and "" or z end
-  out = {{"data","rx","n","a","b","c","d","acc","prec",
-          "pd","pf","f","g","class"}}
-  for x in sorted( self.known ) do
+  out = {}
+  for x,_ in pairs( self.known ) do
     pd,pf,pn,prec,g,f,acc = 0,0,0,0,0,0,0
     a= self.a[x]; b= self.b[x]; c= self.c[x]; d= self.d[x];
     if b+d > 0     then pd   = d     / (b+d)        end
@@ -429,23 +428,22 @@ function Abcd:stats(   p,out,a,b,c,d,pd,pf,pn,f,acc,g,prec)
     out[x] = {data=self.data, rx=self.rx, n=self.b[x]+self.d[x],
               a=z(a),b=z(b),c=z(c),d=z(d),acc=p(acc),
               prec=p(prec), pd=p(pd), pf=p(pf), 
-              f=p(f),g=p(g),klass=x} 
-    end
-  return out end
+              f=p(f),g=p(g),klass=x} end
+  return out, {"data","rx","n","a","b","c","d",
+               "acc","prec", "pd","pf","f","g","klass"} end
 
-function Abcd:report(stats,     all,m)
-  stats = stats or self:stats()
-  m     = {}
-  all   = {"data","rx","n","a","b","c","d",
-           "acc","prec","pd","pf","f","g","klass"}
-  m[1]  = all
+function Abcd:report(      stats,head,all,m,klass)
+  stats,all = self:stats()
+  m    = {}
+  m[1] = all
   linem(m)
-  for _,klass in pairs(stats) do
+  for x in sorted(stats) do
+    klass = stats[x]
     m[1+#m] = {}
     for i,s in sorted(all) do m[#m][i]=klass[s] end end
   printm(m) end
 
---- xxxx make this symbolic. change printm  for that
+--- make this symbolic. Change printm  for that
 --------------------------------------------------------
 -- ## Functions
 
@@ -1004,7 +1002,7 @@ local function classinc(n,all,the,rx,fun,       results,rows,some,row)
 --     return l end
 
 Eg.knn={
-  txt="test nearest neighbor",
+  txt="basic nearest neighbor",
   fun=function(the,    t,l,  row,log)
         the.data = "../data/diabetes.csv"
         log=Abcd:new()
@@ -1018,15 +1016,15 @@ Eg.knn={
         end}
 
 Eg.knns={
-  txt="test nearest neighbor",
+  txt="test the 'Learn' pattern", 
   fun=function(the,    t,l)
         the.data = "../data/diabetes.csv"
         t= Rows:new()
         l= Learn:new {
              train = function (x,the) t:add(x) end,
              test  = function (x,the) return t:knn(x,the) end}
-        for row in csv(the.data,t) do 
-            l:inc(row, the) end
+        for row in csv(the.data, t) do 
+          l:inc(row, the) end
         l.log:report() 
         end}
 
