@@ -1,6 +1,5 @@
 ---
-title: keys
-layout: page
+layout: default
 ---
 
 
