@@ -48,8 +48,27 @@ title="$@"
 
 #  $title
 
+EOF
+cat <<'EOF'
+
+<img alt="Lua" src="https://img.shields.io/badge/lua-v5.4-blue">
+<a href="https://github.com/timm/keys/blob/master/LICENSE.md"><img 
+alt="License" src="https://img.shields.io/badge/license-unlicense-red"></a> <img 
+src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet"> <img 
+alt="Platform" src="https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey"> <a 
+href="https://github.com/timm/keys/actions"><img 
+src="https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg"></a> 
+
+<hr>
+classes: 
+(data <a href="rows.md">rows</a>, <a href="row.md">row</a>);
+(cols <a href="num,md">num</a> <a href="sym.md">sym</a> <a href="skip,md">skip</a>)<br>
+(functions: <a href="strings.md">strings</a>, <a href="maths.md">maths</a>)
+<hr>
 
 EOF
+
+
 cat $f | noPara1 | classify  | apply) > ../docs/$f.md
 # cd ../docs
 # pandoc -f markdown  --template=ez.html --toc  --mathjax \
