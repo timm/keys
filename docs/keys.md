@@ -2,7 +2,6 @@
 #  
 
 
-<p align=center>
 <img alt="Lua" src="https://img.shields.io/badge/lua-v5.4-blue">&nbsp;<a 
 href="https://github.com/timm/keys/blob/master/LICENSE.md"><img
 alt="License" src="https://img.shields.io/badge/license-unlicense-red"></a> <img
@@ -11,11 +10,9 @@ alt="Platform" src="https://img.shields.io/badge/platform-osx%20,%20linux-lightg
 href="https://github.com/timm/keys/actions"><img
 src="https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg"></a>
 
-<img src="https://user-images.githubusercontent.com/29195/130312030-beab122a-3526-4877-bcce-c8b94a387281.png">
+<img width=500
+src="https://user-images.githubusercontent.com/29195/130312030-beab122a-3526-4877-bcce-c8b94a387281.png">
 
-
-
-</p>
 <hr>
 classes: 
 (data <a href="rows.md">rows</a>, <a href="row.md">row</a>);
