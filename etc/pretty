@@ -51,7 +51,7 @@ title="$@"
 EOF
 cat <<'EOF'
 
-<img alt="Lua" src="https://img.shields.io/badge/lua-v5.4-blue"> <a 
+<img alt="Lua" src="https://img.shields.io/badge/lua-v5.4-blue">&nbsp;<a 
 href="https://github.com/timm/keys/blob/master/LICENSE.md"><img
 alt="License" src="https://img.shields.io/badge/license-unlicense-red"></a> <img
 src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet"> <img
