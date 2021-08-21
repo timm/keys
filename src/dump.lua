@@ -12,16 +12,12 @@
 --  
 -- ## Returns
 local dump,rump,pump
--- ## pump
+-- ## pump(t:_table_)
 -- Print  string of table.   
--- Params:
--- - t:_table_
 function pump(t) print(dump(t)) end
 
--- ## dump
+-- ## dump(t:_table_)
 -- Converts a table  to string (without  recursion into values).   
--- Params:
--- - t:_table_
 function dump(t,     sep,s,k,keys)
   if (#t > 0) then
     return table.concat(t,",") end
@@ -35,12 +31,11 @@ function dump(t,     sep,s,k,keys)
       sep=", " end end 
   return s.."}" end
 
--- ## rump
+-- ## rump(t:_table_, pre:_string_)
 -- Print string version of a value (with
 -- recursion into values.    
--- Params:
--- - t:_table_
--- - pre:_string_. Prefix string (show before each entry).
+-- `pre` is a   preefix string (show before each entry).
+-- (defaults to "").
 function rump(t,pre,    indent,fmt)
   pre, indent = pre or "", indent or 0
   if indent < 10 then

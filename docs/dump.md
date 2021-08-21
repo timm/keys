@@ -41,10 +41,8 @@ local dump,rump,pump
 </details></ul>
 
 
-## pump
+## pump(t:_table_)
 Print  string of table.   
-Params:
-- t:_table_
 
 
 <ul><details><summary>code</summary>
@@ -59,10 +57,8 @@ function pump(t) print(dump(t)) end
 </details></ul>
 
 
-## dump
+## dump(t:_table_)
 Converts a table  to string (without  recursion into values).   
-Params:
-- t:_table_
 
 
 <ul><details><summary>code</summary>
@@ -88,12 +84,11 @@ function dump(t,     sep,s,k,keys)
 </details></ul>
 
 
-## rump
+## rump(t:_table_, pre:_string_)
 Print string version of a value (with
 recursion into values.    
-Params:
-- t:_table_
-- pre:_string_. Prefix string (show before each entry).
+`pre` is a   preefix string (show before each entry).
+(defaults to "").
 
 
 <ul><details><summary>code</summary>
