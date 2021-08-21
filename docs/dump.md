@@ -19,31 +19,55 @@ src="https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg"></a
 # Dump tables to string
 Note for Python  programmers:
 To get pretty-print for objects, inherit from ``o``:
-
-```lua
---
-```
-   class o(object):
-     def __init__(i, **k): i.__dict__.update(**k)
-     def __repr__(i):
-       return i.__class__.__name__ + str(
+ 
+    class o(object):
+      def __init__(i, **k): i.__dict__.update(**k)
+      def __repr__(i):
+           return i.__class__.__name__ + str(
          {k: v for k, v in i.__dict__.items() if k[0] != "_"})
+ 
+## Returns
+
+
+<ul><details><summary>code</summary>
+
+
 
 ```lua
 local dump,rump,pump
 ```
+
+
+</details></ul>
+
+
 ## pump
 Print  string of table.   
 Params:
-- t:table
+- t:_table_
+
+
+<ul><details><summary>code</summary>
+
+
 
 ```lua
 function pump(t) print(dump(t)) end
 ```
+
+
+</details></ul>
+
+
 ## dump
 Converts a table  to string (without  recursion into values).   
 Params:
 - t:_table_
+
+
+<ul><details><summary>code</summary>
+
+
 
 ```lua
 function dump(t,     sep,s,k,keys)
@@ -59,12 +83,22 @@ function dump(t,     sep,s,k,keys)
       sep=", " end end 
   return s.."}" end
 ```
+
+
+</details></ul>
+
+
 ## rump
 Print string version of a value (with
 recursion into values.    
 Params:
 - t:_table_
 - pre:_string_. Prefix string (show before each entry).
+
+
+<ul><details><summary>code</summary>
+
+
 
 ```lua
 function rump(t,pre,    indent,fmt)
@@ -78,10 +112,5 @@ function rump(t,pre,    indent,fmt)
           rump(v, pre, indent+1)
         else
           print(fmt .. tostring(v)) end end end end end
-```
-## Returns
-
-```lua
-return {dump=dump, rump=rump, pump=pump}
 
 ```

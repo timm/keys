@@ -3,18 +3,19 @@
 -- # Dump tables to string
 -- Note for Python  programmers:
 -- To get pretty-print for objects, inherit from ``o``:
---
---    class o(object):
---      def __init__(i, **k): i.__dict__.update(**k)
---      def __repr__(i):
---        return i.__class__.__name__ + str(
+--  
+--     class o(object):
+--       def __init__(i, **k): i.__dict__.update(**k)
+--       def __repr__(i):
+--            return i.__class__.__name__ + str(
 --          {k: v for k, v in i.__dict__.items() if k[0] != "_"})
+--  
+-- ## Returns
 local dump,rump,pump
-
 -- ## pump
 -- Print  string of table.   
 -- Params:
--- - t:table
+-- - t:_table_
 function pump(t) print(dump(t)) end
 
 -- ## dump
@@ -51,8 +52,3 @@ function rump(t,pre,    indent,fmt)
           rump(v, pre, indent+1)
         else
           print(fmt .. tostring(v)) end end end end end
-
--- ## Returns
-return {dump=dump, rump=rump, pump=pump}
-
-
