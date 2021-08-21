@@ -41,14 +41,10 @@ function apply(now,b4,last) {
 }
 
 
-f=${1%.*}
+echo "[$1]"
+f=${1%.*}.lua
 shift
-title="$@"
-(cat<<EOF
-
-#  $title
-
-EOF
+title="$f"
 cat <<'EOF'
 
 <h1>Keys</h1>
@@ -71,7 +67,7 @@ src="https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg"></a
 EOF
 
 
-cat $f | noPara1 | classify  | apply) > ../docs/$f.md
+cat $f | noPara1 | classify  | apply
 # cd ../docs
 # pandoc -f markdown  --template=ez.html --toc  --mathjax \
 #        --lua-filter linenums.lua \
