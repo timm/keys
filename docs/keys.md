@@ -1,6 +1,6 @@
----
-title: "File "
----
+
+#  
+
 
 
       ,-_|\   keys
@@ -9,7 +9,7 @@ title: "File "
           v   deltas between nearby clusters.  
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -21,14 +21,14 @@ local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -----------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ## About
 All the `options` are available as command line flags, e.g.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -37,13 +37,13 @@ All the `options` are available as command line flags, e.g.
 --
 ```
 
-</details>
+</details></ul>
 
 
       ./keys --bins 10 --loud
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -52,7 +52,7 @@ All the `options` are available as command line flags, e.g.
 --
 ```
 
-</details>
+</details></ul>
 
 
 Boolean options have no  arguments (e.g. `loud`). Mentioning
@@ -62,7 +62,7 @@ The `--eg X` runs the unit tests. Use `--eg ls`  to list those
 tests. ``--eg all``  will run all tests. 
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -71,7 +71,7 @@ tests. ``--eg all``  will run all tests.
 --
 ```
 
-</details>
+</details></ul>
 
 
 If a test  crashes,
@@ -79,7 +79,7 @@ and  you  want to see  the  stacktrace, run the  test again in
 `wild` mode; e.g
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -88,13 +88,13 @@ and  you  want to see  the  stacktrace, run the  test again in
 --
 ```
 
-</details>
+</details></ul>
 
 
     ./bins --wild --eg abcd
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -103,7 +103,7 @@ and  you  want to see  the  stacktrace, run the  test again in
 --
 ```
 
-</details>
+</details></ul>
 
 
 ### The `the` variable.
@@ -113,7 +113,7 @@ this way, different parts  of the code could use different  config
 settings.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -156,7 +156,7 @@ local about={
 ---------------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ##  Classes
@@ -164,7 +164,7 @@ local about={
 unit and  system tests.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -173,14 +173,14 @@ unit and  system tests.
 local Obj,Eg       = {},{}     
 ```
 
-</details>
+</details></ul>
 
 
 Columns. `Skip` is for columns we want to ignoe
 the  others are for columns of  `Num`bers  or  `Sym`bols.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -189,14 +189,14 @@ the  others are for columns of  `Num`bers  or  `Sym`bols.
 local Skip,Num,Sym = {},{},{}  
 ```
 
-</details>
+</details></ul>
 
 
 `Rows` is a  container  classes that holds
 `Row`s and column summaries.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -205,13 +205,13 @@ local Skip,Num,Sym = {},{},{}
 local Row,Rows      = {},{}    
 ```
 
-</details>
+</details></ul>
 
 
 Reporting.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -220,13 +220,13 @@ Reporting.
 local Err,Abcd = {},{},{}   
 ```
 
-</details>
+</details></ul>
 
 
 ## Functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -234,13 +234,13 @@ local Err,Abcd = {},{},{}
 
 ```
 
-</details>
+</details></ul>
 
 
 For columns.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -249,13 +249,13 @@ For columns.
 local goalp,klassp,nump,weight,skipp,merged,adds 
 ```
 
-</details>
+</details></ul>
 
 
 Meta functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -264,13 +264,13 @@ Meta functions
 local fun,locals,scottKnot            
 ```
 
-</details>
+</details></ul>
 
 
  For lists.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -279,13 +279,13 @@ local fun,locals,scottKnot
 local eq,top,sorted,sort,map,copy,per,shuffle,inc,max
 ```
 
-</details>
+</details></ul>
 
 
  For Stats on lists.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -294,13 +294,13 @@ local eq,top,sorted,sort,map,copy,per,shuffle,inc,max
 local sample,samples,cliffsDelta ,same,bootstrap
 ```
 
-</details>
+</details></ul>
 
 
  For strings.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -309,13 +309,13 @@ local sample,samples,cliffsDelta ,same,bootstrap
 local fmt,color,dump,rump,pump,linem,printm   
 ```
 
-</details>
+</details></ul>
 
 
 For maths.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -324,13 +324,13 @@ For maths.
 local rnd,Seed,rand,randi,normal,merges   
 ```
 
-</details>
+</details></ul>
 
 
  For  files.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -339,13 +339,13 @@ local rnd,Seed,rand,randi,normal,merges
 local csv                  
 ```
 
-</details>
+</details></ul>
 
 
  Code  called at start-up.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -356,13 +356,13 @@ local run,main
 -------------------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ## columns, general
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -370,14 +370,14 @@ local run,main
 
 ```
 
-</details>
+</details></ul>
 
 
 This code reads tables of data where line1 shows the name
 for each column. For example:
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -386,7 +386,7 @@ for each column. For example:
 --
 ```
 
-</details>
+</details></ul>
 
 
     name?, Age, Shoesize, Job,  Salary+ YearsOnJob-
@@ -395,7 +395,7 @@ for each column. For example:
     ...    ..   ..        ..    ..       ..
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -404,7 +404,7 @@ for each column. For example:
 --
 ```
 
-</details>
+</details></ul>
 
 
 Note that the row1 names have magic symbols.
@@ -414,7 +414,7 @@ to be ignored contain `?`. Columns usually have a `weight`
 of "1" unless we are minimizing them in which case that is "-1".
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -429,14 +429,14 @@ function weight(s) return s:find("-") and -1 or 1 end
 function skipp(s)  return s:find("?") end
 ```
 
-</details>
+</details></ul>
 
 
 Each column (except for `Skip`) needs its own version of the
 following:
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -445,7 +445,7 @@ following:
 --
 ```
 
-</details>
+</details></ul>
 
 
 - `:add()`  : add `x` to the column;
@@ -457,7 +457,7 @@ following:
 - `:var()` : reports how values can vary around the `mid`.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -465,7 +465,7 @@ following:
 
 ```
 
-</details>
+</details></ul>
 
 
 The following functions work for all columns.
@@ -474,7 +474,7 @@ column `a`  (and if creating, then it guesses column type from the
 first entry).
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -486,13 +486,13 @@ function adds(a,col)
   return col end
 ```
 
-</details>
+</details></ul>
 
 
 Finally, `merged()` checks if life is simpler if we combine two columns.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -506,7 +506,7 @@ function merged(i,j,         k)
 ------------------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ## Specific Columns
@@ -514,7 +514,7 @@ function merged(i,j,         k)
 Columns for data that we just want to ignore.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -532,7 +532,7 @@ function Skip: like(x,_) return 1 end
 ------------------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ### Sym
@@ -540,7 +540,7 @@ Symbolic columns keep symbol counts (in `has`) and know
 the `mode` (most common) value.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -570,13 +570,13 @@ function Sym:merge(other)
   return new end
 ```
 
-</details>
+</details></ul>
 
 
 Variance of symbols is called entropy.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -593,13 +593,13 @@ function Sym:dist(x,y) return x==y and 0 or 1 end
 ------------------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ### Num
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -621,13 +621,13 @@ function Num:mu(    sum)
   return sum/#self._all end
 ```
 
-</details>
+</details></ul>
 
 
 variance  of numerics  is the  standard deviation.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -654,14 +654,14 @@ function Num:norm(x,    a)
   return (x-a[1]) / (a[#a] - a[1] + 1E-32) end
 ```
 
-</details>
+</details></ul>
 
 
  If any value missing, guess a value of the other that
 maximizes the distance.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -679,13 +679,13 @@ function Num:delta(other,    y,z,e)
          (e + y:var()^2/y.n + z:var()^2/z.n)^.5) end
 ```
 
-</details>
+</details></ul>
 
 
 are two distributions the same?
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -724,14 +724,14 @@ function merges(nums,lo,hi,    out)
 --------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ## Row
 Store one example.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -754,13 +754,13 @@ function Row:dist(other,the,       a,b,d,n)
   return  (d/n)^(1/the.p) end
 ```
 
-</details>
+</details></ul>
 
 
 Store many  examples, summarized in columns.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -774,13 +774,13 @@ function Rows:new(inits,     x)
   return x end
 ```
 
-</details>
+</details></ul>
 
 
 clone a copy 
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -793,13 +793,13 @@ function  Rows:clone(inits,    t)
   return t end
 ```
 
-</details>
+</details></ul>
 
 
 Read from a file
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -810,13 +810,13 @@ function Rows:read(f)
   return self end
 ```
 
-</details>
+</details></ul>
 
 
 If this is row1, create the header. Else, add new data.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -829,13 +829,13 @@ function Rows:add(a)
    else return self:header(a) end end
 ```
 
-</details>
+</details></ul>
 
 
 Update the column summaries. Maybe  keep the new row.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -850,14 +850,14 @@ function Rows:data(a,    row)
   return row end
 ```
 
-</details>
+</details></ul>
 
 
 Read the magic symbols, make the appropriate columns,
 store them in the right  places.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -913,13 +913,13 @@ function Learn:test(row,the,       want,got)
     self.log:add( want, got) end end
 ```
 
-</details>
+</details></ul>
 
 
 stats, number classes ---------------------------------
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -938,13 +938,13 @@ function Err:mre()
   return self._mre:mid() end
 ```
 
-</details>
+</details></ul>
 
 
 stats, discrete classes ---------------------------------
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1005,13 +1005,13 @@ function Abcd:report(      stats,head,all,m,klass)
   printm(m) end
 ```
 
-</details>
+</details></ul>
 
 
 Rank ------------------------------------------------------
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1051,13 +1051,13 @@ function scottKnot(nums,the,      _,mu,cohen,summary,div)
 --------------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ## Functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1065,13 +1065,13 @@ function scottKnot(nums,the,      _,mu,cohen,summary,div)
 
 ```
 
-</details>
+</details></ul>
 
 
 ### List Functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1087,13 +1087,13 @@ function eq(a,b,    ta,tb)
 end
 ```
 
-</details>
+</details></ul>
 
 
 shuffles, in place the table `a`
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1106,13 +1106,13 @@ function shuffle(a,n,    j)
   return n and top(a, n) or a end
 ```
 
-</details>
+</details></ul>
 
 
 pull one items from `t`
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1122,13 +1122,13 @@ function sample(t)
   return t[randi(1,#t)] end
 ```
 
-</details>
+</details></ul>
 
 
 samples with replacement, from list `t`.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1172,7 +1172,7 @@ function same(xs,ys, the)
   return cliffsDelta(xs,ys,the) and bootstrap(xs,ys, the) end
 ```
 
-</details>
+</details></ul>
 
 
 Non parametric effect size test (i.e. are two distributions
@@ -1182,7 +1182,7 @@ top of p14 of  https://bit.ly/3m9Q0pP .  0.147 (small), 0.33
 (medium), and 0.474 (large)
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1197,7 +1197,7 @@ function cliffsDelta(xs,ys,the,       lt,gt)
   return math.abs(gt - lt)/(#xs * #ys) <= the.cliffs end
 ```
 
-</details>
+</details></ul>
 
 
 Non parametric "significance"  test (i.e. is it possible to
@@ -1211,7 +1211,7 @@ https://bit.ly/3iSJz8B Typically, conf=0.05 and b is 100s to
 1000s.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1234,13 +1234,13 @@ function bootstrap(y0,z0,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,n)
   return n / the.bootstrap >= the.conf end
 ```
 
-</details>
+</details></ul>
 
 
 ### Meta Functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1284,13 +1284,13 @@ function Obj.new(self, name, new)
   return new end
 ```
 
-</details>
+</details></ul>
 
 
 ### String functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1341,13 +1341,13 @@ function printm(m,     most,s)
     print("") end end
 ```
 
-</details>
+</details></ul>
 
 
 ### Maths Functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1371,13 +1371,13 @@ function rand(lo,hi,     mult,mod)
   return lo + (hi-lo) * Seed / mod end 
 ```
 
-</details>
+</details></ul>
 
 
 ### File functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1398,13 +1398,13 @@ function csv(file,rows,      split,stream,tmp)
       io.close(stream) end end end
 ```
 
-</details>
+</details></ul>
 
 
 ###  Start-up functions
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1431,7 +1431,7 @@ function main(the)
   then   run(the.eg, the) end end
 ```
 
-</details>
+</details></ul>
 
 
 `cli()` creates  command line flags by mapping `config` to `:flags`
@@ -1441,7 +1441,7 @@ Also, if reading  a numeric option from  command line, remember to
 coerce it to a number.
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1463,13 +1463,13 @@ local function cli(about,       arg,b4)
 -----------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ## Unit Tests
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1525,7 +1525,7 @@ Eg.sorted= {
 Eg.sort= {
   txt= "more sorting",
   fun= function(_,       t) 
-         t= sort({{k=10,v=1}, {k=3,v=20}, {k=1,v=10}, {k=5,v=5}},"k")
+         t= sort({{k=10,v=1},{k=3,v=20},{k=1,v=10},{k=5,v=5}},"k")
          assert(5==t[3].v) end}
 
 Eg.map= {
@@ -1693,7 +1693,7 @@ Eg.abcd={
     a:report() end }
  ```
 
-</details>
+</details></ul>
 
 
 ```
@@ -1705,7 +1705,7 @@ data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00
 ```
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1730,13 +1730,13 @@ local function classinc(n,all,the,rx,fun,       results,rows,some,row)
   return results end
 ```
 
-</details>
+</details></ul>
 
 
 -- do it stochastic. pick variants at random
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 
@@ -1793,13 +1793,13 @@ Eg.knns={
 ------------------------------------------------------------
 ```
 
-</details>
+</details></ul>
 
 
 ## Start-up
 
 
-<details><summary>code</summary>
+<ul><details><summary>code</summary>
 
 
 

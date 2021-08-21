@@ -30,10 +30,10 @@ function apply(now,b4,last) {
    if (last !~ /^[ \t]*$/) last=last "\n"
    if (now=="CODE") {
      printf(last); 
-    print "\n\n<details><summary>code</summary>\n\n"
+    print "\n\n<ul><details><summary>code</summary>\n\n"
      print"\n```lua\n"}
    if (now=="DOC")  {printf(last)
-                    if (!top)   print"```\n\n</details>\n\n" }
+                    if (!top)   print"```\n\n</details></ul>\n\n" }
                     top=0}}' 
 }
 
@@ -42,9 +42,9 @@ f=${1%.*}
 shift
 title="$@"
 (cat<<EOF
----
-title: "File $title"
----
+
+#  $title
+
 
 EOF
 cat $f | noPara1 | classify  | apply) > ../docs/$f.md
