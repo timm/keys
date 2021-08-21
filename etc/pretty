@@ -28,9 +28,12 @@ function apply(now,b4,last) {
      print(last)
   else {
    if (last !~ /^[ \t]*$/) last=last "\n"
-   if (now=="CODE") {printf(last); print"\n```{.lua .numberLines}\n"}
+   if (now=="CODE") {
+     printf(last); 
+    print "\n\n<details><summary>code</summary>\n\n"
+     print"\n```lua\n"}
    if (now=="DOC")  {printf(last)
-                    if (!top)   print"```\n" }
+                    if (!top)   print"```\n\n</details>\n\n" }
                     top=0}}' 
 }
 

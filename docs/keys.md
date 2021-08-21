@@ -8,7 +8,12 @@ title: "File "
      \_,-._*  Cluster, then report just the 
           v   deltas between nearby clusters.  
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 
 local argparse = require("argparse")
@@ -16,20 +21,39 @@ local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -----------------------------------------------
 ```
 
+</details>
+
+
 ## About
 All the `options` are available as command line flags, e.g.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
       ./keys --bins 10 --loud
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
 Boolean options have no  arguments (e.g. `loud`). Mentioning
 booleans    on the command line will set that option to `true`.
@@ -37,26 +61,50 @@ booleans    on the command line will set that option to `true`.
 The `--eg X` runs the unit tests. Use `--eg ls`  to list those
 tests. ``--eg all``  will run all tests. 
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
 If a test  crashes,
 and  you  want to see  the  stacktrace, run the  test again in 
 `wild` mode; e.g
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
     ./bins --wild --eg abcd
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
 ### The `the` variable.
 The config  options  are never set  globally. Rather, they
@@ -64,7 +112,12 @@ are carried  around in  a local variable  called `the`. In
 this way, different parts  of the code could use different  config
 settings.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local about={
    synopsis = [[
@@ -103,125 +156,256 @@ local about={
 ---------------------------------------------------------
 ```
 
+</details>
+
+
 ##  Classes
 `Obj`  is  the class creation factor. `Eg` stores the
 unit and  system tests.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local Obj,Eg       = {},{}     
 ```
 
+</details>
+
+
 Columns. `Skip` is for columns we want to ignoe
 the  others are for columns of  `Num`bers  or  `Sym`bols.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local Skip,Num,Sym = {},{},{}  
 ```
 
+</details>
+
+
 `Rows` is a  container  classes that holds
 `Row`s and column summaries.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local Row,Rows      = {},{}    
 ```
 
+</details>
+
+
 Reporting.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local Err,Abcd = {},{},{}   
 ```
 
+</details>
+
+
 ## Functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 ```
 
+</details>
+
+
 For columns.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local goalp,klassp,nump,weight,skipp,merged,adds 
 ```
 
+</details>
+
+
 Meta functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local fun,locals,scottKnot            
 ```
 
+</details>
+
+
  For lists.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local eq,top,sorted,sort,map,copy,per,shuffle,inc,max
 ```
 
+</details>
+
+
  For Stats on lists.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local sample,samples,cliffsDelta ,same,bootstrap
 ```
 
+</details>
+
+
  For strings.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local fmt,color,dump,rump,pump,linem,printm   
 ```
 
+</details>
+
+
 For maths.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local rnd,Seed,rand,randi,normal,merges   
 ```
 
+</details>
+
+
  For  files.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local csv                  
 ```
 
+</details>
+
+
  Code  called at start-up.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local run,main        
 
 -------------------------------------------------------------
 ```
 
+</details>
+
+
 ## columns, general
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 ```
+
+</details>
+
 
 This code reads tables of data where line1 shows the name
 for each column. For example:
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
     name?, Age, Shoesize, Job,  Salary+ YearsOnJob-
     tim,   21,  10,       prof, 100,     100
     jane,  60,  10,       hod,  1000,    10
     ...    ..   ..        ..    ..       ..
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
 Note that the row1 names have magic symbols.
 Numerics start with uppercase. Goals to be minimize or
@@ -229,7 +413,12 @@ maximized end with `-` and `+` (respectively). Columns
 to be ignored contain `?`. Columns usually have a `weight`
 of "1" unless we are minimizing them in which case that is "-1".
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 
@@ -240,13 +429,24 @@ function weight(s) return s:find("-") and -1 or 1 end
 function skipp(s)  return s:find("?") end
 ```
 
+</details>
+
+
 Each column (except for `Skip`) needs its own version of the
 following:
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 --
 ```
+
+</details>
+
 
 - `:add()`  : add `x` to the column;
 - `:dist()` : returns probability that `x` belongs to the
@@ -256,16 +456,29 @@ following:
 - `:new()`  : returns a new column
 - `:var()` : reports how values can vary around the `mid`.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 ```
+
+</details>
+
 
 The following functions work for all columns.
  `adds()` lets you create one or update a `col`umn with a list of
 column `a`  (and if creating, then it guesses column type from the
 first entry).
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function adds(a,col) 
   col = col or (type(a[1])=="number" and Num or Sym):new()
@@ -273,9 +486,17 @@ function adds(a,col)
   return col end
 ```
 
+</details>
+
+
 Finally, `merged()` checks if life is simpler if we combine two columns.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function merged(i,j,         k)
   k= i:merge(j)
@@ -285,11 +506,19 @@ function merged(i,j,         k)
 ------------------------------------------------------------
 ```
 
+</details>
+
+
 ## Specific Columns
 ### Skip 
 Columns for data that we just want to ignore.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 
 function Skip:new(at,s) 
@@ -303,11 +532,19 @@ function Skip: like(x,_) return 1 end
 ------------------------------------------------------------
 ```
 
+</details>
+
+
 ### Sym
 Symbolic columns keep symbol counts (in `has`) and know
 the `mode` (most common) value.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 
 function Sym:new(at,s)  
@@ -333,9 +570,17 @@ function Sym:merge(other)
   return new end
 ```
 
+</details>
+
+
 Variance of symbols is called entropy.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Sym:var(x,     e,p)
   e= 0
@@ -348,9 +593,17 @@ function Sym:dist(x,y) return x==y and 0 or 1 end
 ------------------------------------------------------------
 ```
 
+</details>
+
+
 ### Num
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 
 function Num:new(at,s,      w)
@@ -368,9 +621,17 @@ function Num:mu(    sum)
   return sum/#self._all end
 ```
 
+</details>
+
+
 variance  of numerics  is the  standard deviation.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Num:var(   a) 
    a=self:all(); return (per(a,.9)-per(a,.1))/2.54 end
@@ -393,10 +654,18 @@ function Num:norm(x,    a)
   return (x-a[1]) / (a[#a] - a[1] + 1E-32) end
 ```
 
+</details>
+
+
  If any value missing, guess a value of the other that
 maximizes the distance.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Num:dist(x,y)
   if     x=="?" then y=self:norm(y); x = y>.5 and 0 or 1 
@@ -410,9 +679,17 @@ function Num:delta(other,    y,z,e)
          (e + y:var()^2/y.n + z:var()^2/z.n)^.5) end
 ```
 
+</details>
+
+
 are two distributions the same?
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Num:same(other, the)
   return same(self:all(), other:all(), the) end
@@ -447,10 +724,18 @@ function merges(nums,lo,hi,    out)
 --------------------------------------------------
 ```
 
+</details>
+
+
 ## Row
 Store one example.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Row:new(a,rows)
   return Obj.new(self,"Row",{cells=a, _rows=rows}) end
@@ -469,9 +754,17 @@ function Row:dist(other,the,       a,b,d,n)
   return  (d/n)^(1/the.p) end
 ```
 
+</details>
+
+
 Store many  examples, summarized in columns.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Rows:new(inits,     x)
   x= Obj.new(self,"Rows",{
@@ -481,9 +774,17 @@ function Rows:new(inits,     x)
   return x end
 ```
 
+</details>
+
+
 clone a copy 
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function  Rows:clone(inits,    t)
   t = Rows:new({self.cols.names})
@@ -492,18 +793,34 @@ function  Rows:clone(inits,    t)
   return t end
 ```
 
+</details>
+
+
 Read from a file
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Rows:read(f) 
   for row in csv(f) do self:add(row) end 
   return self end
 ```
 
+</details>
+
+
 If this is row1, create the header. Else, add new data.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Rows:add(a)
    a = (a._name and a._name=="Row" and a.cells) or a
@@ -512,9 +829,17 @@ function Rows:add(a)
    else return self:header(a) end end
 ```
 
+</details>
+
+
 Update the column summaries. Maybe  keep the new row.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Rows:data(a,    row)
   for _,col in pairs(self.cols.all) do 
@@ -525,10 +850,18 @@ function Rows:data(a,    row)
   return row end
 ```
 
+</details>
+
+
 Read the magic symbols, make the appropriate columns,
 store them in the right  places.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Rows:header(a,   what,new,tmp)
   self.cols.names=a
@@ -580,9 +913,17 @@ function Learn:test(row,the,       want,got)
     self.log:add( want, got) end end
 ```
 
+</details>
+
+
 stats, number classes ---------------------------------
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local z=1E-32
 
@@ -597,9 +938,17 @@ function Err:mre()
   return self._mre:mid() end
 ```
 
+</details>
+
+
 stats, discrete classes ---------------------------------
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function Abcd:new(data,rx)
   return Obj.new(self,"Abcd",{
@@ -656,9 +1005,17 @@ function Abcd:report(      stats,head,all,m,klass)
   printm(m) end
 ```
 
+</details>
+
+
 Rank ------------------------------------------------------
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function scottKnot(nums,the,      _,mu,cohen,summary,div)
   function summary(lo,hi,    out)
@@ -694,15 +1051,31 @@ function scottKnot(nums,the,      _,mu,cohen,summary,div)
 --------------------------------------------------------
 ```
 
+</details>
+
+
 ## Functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 ```
 
+</details>
+
+
 ### List Functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function eq(a,b,    ta,tb)
    ta, tb = type(a), type(b)
@@ -714,9 +1087,17 @@ function eq(a,b,    ta,tb)
 end
 ```
 
+</details>
+
+
 shuffles, in place the table `a`
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function shuffle(a,n,    j)
   for i = #a, 2, -1 do
@@ -725,17 +1106,33 @@ function shuffle(a,n,    j)
   return n and top(a, n) or a end
 ```
 
+</details>
+
+
 pull one items from `t`
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function sample(t) 
   return t[randi(1,#t)] end
 ```
 
+</details>
+
+
 samples with replacement, from list `t`.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function samples(t,n,    t1)
   t1 = {}
@@ -775,13 +1172,21 @@ function same(xs,ys, the)
   return cliffsDelta(xs,ys,the) and bootstrap(xs,ys, the) end
 ```
 
+</details>
+
+
 Non parametric effect size test (i.e. are two distributions
 different by more than a small amount). Slow for large lists
 (hint: sub-sample large lists).  Thresholds here set from
 top of p14 of  https://bit.ly/3m9Q0pP .  0.147 (small), 0.33
 (medium), and 0.474 (large)
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function cliffsDelta(xs,ys,the,       lt,gt)
   lt,gt = 0,0
@@ -791,6 +1196,9 @@ function cliffsDelta(xs,ys,the,       lt,gt)
       if y < x then lt = lt + 1 end end end
   return math.abs(gt - lt)/(#xs * #ys) <= the.cliffs end
 ```
+
+</details>
+
 
 Non parametric "significance"  test (i.e. is it possible to
 distinguish if an item belongs to one population of
@@ -802,7 +1210,12 @@ Efron text  'introduction to the boostrap'.
 https://bit.ly/3iSJz8B Typically, conf=0.05 and b is 100s to
 1000s.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function bootstrap(y0,z0,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,n)
   x, y, z, yhat, zhat = Num:new(), Num:new(), Num:new(), {}, {}
@@ -821,9 +1234,17 @@ function bootstrap(y0,z0,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,n)
   return n / the.bootstrap >= the.conf end
 ```
 
+</details>
+
+
 ### Meta Functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function fun(f)
   if type(f)=="string" then return function(z) return z[f] end end
@@ -863,9 +1284,17 @@ function Obj.new(self, name, new)
   return new end
 ```
 
+</details>
+
+
 ### String functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function fmt(s,...) return io.write(s:format(...)) end 
 
@@ -912,9 +1341,17 @@ function printm(m,     most,s)
     print("") end end
 ```
 
+</details>
+
+
 ### Maths Functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function rnd(num, decimals,      mult)
   mult = 10^(decimals or 0)
@@ -934,9 +1371,17 @@ function rand(lo,hi,     mult,mod)
   return lo + (hi-lo) * Seed / mod end 
 ```
 
+</details>
+
+
 ### File functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 function csv(file,rows,      split,stream,tmp)
   stream = file and io.input(file) or io.input()
@@ -953,9 +1398,17 @@ function csv(file,rows,      split,stream,tmp)
       io.close(stream) end end end
 ```
 
+</details>
+
+
 ###  Start-up functions
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local fails=0
 function run(txt,the,      it)
@@ -978,13 +1431,21 @@ function main(the)
   then   run(the.eg, the) end end
 ```
 
+</details>
+
+
 `cli()` creates  command line flags by mapping `config` to `:flags`
 or `:options` calls to `argparse`.  By convention, boolean options
 default  to false and their  command-line  flag flips them to `true`.
 Also, if reading  a numeric option from  command line, remember to
 coerce it to a number.
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 local function cli(about,       arg,b4)
   --arg = argparse(about.usage, about.synopsis)
@@ -1002,9 +1463,17 @@ local function cli(about,       arg,b4)
 -----------------------------------------------------
 ```
 
+</details>
+
+
 ## Unit Tests
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 
 Eg.eq={
@@ -1224,6 +1693,9 @@ Eg.abcd={
     a:report() end }
  ```
 
+</details>
+
+
 ```
 db |    rx |   num |     a |     b |     c |     d |  acc |  pre |   pd |   pf |    f |    g | class
 ---- |  ---- |  ---- |  ---- |  ---- |  ---- |  ---- | ---- | ---- | ---- | ---- | ---- | ---- |-----
@@ -1232,7 +1704,12 @@ data |    rx |    14 |     8 |       |       |     6 | 0.93 | 1.00 | 1.00 | 0.00
 data |    rx |    14 |     8 |     1 |       |     5 | 0.93 | 1.00 | 0.83 | 0.00 | 0.91 | 0.91 | maybe
 ```
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 
 local function  file2rows(file,      t)
@@ -1253,9 +1730,17 @@ local function classinc(n,all,the,rx,fun,       results,rows,some,row)
   return results end
 ```
 
+</details>
+
+
 -- do it stochastic. pick variants at random
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 Eg.incKnnDiabetes={
   txt="ncrementalDiabetes",
@@ -1308,9 +1793,17 @@ Eg.knns={
 ------------------------------------------------------------
 ```
 
+</details>
+
+
 ## Start-up
 
-```{.lua .numberLines}
+
+<details><summary>code</summary>
+
+
+
+```lua
 
 main( cli(about))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
