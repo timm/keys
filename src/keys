@@ -793,7 +793,7 @@ Eg.sorted= {
 Eg.sort= {
   txt= "more sorting",
   fun= function(_,       t) 
-         t= sort({{k=10,v=1},{k=3,v=20},{k=1,v=10},{k=5,v=5}},"k")
+         t= sort({{k=10,v=1}, {k=3,v=20}, {k=1,v=10}, {k=5,v=5}},"k")
          assert(5==t[3].v) end}
 
 Eg.map= {
