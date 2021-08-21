@@ -31,7 +31,7 @@ function apply(now,b4,last) {
     if (now=="CODE") {
       printf(last); 
       #print "\n\n<ul><details><summary>code</summary>\n\n"
-      print"\n```lua\n"  }
+      print"\n```lua"  }
     if (now=="DOC")  {
       printf(last)
       if (!top)  print"```"
@@ -41,10 +41,7 @@ function apply(now,b4,last) {
 }
 
 
-echo "[$1]"
-f=${1%.*}.lua
-shift
-title="$f"
+one() {
 cat <<'EOF'
 
 <h1>Keys</h1>
@@ -54,7 +51,7 @@ cat <<'EOF'
 <b>functions:</b> <a href="strings.md">strings</a>,<a href="maths.md">maths</a><br>
 
 <img width=500
-src="https://user-images.githubusercontent.com/29195/130312030-beab122a-3526-4877-bcce-c8b94a387281.png">
+s,rc="https://user-images.githubusercontent.com/29195/130312030-beab122a-3526-4877-bcce-c8b94a387281.png">
 
 <img alt="Lua" src="https://img.shields.io/badge/lua-v5.4-blue">&nbsp;<a 
 href="https://github.com/timm/keys/blob/master/LICENSE.md"><img
@@ -67,7 +64,11 @@ src="https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg"></a
 EOF
 
 
-cat $f | noPara1 | classify  | apply
+cat $1 | noPara1 | classify  | apply
+}
+echo "# one $1 >  ../docs/${1%.lua}.md"
+one $1 >  ../docs/${1%.lua}.md
+
 # cd ../docs
 # pandoc -f markdown  --template=ez.html --toc  --mathjax \
 #        --lua-filter linenums.lua \
