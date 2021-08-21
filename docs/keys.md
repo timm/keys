@@ -2,7 +2,6 @@
 #  
 
 
-<p align=center>
 <h1>Keys</h1>
 <b>data:</b> <a href="rows.md">rows</a>,<a href="row.md">row</a>;
 <b>cols:</b> <a href="num,md">num</a>,<a href="sym.md">sym</a>,<a href="skip,md">skip</a>;
@@ -16,7 +15,6 @@ src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet"> <img
 alt="Platform" src="https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey"> <a
 href="https://github.com/timm/keys/actions"><img
 src="https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg"></a>
-</p>
 
  
       ,-_|\   keys
