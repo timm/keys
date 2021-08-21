@@ -40,15 +40,15 @@ shift
 title="$@"
 (cat<<EOF
 ---
-title: "$title"
+title: "File $title"
 ---
 
 EOF
 cat $f | noPara1 | classify  | apply) > ../docs/$f.md
-cd ../docs
-pandoc -f markdown  --template=ez.html --toc  --mathjax \
-       --lua-filter linenums.lua \
-       --highlight-style pygments --css style.css -s $f.md -o $f.html
-git add $f.html
-open $f.html
+# cd ../docs
+# pandoc -f markdown  --template=ez.html --toc  --mathjax \
+#        --lua-filter linenums.lua \
+#        --highlight-style pygments --css style.css -s $f.md -o $f.html
+# git add $f.html
+# open $f.html
 
