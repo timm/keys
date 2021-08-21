@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 --vim: filetype=lua ts=2 sw=2 sts=2 et :
 
--- 
+--  
 --       ,-_|\   keys
 --      /     \  (c) Tim Menzies, 2021, unlicense.org
 --      \_,-._*  Cluster, then report just the 
@@ -80,7 +80,6 @@ local Row,Rows      = {},{}
 -- Reporting.
 local Err,Abcd = {},{},{}   
 -- ## Functions
-
 -- For columns.
 local goalp,klassp,nump,weight,skipp,merged,adds 
 -- Meta functions
