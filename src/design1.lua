@@ -1,0 +1,195 @@
+-- File
+
+-- # Idioms and Classes
+-- ## Data
+-- Tables of data hold examples of some function
+-- 
+--     y1,y2, ... = f(x1,x2,  ...)
+--  
+-- - `x` are the independent variables;  
+-- - `y` are the dependent variables;  
+--  
+-- If the dependent variables are;
+-- - if symbolic then this is a  classification problem
+-- - if numeric then 
+--   - if there is only one  `y`, then this is regression
+--   - if there are many  `y`  values, then this a multi-objective
+--     optimization problem (MOEA).
+--  
+-- If we do not use the `y` values then is _unsupervised reasoning_.
+-- - Apply unsupervised learning.
+--   - replace regression  and classification with  clustering and/or
+--     anomaly detection
+--   - apply some general domain knowledge  like "big  things are more
+--     buggy" then  use that to classify instances
+--     - For more on that, see section  4.2 of 
+--       <sup id="tu0">[Tu21](#tu)</sup>. 
+--  
+-- Alternatively, we can build surrogates  for the  missing `y` values:
+-- - Apply semi-supervised learning which  is some way  of extrapolating
+--   from a few `y` values to all the rest (e.g. cluster and if anything
+--   if labeled in a cluster, then propagate  that label to the rest
+--   of the  cluster). 
+--   - For more on this  see 
+--     <sup id="tu0">[Tu21](#tu)</sup>. 
+-- - Apply _active learning_; i.e. Incrementally acquire them via
+--   some active learning _acquisition function_  that  (e.g.) asks for y-values in the
+--   regions with largest variance or (e.g.) in regions we have  
+--   not touched 
+--   - For more on this  see 
+--     <sup id="yu0">[Yu19](#yu)</sup>
+--   - For a variant of active learning called _sequential model optimization_
+--     see
+--     <sup id="nair0">[Nair19](#nair)</sup>.  Here,
+--     what  we do is build a model using the few samples
+--     seen to date, then run  that model over all the unlabelled data,
+--     then find, say, the example that scores best but with  highest
+--     variance.
+--     - For more on that see 
+--       [https://www.youtube.com/embed/Utag_mJ3r6o](https://www.youtube.com/embed/Utag_mJ3r6o)
+--  
+-- ## Less Than
+-- - For regression, two rows can be sorted via &lt;.
+-- - For MOEA, two rows can be sorted using the _cdom_
+--   [continuous domination predicate](https://www.simonkuenzli.ch/docs/ZK04.pdf)
+--   that compares all the dependent variables.
+-- 
+--       function Row:lt(other) -- self is preferred to other when...
+--         n=#(_rows.cols.y)
+--         s1,s2=0,0
+--         for _,col in pairs(_rows.cols.y) do
+--           a,b = self.cells[col.at], other.cells[col.at]
+--           a,b = col:norm(a), col:norm(b)
+--           s1  = s1 - math.e^(col.w*(a-b)) -- w= -1,1 when minimizing, maximizing 
+--           s2  = s2 - math.e^(col.w*(b-a))
+--         end
+--         return s1/n < s2/n and
+--       
+-- Here, the deltas in  the  `y` values between `self` and  `other` are amplified (by raising them to a power)
+-- then summed, then averaged. `y` values are normalized before  application
+-- (otherwise they would explode in the exponent).
+-- In effect, this functions runs a what-if  query that asks which losses more:
+-- - moving from `self` to ``other` or 
+-- - or `other` to `self`.
+-- 
+-- This predicate is better that a older, weaker, "binary domination" predicate (called
+-- _bdom_) that says `self` beats `other` if it is better on at least one  objective
+--  and worse on  none. _Bdom_  gets confused  as the  number of objectives
+-- increase  (since it becomes very frequent that
+-- one  objectives is just  a  little worse than the others)
+--  
+-- - For 2 objectives, _bdom_ is  ok
+-- - For 5 objectives, [you definitely want _cdom_](https://fada.birzeit.edu/bitstream/20.500.11889/4528/1/dcb6eddbdac1c26b605ce3dff62e27167848.pdf).
+-- 
+-- ## Functional patterns
+-- ### Orders
+-- Ordered lists of  numbers are `ok` is they are sorted.
+-- - New items can be pushed to such lists, but sets `ok` to false.
+-- - Before we use an  order, we ensure it is `ok`; i.e. if `ok` is false,
+--   we sort it and set `ok=true`.
+-- - The median  of an order is the item 50% through.
+-- - The standard deviation is (90%-10%) / 2.56 of a order
+--   - Why? Cause &pm; 1.28 from the mean [covers 10 to 90% of the mass](https://thepercentagecalculator.net/Zscore/Table/plus/Z-score-1.28.html)
+-- - Two numbers trivially different if they  differ by less than
+--    _cohen_*sd [typically, _cohen_=0.35](https://digitalcommons.wayne.edu/cgi/viewcontent.cgi?article=1536&context=jmasm)
+--  
+-- ### Options
+-- - Every list of option and default is turned  into a command-line flag
+--   (so defaults can  be over-written)
+-- - The options, with  the overwrites, are passed around as a local
+--   variable called `the` (so we can tune them all).
+--   - This will enable hyperparameter optimization.
+--  
+-- ## Classes
+-- ### Columns
+-- `Col`s summarizes streams of things and  are
+-- either `Num`s, `Sym`s, or `Skip`s.
+--  
+-- - `Skip`s  are for columns
+-- we are ignoring. If we throw things  at a `Skip`, it just disappears.
+--   (as opposed to `Num`s and `Sym`s that incrementally maintain a summary
+--   of the  things we throw at it).
+-- - `Num`erics store their numbers as  [orders](#orders).
+-- - The `mid`  of a `Num`, `Sym`  is the median, mode.
+-- - The `var`iability of a `Num`,`Sym` is the standard deviation  or the entropy
+--   (respectively):
+--   - Entropy is the amount work needed to recreate a signal
+--   - Specifically give _s_ symbols occurring at frequency  _n<sub>i</sub> then
+--     that effort is (a)the probabiity you  are going  to hunt  from that
+--     that  signal times (b)the  binary  chop effort required  to find it; i,e,   
+--     _&sum; p<sub>i</sub>log<sub>2</sub>(p<sub>i</sub>_ where    
+--     p<sub>i</sub> =  n<sub>i</sub>/(&sum; n<sub>i</sub>)
+--  
+-- Columns have names (found in row1 of data files).
+--  
+--     name?, Age, Shoesize, Job,  Salary+ YearsOnJob-
+--     tim,   21,  10,       prof, 100,     100
+--     jane,  60,  10,       hod,  1000,    10
+--     ...    ..   ..        ..    ..       ..
+--   
+-- Those rows have magic symbols:
+-- - Numerics start with uppercase. 
+-- - Goals to be minimize or maximized end with `-` and `+` (respectively). 
+-- - Columns to be ignored contain `?`. 
+-- - Columns usually have a `weight` "1" unless we 
+--   are minimizing them in which case that is "-1".
+--  
+-- ### Rows
+-- `Row`s are  stored in `Rows` and  summarized in `Col`umns.
+-- Some columns  have  special roles:
+-- - `Rows.cols.all` : all the columns
+-- - `Rows.cols.x` : all the independent  columns.
+-- - `Rows.cols.y` : all the dependent  columns.
+--  
+-- ## function adds(t, ?col:_Num|Sym_)
+-- Peek at the first item in `t` and decide if its
+-- `Num`, `Sym`. Then add  everything  into  that
+--  
+-- ## Tables
+--
+--  <em>(Tedious implementation  note: Lua has a  built-in  data type called
+--  "table" which are  different to what I want.
+--    so in my code, I  use  the term `Row`s  to refer  to "Table").</em>
+-- 
+-- Tables store `Row`s and summarize their content in `Col`umns.
+-- `Col`umns know the range of each column. 
+-- The  `mid` of a table is the  `mid` of all its `Col`s.
+--  
+-- Tables are everything.
+-- - When we cluster, each cluster is a table;
+-- - When  we look for a faraway other example, we
+--   search for that in a table.
+-- - When a classifier collects separate statistics on each class,
+--   we use one table for each separate set.
+-- - When we ask what rows are selected by a  `Rule`, those rows
+--   are collected in a Table.
+-- - When we  want to rank rules, we find the rows they select,
+--   (one table for each selection), then  we find the
+--   `mid`s of those tables, then  we sort those `mid`s via
+--   continuous domination.
+--  
+-- Each column (except for `Skip`) needs its own version of the
+-- following:
+--  
+-- - `:add()`  : add `x` to the column;
+-- - `:dist()` : returns probability that `x` belongs to the
+-- - `:like()` : returns distance between two values in this column.
+-- - `:merge()` : combine two columns
+-- - `:mid()` : return the central tendency of a  column
+-- - `:new()`  : returns a new column
+-- - `:var()` : reports how values can vary around the `mid`.
+--
+-- ## References
+--  
+-- <b id="nair">Nair19</b> [https://arxiv.org/pdf/1801.02175.pdf](https://arxiv.org/pdf/1801.02175.pdf)[↩](#nair0)
+-- 
+-- <b id="sal">Sal09<b>
+--    Sawilowsky, S.S.: New effect size rules of thumb. Journal of Modern Applied Statistical
+--    Methods 8(2), 26 (2009)
+--    [https://digitalcommons.wayne.edu/cgi/viewcontent.cgi?article=1536&context=jmasm](https://digitalcommons.wayne.edu/cgi/viewcontent.cgi?article=1536&context=jmasm)[↩](#sal0)
+--  
+-- <b id="tu">Tu21</b> [https://github.com/SE-Efforts/SE_SSL/blob/main/FRUGAL.pdf](https://github.com/SE-Efforts/SE_SSL/blob/main/FRUGAL.pdf)[↩](#tu0)
+--  
+-- <b id="yu">Yu19</b> 
+--    Yu, Z., Theisen, C., Williams, L., & Menzies, T. (2019). Improving vulnerability inspection efficiency using active learning. IEEE Transactions on Software Engineering.
+--    https://arxiv.org/pdf/1803.06545.pdf [↩](#yu0)

@@ -2,7 +2,7 @@
 
 -- # Dump tables to string
 -- Note for Python  programmers:
--- To get pretty-print for objects, inherit from ``o``:
+-- To do something like in Python, inherit from ``o``:
 --  
 --     class o(object):
 --       def __init__(i, **k): i.__dict__.update(**k)
@@ -10,17 +10,14 @@
 --            return i.__class__.__name__ + str(
 --          {k: v for k, v in i.__dict__.items() if k[0] != "_"})
 --  
--- ## Returns
-local dump,rump,pump
--- ## pump(t:_table_)
+local dump,pump,rump
+-- ## function pump(t:_table_)
 -- Print  string of table.   
 function pump(t) print(dump(t)) end
 
--- ## dump(t:_table_)
+-- ## function dump(t:_table_)
 -- Converts a table  to string (without  recursion into values).   
 function dump(t,     sep,s,k,keys)
-  if (#t > 0) then
-    return table.concat(t,",") end
   sep, s = "", (t._name or "") .."{"
   keys = {}
   for k in pairs(t) do keys[#keys+1] = k end
@@ -30,10 +27,9 @@ function dump(t,     sep,s,k,keys)
       s=s .. sep .. tostring(k).."="..tostring(t[k])
       sep=", " end end 
   return s.."}" end
-
--- ## rump(t:_table_, pre:_string_)
+-- ## function rump(t:_table_, pre:_string_)
 -- Print string version of a value (with
--- recursion into values.    
+-- recursion into values.
 -- `pre` is a   preefix string (show before each entry).
 -- (defaults to "").
 function rump(t,pre,    indent,fmt)
@@ -47,3 +43,6 @@ function rump(t,pre,    indent,fmt)
           rump(v, pre, indent+1)
         else
           print(fmt .. tostring(v)) end end end end end
+
+-- ## Return
+return {dmup=dump,rump=rump,pump=pump}

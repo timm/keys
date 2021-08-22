@@ -30,12 +30,12 @@ function apply(now,b4,last) {
     if (last !~ /^[ \t]*$/) last=last "\n"
     if (now=="CODE") {
       printf(last); 
-      print "\n\n<ul><details><summary>code</summary>\n\n"
+      #print "\n\n<ul><details><summary>code</summary>\n\n"
       print"\n```lua"  }
     if (now=="DOC")  {
       printf(last)
       if (!top)  print"```"
-      if (!top)  print "\n\n</details></ul>\n\n" 
+      #if (!top)  print "\n\n</details></ul>\n\n" 
     }
     top=0}}' 
 }
@@ -50,8 +50,8 @@ cat <<'EOF'
 <b>cols:</b> <a href="num,md">num</a>,<a href="sym.md">sym</a>,<a href="skip,md">skip</a>;
 <b>functions:</b> <a href="strings.md">strings</a>,<a href="maths.md">maths</a><br>
 
-<img width=500
-s,rc="https://user-images.githubusercontent.com/29195/130312030-beab122a-3526-4877-bcce-c8b94a387281.png">
+<img width=300
+src="https://user-images.githubusercontent.com/29195/130312030-beab122a-3526-4877-bcce-c8b94a387281.png">
 
 <img alt="Lua" src="https://img.shields.io/badge/lua-v5.4-blue">&nbsp;<a 
 href="https://github.com/timm/keys/blob/master/LICENSE.md"><img
