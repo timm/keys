@@ -7,6 +7,8 @@
 --      \_,-._*  Cluster, then report just the 
 --           v   deltas between nearby clusters.  
 
+-- package.path = package.path .. ';tools/?.lua'
+
 local argparse = require("argparse")
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -----------------------------------------------
@@ -32,31 +34,42 @@ local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -- are carried  around in  a local variable  called `the`. In
 -- this way, different parts  of the code could use different  config
 -- settings.
-local about = require "about"
-local dumps  = require "dumps"     
+
+local about = require("about")
+local dumps = require("dumps")     
 local dump,rump,pump=dumps.dump, dumps.rump, dumps.pump
-local Obj = require "obj"
+local Obj = require("obj")
+local Eg={}
+
+local _ = require("col")
+local klassp,goalp,nump = _.klassp,_.goalp,_.nump
+local weight, skipp     = _.weight, _.skipp
+local adds, merged      = _.adds, _.merged
+
+local _ = require("tools/list")
+local eq,shuffle,top,sorted = _.eq, _.shuffle, _.top, _.sorted
+local sort,per,inc,max      = _.sort, _.per, _.inc, _.max
+
+local _ = require("tools/stats")
+local sample, samples, same  = _.sample, _,samples, _,same
+local cliffsDelta, bootstrap = _.cliffsDelta, _bootstrap
+local merges, scottKnot      = _.merges, _.scottKnot
+
 ---------------------------------------------------------
 -- ##  Classes
 -- `Obj`  is  the class creation factor. `Eg` stores the
 -- unit and  system tests.
 -- Columns. `Skip` is for columns we want to ignoe
 -- the  others are for columns of  `Num`bers  or  `Sym`bols.
-local Skip,Num,Sym = {},{},{}  
+local Skip,Num,Sym = require "skip", require "num", require "sym"
 -- `Rows` is a  container  classes that holds
 -- `Row`s and column summaries.
 local Row,Rows      = {},{}    
 -- Reporting.
 local Err,Abcd = {},{},{}   
 -- ## Functions
--- For columns.
-local goalp,klassp,nump,weight,skipp,merged,adds 
 -- Meta functions
 local fun,locals,scottKnot            
---  For lists.
-local eq,top,sorted,sort,map,copy,per,shuffle,inc,max
---  For Stats on lists.
-local sample,samples,cliffsDelta ,same,bootstrap
 --  For strings.
 local fmt,color,dump,rump,pump,linem,printm   
 -- For maths.
@@ -66,186 +79,6 @@ local csv
 --  Code  called at start-up.
 local run,main        
 
--------------------------------------------------------------
--- ## columns, general
-
--- This code reads tables of data where line1 shows the name
--- for each column. For example:
---
---     name?, Age, Shoesize, Job,  Salary+ YearsOnJob-
---     tim,   21,  10,       prof, 100,     100
---     jane,  60,  10,       hod,  1000,    10
---     ...    ..   ..        ..    ..       ..
---
--- Note that the row1 names have magic symbols.
--- Numerics start with uppercase. Goals to be minimize or
--- maximized end with `-` and `+` (respectively). Columns
--- to be ignored contain `?`. Columns usually have a `weight`
--- of "1" unless we are minimizing them in which case that is "-1".
---
-
-function klassp(s) return s:find("!") end
-function goalp(s)  return s:find("+") or s:find("-") or klassp(s) end
-function nump(s)   return s:sub(1,1):match("[A-Z]") end
-function weight(s) return s:find("-") and -1 or 1 end
-function skipp(s)  return s:find("?") end
-
--- Each column (except for `Skip`) needs its own version of the
--- following:
---
--- - `:add()`  : add `x` to the column;
--- - `:dist()` : returns probability that `x` belongs to the
--- - `:like()` : returns distance between two values in this column.
--- - `:merge()` : combine two columns
--- - `:mid()` : return the central tendency of a  column
--- - `:new()`  : returns a new column
--- - `:var()` : reports how values can vary around the `mid`.
-
--- The following functions work for all columns.
---  `adds()` lets you create one or update a `col`umn with a list of
--- column `a`  (and if creating, then it guesses column type from the
--- first entry).
-function adds(a,col) 
-  col = col or (type(a[1])=="number" and Num or Sym):new()
-  for _,x in pairs(a) do col:add(x) end 
-  return col end
-
--- Finally, `merged()` checks if life is simpler if we combine two columns.
-function merged(i,j,         k)
-  k= i:merge(j)
-  if k:var() < (i.n*i:var() + j.n*j:var()) / (i.n + j.n) then 
-    return k end end
-
-------------------------------------------------------------
--- ## Specific Columns
--- ### Skip 
--- Columns for data that we just want to ignore.
-
-function Skip:new(at,s) 
-  return Obj.new(self,"Skip",{
-    n=0, s=s or "", at=at or 0}) end
-
-function Skip: add(x) return  x end
-
-function Skip: like(x,_) return 1 end
-
-------------------------------------------------------------
--- ### Sym
--- Symbolic columns keep symbol counts (in `has`) and know
--- the `mode` (most common) value.
-
-function Sym:new(at,s)  
-  return Obj.new(self,"Sym",{
-    n=0, s=s or "", at=at or 0,
-    has={},mode=0,most=0}) end
-
-function Sym:add(x)
-  if x ~= "?" then
-    self.n = self.n+ 1
-    self.has[x] = 1+ (self.has[x] or 0)
-    if self.has[x] > self.most  then
-      self.most, self.mode = self.has[x], x end  end
-  return  x end
-
-function Sym:merge(other)
-  new=copy(self)
-  for k,v in pairs(other.has) do 
-     new.n = new.n + v
-     new.has[k] = v + (new.has[k] or 0) end
-  for k,v in pairs(new.has) do
-    if v > new.most then new.mode, new.most = k,v end end 
-  return new end
-
--- Variance of symbols is called entropy.
-function Sym:var(x,     e,p)
-  e= 0
-  p= function(n) return n/self.n end
-  for _,v in pairs(self.has) do e=e - p(v)*math.log(p(v),2) end 
-  return e end
-
-function Sym:dist(x,y) return x==y and 0 or 1 end
-
-------------------------------------------------------------
--- ### Num
-
-function Num:new(at,s,      w)
-  s= s or ""
-  return Obj.new(self,"Num",{
-    n=0, s=s, at=at or 0, 
-    _all={}, ok=false, w=weight(s   )}) end
-
-function Num:mid() 
-  return per(self:all(),.5) end
-
-function Num:mu(    sum) 
-  sum=0
-  for _,x in pairs(self._all) do sum = sum+x end
-  return sum/#self._all end
-
--- variance  of numerics  is the  standard deviation.
-function Num:var(   a) 
-   a=self:all(); return (per(a,.9)-per(a,.1))/2.54 end
-
-function Num:all()
-  if     not self.ok 
-  then   self.ok=true; self._all = sort(self._all) end
-  return self._all end
-
-function Num:add(x)
-  if  x ~= "?" then
-    self.n = self.n + 1
-    self._all[ 1 + #self._all] = x
-    self.ok= false end
-  return x end 
-
-function Num:norm(x,    a)
-  if x =="?" then return x end
-  a = self:all()
-  return (x-a[1]) / (a[#a] - a[1] + 1E-32) end
-
---  If any value missing, guess a value of the other that
--- maximizes the distance.
-function Num:dist(x,y)
-  if     x=="?" then y=self:norm(y); x = y>.5 and 0 or 1 
-  elseif y=="?" then x=self:norm(x); y = x>.5 and 0 or 1 
-  else               x,y = self:norm(x), self:norm(y) end
-  return math.abs(x-y) end
- 
-function Num:delta(other,    y,z,e)
-  y, z, e = self, other, 0
-  return math.abs(y:mu() - z:mu()) / (
-         (e + y:var()^2/y.n + z:var()^2/z.n)^.5) end
-
--- are two distributions the same?
-function Num:same(other, the)
-  return same(self:all(), other:all(), the) end
-
-function Num:tile(t,width,ps,    s,where)
-  a= self:all()
-  s = {}
-  for i = 1, (width or 32) do s[i]=" " end
-  where = function(n) return math.floor(width*self:norm(n)) end
-  pos   = function(p) return a[1] + p*(a[#a] - a[1]) end
-  for p=.1,.3,.01 do s[where(pos(p))] ="-" end 
-  for p=.7,.9,.01 do s[where(pos(p))] ="-" end 
-  s[where(self:mid())] = "|"
-  return {rank= self.rank or 0,
-          str = table.concat(s), 
-          mid = per(self:all()),
-          per = map(ps or {.25, .5, .75}, 
-                    function (p) return per(self:all(),p) end)} end
-
-function Num:merge(other,      new)
-  new = copy(self)
-  for _,x in pairs(other._all) do new:add(x) end
-  return new end
-
-function merges(nums,lo,hi,    out)
-  lo = lo or 1
-  hi = hi or #nums
-  out = nums[lo]
-  for i = lo+1, hi do out = out:merge(nums[i]) end
-  return out end
 
 --------------------------------------------------
 -- ## Row
@@ -500,7 +333,7 @@ function top(a,n,         b)
 
 function sorted(t,         i,keys)
   i,keys = 0,{}
-  for _,k in pairs(t) do keys[1 + #keys] = k end
+  for k,_ in pairs(t) do keys[1 + #keys] = k end
   table.sort(keys)
   return function ()
     if i < #keys then
@@ -519,50 +352,6 @@ function inc(t,k,n)
   return t[k] end
 
 function max(t,k,n) t[k] = math.max(n or 0, (t[k] or 0)) end
-
-
-function same(xs,ys, the)
-  if #xs > the.sames then xs = shuffle(xs, the.sames) end
-  if #ys > the.sames then ys = shuffle(ys, the.sames) end
-  return cliffsDelta(xs,ys,the) and bootstrap(xs,ys, the) end
-
--- Non parametric effect size test (i.e. are two distributions
--- different by more than a small amount). Slow for large lists
--- (hint: sub-sample large lists).  Thresholds here set from
--- top of p14 of  https://bit.ly/3m9Q0pP .  0.147 (small), 0.33
--- (medium), and 0.474 (large)
-function cliffsDelta(xs,ys,the,       lt,gt)
-  lt,gt = 0,0
-  for _,x in pairs(xs) do
-    for _,y in pairs(ys) do
-      if y > x then gt = gt + 1 end
-      if y < x then lt = lt + 1 end end end
-  return math.abs(gt - lt)/(#xs * #ys) <= the.cliffs end
-
--- Non parametric "significance"  test (i.e. is it possible to
--- distinguish if an item belongs to one population of
--- another).  Uses a sampling with replacement. Warning: very
--- slow for large populations. Consider sub-sampling  for large
--- lists. Also, test the effect size (and maybe shortcut the
--- test) before applying  this test.  From p220 to 223 of the
--- Efron text  'introduction to the boostrap'.
--- https://bit.ly/3iSJz8B Typically, conf=0.05 and b is 100s to
--- 1000s.
-function bootstrap(y0,z0,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,n)
-  x, y, z, yhat, zhat = Num:new(), Num:new(), Num:new(), {}, {}
-  for _,y1 in pairs(y0) do x:add(y1); y:add(y1)           end
-  for _,z1 in pairs(z0) do x:add(z1); z:add(z1)           end
-  xmu, ymu, zmu = x:mu(), y:mu(), z:mu()
-  -- translate both samples so that they have mean x, 
-  -- the re-sample each population separately.
-  for _,y1 in pairs(y0) do yhat[1+#yhat] = y1 - ymu + xmu end
-  for _,z1 in pairs(z0) do zhat[1+#zhat] = z1 - zmu + xmu end
-  tobs = y:delta(z)
-  n = 0
-  for _= 1,the.bootstrap do
-    if adds(samples(yhat)):delta(adds(samples(zhat))) > tobs 
-    then n = n + 1 end end
-  return n / the.bootstrap >= the.conf end
 
 -- ### Meta Functions
 function fun(f)
@@ -707,7 +496,6 @@ function main(the)
 -- Also, if reading  a numeric option from  command line, remember to
 -- coerce it to a number.
 local function cli(about,       arg,b4)
-  --arg = argparse(about.usage, about.synopsis)
   arg = argparse(about.usage, about.synopsis)
   for flag,v in sorted(about.options) do
     flag = "--"..flag
@@ -722,7 +510,6 @@ local function cli(about,       arg,b4)
 -----------------------------------------------------
 -- ## Unit Tests
 
-local Eg={}
 Eg.eq={
   txt="recursive equals",
   fun=function(_,      a,b,c)

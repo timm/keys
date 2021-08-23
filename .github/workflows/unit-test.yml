@@ -19,7 +19,7 @@ jobs:
       - name: Run tests  
         run: |
           cd ${{ github.workspace }}/src; \
-          ../lua-5.4.3/src/lua keys --eg all 
+          ../lua-5.4.3/src/lua keys.lua --eg all 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
 

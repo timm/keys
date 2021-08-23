@@ -1,6 +1,7 @@
 -- File
 
--- # Idioms and Classes
+-- # Design  Principles for a Learner (part1)
+--
 -- ## Data
 -- Tables of data hold examples of some function
 -- 
@@ -53,17 +54,16 @@
 -- - For MOEA, two rows can be sorted using the _cdom_
 --   [continuous domination predicate](https://www.simonkuenzli.ch/docs/ZK04.pdf)
 --   that compares all the dependent variables.
--- 
---       function Row:lt(other) -- self is preferred to other when...
---         n=#(_rows.cols.y)
---         s1,s2=0,0
---         for _,col in pairs(_rows.cols.y) do
---           a,b = self.cells[col.at], other.cells[col.at]
---           a,b = col:norm(a), col:norm(b)
---           s1  = s1 - math.e^(col.w*(a-b)) -- w= -1,1 when minimizing, maximizing 
---           s2  = s2 - math.e^(col.w*(b-a))
---         end
---         return s1/n < s2/n and
+--
+--      function Row:lt(other,        n,s1,s2,goals)
+--        cols = _rows.cols.y
+--        s1,s2,n = 0,0,#goals
+--        for _,col in pairs(goals) do
+--          a,b = self.cells[col.at], other.cells[col.at]
+--          a,b = col:norm(a), col:norm(b)
+--          s1  = s1 - math.e^(col.w*(a-b)/n)
+--          s2  = s2 - math.e^(col.w*(b-a)/n) end
+--        return s1/n > s2/n end
 --       
 -- Here, the deltas in  the  `y` values between `self` and  `other` are amplified (by raising them to a power)
 -- then summed, then averaged. `y` values are normalized before  application
@@ -170,7 +170,9 @@
 --  
 -- Each column (except for `Skip`) needs its own version of the
 -- following:
---  
+--  new tof  rtables. line 1read is different. clone,
+-- add
+-- 2 string
 -- - `:add()`  : add `x` to the column;
 -- - `:dist()` : returns probability that `x` belongs to the
 -- - `:like()` : returns distance between two values in this column.
