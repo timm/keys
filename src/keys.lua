@@ -33,9 +33,9 @@ local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 -- this way, different parts  of the code could use different  config
 -- settings.
 local about = require "about"
-local dumps  = require "dump"     
+local dumps  = require "dumps"     
 local dump,rump,pump=dumps.dump, dumps.rump, dumps.pump
-;pocal Obj = require "obj"
+local Obj = require "obj"
 ---------------------------------------------------------
 -- ##  Classes
 -- `Obj`  is  the class creation factor. `Eg` stores the
@@ -253,15 +253,15 @@ function merges(nums,lo,hi,    out)
 function Row:new(a,rows)
   return Obj.new(self,"Row",{cells=a, _rows=rows}) end
 
-function Row:lt(other)
-  n=#(_rows.cols.y)
-  s1,s2=0,0
-  for _,col in pairs(_rows.cols.y) do
+function Row:lt(other,        n,s1,s2,goals)
+  cols = _rows.cols.y
+  s1,s2,n = 0,0,#goals
+  for _,col in pairs(goals) do
     a,b = self.cells[col.at], other.cells[col.at]
     a,b = col:norm(a), col:norm(b)
-    s1  = s1 - math.e^(col.w*(a-b))
-    s2  = s2 - math.e^(col.w*(b-a)) end
-  return s1/n > s2/n and
+    s1  = s1 - math.e^(col.w*(a-b)/n)
+    s2  = s2 - math.e^(col.w*(b-a)/n) end
+  return s1/n > s2/n end
 
 function Row:klass() 
   return self.cells[self._rows.cols.klass.at] end
@@ -500,7 +500,7 @@ function top(a,n,         b)
 
 function sorted(t,         i,keys)
   i,keys = 0,{}
-  for k in pairs(t) do keys[#keys+1] = k end
+  for _,k in pairs(t) do keys[1 + #keys] = k end
   table.sort(keys)
   return function ()
     if i < #keys then
@@ -722,6 +722,7 @@ local function cli(about,       arg,b4)
 -----------------------------------------------------
 -- ## Unit Tests
 
+local Eg={}
 Eg.eq={
   txt="recursive equals",
   fun=function(_,      a,b,c)
@@ -1015,6 +1016,8 @@ Eg.knns={
 
 ------------------------------------------------------------
 -- ## Start-up
+about = require "about"
+
 main( cli(about))
 for k,_ in pairs(_ENV) do if not b4[k] then print("?? "..k) end end
 os.exit(fails) 
