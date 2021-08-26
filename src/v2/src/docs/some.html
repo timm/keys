@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>some.lua</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>some.lua</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">Some</span><span class="o">=</span><span class="p">{}</span>
+<span class="kd">local</span> <span class="n">obj</span>  <span class="o">=</span> <span class="nb">require</span><span class="s2">&quot;obj&quot;</span>
+<span class="kd">local</span> <span class="n">rand</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;rand&quot;</span><span class="p">).</span><span class="n">rand</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <h2>Some:new(?most:int)</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="n">most</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="n">obj</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="s2">&quot;Some&quot;</span><span class="p">,{</span><span class="n">_all</span><span class="o">=</span><span class="p">{},</span><span class="n">sorted</span><span class="o">=</span><span class="kc">false</span><span class="p">,</span><span class="n">most</span><span class="o">=</span><span class="n">most</span><span class="p">})</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <h2>Some:add1(x:any)</h2>
+<p>If full, replace anything, picked at random.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">add1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="kr">if</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_all</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">most</span> <span class="kr">then</span> 
+    <span class="n">self</span><span class="p">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">_all</span><span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_all</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+  <span class="kr">elseif</span> <span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="o">#</span><span class="n">self</span><span class="p">.</span><span class="n">_all</span><span class="o">/</span><span class="n">self</span><span class="p">.</span><span class="n">n</span> <span class="kr">then</span> 
+    <span class="n">self</span><span class="p">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">false</span> 
+    <span class="n">self</span><span class="p">.</span><span class="n">all</span><span class="p">[</span> <span class="nb">math.floor</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="n">rand</span><span class="p">()</span><span class="o">*#</span><span class="n">self</span><span class="p">.</span><span class="n">_all</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="n">x</span> <span class="kr">end</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h2>Some:all()</h2>
+<p>Return contents, sorted.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">all</span><span class="p">()</span>
+  <span class="kr">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">sorted</span> <span class="kr">then</span> <span class="nb">table.sort</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">_all</span><span class="p">)</span> <span class="kr">end</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">true</span>
+  <span class="kr">return</span> <span class="n">self</span><span class="p">.</span><span class="n">_all</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h2>Some:mid(s)</h2>
+<p>Return the median point.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">mid</span><span class="p">()</span>
+  <span class="kr">return</span> <span class="n">self</span><span class="p">:</span><span class="n">per</span><span class="p">(</span><span class="mf">.5</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h2>Some:per(p:float)</h2>
+<p>Return the <code>p</code>-th percentile from <code>self.some</code>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">per</span><span class="p">(</span><span class="n">p</span><span class="p">,</span>    <span class="n">a</span><span class="p">)</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="n">self</span><span class="p">:</span><span class="n">all</span><span class="p">()</span>
+  <span class="kr">return</span> <span class="n">a</span><span class="p">[</span><span class="nb">math.max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">math.floor</span><span class="p">(</span><span class="o">#</span><span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">p</span> <span class="ow">or</span> <span class="mf">.5</span><span class="p">)))]</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h2>Some:sd()</h2>
+<p>Return the  standard deviation of this sample.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Some</span><span class="p">:</span><span class="nf">sd</span><span class="p">()</span>
+  <span class="kr">return</span> <span class="p">(</span> <span class="n">self</span><span class="p">:</span><span class="n">per</span><span class="p">(</span><span class="mf">.9</span><span class="p">)</span> <span class="o">-</span> <span class="n">self</span><span class="p">:</span><span class="n">per</span><span class="p">(</span><span class="mf">.1</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">2.56</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">return</span> <span class="n">Some</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

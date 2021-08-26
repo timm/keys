@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>num.lua</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>num.lua</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kd">local</span> <span class="n">Num</span><span class="o">=</span><span class="p">{}</span>
+<span class="kd">local</span> <span class="n">obj</span> <span class="o">=</span><span class="nb">require</span><span class="s2">&quot;obj&quot;</span>
+<span class="kd">local</span> <span class="n">some</span><span class="o">=</span><span class="nb">require</span><span class="s2">&quot;some&quot;</span>
+<span class="kd">local</span> <span class="n">col</span> <span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;col&quot;</span><span class="p">).</span><span class="n">weight</span>
+<span class="kd">local</span> <span class="n">_</span>   <span class="o">=</span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">);</span> <span class="kd">local</span> <span class="n">copy</span><span class="o">=</span><span class="n">_</span><span class="p">.</span><span class="n">copy</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <h2>new(?at : int=0, ?name : str=&rdquo;&ldquo;)</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+  <span class="n">name</span><span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+  <span class="kr">return</span> <span class="n">obj</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="s2">&quot;Num&quot;</span><span class="p">,{</span><span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">some</span><span class="o">=</span><span class="n">Some</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                         <span class="n">at</span><span class="o">=</span><span class="n">at</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">weight</span><span class="p">(</span><span class="n">name</span><span class="p">)})</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <h2>add(x : num)</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">add1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>    <span class="n">d</span><span class="p">)</span>
+  <span class="n">d</span>       <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">mu</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">mu</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">d</span><span class="o">/</span><span class="n">self</span><span class="p">.</span><span class="n">n</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">m2</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">m2</span> <span class="o">+</span> <span class="n">d</span><span class="o">*</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">mu</span><span class="p">)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">sd</span> <span class="o">=</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">m2</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">self</span><span class="p">.</span><span class="n">n</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">m2</span><span class="o">/</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">^</span><span class="mf">0.5</span><span class="p">)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">lo</span> <span class="o">=</span> <span class="nb">math.min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">lo</span><span class="p">)</span>
+  <span class="n">self</span><span class="p">.</span><span class="n">hi</span> <span class="o">=</span> <span class="nb">math.max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">hi</span><span class="p">)</span>  <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h2>delta(other : Num)</h2>
+<p>Return the difference in the means, mediated by the variances.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">delta</span><span class="p">(</span><span class="n">other</span><span class="p">,</span>    <span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">e</span><span class="p">)</span>
+  <span class="n">e</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="mf">1E-32</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">other</span>
+  <span class="kr">return</span> <span class="nb">math.abs</span><span class="p">(</span><span class="n">y</span><span class="p">.</span><span class="n">mu</span> <span class="o">-</span> <span class="n">z</span><span class="p">.</span><span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+         <span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="n">y</span><span class="p">.</span><span class="n">sd</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="n">y</span><span class="p">.</span><span class="n">n</span> <span class="o">+</span> <span class="n">z</span><span class="p">.</span><span class="n">sd</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="n">z</span><span class="p">.</span><span class="n">n</span><span class="p">)</span><span class="o">^</span><span class="mf">.5</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h2>dist(x : num, y : num)</h2>
+<p>If any value missing, guess a value of the other that
+maximizes the distance.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">dist</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+  <span class="kr">if</span>     <span class="n">x</span><span class="o">==</span><span class="s2">&quot;?&quot;</span> <span class="kr">then</span> <span class="n">y</span><span class="o">=</span><span class="n">self</span><span class="p">:</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">);</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">&gt;</span><span class="mf">.5</span> <span class="ow">and</span> <span class="mi">0</span> <span class="ow">or</span> <span class="mi">1</span> 
+  <span class="kr">elseif</span> <span class="n">y</span><span class="o">==</span><span class="s2">&quot;?&quot;</span> <span class="kr">then</span> <span class="n">x</span><span class="o">=</span><span class="n">self</span><span class="p">:</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">&gt;</span><span class="mf">.5</span> <span class="ow">and</span> <span class="mi">0</span> <span class="ow">or</span> <span class="mi">1</span> 
+  <span class="kr">else</span>               <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">self</span><span class="p">:</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">self</span><span class="p">:</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="nb">math.abs</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h2>merge(lst : num+)</h2>
+<p>Combine self with  a <code>lst</code> of other <code>Num</code>s.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">merge</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span>      <span class="n">new</span><span class="p">)</span>
+  <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">self</span><span class="p">)</span>
+  <span class="kr">for</span> <span class="n">_</span><span class="p">,</span><span class="n">x</span> <span class="kr">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">lst</span><span class="p">.</span><span class="n">_all</span><span class="p">)</span> <span class="kr">do</span> <span class="n">new</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="n">new</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h2>mid()</h2>
+<p>Central tendency.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">mid</span><span class="p">()</span> <span class="kr">return</span> <span class="n">self</span><span class="p">.</span><span class="n">mu</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <h2>norm(x : num)</h2>
+<p>Return <code>x</code> mapped into 0..1 for lo..hi.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>    <span class="n">a</span><span class="p">)</span>
+  <span class="kr">if</span> <span class="n">x</span> <span class="o">==</span><span class="s2">&quot;?&quot;</span> <span class="kr">then</span> <span class="kr">return</span> <span class="n">x</span> <span class="kr">end</span>
+  <span class="kr">return</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">self</span><span class="p">.</span><span class="n">lo</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">hi</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">lo</span> <span class="o">+</span> <span class="mf">1E-32</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <h2>var()</h2>
+<p>Variance  of numerics  is the  standard deviation.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">var</span><span class="p">()</span> <span class="kr">return</span> <span class="n">self</span><span class="p">.</span><span class="n">sd</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <h2>same(other : Num, the:table)</h2>
+<p>Are two distributions the same?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">same</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">the</span><span class="p">)</span>
+  <span class="kr">return</span> <span class="n">same</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">some</span><span class="p">:</span><span class="n">all</span><span class="p">(),</span> <span class="n">other</span><span class="p">.</span><span class="n">some</span><span class="p">:</span><span class="n">all</span><span class="p">(),</span> <span class="n">the</span><span class="p">)</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <h2>tile(width : int, ps : float+)</h2>
+<p>For all the <code>Nums</code> in <code>t</code>, print out normalized
+in the <code>lo</code>..<code>hi</code> range of <code>self</code>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">function</span> <span class="nc">Num</span><span class="p">:</span><span class="nf">tile</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">width</span><span class="p">,</span><span class="n">ps</span><span class="p">,</span>    <span class="n">a</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">where</span><span class="p">)</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">some</span><span class="p">:</span><span class="n">all</span><span class="p">()</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="kr">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span> <span class="ow">or</span> <span class="mi">32</span><span class="p">)</span> <span class="kr">do</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot; &quot;</span> <span class="kr">end</span>
+  <span class="n">where</span> <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="kr">return</span> <span class="nb">math.floor</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="n">self</span><span class="p">:</span><span class="n">norm</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="kr">end</span>
+  <span class="n">pos</span>   <span class="o">=</span> <span class="kr">function</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="kr">return</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="o">#</span><span class="n">a</span><span class="p">]</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="kr">end</span>
+  <span class="kr">for</span> <span class="n">p</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.3</span><span class="p">,</span><span class="mf">.01</span> <span class="kr">do</span> <span class="n">s</span><span class="p">[</span><span class="n">where</span><span class="p">(</span><span class="n">pos</span><span class="p">(</span><span class="n">p</span><span class="p">))]</span> <span class="o">=</span><span class="s2">&quot;-&quot;</span> <span class="kr">end</span> 
+  <span class="kr">for</span> <span class="n">p</span><span class="o">=</span><span class="mf">.7</span><span class="p">,</span><span class="mf">.9</span><span class="p">,</span><span class="mf">.01</span> <span class="kr">do</span> <span class="n">s</span><span class="p">[</span><span class="n">where</span><span class="p">(</span><span class="n">pos</span><span class="p">(</span><span class="n">p</span><span class="p">))]</span> <span class="o">=</span><span class="s2">&quot;-&quot;</span> <span class="kr">end</span> 
+  <span class="n">s</span><span class="p">[</span><span class="n">where</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">some</span><span class="p">:</span><span class="n">mid</span><span class="p">())]</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span>
+  <span class="kr">return</span> <span class="p">{</span><span class="n">rank</span><span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">rank</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="n">str</span> <span class="o">=</span> <span class="nb">table.concat</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> 
+          <span class="n">mid</span> <span class="o">=</span> <span class="n">per</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">some</span><span class="p">:</span><span class="n">all</span><span class="p">()),</span>
+          <span class="n">per</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">ps</span> <span class="ow">or</span> <span class="p">{</span><span class="mf">.25</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">},</span> 
+                    <span class="kr">function</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="kr">return</span> <span class="n">per</span><span class="p">(</span><span class="n">self</span><span class="p">:</span><span class="n">all</span><span class="p">(),</span><span class="n">p</span><span class="p">)</span> <span class="kr">end</span><span class="p">)}</span> <span class="kr">end</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <hr />
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kr">return</span> <span class="n">Num</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
