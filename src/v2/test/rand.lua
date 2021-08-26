@@ -1,4 +1,9 @@
 package.path = '../src/?.lua;' .. package.path
+local the=require"the"
+
+
+for _,f in pairs(arg) do
+   re
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 
 local _=require"rand";  local rand,srand = _.rand, _.srand

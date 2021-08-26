@@ -1,17 +1,18 @@
---[[# cli
-A replacement for `argparse` (in 23 lines of lua).  Configures the
-command line arguments via the contents of [about](about.md).  --]]
-local cli,cli_help
+local the=require"about"
 
---[[## function cli(t:table, a:table)
-Return values from `t.options`, updated with relevant values from `a`.
-
-- `t` has fields `t.usage`, `t.synopsis` and `t.options`.
-- `t.options` has key,values of the form `key={default, about}`. 
-- If any `defaults` are `false` then using `-key` on  the command  line
-  enables `key` to true.
-- Otherwise `-key` expects a following argument which this 
-  code converts to a number or  string, as appropriate.  --]]
+-- cli(t:table, a:table)  
+-- A replacement for `argparse` (in 23 lines of lua).  Configures the
+-- command line arguments via the contents of [about](about.md).  --]]
+-- local cli,cli_help
+-- 
+-- Return values from `t.options`, updated with relevant values from `a`.
+-- 
+-- - `t` has fields `t.usage`, `t.synopsis` and `t.options`.
+-- - `t.options` has key,values of the form `key={default, about}`. 
+-- - If any `defaults` are `false` then using `-key` on  the command  line
+--   enables `key` to true.
+-- - Otherwise `-key` expects a following argument which this 
+--   code converts to a number or  string, as appropriate.  --]]
 function cli(t,a,         help,out,b4,f)
   out = {}
   for k,v2 in pairs(t.options) do out[k]=v2[1] end
@@ -43,4 +44,4 @@ function _help_string(t,   h, default,about)
   return ("usage: "..t.usage.." [OPTIONS]\n\n"..t.synopsis.."\n"..
          "OPTIONS:\n".. table.concat(h,"\n")) end
 
-return cli
+return cli(the,arg)

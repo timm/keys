@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>cli.lua</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>cli.lua</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-1">&#x00a7;</a>
+              </div>
+              <p>[[# cli</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>A replacement <span class="hljs-keyword">for</span> `argparse` (<span class="hljs-keyword">in</span> <span class="hljs-number">23</span> <span class="hljs-built_in">lines</span> of lua).  Configures the
+command line arguments via the contents of [about](about.md).  <span class="hljs-comment">--]]</span>
+<span class="hljs-keyword">local</span> cli,cli_help</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-2">&#x00a7;</a>
+              </div>
+              <p>[[## function cli(t:table, a:table)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Return values from `t.options`, updated with relevant values from `a`.
+
+- `t` has fields `t.usage`, `t.synopsis` <span class="hljs-keyword">and</span> `t.options`.
+- `t.options` has key,values of the form `key={default, about}`. 
+- If any `defaults` are `<span class="hljs-literal">false</span>` <span class="hljs-keyword">then</span> using `-key` on  the command  line
+  enables `key` to <span class="hljs-literal">true</span>.
+- Otherwise `-key` expects a following argument which this 
+  code converts to a number <span class="hljs-keyword">or</span>  <span class="hljs-built_in">string</span>, as appropriate.  <span class="hljs-comment">--]]</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cli</span><span class="hljs-params">(t,a,         help,out,b4,f)</span></span>
+  out = {}
+  <span class="hljs-keyword">for</span> k,v2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t.options) <span class="hljs-keyword">do</span> out[k]=v2[<span class="hljs-number">1</span>] <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>,#a <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">if</span> a[i] == <span class="hljs-string">&quot;-h&quot;</span> <span class="hljs-keyword">then</span> 
+      <span class="hljs-built_in">print</span>(_help_string(t))
+    <span class="hljs-keyword">elseif</span> #a[i] &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">then</span>
+      f  = a[i]:<span class="hljs-built_in">sub</span>(<span class="hljs-number">2</span>,#t[i])
+      b4 = t.options[f] 
+      <span class="hljs-keyword">if</span>   b4 
+      <span class="hljs-keyword">then</span> new = (b4[<span class="hljs-number">1</span>]==<span class="hljs-literal">false</span> <span class="hljs-keyword">and</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> (<span class="hljs-built_in">tonumber</span>(a[i+<span class="hljs-number">1</span>]) <span class="hljs-keyword">or</span> a[i+<span class="hljs-number">1</span>])) <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;??? Ignoring unknown flag &quot;</span>.. a[i]) 
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span>   <span class="hljs-built_in">type</span>(now) == <span class="hljs-built_in">type</span>(b4) 
+      <span class="hljs-keyword">then</span> out[f] = now
+      <span class="hljs-keyword">else</span> <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;??? bad argument&quot;</span>,  a[i+<span class="hljs-number">1</span>])  <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> 
+  <span class="hljs-keyword">return</span> out <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-3">&#x00a7;</a>
+              </div>
+              <p>Helper function for `cli. Generates and prints help string</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_help_string</span><span class="hljs-params">(t,   h, default,about)</span></span>
+  h = {}
+  <span class="hljs-keyword">for</span> k,xy <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t.options) <span class="hljs-keyword">do</span>
+    default, about = xy[<span class="hljs-number">1</span>], xy[<span class="hljs-number">2</span>]
+    <span class="hljs-keyword">if</span>   default  == <span class="hljs-literal">false</span> 
+    <span class="hljs-keyword">then</span> h[<span class="hljs-number">1</span>+#h] = <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(<span class="hljs-string">&quot;  -%-10s %-10s %s&quot;</span>,k,<span class="hljs-string">&quot;&quot;</span>, about)
+    <span class="hljs-keyword">else</span> h[<span class="hljs-number">1</span>+#h] = <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(<span class="hljs-string">&quot;  -%-10s %-10s %s (:default %s)&quot;</span>,
+                                 k, k:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,#k), about, default) <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-built_in">table</span>.<span class="hljs-built_in">sort</span>(h)
+  <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;usage: &quot;</span>..t.usage..<span class="hljs-string">&quot; [OPTIONS]\n\n&quot;</span>..t.synopsis..<span class="hljs-string">&quot;\n&quot;</span>..
+         <span class="hljs-string">&quot;OPTIONS:\n&quot;</span>.. <span class="hljs-built_in">table</span>.<span class="hljs-built_in">concat</span>(h,<span class="hljs-string">&quot;\n&quot;</span>)) <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">return</span> cli</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
