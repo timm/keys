@@ -5,7 +5,7 @@ local List = require("list")
 -- with print `name` with fields `t`.
 function obj(self, name, new)
   new = setmetatable(new or {}, self)
-  self.__tostring = List.show 
+  self.__tostring = List.dump 
   self.__index    = self
   self._name      = name
   return new end

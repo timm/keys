@@ -43,5 +43,4 @@ function _help_string(t,   h, default,about)
   return ("usage: "..t.usage.." [OPTIONS]\n\n"..t.synopsis.."\n"..
          "OPTIONS:\n".. table.concat(h,"\n")) end
 
--- Returns
 return cli
