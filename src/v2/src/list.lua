@@ -1,6 +1,6 @@
--- copy(t:table)  
+-- **copy(t : table) : table**    
 -- Return a deep copy of `t`.
-local function copy(t,      seen,      res)
+local function copy(t,      seen,      res) 
   seen = seen or {}
   if type(t) ~= 'table' then return t end
   if seen[t] then return seen[t] end
@@ -9,9 +9,9 @@ local function copy(t,      seen,      res)
   for k,v in pairs(t) do res[copy(k,seen)]=copy(v,seen) end
   return res end
 
--- dump(t:table)   
+-- **dump(t : table) : str**       
 -- Return a string for key:value  in `t`. 
-local function dump(t,    s,sep,keys)
+local function dump(t,    s,sep,keys) 
   sep, keys, s = "", {}, (t._name or "").."{"
   for k,_ in pairs(t) do 
     if not(type(k)=="string" and "_"==k:sub(1,1)) then
@@ -22,7 +22,7 @@ local function dump(t,    s,sep,keys)
     sep=" " end
   return s..'}' end
 
--- eq(a:any, b:any)  
+-- **eq(a : any, b : any) : bool**    
 -- Recursive check if two tables are equal.
 local function eq(a,b,    ta,tb)
   ta, tb = type(a), type(b)
@@ -32,11 +32,12 @@ local function eq(a,b,    ta,tb)
   for k,v in pairs(b) do if not eq(v,a[k]) then return false end end
   return true end
 
--- pump(t:table)  
+-- **pump(t : table)**    
 -- Print a string for key:value  in `t`. 
-local function pump(t) print(dump(t)) end
+local function pump(t)
+  print(dump(t)) end
 
--- keysort(t:table, ?f:fun)  
+-- **keysort(t : table, ?f : fun) : table**    
 -- Sort `t` based on  `f(key)`. 
 local function keysort(t, f)
   f = f or (type(f)=="string" and 
@@ -45,10 +46,17 @@ local function keysort(t, f)
   table.sort(t, function(x,y) return f(x)<f(y) end)
   return t end
 
--- sort(t:table, ?f:fun)  
+-- **sort(t : table, ?f : fun) : table**    
 -- Sort `t` based on  `f`. 
 local function sort(t, f)
-  table.sort(t, t)
+  table.sort(t, f)
   return t end
 
-return {dump=dump, eq=eq, pump=pump, copy=copy, keysort=sort, sort=sort}
+return {
+  copy=copy, 
+  dump=dump, 
+  eq=eq, 
+  keysort=keysort, 
+  pump=pump, 
+  sort=sort
+}

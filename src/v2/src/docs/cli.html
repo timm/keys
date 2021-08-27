@@ -15,7 +15,9 @@
         
           <li id="title">
               <div class="annotation">
+<img width=450 src="2d.png">
                   <h1>cli.lua</h1>
+										<p style="text-align:left;"><small>    Duo101. Inference = cluster + contrast<br>&copy;2021 Tim Menzies, timm@ieee.org,  <a href="http://unlicense.org.html">unlicense.org</a><br><b>lib:</b> <a href="list.html">list</a> :: <a href="maths.html">maths</a> :: <a href="obj.html">obj</a> :: <a href="ok.html">ok</a> :: <a href="rand.html">rand</a> :: <a href="stats.html">stats</a> :: <a href="strings.html">strings</a><br><b>cols:</b> <a href="col.html">col</a> :: <a href="num.html">num</a> :: <a href="skip.html">skip</a> :: <a href="some.html">some</a> :: <a href="sym.html">sym</a><br><b>data:</b> <a href="numtools.html">numtools</a> :: <a href="sample.html">sample</a><br><b>cli:</b> <a href="about.html">about</a> :: <a href="cli.html">cli</a><br><b>tool:</b> <a href="nb.html">nb</a></small><hr></p>
               </div>
           </li>
         
@@ -27,13 +29,12 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-1">&#x00a7;</a>
               </div>
-              <p>[[# cli</p>
+              <p>A replacement for <code>argparse</code> (in 23 lines of lua).  Configures the
+command line arguments via the contents of <a href="about.html">about</a>.  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>A replacement <span class="hljs-keyword">for</span> `argparse` (<span class="hljs-keyword">in</span> <span class="hljs-number">23</span> <span class="hljs-built_in">lines</span> of lua).  Configures the
-command line arguments via the contents of [about](about.md).  <span class="hljs-comment">--]]</span>
-<span class="hljs-keyword">local</span> cli,cli_help</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> about=<span class="hljs-built_in">require</span><span class="hljs-string">&quot;about&quot;</span></pre></div></div>
             
         </li>
         
@@ -44,35 +45,21 @@ command line arguments via the contents of [about](about.md).  <span class="hljs
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p>[[## function cli(t:table, a:table)</p>
+              <p><strong>help_string(t : table) : str</strong><br>Helper function for `cli. Generates and prints help string</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Return values from `t.options`, updated with relevant values from `a`.
-
-- `t` has fields `t.usage`, `t.synopsis` <span class="hljs-keyword">and</span> `t.options`.
-- `t.options` has key,values of the form `key={default, about}`. 
-- If any `defaults` are `<span class="hljs-literal">false</span>` <span class="hljs-keyword">then</span> using `-key` on  the command  line
-  enables `key` to <span class="hljs-literal">true</span>.
-- Otherwise `-key` expects a following argument which this 
-  code converts to a number <span class="hljs-keyword">or</span>  <span class="hljs-built_in">string</span>, as appropriate.  <span class="hljs-comment">--]]</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cli</span><span class="hljs-params">(t,a,         help,out,b4,f)</span></span>
-  out = {}
-  <span class="hljs-keyword">for</span> k,v2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t.options) <span class="hljs-keyword">do</span> out[k]=v2[<span class="hljs-number">1</span>] <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>,#a <span class="hljs-keyword">do</span>
-    <span class="hljs-keyword">if</span> a[i] == <span class="hljs-string">&quot;-h&quot;</span> <span class="hljs-keyword">then</span> 
-      <span class="hljs-built_in">print</span>(_help_string(t))
-    <span class="hljs-keyword">elseif</span> #a[i] &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">then</span>
-      f  = a[i]:<span class="hljs-built_in">sub</span>(<span class="hljs-number">2</span>,#t[i])
-      b4 = t.options[f] 
-      <span class="hljs-keyword">if</span>   b4 
-      <span class="hljs-keyword">then</span> new = (b4[<span class="hljs-number">1</span>]==<span class="hljs-literal">false</span> <span class="hljs-keyword">and</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> (<span class="hljs-built_in">tonumber</span>(a[i+<span class="hljs-number">1</span>]) <span class="hljs-keyword">or</span> a[i+<span class="hljs-number">1</span>])) <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">else</span> <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;??? Ignoring unknown flag &quot;</span>.. a[i]) 
-      <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">if</span>   <span class="hljs-built_in">type</span>(now) == <span class="hljs-built_in">type</span>(b4) 
-      <span class="hljs-keyword">then</span> out[f] = now
-      <span class="hljs-keyword">else</span> <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;??? bad argument&quot;</span>,  a[i+<span class="hljs-number">1</span>])  <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> 
-  <span class="hljs-keyword">return</span> out <span class="hljs-keyword">end</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">help_string</span><span class="hljs-params">(t,   h, default,about)</span></span>
+  h = {}
+  <span class="hljs-keyword">for</span> k,xy <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t.options) <span class="hljs-keyword">do</span>
+    default, about = xy[<span class="hljs-number">1</span>], xy[<span class="hljs-number">2</span>]
+    <span class="hljs-keyword">if</span>   default  == <span class="hljs-literal">false</span> 
+    <span class="hljs-keyword">then</span> h[<span class="hljs-number">1</span>+#h] = <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(<span class="hljs-string">&quot;  -%-10s %-10s %s&quot;</span>,k,<span class="hljs-string">&quot;&quot;</span>, about)
+    <span class="hljs-keyword">else</span> h[<span class="hljs-number">1</span>+#h] = <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(<span class="hljs-string">&quot;  -%-10s %-10s %s (:default %s)&quot;</span>,
+                                 k, k:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,#k), about, default) <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-built_in">table</span>.<span class="hljs-built_in">sort</span>(h)
+  <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;usage: &quot;</span>..t.usage..<span class="hljs-string">&quot; [OPTIONS]\n\n&quot;</span>..t.synopsis..
+         <span class="hljs-string">&quot;\n\nOPTIONS:\n&quot;</span>.. <span class="hljs-built_in">table</span>.<span class="hljs-built_in">concat</span>(h,<span class="hljs-string">&quot;\n&quot;</span>)) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -83,23 +70,32 @@ command line arguments via the contents of [about](about.md).  <span class="hljs
               <div class="sswrap ">
                 <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
-              <p>Helper function for `cli. Generates and prints help string</p>
+              <p><strong>cli(t : table, args : table) : table</strong><br>Return values from <code>t.options</code>, updated with relevant values from <code>a</code>.
+<code>t</code> has fields <code>t.usage</code>, <code>t.synopsis</code> and <code>t.options</code>.
+<code>t.options</code> has key,values of the form <code>key={default, about}</code>. 
+If any <code>defaults</code> are <code>false</code> then using <code>-key</code> on  the command  line
+enables <code>key</code> to true.  Otherwise <code>-key</code> expects a following 
+argument which this code converts to a number or  string, as appropriate. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_help_string</span><span class="hljs-params">(t,   h, default,about)</span></span>
-  h = {}
-  <span class="hljs-keyword">for</span> k,xy <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t.options) <span class="hljs-keyword">do</span>
-    default, about = xy[<span class="hljs-number">1</span>], xy[<span class="hljs-number">2</span>]
-    <span class="hljs-keyword">if</span>   default  == <span class="hljs-literal">false</span> 
-    <span class="hljs-keyword">then</span> h[<span class="hljs-number">1</span>+#h] = <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(<span class="hljs-string">&quot;  -%-10s %-10s %s&quot;</span>,k,<span class="hljs-string">&quot;&quot;</span>, about)
-    <span class="hljs-keyword">else</span> h[<span class="hljs-number">1</span>+#h] = <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(<span class="hljs-string">&quot;  -%-10s %-10s %s (:default %s)&quot;</span>,
-                                 k, k:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,#k), about, default) <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
-  <span class="hljs-built_in">table</span>.<span class="hljs-built_in">sort</span>(h)
-  <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;usage: &quot;</span>..t.usage..<span class="hljs-string">&quot; [OPTIONS]\n\n&quot;</span>..t.synopsis..<span class="hljs-string">&quot;\n&quot;</span>..
-         <span class="hljs-string">&quot;OPTIONS:\n&quot;</span>.. <span class="hljs-built_in">table</span>.<span class="hljs-built_in">concat</span>(h,<span class="hljs-string">&quot;\n&quot;</span>)) <span class="hljs-keyword">end</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cli</span><span class="hljs-params">(t,args,            out,b4,f)</span></span>
+  out = {}
+  <span class="hljs-keyword">for</span> k,v2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t.options) <span class="hljs-keyword">do</span> out[k]=v2[<span class="hljs-number">1</span>] <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>,#args <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">if</span> args[i] == <span class="hljs-string">&quot;-h&quot;</span> <span class="hljs-keyword">then</span> 
+      <span class="hljs-built_in">print</span>(help_string(t))
+    <span class="hljs-keyword">elseif</span> #args[i] &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">then</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;-&quot;</span> == args[<span class="hljs-number">1</span>]:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>) <span class="hljs-keyword">then</span>
+        f  = args[i]:<span class="hljs-built_in">sub</span>(<span class="hljs-number">2</span>,#t[i])
+        b4 = t.options[f] 
+        <span class="hljs-keyword">if</span> b4 <span class="hljs-keyword">then</span>
+          new = (b4[<span class="hljs-number">1</span>]==<span class="hljs-literal">false</span> <span class="hljs-keyword">and</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> (
+                <span class="hljs-built_in">tonumber</span>(args[i+<span class="hljs-number">1</span>]) <span class="hljs-keyword">or</span> args[i+<span class="hljs-number">1</span>])) 
+          out[f] = new <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> out <span class="hljs-keyword">end</span>
 
-<span class="hljs-keyword">return</span> cli</pre></div></div>
+<span class="hljs-keyword">return</span> cli(about,<span class="hljs-built_in">arg</span>)</pre></div></div>
             
         </li>
         

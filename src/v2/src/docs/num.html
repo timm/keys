@@ -15,7 +15,9 @@
         
           <li id="title">
               <div class="annotation">
+<img width=450 src="2d.png">
                   <h1>num.lua</h1>
+										<p style="text-align:left;"><small>    Duo101. Inference = cluster + contrast<br>&copy;2021 Tim Menzies, timm@ieee.org,  <a href="http://unlicense.org.html">unlicense.org</a><br><b>lib:</b> <a href="list.html">list</a> :: <a href="maths.html">maths</a> :: <a href="obj.html">obj</a> :: <a href="ok.html">ok</a> :: <a href="rand.html">rand</a> :: <a href="stats.html">stats</a> :: <a href="strings.html">strings</a><br><b>cols:</b> <a href="col.html">col</a> :: <a href="num.html">num</a> :: <a href="skip.html">skip</a> :: <a href="some.html">some</a> :: <a href="sym.html">sym</a><br><b>data:</b> <a href="numtools.html">numtools</a> :: <a href="sample.html">sample</a><br><b>cli:</b> <a href="about.html">about</a> :: <a href="cli.html">cli</a><br><b>tool:</b> <a href="nb.html">nb</a></small><hr></p>
               </div>
           </li>
         
@@ -31,10 +33,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> Num={}
-<span class="hljs-keyword">local</span> obj =<span class="hljs-built_in">require</span><span class="hljs-string">&quot;obj&quot;</span>
-<span class="hljs-keyword">local</span> some=<span class="hljs-built_in">require</span><span class="hljs-string">&quot;some&quot;</span>
-<span class="hljs-keyword">local</span> col =<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;col&quot;</span>).weight
-<span class="hljs-keyword">local</span> _   =<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;list&quot;</span>); <span class="hljs-keyword">local</span> copy=_.copy</pre></div></div>
+<span class="hljs-keyword">local</span> obj   =<span class="hljs-built_in">require</span><span class="hljs-string">&quot;obj&quot;</span>
+<span class="hljs-keyword">local</span> some  =<span class="hljs-built_in">require</span><span class="hljs-string">&quot;some&quot;</span>
+<span class="hljs-keyword">local</span> _=<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;col&quot;</span>); <span class="hljs-keyword">local</span> weight=_.weight
+<span class="hljs-keyword">local</span> _=<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;list&quot;</span>); <span class="hljs-keyword">local</span> copy=_.copy</pre></div></div>
             
         </li>
         
@@ -45,7 +47,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p>new(?at : int=0, ?name : str=””)  </p>
+              <p><strong>new(?at : int=0, ?name : str=””) : Num</strong>  </p>
 
             </div>
             
@@ -63,7 +65,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
-              <p>add(x : num)  </p>
+              <p><strong>add(x : num)</strong>   </p>
 
             </div>
             
@@ -85,7 +87,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-4">&#x00a7;</a>
               </div>
-              <p>delta(other : Num)<br>Return the difference in the means, mediated by the variances.</p>
+              <p><strong>delta(other : Num) : num</strong><br>Return the difference in the means, mediated by the variances.</p>
 
             </div>
             
@@ -103,7 +105,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-5">&#x00a7;</a>
               </div>
-              <p>dist(x : num, y : num)<br> If any value missing, guess a value of the other that
+              <p><strong>dist(x : num, y : num) : num</strong><br> If any value missing, guess a value of the other that
 maximizes the distance.</p>
 
             </div>
@@ -123,7 +125,7 @@ maximizes the distance.</p>
               <div class="sswrap ">
                 <a class="ss" href="#section-6">&#x00a7;</a>
               </div>
-              <p>merge(lst : num+)<br>Combine self with  a <code>lst</code> of other <code>Num</code>s.</p>
+              <p><strong>merge(lst : num+) : Num</strong><br>Combine self with  a <code>lst</code> of other <code>Num</code>s.</p>
 
             </div>
             
@@ -141,7 +143,7 @@ maximizes the distance.</p>
               <div class="sswrap ">
                 <a class="ss" href="#section-7">&#x00a7;</a>
               </div>
-              <p>mid()<br>Central tendency.</p>
+              <p><strong>mid() : num</strong><br>Central tendency.</p>
 
             </div>
             
@@ -156,7 +158,7 @@ maximizes the distance.</p>
               <div class="sswrap ">
                 <a class="ss" href="#section-8">&#x00a7;</a>
               </div>
-              <p>norm(x : num)<br>Return <code>x</code> mapped into 0..1 for lo..hi.</p>
+              <p><strong>norm(x : num) : num</strong><br>Return <code>x</code> mapped into 0..1 for lo..hi.</p>
 
             </div>
             
@@ -173,7 +175,7 @@ maximizes the distance.</p>
               <div class="sswrap ">
                 <a class="ss" href="#section-9">&#x00a7;</a>
               </div>
-              <p>var()<br>Variance  of numerics  is the  standard deviation.</p>
+              <p><strong>var() : num</strong><br>Variance  of numerics  is the  standard deviation.</p>
 
             </div>
             
@@ -188,23 +190,7 @@ maximizes the distance.</p>
               <div class="sswrap ">
                 <a class="ss" href="#section-10">&#x00a7;</a>
               </div>
-              <p>same(other : Num, the:table)<br>Are two distributions the same?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:same</span><span class="hljs-params">(other, the)</span></span>
-  <span class="hljs-keyword">return</span> same(<span class="hljs-built_in">self</span>.some:all(), other.some:all(), the) <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-11">&#x00a7;</a>
-              </div>
-              <p>tile(width : int, ps : float+)<br>For all the <code>Nums</code> in <code>t</code>, print out normalized
+              <p><strong>tile(width : int, ps : float+) : table</strong><br>For all the <code>Nums</code> in <code>t</code>, print out normalized
 in the <code>lo</code>..<code>hi</code> range of <code>self</code>.</p>
 
             </div>
@@ -227,11 +213,11 @@ in the <code>lo</code>..<code>hi</code> range of <code>self</code>.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-12">&#x00a7;</a>
+                <a class="ss" href="#section-11">&#x00a7;</a>
               </div>
               <hr>
 
@@ -240,11 +226,11 @@ in the <code>lo</code>..<code>hi</code> range of <code>self</code>.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-13">&#x00a7;</a>
+                <a class="ss" href="#section-12">&#x00a7;</a>
               </div>
               
             </div>

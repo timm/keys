@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+here="$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )"
+for i in $*; do
+  echo  "# $i .."
+  docco $i
+  f=./docs/$(basename $i .lua).html
+  cat $f |
+  gawk '
+    function c(x) { return "<a href=\"http://"x".html\">"x"</a>" }
+    function b(x) { return " :: "a(x) }
+    function a(x) { return "<a href=\""x".html\">"x"</a>" }
+    /<\/h1>/ {
+    pre=  "\t\t\t\t\t\t\t\t\t\t" 
+    print "<img width=450 src=\"2d.png\">"
+    print $0 
+    print pre \
+    "<p style=\"text-align:left;\"><small>" \
+    "    Duo101. Inference = cluster + contrast" \
+    "<br>&copy;2021 Tim Menzies, timm@ieee.org,  " c("unlicense.org")  \
+    "<br><b>lib:</b> "a("list")b("maths")b("obj")b("ok")b("rand")b("stats")b("strings") \
+    "<br><b>cols:</b> "a("col")b("num")b("skip")b("some")b("sym") \
+    "<br><b>data:</b> "a("numtools")b("sample") \
+    "<br><b>cli:</b> "a("about")b("cli") \
+    "<br><b>tool:</b> "a("nb")       \
+    "</small><hr></p>"
+    next}
+    {print}' > tmp$$
+  mv tmp$$ $f
+  cp ../../../etc/docco.css ./docs
+done

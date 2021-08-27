@@ -1,16 +1,16 @@
 local Num={}
 local obj   =require"obj"
 local some  =require"some"
-local weight=require("col").weight
-local _     =require("list"); local copy=_.copy
+local _=require("col"); local weight=_.weight
+local _=require("list"); local copy=_.copy
 
--- new(?at : int=0, ?name : str="") : Num
+-- **new(?at : int=0, ?name : str="") : Num**  
 function Num:new()
   name= name or ""
   return obj(self,"Num",{n=0, some=Some(), name=name or "",
                          at=at or 0, w=weight(name)}) end
 
--- add(x : num)  
+-- **add(x : num)**   
 function Num:add1(x,    d)
   d       = x - self.mu
   self.mu = self.mu + d/self.n
@@ -20,14 +20,14 @@ function Num:add1(x,    d)
   self.lo = math.min(x, self.lo)
   self.hi = math.max(x, self.hi)  end
 
--- delta(other : Num) : num
+-- **delta(other : Num) : num**  
 -- Return the difference in the means, mediated by the variances.
 function Num:delta(other,    y,z,e)
   e, y, z = 1E-32, self, other
   return math.abs(y.mu - z.mu) / (
          (e + y.sd^2/y.n + z.sd^2/z.n)^.5) end
 
--- dist(x : num, y : num) : num
+-- **dist(x : num, y : num) : num**  
 --  If any value missing, guess a value of the other that
 -- maximizes the distance.
 function Num:dist(x,y)
@@ -36,28 +36,28 @@ function Num:dist(x,y)
   else               x,y = self:norm(x), self:norm(y) end
   return math.abs(x-y) end
 
--- merge(lst : num+) : Num  
+-- **merge(lst : num+) : Num**   
 -- Combine self with  a `lst` of other `Num`s.
 function Num:merge(lst,      new)
   new = copy(self)
   for _,x in pairs(lst._all) do new:add(x) end
   return new end
 
--- mid() : num
+-- **mid() : num**  
 -- Central tendency.
 function Num:mid() return self.mu end 
 
--- norm(x : num) : num  
+-- **norm(x : num) : num**  
 -- Return `x` mapped into 0..1 for lo..hi.
 function Num:norm(x,    a)
   if x =="?" then return x end
   return (x-self.lo) / (self.hi - self.lo + 1E-32) end
 
--- var() : num
+-- **var() : num**    
 -- Variance  of numerics  is the  standard deviation.
 function Num:var() return self.sd end
 
--- tile(width : int, ps : float+) : table 
+-- **tile(width : int, ps : float+) : table**   
 -- For all the `Nums` in `t`, print out normalized
 -- in the `lo`..`hi` range of `self`.
 function Num:tile(t,width,ps,    a,s,where)
