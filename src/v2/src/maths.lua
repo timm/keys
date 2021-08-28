@@ -1,4 +1,4 @@
--- ## rnd(num:number, ?decimals:num=0)
+-- **rnd(num : num, ?decimals : num=0) : num**  
 -- Return `num` rounded to `decimals` places.
 local function rnd(num, decimals,      mult)
   mult = 10^(decimals or 0)

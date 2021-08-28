@@ -4,7 +4,6 @@ local isKlass, isGoal, isNum, isWeight, isSkip
 function isKlass(s)  return s:find("!") end
 function isGoal(s)   return s:find("+") or s:find("-") or isKlass(s) end
 function isNum(s)    return s:sub(1,1):match("[A-Z]") end
-function isWeight(s) return s:find("-") and -1 or 1 end
 function isSkip(s)   return s:find("?") end
 
 -- **add(x : any, y : col) : x**   

@@ -10,15 +10,18 @@ local rand = require("rand").rand
 function Some:new(most)
   return obj(self,"Some",{n=1,_all={},sorted=false,most=most or 256}) end
 
---  **Some:add1(x : any)**   
+--  **Some:add(x : any)**   
 -- If full, replace anything, picked at random.
-function Some:add1(x)
-  if #self._all < self.most then 
-    self.sorted = false
-    self._all[1 + #self._all] = x
-  elseif rand() < #self._all/self.n then 
-    self.sorted = false 
-    self._all[ math.floor(1+ rand()*#self._all) ] = x end end
+function Some:add(x)
+  if x ~= "?" then
+    self.n = self.n + 1
+    if #self._all < self.most then 
+      self.sorted = false
+      self._all[1 + #self._all] = x
+    elseif rand() < #self._all/self.n then 
+      self.sorted = false 
+      self._all[ math.floor(1+ rand()*#self._all) ] = x end end 
+  return x end
 
 -- **Some:all() : table**   
 -- Return contents, sorted.

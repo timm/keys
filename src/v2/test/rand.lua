@@ -1,3 +1,5 @@
+package.path = '../src/?.lua;' .. package.path
+
 local _=require"rand";  local srand,rand = _.srand, _.rand
 local _=require"list";  local sort = _.sort
 local _=require"maths"; local rnd  = _.rnd

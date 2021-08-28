@@ -29,6 +29,20 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-1">&#x00a7;</a>
               </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> randi=<span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;rand&quot;</span>).randi</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-2">&#x00a7;</a>
+              </div>
               <p><strong>copy(t : table) : table</strong><br>Return a deep copy of <code>t</code>.</p>
 
             </div>
@@ -45,17 +59,18 @@
         </li>
         
         
-        <li id="section-2">
+        <li id="section-3">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-2">&#x00a7;</a>
+                <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
               <p><strong>dump(t : table) : str</strong><br>Return a string for key:value  in <code>t</code>. </p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dump</span><span class="hljs-params">(t,    s,sep,keys)</span></span> 
+  <span class="hljs-keyword">if</span> #t&gt;<span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">table</span>.<span class="hljs-built_in">concat</span>(t,<span class="hljs-string">&quot;,&quot;</span>) <span class="hljs-keyword">end</span>
   sep, keys, s = <span class="hljs-string">&quot;&quot;</span>, {}, (t._name <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;&quot;</span>)..<span class="hljs-string">&quot;{&quot;</span>
   <span class="hljs-keyword">for</span> k,_ <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t) <span class="hljs-keyword">do</span> 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span>(<span class="hljs-built_in">type</span>(k)==<span class="hljs-string">&quot;string&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-string">&quot;_&quot;</span>==k:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)) <span class="hljs-keyword">then</span>
@@ -69,11 +84,11 @@
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-3">&#x00a7;</a>
+                <a class="ss" href="#section-4">&#x00a7;</a>
               </div>
               <p><strong>eq(a : any, b : any) : bool</strong><br>Recursive check if two tables are equal.</p>
 
@@ -90,11 +105,11 @@
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-4">&#x00a7;</a>
+                <a class="ss" href="#section-5">&#x00a7;</a>
               </div>
               <p><strong>pump(t : table)</strong><br>Print a string for key:value  in <code>t</code>. </p>
 
@@ -106,11 +121,11 @@
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-5">&#x00a7;</a>
+                <a class="ss" href="#section-6">&#x00a7;</a>
               </div>
               <p><strong>keysort(t : table, ?f : fun) : table</strong><br>Sort <code>t</code> based on  <code>f(key)</code>. </p>
 
@@ -121,16 +136,39 @@
             <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z[f] <span class="hljs-keyword">end</span> <span class="hljs-keyword">or</span>
             <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z <span class="hljs-keyword">end</span>)
   <span class="hljs-built_in">table</span>.<span class="hljs-built_in">sort</span>(t, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x,y)</span></span> <span class="hljs-keyword">return</span> f(x)&lt;f(y) <span class="hljs-keyword">end</span>)
-  <span class="hljs-keyword">return</span> t <span class="hljs-keyword">end</span></pre></div></div>
+  <span class="hljs-keyword">return</span> t <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">local</span> top</pre></div></div>
             
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-6">&#x00a7;</a>
+                <a class="ss" href="#section-7">&#x00a7;</a>
+              </div>
+              <p>**shuffle(t : table, n : number) : table
+Shuffles, in place the table <code>t</code>. If <code>n</code>
+supplied, then return the  first <code>n</code> items.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shuffle</span><span class="hljs-params">(t,n,    j)</span></span>
+  <span class="hljs-keyword">for</span> i = #t, <span class="hljs-number">2</span>, <span class="hljs-number">-1</span> <span class="hljs-keyword">do</span>
+    j = randi(<span class="hljs-number">1</span>,i)
+    t[i], t[j] = t[j], t[i] <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> n <span class="hljs-keyword">and</span> top(t, n) <span class="hljs-keyword">or</span> t <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-8">&#x00a7;</a>
               </div>
               <p><strong>sort(t : table, ?f : fun) : table</strong><br>Sort <code>t</code> based on  <code>f</code>. </p>
 
@@ -138,7 +176,25 @@
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sort</span><span class="hljs-params">(t, f)</span></span>
   <span class="hljs-built_in">table</span>.<span class="hljs-built_in">sort</span>(t, f)
-  <span class="hljs-keyword">return</span> t <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> t <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-9">&#x00a7;</a>
+              </div>
+              <p><strong>top(t : table, n : num) : table</strong>  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">top</span><span class="hljs-params">(t,n,         out)</span></span> 
+  out={}
+  <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>,<span class="hljs-built_in">math</span>.<span class="hljs-built_in">min</span>(n,#t) <span class="hljs-keyword">do</span> out[i] = t[i] <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> out <span class="hljs-keyword">end</span>
 
 <span class="hljs-keyword">return</span> {
   copy=copy, 
@@ -146,7 +202,9 @@
   eq=eq, 
   keysort=keysort, 
   pump=pump, 
-  <span class="hljs-built_in">sort</span>=<span class="hljs-built_in">sort</span>
+  shuffle=shuffle,
+  <span class="hljs-built_in">sort</span>=<span class="hljs-built_in">sort</span>,
+  top=top
 }</pre></div></div>
             
         </li>

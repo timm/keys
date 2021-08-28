@@ -1,24 +1,41 @@
-local Num={}
-local obj   =require"obj"
-local some  =require"some"
-local _=require("col"); local weight=_.weight
+local Num  = {}
+local Some = require"some"
+local obj  = require"obj"
 local _=require("list"); local copy=_.copy
 
--- **new(?at : int=0, ?name : str="") : Num**  
-function Num:new()
+-- **new(?at : int=0, ?name : str="") : Num**   
+-- - n   : int = 0. Counter of things seen so far.
+-- - ?at : int = 0. Column number.
+-- - ?name : str = "". Column name.
+-- - mu   : mean seen so far
+-- - lo   : smallest number seen so far
+-- - hi   : largest number  seen so far
+-- - sd   : standard deviation 
+-- - some : Some. Stores a sample of the symbols.
+-- - mode : atom. Most common symbol.
+-- - most : int. Frequency of most common symbol.
+-- - w    : -1 (for minimize) and  1 (for maximize).
+function Num:new(at, name)
   name= name or ""
-  return obj(self,"Num",{n=0, some=Some(), name=name or "",
-                         at=at or 0, w=weight(name)}) end
+  return obj(self,"Num",
+   {some=Some:new(), name=name or "",at=at or 0, 
+    n=0, mu=0, m2=0, sd=0,
+    lo= 1E32, hi= -1E32,
+    w=name:find("-") and -1 or 1}) end
 
 -- **add(x : num)**   
-function Num:add1(x,    d)
-  d       = x - self.mu
-  self.mu = self.mu + d/self.n
-  self.m2 = self.m2 + d*(x - self.mu)
-  self.sd = (self.m2<0 or self.n<2) and 0 or (
-            (self.m2/(self.n-1))^0.5)
-  self.lo = math.min(x, self.lo)
-  self.hi = math.max(x, self.hi)  end
+function Num:add(x,    d)
+  if x ~= "?" then
+    self.some:add(x)
+    self.n  = self.n + 1
+    d       = x - self.mu
+    self.mu = self.mu + d/self.n
+    self.m2 = self.m2 + d*(x - self.mu)
+    self.sd = (self.m2<0 or self.n<2) and 0 or (
+              (self.m2/(self.n-1))^0.5)
+    self.lo = math.min(x, self.lo)
+    self.hi = math.max(x, self.hi)  end
+  return x end
 
 -- **delta(other : Num) : num**  
 -- Return the difference in the means, mediated by the variances.
@@ -45,7 +62,8 @@ function Num:merge(lst,      new)
 
 -- **mid() : num**  
 -- Central tendency.
-function Num:mid() return self.mu end 
+function Num:mid() 
+  return self.mu end 
 
 -- **norm(x : num) : num**  
 -- Return `x` mapped into 0..1 for lo..hi.
