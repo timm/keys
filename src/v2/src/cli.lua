@@ -1,5 +1,5 @@
--- A replacement for `argparse` (in 23 lines of lua).  Configures the
--- command line arguments via the contents of [about](about.html).  
+-- Returns the config options from  [about](about.html),
+-- udpated by any command line flags (if any exist).
 local about=require"about"
 
 -- **help_string(t : table) : str**     
@@ -39,4 +39,6 @@ local function cli(t,args,            out,b4,f)
           out[f] = new end end end end
   return out end
 
+-- ---------
+-- Return the options, updated by anything on the command-line.
 return cli(about,arg)

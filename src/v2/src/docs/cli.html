@@ -29,8 +29,8 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-1">&#x00a7;</a>
               </div>
-              <p>A replacement for <code>argparse</code> (in 23 lines of lua).  Configures the
-command line arguments via the contents of <a href="about.html">about</a>.  </p>
+              <p>Returns the config options from  <a href="about.html">about</a>,
+udpated by any command line flags (if any exist).</p>
 
             </div>
             
@@ -93,9 +93,35 @@ argument which this code converts to a number or  string, as appropriate. </p>
           new = (b4[<span class="hljs-number">1</span>]==<span class="hljs-literal">false</span> <span class="hljs-keyword">and</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> (
                 <span class="hljs-built_in">tonumber</span>(args[i+<span class="hljs-number">1</span>]) <span class="hljs-keyword">or</span> args[i+<span class="hljs-number">1</span>])) 
           out[f] = new <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">return</span> out <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> out <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-4">&#x00a7;</a>
+              </div>
+              <hr>
 
-<span class="hljs-keyword">return</span> cli(about,<span class="hljs-built_in">arg</span>)</pre></div></div>
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-5">&#x00a7;</a>
+              </div>
+              <p>Return the options, updated by anthing on the command-line.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">return</span> cli(about,<span class="hljs-built_in">arg</span>)</pre></div></div>
             
         </li>
         
