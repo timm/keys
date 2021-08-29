@@ -1,4 +1,5 @@
--- **Config params**
+--vim: filetype=lua ts=2 sw=2 sts=2 et :
+
 return {
    synopsis = [[
  ,-_|\   keys

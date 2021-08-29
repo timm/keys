@@ -1,18 +1,13 @@
-#!/usr/bin/env lua
---vim: filetype=lua ts=2 sw=2 sts=2 et :
+local List = require("list")
 
-dumps = require "dumps"
-
-local Obj = {}
-
-local id=0
-function Obj.new(self, name, new)
+-- ## obj(self:table, name:str, new:t)
+-- Return a new object of type `self`
+-- with print `name` with fields `t`.
+local function obj(self, name, new)
   new = setmetatable(new or {}, self)
-  self.__tostring = dumps.dump 
+  self.__tostring = List.dump 
   self.__index    = self
   self._name      = name
-  id = id + 1
-  new._id = id
   return new end
 
-return Obj
+return obj

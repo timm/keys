@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-here="$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )"
-docco $*
-cp ../../../etc/docco.css ./docs
+here="$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )/.."
+docco -o $here/docs $*
+cp $here/etc/docco.css $here/docs
 for i in $*; do
   echo -n "."
-  f=./docs/$(basename $i .lua).html
+  f=$here/docs/$(basename $i .lua).html
   cat $f |
   gawk '
     BEGIN {
