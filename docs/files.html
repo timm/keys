@@ -35,7 +35,7 @@ strings to numbers if appropriate. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">csv</span><span class="hljs-params">(file,      split,stream,tmp)</span></span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">csv</span><span class="hljs-params">(file,      split,stream,tmp)</span></span>
   stream = file <span class="hljs-keyword">and</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">input</span>(file) <span class="hljs-keyword">or</span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">input</span>()
   tmp    = <span class="hljs-built_in">io</span>.<span class="hljs-built_in">read</span>()
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(       t)</span></span>

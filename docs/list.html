@@ -128,15 +128,12 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-6">&#x00a7;</a>
               </div>
-              <p><strong>keysort(t : table, ?f : fun) : table</strong><br>Sort <code>t</code> based on  <code>f(key)</code>. </p>
+              <p><strong>keysort(t : table, ?key : atom) : table</strong><br>Sort <code>t</code> based on  <code>x[key]</code>. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">keysort</span><span class="hljs-params">(t, f)</span></span>
-  f = f <span class="hljs-keyword">or</span> (<span class="hljs-built_in">type</span>(f)==<span class="hljs-string">&quot;string&quot;</span> <span class="hljs-keyword">and</span> 
-            <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z[f] <span class="hljs-keyword">end</span> <span class="hljs-keyword">or</span>
-            <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z <span class="hljs-keyword">end</span>)
-  <span class="hljs-built_in">table</span>.<span class="hljs-built_in">sort</span>(t, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x,y)</span></span> <span class="hljs-keyword">return</span> f(x)&lt;f(y) <span class="hljs-keyword">end</span>)
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">keysort</span><span class="hljs-params">(t, key)</span></span>
+  <span class="hljs-built_in">table</span>.<span class="hljs-built_in">sort</span>(t, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x,y)</span></span> <span class="hljs-keyword">return</span> x[key]&lt;y[key] <span class="hljs-keyword">end</span>)
   <span class="hljs-keyword">return</span> t <span class="hljs-keyword">end</span>
 
 <span class="hljs-keyword">local</span> top</pre></div></div>
