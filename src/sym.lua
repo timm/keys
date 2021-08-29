@@ -25,8 +25,7 @@ function Sym:add(x)
     self.n = self.n+ 1
     self.has[x] = 1+ (self.has[x] or 0)
     if self.has[x] > self._most  then
-      self._most, self.mode = self.has[x], x end  end
-  return  x end
+      self._most, self.mode = self.has[x], x end end end
 
 -- **dist(x : atom, y : atom)**   
 -- Return the gap between symbols `x` and `y`.

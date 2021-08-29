@@ -38,8 +38,7 @@ function Num:add(x,    d)
     self.sd = (self._m2<0 or self.n<2) and 0 or (
               (self._m2/(self.n-1))^0.5)
     self.lo = math.min(x, self.lo)
-    self.hi = math.max(x, self.hi)  end
-  return x end
+    self.hi = math.max(x, self.hi)  end end
 
 -- **delta(other : Num) : num**  
 -- Return the difference in the means, mediated by the variances.

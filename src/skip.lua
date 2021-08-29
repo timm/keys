@@ -14,8 +14,7 @@ function Skip:new(at, name)
 
 -- **add(x : atom)**  
 function Skip:add(x)
-  if x ~= "?" then self.n = self.n + 1 end
-  return  x end
+  if x ~= "?" then self.n = self.n + 1 end end
 
 -- **dist(x : any, y : any) : num**  
 function Skip:dist(x,y)
