@@ -40,13 +40,10 @@ local function eq(a,b,    ta,tb)
 local function pump(t)
   print(dump(t)) end
 
--- **keysort(t : table, ?f : fun) : table**    
--- Sort `t` based on  `f(key)`. 
-local function keysort(t, f)
-  f = f or (type(f)=="string" and 
-            function(z) return z[f] end or
-            function(z) return z end)
-  table.sort(t, function(x,y) return f(x)<f(y) end)
+-- **keysort(t : table, ?key : atom) : table**    
+-- Sort `t` based on  `x[key]`. 
+local function keysort(t, key)
+  table.sort(t, function(x,y) return x[key]<y[key] end)
   return t end
 
 local top

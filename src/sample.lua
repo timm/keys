@@ -4,6 +4,7 @@
 -- |     |: 2      |: summarizes the rows in columns |
 -- |Has  |: cols   |: all the columns|  
 -- |     |: keep   |: if true then keep input row into rows  |
+-- |     |: klass  |: the class column (if there is  one) |
 -- |     |: rows   |: list of rows|
 -- |     |: x      |: all the independent columns |  
 -- |     |: y      |: all the dependent columns |  
@@ -13,6 +14,7 @@ local Sym = require"sym"
 local Skip= require"skip"
 local obj = require"obj"
 local csv = require("files").csv 
+local lst = require("list")
 local isKlass, isGoal, isNum, isSkip
 
 -- **new(?init : table = {}) : Sample**     
@@ -23,10 +25,10 @@ function Sample:new(init,       new)
   return new end
 
 -- Structure of the column headers.
-function isKlass(s) return s:find("!") end
-function isGoal(s)  return s:find("+") or s:find("-") or isKlass(s) end
-function isNum(s)   return s:sub(1,1):match("[A-Z]") end
 function isSkip(s)  return s:find("?") end
+function isKlass(s) return s:find("!") end
+function isNum(s)   return s:sub(1,1):match("[A-Z]") end
+function isGoal(s)  return s:find("+") or s:find("-") or isKlass(s) end
 
 -- **add(t : table)**    
 -- If this is the first `row`, create the header. Else, add new data.
@@ -44,14 +46,14 @@ function  Sample:clone(inits,    new)
 -- **data(t : table)**   
 -- Update the column summaries. Maybe  keep the new row.
 function Sample:data(t,    row)
-  for _,col in pairs(self.all) do t[col.at]=col:add( t[col.at] ) end
+  for _,col in pairs(self.cols) do t[col.at]=col:add( t[col.at] ) end
   if self.keep then self.rows[ 1 + #self.rows ] = t end 
   return row end
 
 -- **dist(row1 : table, row2 : table, the : config) : num**  
 function Sample:dist(row1,row2,the,       a,b,d,n)
   d,n = 0,1E-32
-  for _,col in pairs(self.cols[the.cols]) do
+  for _,col in pairs(self[the.cols]) do
     n   = n + 1
     a,b = row1[col.at], row2[col.at]
     if    a=="?" and b=="?" 
@@ -59,17 +61,23 @@ function Sample:dist(row1,row2,the,       a,b,d,n)
     else  d = d + col:dist(a,b)^the.p end end
   return (d/n)^(1/the.p) end
 
+-- **from(file : str) : self**   
+-- Load rows from file into `self.
+function Sample:from(file) 
+  for row in csv(file) do self:add(row) end 
+  return self end
+
 -- **header(t : table)**    
 -- Read the magic symbols, make the appropriate columns,
 -- store them in the right  places.
 function Sample:header(t,   what,new,tmp)
-  self.names=t
+  self.names = t
   for at,name in pairs(t)  do
     what = isSkip(name) and Skip or (isNum(name) and Num or Sym)
     new  = what:new(at,name) 
-    self.all[1+#self.all] = new
+    self.cols[1+#self.cols] = new
     if not isSkip(name) then
-      tmp= self[isGoal(txt) and  "y" or "x"]
+      tmp= self[isGoal(name) and  "y" or "x"]
       tmp[ 1+#tmp ] = new
       if isKlass(name) then self.klass = new end end end end
 
@@ -78,24 +86,18 @@ function Sample:header(t,   what,new,tmp)
 function Sample:knn(row,the,     stats,kadd,all,one)
   stats = Sym:new()
   all= self:neighbors(row,the)
-  for i = 1,the.knn do 
+  for i = 2,the.knn do 
     one = all[i].row
-    stats:add( one:klass() ) end
+    stats:add( one[self.klass.at] ) end
   kadd={mode=function() return stats.mode end}
-  return kadd[the.kadd]()
-end
+  return kadd[the.kadd]() end
 
 -- **neighbors(row1 : table, the : options) : num**   
 function Sample:neighbors(row1,the,    t)
   t={}
   for _,row2 in pairs(self.rows) do
      t[ 1+#t ] = {row=row2, dist=self:dist(row1,row2,the)} end 
-  return sort(t,"dist") end
+  return lst.keysort(t,"dist") end
 
--- **read(file : str) : self**   
--- Load rows from file into `self.
-function Sample:read(file) 
-  for row in csv(file) do self:add(row) end 
-  return self end
 --  ------------
 return Sample

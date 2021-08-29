@@ -14,7 +14,7 @@ local rand = require("rand").rand
 
 -- **Some:new(?most : int) : Some**  
 function Some:new(most)
-  return obj(self,"Some",{n=1,_all={},_sorted=false,most=most or 256}) end
+  return obj(self,"Some",{n=0,_all={},_sorted=false,most=most or 256}) end
 
 --  **Some:add(x : any)**   
 -- If full, replace anything, picked at random.
