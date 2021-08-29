@@ -48,7 +48,7 @@ local function keysort(t, key)
 
 local top
 
--- **shuffle(t : table, n : number) : table
+-- **shuffle(t : table, n : number) : table**   
 -- Shuffles, in place the table `t`. If `n`
 -- supplied, then return the  first `n` items.
 local function shuffle(t,n,    j)
