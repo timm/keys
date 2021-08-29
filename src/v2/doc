@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 here="$(cd $( dirname "${BASH_SOURCE[0]}" ) && pwd )"
+docco $*
+cp ../../../etc/docco.css ./docs
 for i in $*; do
-  echo  "# $i .."
-  docco $i
+  echo -n "."
   f=./docs/$(basename $i .lua).html
   cat $f |
   gawk '
@@ -32,5 +33,5 @@ for i in $*; do
     next}
     {print}' > tmp$$
   mv tmp$$ $f
-  cp ../../../etc/docco.css ./docs
 done
+echo ""
