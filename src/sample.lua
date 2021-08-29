@@ -97,5 +97,5 @@ function Sample:neighbors(row1,the,    t)
 function Sample:read(file) 
   for row in csv(file) do self:add(row) end 
   return self end
-
+--  ------------
 return Sample
