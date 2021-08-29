@@ -1,6 +1,6 @@
 local List = require("list")
 
--- ## obj(self:table, name:str, new:t)
+-- **obj(self:table, name:str, new:t) : table **   
 -- Return a new object of type `self`
 -- with print `name` with fields `t`.
 local function obj(self, name, new)
