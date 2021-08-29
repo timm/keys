@@ -45,7 +45,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <h2 id="cliffsdeltaxsnumber-ysnumber-thetable">cliffsDelta(xs:number+, ys:number+, the:table)</h2>
+              <p><strong>cliffsDelta(xs:number+, ys:number+, the:table)</strong>   </p>
 
             </div>
             
@@ -63,8 +63,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
-              <h2 id="cliffsdeltaxs--number-ys--number-the--table">cliffsDelta(xs : number+, ys : number+, the : table)</h2>
-<p>Non parametric effect size test (i.e. are two distributions
+              <p><strong>cliffsDelta(xs : number+, ys : number+, the : table)</strong><br>Non parametric effect size test (i.e. are two distributions
 different by more than a small amount). Slow for large lists
 (hint: sub-sample large lists).  Thresholds here set from
 top of p14 of  <a href="https://bit.ly/3m9Q0pP">https://bit.ly/3m9Q0pP</a> .  0.147 (small), 0.33
@@ -89,8 +88,7 @@ top of p14 of  <a href="https://bit.ly/3m9Q0pP">https://bit.ly/3m9Q0pP</a> .  0.
               <div class="sswrap ">
                 <a class="ss" href="#section-4">&#x00a7;</a>
               </div>
-              <h2 id="bootstrapy0--num-z0--num-the--table">bootstrap(y0 : num+, z0 : num+, the : table)</h2>
-<p>Non parametric “significance”  test (i.e. is it possible to
+              <p><strong>bootstrap(y0 : num+, z0 : num+, the : table)</strong><br>Non parametric “significance”  test (i.e. is it possible to
 distinguish if an item belongs to one population of
 another).  Uses a sampling with replacement. Warning: very
 slow for large populations. Consider sub-sampling  for large
@@ -98,7 +96,9 @@ lists. Also, test the effect size (and maybe shortcut the
 test) before applying  this test.  From p220 to 223 of the
 Efron text  ‘introduction to the boostrap’.
 <a href="https://bit.ly/3iSJz8B">https://bit.ly/3iSJz8B</a> Typically, conf=0.05 and b is 100s to
-1000s.</p>
+1000s.
+Translate both samples so that they have mean x, 
+The re-sample each population separately.</p>
 
             </div>
             
@@ -106,23 +106,8 @@ Efron text  ‘introduction to the boostrap’.
   x, y, z, yhat, zhat = Num:new(), Num:new(), Num:new(), {}, {}
   <span class="hljs-keyword">for</span> _,y1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(y0) <span class="hljs-keyword">do</span> x:add(y1); y:add(y1)           <span class="hljs-keyword">end</span>
   <span class="hljs-keyword">for</span> _,z1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(z0) <span class="hljs-keyword">do</span> x:add(z1); z:add(z1)           <span class="hljs-keyword">end</span>
-  xmu, ymu, zmu = x.mu, y.mu, z.mu</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-5">&#x00a7;</a>
-              </div>
-              <p>Translate both samples so that they have mean x, 
-The re-sample each population separately.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">for</span> _,y1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(y0) <span class="hljs-keyword">do</span> yhat[<span class="hljs-number">1</span>+#yhat] = y1 - ymu + xmu <span class="hljs-keyword">end</span>
+  xmu, ymu, zmu = x.mu, y.mu, z.mu
+  <span class="hljs-keyword">for</span> _,y1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(y0) <span class="hljs-keyword">do</span> yhat[<span class="hljs-number">1</span>+#yhat] = y1 - ymu + xmu <span class="hljs-keyword">end</span>
   <span class="hljs-keyword">for</span> _,z1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(z0) <span class="hljs-keyword">do</span> zhat[<span class="hljs-number">1</span>+#zhat] = z1 - zmu + xmu <span class="hljs-keyword">end</span>
   tobs = y:delta(z)
   n = <span class="hljs-number">0</span>
@@ -134,11 +119,11 @@ The re-sample each population separately.</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-6">&#x00a7;</a>
+                <a class="ss" href="#section-5">&#x00a7;</a>
               </div>
               <hr>
 
@@ -147,11 +132,11 @@ The re-sample each population separately.</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-7">&#x00a7;</a>
+                <a class="ss" href="#section-6">&#x00a7;</a>
               </div>
               
             </div>
