@@ -41,7 +41,7 @@ function Sample:data(t,    row)
   return row end
 
 -- **dist(row1 : table, row2 : table, the : config) : num**  
-function Row:dist(row1,row2,the,       a,b,d,n)
+function Sample:dist(row1,row2,the,       a,b,d,n)
   d,n = 0,1E-32
   for _,col in pairs(self.cols[the.cols]) do
     n   = n + 1

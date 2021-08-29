@@ -25,4 +25,4 @@ function Skip:dist(x,y)
 function Skip:like(x,_)
   return 1 end
 
-return Sym
+return Skip
