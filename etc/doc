@@ -27,7 +27,7 @@ for i in $*; do
     "    Duo101. data miners using/used-by optimizers" \
     "<br>&copy;2021 Tim Menzies, timm@ieee.org,  " c("unlicense.org")  \
     "<br><br>Inference = cluster, discretize, contrast "\
-    "<br><br><b>lib:</b> "a("list")b("maths")b("obj")b("ok")b("rand")b("stats")b("strings") \
+    "<br><br><b>lib:</b> "a("list")b("maths")b("obj")b("rand")b("stats")b("strings") \
     "<br><b>cols:</b> "b("num")b("skip")b("some")b("sym") \
     "<br><b>data:</b> "a("numtools")b("sample") \
     "<br><b>cli:</b> "a("about")b("cli") \
