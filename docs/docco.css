@@ -34,8 +34,8 @@
 html { height: 100%; }
 body {
   font-family: "aller-light";
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 15px;
   color: #30404f;
   margin: 0; padding: 0;
   height:100%;
@@ -59,8 +59,8 @@ p {
     margin: 25px 0;
   }
     .annotation ul li, .annotation ol li {
-      font-size: 11px;
-      line-height: 14px;
+      font-size: 12px;
+      line-height: 15px;
       margin: 11px 0;
     }
 
@@ -88,7 +88,7 @@ hr {
 }
 
 pre, tt, code {
-  font-size: 11px; line-height: 14px;
+  font-size: 12px; line-height: 15px;
   font-family: Menlo, Monaco, Consolas, "Lucida Console", monospace;
   margin: 0; padding: 0;
 }
@@ -116,7 +116,7 @@ blockquote {
 }
   .sections blockquote p {
     font-family: Menlo, Consolas, Monaco, monospace;
-    font-size: 11px; line-height: 14px;
+    font-size: 12px; line-height: 15px;
     color: #999;
     margin: 11px 0 0;
     white-space: pre-wrap;
