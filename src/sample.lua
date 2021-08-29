@@ -1,17 +1,19 @@
+-- # class Sample
+-- |Does |: 1      |: stores some rows |
+-- |---- |---      |------------------------------------------|
+-- |     |: 2      |: summarizes the rows in columns |
+-- |Has  |: cols   |: all the columns|  
+-- |     |: keep   |: if true then keep input row into rows  |
+-- |     |: rows   |: list of rows|
+-- |     |: x      |: all the independent columns |  
+-- |     |: y      |: all the dependent columns |  
 local Sample={}
-local obj = require"obj"
 local Num = require"num"
 local Sym = require"sym"
 local Skip= require"skip"
-local _   = require("files"); local csv=_.csv
-
+local obj = require"obj"
+local csv = require("files").csv 
 local isKlass, isGoal, isNum, isSkip
-
--- Structure of the column headers.
-function isKlass(s) return s:find("!") end
-function isGoal(s)  return s:find("+") or s:find("-") or isKlass(s) end
-function isNum(s)   return s:sub(1,1):match("[A-Z]") end
-function isSkip(s)  return s:find("?") end
 
 -- **new(?init : table = {}) : Sample**     
 function Sample:new(init,       new)
@@ -19,6 +21,12 @@ function Sample:new(init,       new)
             {rows={},keep=true,cols={},names={},x={},y={}})
   for _,row in pairs(inits or {}) do new:add(row) end  
   return new end
+
+-- Structure of the column headers.
+function isKlass(s) return s:find("!") end
+function isGoal(s)  return s:find("+") or s:find("-") or isKlass(s) end
+function isNum(s)   return s:sub(1,1):match("[A-Z]") end
+function isSkip(s)  return s:find("?") end
 
 -- **add(t : table)**    
 -- If this is the first `row`, create the header. Else, add new data.

@@ -8,5 +8,3 @@ srand(1)
 local a={}
 local s=Some:new(64)
 for i=1,1000 do a[1+#a] = s:add(randi(1,100),s) end 
-pump(s:all())
-

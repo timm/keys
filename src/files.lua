@@ -1,7 +1,7 @@
 -- **csv(file : str) : table**    
 -- Iterator. Returns rows in a csv files. Converts 
 -- strings to numbers if appropriate. 
-function csv(file,      split,stream,tmp)
+local function csv(file,      split,stream,tmp)
   stream = file and io.input(file) or io.input()
   tmp    = io.read()
   return function(       t)
