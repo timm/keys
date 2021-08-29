@@ -1,10 +1,10 @@
 -- # class Skip
--- |Does |: 1      |: mimics the  API of other columns.|
--- |---- |---      |------------------------------------------|
--- |     |: 2      |: no matter what I ask you do, do nothing |
--- |Has  |: n      |: counter of things seen so far|
--- |     |: at     |: column index|
--- |     |: name   |: column name|
+-- |**Does** | 1      |: mimics the  API of other columns.|
+-- |---- |--------:|------------------------------------------|
+-- |     | 2      |: no matter what I ask you do, do nothing |
+-- |**Has**  | n      |: counter of things seen so far|
+-- |     | at     |: column index|
+-- |     | name   |: column name|
 local Skip = {}
 local obj = require"obj"
 

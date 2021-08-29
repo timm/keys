@@ -1,16 +1,17 @@
 -- # class Sym
--- |Does  |: 1     |: incrementally maintain symbol counts|
--- |----  |---     |------------------------------------------|
--- |      |: 2     |: knows the most common symbol   |
--- |      |: 3     |: support inference (distance, likelihood)|
--- |Has   |: at    |: column index                |
--- |      |: name  |: column name                  |
--- |      |: n     |: counter of things seen so far |
--- |      |: has   |: symbol counts.                |
--- |      |: mode  |: most common symbol.           |
--- |      |: _most |: frequency of most seen symbol |
+-- |**Does**  | 1     |: incrementally maintain symbol counts|
+-- |----  |-------:|------------------------------------------|
+-- |      | 2     |: knows the most common symbol   |
+-- |      | 3     |: support inference (distance, likelihood)|
+-- |**Has**   | at    |: column index                |
+-- |      | name  |: column name                  |
+-- |      | n     |: counter of things seen so far |
+-- |      | has   |: symbol counts.                |
+-- |      | mode  |: most common symbol.           |
+-- |      | _most |: frequency of most seen symbol |
 local Sym = {}
 local obj = require"obj"
+local lst = require"list"
 
 -- **new(?at : int=0, ?name : string="") : Sym**   
 function Sym:new(at, name)  
@@ -29,13 +30,15 @@ function Sym:add(x)
 
 -- **dist(x : atom, y : atom)**   
 -- Return the gap between symbols `x` and `y`.
+-- Implements Aha's instance-based distance algorithm (for symbolic attributes);
+-- see [section 2.4](https://link.springer.com/content/pdf/10.1007/BF00153759.pdf).
 function Sym:dist(x,y) 
   return x==y and 0 or 1 end
 
 -- **merge(other : Sym) : Sym**  
 -- Return a  new `Sym` after combining `self` with `other`.
 function Sym:merge(other)
-  new=copy(self)
+  new = lst.copy(self)
   for k,v in pairs(other.has) do 
      new.n = new.n + v
      new.has[k] = v + (new.has[k] or 0) end
@@ -48,8 +51,8 @@ function Sym:merge(other)
 function Sym:var(     e,p,w)
   e= 0
   for _,v in pairs(self.has) do 
-     p= v/self.n      -- probability of wanting is
-     w= math.log(p,2) -- work required to fund it
+     p= v/self.n      -- probability of wanting it
+     w= math.log(p,2) -- how hard to find it (via binary chop)
      e= e - p*w end
   return e end
 

@@ -1,12 +1,12 @@
 -- # class Some
--- |Does |: 1      |: reservoir sampling (if  it  fills, start replacing things  at random|
--- |---- |---      |------------------------------------------|
--- |     |: 2      |: offer the sample sorted, when required|
--- |Has  |: n      |: counter of things seen so far|
--- |     |: at     |: column inded|
--- |     |: name   |: column name|
--- |     |: most   |: max size of sample|
--- |     |: _all   |: the current sample|
+-- |**Does**| 1   |: reservoir sampling (if  it  fills, start replacing things  at random|
+-- |---- |-------:|------------------------------------------|
+-- |     | 2      |: offer the sample sorted, when required|
+-- |**Has**| n    |: counter of things seen so far|
+-- |     | at     |: column inded|
+-- |     | name   |: column name|
+-- |     | most   |: max size of sample|
+-- |     | _all   |: the current sample|
 
 local Some={}
 local obj  = require"obj"

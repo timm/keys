@@ -1,13 +1,13 @@
 -- # class Sample
--- |Does |: 1      |: stores some rows |
--- |---- |---      |------------------------------------------|
--- |     |: 2      |: summarizes the rows in columns |
--- |Has  |: cols   |: all the columns|  
--- |     |: keep   |: if true then keep input row into rows  |
--- |     |: klass  |: the class column (if there is  one) |
--- |     |: rows   |: list of rows|
--- |     |: x      |: all the independent columns |  
--- |     |: y      |: all the dependent columns |  
+-- |**Does** | 1      |: stores some rows |
+-- |----|--------:|------------------------------------------|
+-- |     | 2      |: summarizes the rows in columns |
+-- |**Has**  | cols   |: all the columns|  
+-- |     | keep   |: if true then keep input row into rows  |
+-- |     | klass  |: the class column (if there is  one) |
+-- |     | rows   |: list of rows|
+-- |     | x      |: all the independent columns |  
+-- |     | y      |: all the dependent columns |  
 local Sample={}
 local Num = require"num"
 local Sym = require"sym"
@@ -15,7 +15,7 @@ local Skip= require"skip"
 local obj = require"obj"
 local csv = require("files").csv 
 local lst = require("list")
-local isKlass, isGoal, isNum, isSkip
+local isKlass, isY, isX, isNum, isSym, isSkip, isWhat
 
 -- **new(?init : table = {}) : Sample**     
 function Sample:new(init,       new)
@@ -27,8 +27,15 @@ function Sample:new(init,       new)
 -- Structure of the column headers.
 function isSkip(s)  return s:find("?") end
 function isKlass(s) return s:find("!") end
+
 function isNum(s)   return s:sub(1,1):match("[A-Z]") end
-function isGoal(s)  return s:find("+") or s:find("-") or isKlass(s) end
+function isSym(s)   return not isNum(s) end
+
+function isY(s)     return s:find("+") or s:find("-") or isKlass(s) end
+function isX(s)     return not isY(s) end
+
+function isWhat(s)  return ((isSkip(name) and Skip) or 
+                            (isNum(name)  and Num   or Sym)) end
 
 -- **add(t : table)**    
 -- If this is the first `row`, create the header. Else, add new data.
@@ -46,11 +53,15 @@ function  Sample:clone(inits,    new)
 -- **data(t : table)**   
 -- Update the column summaries. Maybe  keep the new row.
 function Sample:data(t,    row)
-  for _,col in pairs(self.cols) do t[col.at]=col:add( t[col.at] ) end
-  if self.keep then self.rows[ 1 + #self.rows ] = t end 
+  for _,col in pairs(self.cols) do -- update column summaries
+    col:add( t[col.at] ) end
+  if self.keep then  -- update rows
+    self.rows[ 1 + #self.rows ] = t end 
   return row end
 
 -- **dist(row1 : table, row2 : table, the : config) : num**  
+-- Apply Aha's instance-based distance algorithm,
+-- [section 2.4](https://link.springer.com/content/pdf/10.1007/BF00153759.pdf).
 function Sample:dist(row1,row2,the,       a,b,d,n)
   d,n = 0,1E-32
   for _,col in pairs(self[the.cols]) do
@@ -73,11 +84,11 @@ function Sample:from(file)
 function Sample:header(t,   what,new,tmp)
   self.names = t
   for at,name in pairs(t)  do
-    what = isSkip(name) and Skip or (isNum(name) and Num or Sym)
+    what = isWhat(name)
     new  = what:new(at,name) 
     self.cols[1+#self.cols] = new
     if not isSkip(name) then
-      tmp= self[isGoal(name) and  "y" or "x"]
+      tmp= self[isY(name) and  "y" or "x"]
       tmp[ 1+#tmp ] = new
       if isKlass(name) then self.klass = new end end end end
 

@@ -1,17 +1,17 @@
 -- # class Num
--- |Does |: 1      |: incrementally maintain in numeric counts|
--- |---- |---      |------------------------------------------|
--- |     |: 2      |: know the mean and standard deviation |
--- |     |: 3      |: support inference; e.g. distance, likelihood|
--- |Has  |: n      |: counter of things seen so far|
--- |     |: at     |: column index|
--- |     |: name   |: column name|
--- |     |: mu     |: mean seen so far|
--- |     |: lo     |: smallest number seen so far|
--- |     |: hi     |: largest number  seen so far|
--- |     |: sd     |: standard deviation|
--- |     |: _m2    |: incrementally 2nd moment (internal)|
--- |     |: some   |: stores a sample of the symbols|
+-- |**Does** | 1      |: incrementally maintain in numeric counts|
+-- |---- |---------:|------------------------------------------|
+-- |     |2      |: know the mean and standard deviation |
+-- |     |3      |: support inference; e.g. distance, likelihood|
+-- |**Has**  | n      |: counter of things seen so far|
+-- |     | at     |: column index|
+-- |     | name   |: column name|
+-- |     | mu     |: mean seen so far|
+-- |     | lo     |: smallest number seen so far|
+-- |     | hi     |: largest number  seen so far|
+-- |     | sd     |: standard deviation|
+-- |     | _m2    |: incrementally 2nd moment (internal)|
+-- |     | some   |: stores a sample of the symbols|
 -- |     |: w      |: (for minimize) and  1 (for maximize)|
 local Num  = {}
 local Some = require"some"
@@ -48,7 +48,9 @@ function Num:delta(other,    y,z,e)
          (e + y.sd^2/y.n + z.sd^2/z.n)^.5) end
 
 -- **dist(x : num, y : num) : num**  
---  If any value missing, guess a value of the other that
+-- Implements Aha's instance-based distance algorithm (for numeric attributes);
+-- see [section 2.4](https://link.springer.com/content/pdf/10.1007/BF00153759.pdf).
+-- In summary, If any value missing, guess a value of the other that
 -- maximizes the distance.
 function Num:dist(x,y)
   if     x=="?" then y=self:norm(y); x = y>.5 and 0 or 1 
