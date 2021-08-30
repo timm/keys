@@ -32,8 +32,13 @@ for i in $*; do
     print "<br><b>data:</b> "a("numtools")b("sample") 
     print "<br><b>cli:</b> "a("about")b("cli") 
     print "<br><b>tool:</b> "a("nb")       
-    print "<hr></p>"
+    print "</p>"
+    print "<img src=\"https://img.shields.io/badge/language-lua-blue??style=plastic&logo=appveyor\">"
+    print "<img src=\"https://img.shields.io/badge/purpose-ai,se,explan-red??style=plastic&logo=appveyor\">"
+    print "<img src=\"https://img.shields.io/badge/license-unlicense-lightgray??style=plastic&logo=appveyor\">"
     print $0 
+
+?style=plastic&logo=appveyor
 
     next}
   {print}' > tmp$$
