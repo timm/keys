@@ -1,7 +1,5 @@
-package.path = '../src/?.lua'
-
-require("rand").srand(1)
-local _=require"list"
+dofile("../src/rand.lua").srand(1)
+local _=dofile"../src/list.lua"
 local shuffle,list,pump,eq = _.shuffle,_.list,_.pump,_.eq
 local copy = _.copy
 
