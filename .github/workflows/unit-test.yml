@@ -19,14 +19,9 @@ jobs:
       - name: Run tests  
         run: |
           cd ${{ github.workspace }}/test; \
-<<<<<<< HEAD
                     ../lua-5.4.3/src/lua  some.lua; \
           ../lua-5.4.3/src/lua  sample.lua; \
           ../lua-5.4.3/src/lua sym.lua
-=======
-          ../lua-5.4.3/src/lua -e ''; \
-          ../lua-5.4.3/src/lua ok.lua *.lua; 
->>>>>>> 13f675c08180cf9159b1f764e8a9b9f5f033f1d9
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
 #../lua-5.4.3/src/lua  list.lua; \
