@@ -19,5 +19,6 @@ local function srand(s)
   Seed = s or 10013 end
 
 -- ------------------------------------------
+-- Start-up action.
 srand()
 return {srand=srand, randi=randi, rand=rand}
