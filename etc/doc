@@ -28,8 +28,8 @@ for i in $*; do
     print "<br><br>Inference = cluster, discretize, contrast "
     print "<br>"
     print "<br><b>about:</b> "d("menzies.us/keys","home")b("use")b("install")\
-          d("https://github.com/timm/keys/blob/main/LICENSE.md","license")\
-          d("https://github.com/timm/keys/discussions",b("discuss")) 
+          ", "d("https://github.com/timm/keys/blob/main/LICENSE.md","license")\
+          ", "d("https://github.com/timm/keys/discussions","discuss") 
     print "<br><b>lib:</b> "a("list")b("maths")b("obj")b("rand")b("stats")b("strings") 
     print "<br><b>cols:</b> "a("num")b("skip")b("some")b("sym") 
     print "<br><b>data:</b> "a("numtools")b("sample") 
