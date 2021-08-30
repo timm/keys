@@ -19,6 +19,7 @@ jobs:
       - name: Run tests  
         run: |
           cd ${{ github.workspace }}/test; \
+          ../lua-5.4.3/src/lua -e 'print(1)'; \
           ../lua-5.4.3/src/lua num.lua; \
           ../lua-5.4.3/src/lua files.lua; \
           ../lua-5.4.3/src/lua  rand.lua; \

@@ -14,7 +14,7 @@ for i in $*; do
 
    /<\/h1>/ && !first   { first=1
 
-    print "<img align=right width=150 src=\"duo101.png\">"
+    print d("menzies.us/keys","<img align=right width=150 src=\"duo101.png\">")
     print "<a href=\"https://github.com/timm/keys\" \
               class=\"github-corner\" aria-label=\"View source on GitHub\"><svg \
               width=\"80\" height=\"80\" viewBox=\"0 0 250 250\" style=\"fill:#FD6C6C; \
@@ -27,7 +27,9 @@ for i in $*; do
     print "<br>&copy;2021 Tim Menzies, timm@ieee.org"
     print "<br><br>Inference = cluster, discretize, contrast "
     print "<br>"
-    print "<br><b>about:</b> "a("index")b("use")b("install")d("https://github.com/timm/keys/blob/main/LICENSE.md","license")d("https://github.com/timm/keys/discussions",b("discuss")) 
+    print "<br><b>about:</b> "d("menzies.us","home")b("use")b("install")\
+          d("https://github.com/timm/keys/blob/main/LICENSE.md","license")\
+          d("https://github.com/timm/keys/discussions",b("discuss")) 
     print "<br><b>lib:</b> "a("list")b("maths")b("obj")b("rand")b("stats")b("strings") 
     print "<br><b>cols:</b> "a("num")b("skip")b("some")b("sym") 
     print "<br><b>data:</b> "a("numtools")b("sample") 
