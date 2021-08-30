@@ -7,6 +7,7 @@ for i in $*; do
   f=$here/docs/$(basename $i .lua).html
   cat $f |
   gawk '
+  function d(x,y) { return "<a href=\"http://"x"\">"y"</a>" }
   function c(x) { return "<a href=\"http://"x".html\">"x"</a>" }
   function b(x) { return ", "a(x) }
   function a(x) { return "<a href=\""x".html\">"x"</a>" }
@@ -23,21 +24,26 @@ for i in $*; do
     print "&nbsp;<br> "
     print "<p style=\"text-align:left;\">" 
     print "    <b>Duo101. data miners using/used-by optimizers</b>" 
-    print "<br>&copy;2021 Tim Menzies, timm@ieee.org,  " c("unlicense.org")  
+    print "<br>&copy;2021 Tim Menzies, timm@ieee.org"
     print "<br><br>Inference = cluster, discretize, contrast "
     print "<br>"
-    print "<br><b>about:</b> "a("index")b("use")b("install")b("license")b("discuss") 
+    print "<br><b>about:</b> "a("index")b("use")b("install")d("https://github.com/timm/keys/blob/main/LICENSE.md","license")d("https://github.com/timm/keys/discussions",b("discuss")) 
     print "<br><b>lib:</b> "a("list")b("maths")b("obj")b("rand")b("stats")b("strings") 
     print "<br><b>cols:</b> "a("num")b("skip")b("some")b("sym") 
     print "<br><b>data:</b> "a("numtools")b("sample") 
     print "<br><b>cli:</b> "a("about")b("cli") 
     print "<br><b>tool:</b> "a("nb")       
     print "</p>"
+
     print "<center>"
-    print "<img src=\"https://img.shields.io/badge/language-lua-blue??style=plastic&logo=appveyor\">"
-    print "<img src=\"https://img.shields.io/badge/purpose-ai,se,explan-red??style=plastic&logo=appveyor\">"
-    print "<img src=\"https://img.shields.io/badge/license-unlicense-lightgray??style=plastic&logo=appveyor\">"
+    print "<img alt=\"Lua\" src=\"https://img.shields.io/badge/lua-v5.4-blue\"> "
+    print "<a href=\"https://github.com/timm/keys/blob/master/LICENSE.md\"><img alt=\"License\" src=\"https://img.shields.io/badge/license-unlicense-red\"></a> "
+    print "<img src=\"https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet\"> "
+    print "<img alt=\"Platform\" src=\"https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey\"> "
+    print "<a href=\"https://github.com/timm/keys/actions\"><img src=\"https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg\"></a> "
+    print "<a href=\"https://zenodo.org/badge/latestdoi/318809834\"><img src=\"https://zenodo.org/badge/318809834.svg\"></a>"
     print "</center>"
+
     print $0 
 
     next}
