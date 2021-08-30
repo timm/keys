@@ -19,13 +19,7 @@ jobs:
       - name: Run tests  
         run: |
           cd ${{ github.workspace }}/test; \
-          ../lua-5.4.3/src/lua -e 'print(1)'; \
-          ../lua-5.4.3/src/lua num.lua; \
-          ../lua-5.4.3/src/lua files.lua; \
-          ../lua-5.4.3/src/lua  rand.lua; \
-          ../lua-5.4.3/src/lua  some.lua; \
-          ../lua-5.4.3/src/lua  list.lua; \
-          ../lua-5.4.3/src/lua  sample.lua; \
-          ../lua-5.4.3/src/lua sym.lua
+          ../lua-5.4.3/src/lua -e ''; \
+          ../lua-5.4.3/src/lua ok.lua *.lua; 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
