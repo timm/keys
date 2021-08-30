@@ -1,4 +1,4 @@
-package.path = '../src/?.lua;' .. package.path
+package.path = '../src/?.lua'
 
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
 local the  = require"cli"

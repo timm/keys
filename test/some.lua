@@ -1,4 +1,4 @@
-package.path = '../src/?.lua;' .. package.path
+package.path = '../src/?.lua'
 
 local _   = require"rand"; local srand,randi = _.srand,_.randi
 local pump= require("list").pump
