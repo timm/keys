@@ -34,8 +34,8 @@ function isSym(s)   return not isNum(s) end
 function isY(s)     return s:find("+") or s:find("-") or isKlass(s) end
 function isX(s)     return not isY(s) end
 
-function isWhat(s)  return ((isSkip(name) and Skip) or 
-                            (isNum(name)  and Num   or Sym)) end
+function isWhat(s)  return ((isSkip(s) and Skip) or 
+                            (isNum(s)  and Num   or Sym)) end
 
 -- **add(t : table)**    
 -- If this is the first `row`, create the header. Else, add new data.

@@ -20,7 +20,7 @@ do
    assert(t[2].dist < t[#t].dist,"near not far") end end 
 
 do
- s = Sample:new():from("../data/diabetes.csv")
+ s = Sample:new():from("../data/weathernom.csv")
  local n,yes=0,0
  local rows = lst.shuffle(s.rows)
  for _,row in pairs(rows) do
