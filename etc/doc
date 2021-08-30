@@ -24,10 +24,10 @@ for i in $*; do
     print "&nbsp;<br> "
     print "<p style=\"text-align:left;\">" 
     print "    <b>Duo101. data miners using/used-by optimizers</b>" 
-    print "<br>&copy;2021 Tim Menzies, timm@ieee.org"
+    print "<br>&copy;2021 "d("menzies.us","Tim Menzies")", timm@ieee.org"
     print "<br><br>Inference = cluster, discretize, contrast "
     print "<br>"
-    print "<br><b>about:</b> "d("menzies.us","home")b("use")b("install")\
+    print "<br><b>about:</b> "d("menzies.us/keys","home")b("use")b("install")\
           d("https://github.com/timm/keys/blob/main/LICENSE.md","license")\
           d("https://github.com/timm/keys/discussions",b("discuss")) 
     print "<br><b>lib:</b> "a("list")b("maths")b("obj")b("rand")b("stats")b("strings") 
