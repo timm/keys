@@ -1,6 +1,5 @@
---package.path = '../src/?.lua'
---
-local fls=dofile"../src/files.lua"
+package.path = '../src/?.lua'
+local fls=require"files"
 
 do 
   for row in fls.csv("../data/weathernom.csv") do 

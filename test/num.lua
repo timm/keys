@@ -1,7 +1,7 @@
---package.path = '../src/?.lua'
+package.path = '../src/?.lua'
 
-local Num=dofile"../src/num.lua"
-local _=dofile"../src/rand.lua"; local srand,rand=_.srand, _.rand
+local Num=require"num"
+local _=require"rand"; local srand,rand=_.srand, _.rand
 srand(1)
 
 do

@@ -1,10 +1,10 @@
 package.path = '../src/?.lua'
 
 local b4={}; for k,_ in pairs(_ENV) do b4[k]=k end
-local the  = dofile"../src/cli.lua"
-local str  = dofile"../src/strings.lua"
-local rand = dofile"../src/rand.lua"
-local list = dofile"../src/list.lua"
+local the  = require"cli"
+local str  = require"strings"
+local rand = require"rand"
+local list = require"list"
 
 local fails=0
 for _,f in pairs(arg) do

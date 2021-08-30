@@ -1,4 +1,3 @@
-package.path = '../src/?.lua'
 
 local Sample=require"sample"
 require("rand").srand(0) 

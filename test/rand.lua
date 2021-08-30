@@ -1,8 +1,8 @@
---package.path = '../src/?.lua'
+package.path = '../src/?.lua'
 
-local _=dofile"../src/rand.lua";  local srand,rand = _.srand, _.rand
-local _=dofile"../src/list.lua";  local sort = _.sort
-local _=dofile"../src/maths.lua"; local rnd  = _.rnd
+local _=require"rand";  local srand,rand = _.srand, _.rand
+local _=require"list";  local sort = _.sort
+local _=require"maths"; local rnd  = _.rnd
 
 srand(1)
 local a={}
