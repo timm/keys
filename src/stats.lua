@@ -47,5 +47,43 @@ function bootstrap(y0,z0,the,     x,y,z,xmu,ymu,zmu,yhat,zhat,tobs,n)
     then n = n + 1 end end
   return n / the.bootstrap >= the.conf end
 
+-- **function scottKnow(nums:_num+_, the:_options_)**   
+-- Do a top-down division of the `Num`s  in `nums`.
+-- Divide  at the cut that maximizes  the  difference between
+--  the  mean before and  after the cut. Stop cutting if
+-- the top halves are statistically indistinguishable. 
+function scottKnot(nums,the,      all,cohen)
+  local mid = function (z) return z.some:mid() end
+
+  local function summary(i,j,    out)
+    out = copy( nums[i] )
+    for k = i+1, j do out = out:merge(nums[k]) end
+    return out end 
+
+  local function div(lo,hi,rank,b4,       cut,best,l,l1,r,r1,now)
+    best = 0
+    for j = lo,hi do
+      if j < hi  then
+        l   = summary(lo,  j)
+        r   = summary(j+1, hi)
+        now = (l.n*(mid(l) - mid(b4))^2 + r.n*(mid(r) - mid(b4))^2
+              ) / (l.n + r.n)
+        if now > best then
+          if math.abs(mid(l) - mid(r)) >= cohen then
+            cut, best, l1, r1 = j, now, copy(l), copy(r) 
+    end end end end
+    if cut and not l1:same(r1,the) then
+      rank = div(lo,    cut, rank, l1) + 1
+      rank = div(cut+1, hi,  rank, r1) 
+    else
+      for i = lo,hi do nums[i].rank = rank end end
+    return rank end 
+
+  table.sort(nums, function(x,y) return mid(x) < mid(y) end)
+  all   = summary(1,#nums)
+  cohen = all.sd * the.iota
+  div(1, #nums, 1, all)
+  return nums end
+
 -- --------------
 return {same=same, cliffsDelta=cliffsDelta, bootstrap=bootstrap} 

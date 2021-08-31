@@ -28,15 +28,10 @@ function Sample:new(init,       new)
 -- Structure of the column headers.
 function isSkip(s)  return s:find("?") end
 function isKlass(s) return s:find("!") end
-
 function isNum(s)   return s:sub(1,1):match("[A-Z]") end
-function isSym(s)   return not isNum(s) end
-
 function isY(s)     return s:find("+") or s:find("-") or isKlass(s) end
-function isX(s)     return not isY(s) end
-
-function isWhat(s)  return ((isSkip(s) and Skip) or 
-                            (isNum(s)  and Num   or Sym)) end
+function isWhat(s)  
+  return isSkip(s) and Skip or (isNum(s) and Num or Sym) end
 
 -- **add(t : table)**    
 -- If this is the first `row`, create the header. Else, add new data.
