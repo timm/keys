@@ -1,14 +1,15 @@
 -- # class Sym
--- |**Does**  | 1     |: incrementally maintain symbol counts|
--- |----  |-------:|------------------------------------------|
--- |      | 2     |: knows the most common symbol   |
--- |      | 3     |: support inference (distance, likelihood)|
--- |**Has**   | at    |: column index                |
--- |      | name  |: column name                  |
--- |      | n     |: counter of things seen so far |
--- |      | has   |: symbol counts.                |
--- |      | mode  |: most common symbol.           |
--- |      | _most |: frequency of most seen symbol |
+-- |**Does** | 1     |: incrementally maintain symbol counts |
+-- |----     |------:|---------------------------------------|
+-- |         | 2     |: knows the most common symbol|
+-- |         | 3     |: support inference (distance, likelihood)|
+-- |**Has**  | at    |: column index|
+-- |         | name  |: column name|
+-- |         | n     |: counter of things seen so far|
+-- |         | has   |: symbol counts|
+-- |         | mode  |: most common symbol|
+-- |         | _most |: frequency of most seen symbol|
+
 local Sym = {}
 local obj = require"obj"
 local lst = require"list"

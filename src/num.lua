@@ -1,18 +1,19 @@
 -- # class Num
 -- |**Does** | 1      |: incrementally maintain in numeric counts|
--- |---- |---------:|------------------------------------------|
--- |     |2      |: know the mean and standard deviation |
--- |     |3      |: support inference; e.g. distance, likelihood|
+-- |----     |-------:|------------------------------------------|
+-- |         | 2      |: know the mean and standard deviation|
+-- |         | 3      |: support inference; e.g. distance, likelihood|
 -- |**Has**  | n      |: counter of things seen so far|
--- |     | at     |: column index|
--- |     | name   |: column name|
--- |     | mu     |: mean seen so far|
--- |     | lo     |: smallest number seen so far|
--- |     | hi     |: largest number  seen so far|
--- |     | sd     |: standard deviation|
--- |     | _m2    |: incrementally 2nd moment (internal)|
--- |     | some   |: stores a sample of the symbols|
--- |     |: w      |: (for minimize) and  1 (for maximize)|
+-- |         | at     |: column index|
+-- |         | name   |: column name|
+-- |         | mu     |: mean seen so far|
+-- |         | lo     |: smallest number seen so far|
+-- |         | hi     |: largest number  seen so far|
+-- |         | sd     |: standard deviation|
+-- |         | some   |: stores a sample of the symbols|
+-- |         | w      |: (for minimize) and  1 (for maximize)|
+-- |         | _m2    |: incrementally 2nd moment (internal)|
+-- |**Uses** |        |: [Some](some.html)|   
 local Num  = {}
 local Some = require"some"
 local obj  = require"obj"

@@ -1,13 +1,14 @@
 -- # class Sample
--- |**Does** | 1      |: stores some rows |
--- |----|--------:|------------------------------------------|
--- |     | 2      |: summarizes the rows in columns |
+-- |**Does** | 1      |: stores some rows|
+-- |---------|-------:|------------------|
+-- |         | 2      |: summarizes the rows in columns|
 -- |**Has**  | cols   |: all the columns|  
--- |     | keep   |: if true then keep input row into rows  |
--- |     | klass  |: the class column (if there is  one) |
--- |     | rows   |: list of rows|
--- |     | x      |: all the independent columns |  
--- |     | y      |: all the dependent columns |  
+-- |         | keep   |: if true then keep input row into rows|
+-- |         | klass  |: the class column (if there is  one)|
+-- |         | rows   |: list of rows|
+-- |         | x      |: all the independent columns   
+-- |         | y      |: all the dependent columns|  
+-- |**Uses** |        |: [Num](num.html), [Skip](skip.html), [Sym](sym.html)|   
 local Sample={}
 local Num = require"num"
 local Sym = require"sym"
