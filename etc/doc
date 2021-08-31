@@ -14,7 +14,7 @@ for i in $*; do
 
    /<\/h1>/ && !first   { first=1
 
-    print d("menzies.us/keys","<img align=right width=150 src=\"duo101.png\">")
+    print d("menzies.us/keys","<img align=right width=150 src=\"duo101a.png\">")
     print "<a href=\"https://github.com/timm/keys\" \
               class=\"github-corner\" aria-label=\"View source on GitHub\"><svg \
               width=\"80\" height=\"80\" viewBox=\"0 0 250 250\" style=\"fill:#FD6C6C; \
@@ -37,14 +37,13 @@ for i in $*; do
     print "<br><b>tool:</b> "a("nb")       
     print "</p>"
 
-    print "<center>"
+    print "<br clear=all>"
     print "<img alt=\"Lua\" src=\"https://img.shields.io/badge/lua-v5.4-blue\"> "
     print "<a href=\"https://github.com/timm/keys/blob/master/LICENSE.md\"><img alt=\"License\" src=\"https://img.shields.io/badge/license-unlicense-red\"></a> "
     print "<img src=\"https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet\"> "
     print "<img alt=\"Platform\" src=\"https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey\"> "
     print "<a href=\"https://github.com/timm/keys/actions\"><img src=\"https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg\"></a> "
     print "<a href=\"https://zenodo.org/badge/latestdoi/318809834\"><img src=\"https://zenodo.org/badge/318809834.svg\"></a>"
-    print "</center>"
 
     print $0 
 
