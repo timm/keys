@@ -1,11 +1,11 @@
 local randi=require("rand").randi
 
 
--- **any(t : table) : any**    
+-- **any(t :table) : any**    
 -- Return any item for `t`.
 local function any(t) return t[ randi(1,#t) ] end
 
--- **copy(t : table) : table**    
+-- **copy(t :table) : table**    
 -- Return a deep copy of `t`.
 local function copy(t,      seen,      res) 
   seen = seen or {}
@@ -16,7 +16,7 @@ local function copy(t,      seen,      res)
   for k,v in pairs(t) do res[copy(k,seen)]=copy(v,seen) end
   return res end
 
--- **dump(t : table) : str**       
+-- **dump(t :table) : str**       
 -- Return a string for key:value  in `t`. 
 local function dump(t,    s,sep,keys) 
   if #t>0 then return table.concat(t,",") end
@@ -30,7 +30,7 @@ local function dump(t,    s,sep,keys)
     sep=" " end
   return s..'}' end
 
--- **eq(a : any, b : any) : bool**    
+-- **eq(a :any, b :any) : bool**    
 -- Recursive check if two tables are equal.
 local function eq(a,b,    ta,tb)
   ta, tb = type(a), type(b)
@@ -40,20 +40,27 @@ local function eq(a,b,    ta,tb)
   for k,v in pairs(b) do if not eq(v,a[k]) then return false end end
   return true end
 
--- **pump(t : table)**    
--- Print a string for key:value  in `t`. 
-local function pump(t)
-  print(dump(t)) end
-
--- **keysort(t : table, ?key : atom) : table**    
+-- **keysort(t :table, ?key  :atom) : table**    
 -- Sort `t` based on  `x[key]`. 
 local function keysort(t, key)
   table.sort(t, function(x,y) return x[key]<y[key] end)
   return t end
 
+-- **map(t :table, ?f :function): table**   
+-- map function `f` over all items in `t`.
+local function map(t,f,     b)
+  b, f = {}, f or function(z) return z end
+  for i,v in pairs(t or {}) do b[i] = f(v) end 
+  return b end 
+
+-- **pump(t :table)**    
+-- Print a string for key:value  in `t`. 
+local function pump(t)
+  print(dump(t)) end
+
 local top
 
--- **shuffle(t : table, n : number) : table**   
+-- **shuffle(t :table, n :number) : table**   
 -- Shuffles, in place the table `t`. If `n`
 -- supplied, then return the  first `n` items.
 local function shuffle(t,n,    j)
@@ -62,13 +69,13 @@ local function shuffle(t,n,    j)
     t[i], t[j] = t[j], t[i] end
   return n and top(t, n) or t end
 
--- **sort(t : table, ?f : fun) : table**    
+-- **sort(t :table, ?f :fun) : table**    
 -- Sort `t` based on  `f`. 
 local function sort(t, f)
   table.sort(t, f)
   return t end
 
--- **top(t : table, n : num) : table**  
+-- **top(t :table, n :num) : table**  
 function top(t,n,         out) 
   out={}
   for i = 1,math.min(n,#t) do out[i] = t[i] end
@@ -80,6 +87,7 @@ return {
   dump=dump, 
   eq=eq, 
   keysort=keysort, 
+  map=map,
   pump=pump, 
   shuffle=shuffle,
   sort=sort,

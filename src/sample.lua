@@ -19,7 +19,7 @@ local lst = require("list")
 local isKlass, isY, isX, isNum, isSym, isSkip, isWhat
 
 -- **new(?init : table = {}) : Sample**     
-function Sample:new(init,       new)
+function Sample:new(inits,       new)
   new = obj(self,"Sample",
             {rows={},keep=true,cols={},names={},x={},y={}})
   for _,row in pairs(inits or {}) do new:add(row) end  
@@ -72,11 +72,8 @@ function Sample:dist(row1,row2,the,       a,b,d,n)
 -- Split rows via their distance to two faraway points, 
 function Sample:div(rows,the,         one,two,three,c,a,b,l,r)
   one = lst.any(rows)
-  print(1,type(one),type(rows))
   two = self:faraway(one, the, rows)
-  print(2,type(two))
   three = self:faraway(two, the, rows)
-  print(3,type(three))
   c   = self:dist(two, three, the)
   tmp = {}
   for _,row in pairs(rows) do
@@ -86,7 +83,7 @@ function Sample:div(rows,the,         one,two,three,c,a,b,l,r)
                    x  = (a^2 + c^2 - b^2) / (2*c)} 
   end
   l,r = {},{}
-  for i,rowx in pairs(keysort(tmp,"x")) do
+  for i,rowx in pairs(lst.keysort(tmp,"x")) do
     table.insert( i<=#rows//2 and l or r, rowx.row) end
   return l,r end
 
@@ -113,11 +110,10 @@ function Sample:divs(the,    out, enough,run)
 -- **faraway(row : table, the : config, rows : table) : table**    
 -- Return  a row that is the.far-.9 distant from 
 -- row across a sample of the.samples=256 rows
-function Sample:faraway(row,the,rows,      all)
+function Sample:faraway(row,the,rows,      out,all)
   all = self:neighbors(row,the, 
               lst.shuffle(rows, the.samples)) 
-  print("#all", #all,the.far)
-  return all[the.far*#all // 1][2] end
+  return all[the.far*#all // 1].row end
 
 -- **from(file : str) : self**   
 -- Load rows from file into `self.
@@ -150,7 +146,12 @@ function Sample:knn(row,the,     stats,kadd,all,one)
   kadd={mode=function() return stats.mode end}
   return kadd[the.kadd]() end
 
--- **neighbors(row1 : table, the : options) : num**   
+--  **mid()**     
+-- Central tendancy
+function Sample:mid()
+  return lst.map(self.cols,function(z) return z:mid() end) end
+
+ -- **neighbors(row1 : table, the : options) : num**   
 function Sample:neighbors(row1,the,rows,    t)
   t={}
   for _,row2 in pairs(rows or self.rows) do

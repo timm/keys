@@ -31,4 +31,5 @@ do
 
 do
   s = Sample:new():from("../data/auto93.csv")
-  s:divs(the) end
+  for _,t in pairs(s:divs(the)) do
+    lst.pump(t:mid()) end end
