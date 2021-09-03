@@ -3,7 +3,7 @@ local rand,randi,Seed
 -- **randi(?lo : int, ?hi : int) : int**  
 -- Return an int between `lo`  and `hi` (default 0..1).
 function randi(lo,hi) 
-  return math.floor(rand(lo,hi)) end
+  return math.floor(0.5 + rand(lo,hi)) end
 
 -- **rand(?lo : num, ?hi : num) : float**   
 -- Return a float between `lo`  and `hi` (default 0..1).

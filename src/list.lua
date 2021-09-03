@@ -1,5 +1,10 @@
 local randi=require("rand").randi
 
+
+-- **any(t : table) : any**    
+-- Return any item for `t`.
+local function any(t) return t[ randi(1,#t) ] end
+
 -- **copy(t : table) : table**    
 -- Return a deep copy of `t`.
 local function copy(t,      seen,      res) 
@@ -70,6 +75,7 @@ function top(t,n,         out)
   return out end
 
 return {
+  any=any,
   copy=copy, 
   dump=dump, 
   eq=eq, 

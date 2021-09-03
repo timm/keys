@@ -24,4 +24,9 @@ function Skip:dist(x,y)
 function Skip:like(x,_)
   return 1 end
 
+-- **mid() : any**    
+-- Central tendency.
+function Skip:mid() 
+  return "?" end
+
 return Skip

@@ -47,6 +47,11 @@ function Sym:merge(other)
     if v > new._most then new.mode, new._most = k,v end end 
   return new end
 
+-- **mid() : any**    
+-- Central tendency.
+function Sym:mid() 
+  return self.mode end 
+
 -- **var()**    
 -- Return the work require to recreate a signal.
 function Sym:var(     e,p,w)

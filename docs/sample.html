@@ -139,15 +139,10 @@
             
             <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isSkip</span><span class="hljs-params">(s)</span></span>  <span class="hljs-keyword">return</span> s:<span class="hljs-built_in">find</span>(<span class="hljs-string">&quot;?&quot;</span>) <span class="hljs-keyword">end</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isKlass</span><span class="hljs-params">(s)</span></span> <span class="hljs-keyword">return</span> s:<span class="hljs-built_in">find</span>(<span class="hljs-string">&quot;!&quot;</span>) <span class="hljs-keyword">end</span>
-
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isNum</span><span class="hljs-params">(s)</span></span>   <span class="hljs-keyword">return</span> s:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>):<span class="hljs-built_in">match</span>(<span class="hljs-string">&quot;[A-Z]&quot;</span>) <span class="hljs-keyword">end</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isSym</span><span class="hljs-params">(s)</span></span>   <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> isNum(s) <span class="hljs-keyword">end</span>
-
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isY</span><span class="hljs-params">(s)</span></span>     <span class="hljs-keyword">return</span> s:<span class="hljs-built_in">find</span>(<span class="hljs-string">&quot;+&quot;</span>) <span class="hljs-keyword">or</span> s:<span class="hljs-built_in">find</span>(<span class="hljs-string">&quot;-&quot;</span>) <span class="hljs-keyword">or</span> isKlass(s) <span class="hljs-keyword">end</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isX</span><span class="hljs-params">(s)</span></span>     <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> isY(s) <span class="hljs-keyword">end</span>
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isWhat</span><span class="hljs-params">(s)</span></span>  <span class="hljs-keyword">return</span> ((isSkip(s) <span class="hljs-keyword">and</span> Skip) <span class="hljs-keyword">or</span> 
-                            (isNum(s)  <span class="hljs-keyword">and</span> Num   <span class="hljs-keyword">or</span> Sym)) <span class="hljs-keyword">end</span></pre></div></div>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isWhat</span><span class="hljs-params">(s)</span></span>  
+  <span class="hljs-keyword">return</span> isSkip(s) <span class="hljs-keyword">and</span> Skip <span class="hljs-keyword">or</span> (isNum(s) <span class="hljs-keyword">and</span> Num <span class="hljs-keyword">or</span> Sym) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         

@@ -68,6 +68,57 @@ function Sample:dist(row1,row2,the,       a,b,d,n)
     else  d = d + col:dist(a,b)^the.p end end
   return (d/n)^(1/the.p) end
 
+-- **div(rows : table, the : options) : table,table**    
+-- Split rows via their distance to two faraway points, 
+function Sample:div(rows,the,         one,two,three,c,a,b,l,r)
+  one = lst.any(rows)
+  print(1,type(one),type(rows))
+  two = self:faraway(one, the, rows)
+  print(2,type(two))
+  three = self:faraway(two, the, rows)
+  print(3,type(three))
+  c   = self:dist(two, three, the)
+  tmp = {}
+  for _,row in pairs(rows) do
+    a = self:dist(row, two, the)
+    b = self:dist(row, three, the)
+    tmp[1+#tmp] = {row= row, 
+                   x  = (a^2 + c^2 - b^2) / (2*c)} 
+  end
+  l,r = {},{}
+  for i,rowx in pairs(keysort(tmp,"x")) do
+    table.insert( i<=#rows//2 and l or r, rowx.row) end
+  return l,r end
+
+-- **divs(the : options) : [table]**    
+-- Recursive divide rows down to size #rows^(the.enough=.5).
+-- Return  one table per leaf.
+function Sample:divs(the,    out, enough,run)
+  function run(rows,lvl,      pre,l,r)
+    if the.loud then  -- very useful debugging aid 
+      pre = "|.. ";print(pre:rep(lvl)..tostring(#rows))
+    end
+    if #rows < enough then
+      out[#out+1] = self:clone(rows)
+    else 
+      l,r = self:div(rows, the,cols)
+      run(l, lvl+1)
+      run(r, lvl+1)  end
+  end --------------------------------
+  out = {}
+  enough = 2*(#self.rows)^the.enough
+  run(self.rows, 0)
+  return out end
+
+-- **faraway(row : table, the : config, rows : table) : table**    
+-- Return  a row that is the.far-.9 distant from 
+-- row across a sample of the.samples=256 rows
+function Sample:faraway(row,the,rows,      all)
+  all = self:neighbors(row,the, 
+              lst.shuffle(rows, the.samples)) 
+  print("#all", #all,the.far)
+  return all[the.far*#all // 1][2] end
+
 -- **from(file : str) : self**   
 -- Load rows from file into `self.
 function Sample:from(file) 
@@ -92,7 +143,7 @@ function Sample:header(t,   what,new,tmp)
 -- Return some conclusion  from the neighbors of `row`.
 function Sample:knn(row,the,     stats,kadd,all,one)
   stats = Sym:new()
-  all= self:neighbors(row,the)
+  all= self:neighbors(row, the, self.rows)
   for i = 2,the.knn do 
     one = all[i].row
     stats:add( one[self.klass.at] ) end
@@ -100,10 +151,10 @@ function Sample:knn(row,the,     stats,kadd,all,one)
   return kadd[the.kadd]() end
 
 -- **neighbors(row1 : table, the : options) : num**   
-function Sample:neighbors(row1,the,    t)
+function Sample:neighbors(row1,the,rows,    t)
   t={}
-  for _,row2 in pairs(self.rows) do
-     t[ 1+#t ] = {row=row2, dist=self:dist(row1,row2,the)} end 
+  for _,row2 in pairs(rows or self.rows) do
+     t[1+#t]= {row=row2, dist=self:dist(row1,row2,the)} end 
   return lst.keysort(t,"dist") end
 
 --  ------------

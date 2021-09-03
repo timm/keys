@@ -1,3 +1,4 @@
+package.path = '../src/?.lua'
 
 local Sample=require"sample"
 require("rand").srand(0) 
@@ -26,8 +27,8 @@ do
    local x = s:knn(row, the) 
    n = n + 1
    if x==row[s.klass.at] then yes=yes+1 end  end 
- print(yes/n)
-end
+ print(yes/n) end
 
-
-
+do
+  s = Sample:new():from("../data/auto93.csv")
+  s:divs(the) end
