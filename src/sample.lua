@@ -203,6 +203,4 @@ function Sample:neighbors(row1,the,rows,    t)
 
 
 ------------------------------------------------------
-
-
 return Sample
