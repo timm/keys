@@ -109,12 +109,12 @@ function Sample:better(row1,row2,   e,w,s1,s2,n,a,b,s1,s2)
   return what1 / n < what2 / n end
 
 --  **mid()**     
--- Central tendancy
+-- Report central tendany of all columns.
 function Sample:mid()
   return lst.map(self.cols,function(z) return z:mid() end) end
 
--- **y(fmt)**    
--- Goal vars
+-- **ys(fmt)**    
+-- Report central tendany of goals.
 function Sample:ys(fmt)
   fmt = fmt or " %5.2f"
   return lst.map(self.y,
