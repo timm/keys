@@ -202,8 +202,7 @@ function Sample:neighbors(row1,the,rows,    t)
   return lst.keysort(t,"dist") end
 
 
---  ------------
--- ## Returns
+------------------------------------------------------
 
 
 return Sample
