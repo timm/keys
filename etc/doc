@@ -37,7 +37,7 @@ for i in $*; do
     print "<br><b>tool:</b> "a("nb")       
     print "</p>"
     print "<img alt=\"Lua\" src=\"https://img.shields.io/badge/lua-v5.4-blue\"> "
-    print "<a href=\"https://github.com/timm/keys/blob/master/LICENSE.md\"><img alt=\"License\" src=\"https://img.shields.io/badge/license-unlicense-red\"></a> "
+    print "<a href=\"https://github.com/timm/keys/blob/main/LICENSE.md\"><img alt=\"License\" src=\"https://img.shields.io/badge/license-unlicense-red\"></a> "
     print "<img src=\"https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet\"> "
     print "<img alt=\"Platform\" src=\"https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey\"> "
     print "<a href=\"https://github.com/timm/keys/actions\"><img src=\"https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg\"></a> "
