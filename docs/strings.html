@@ -49,15 +49,45 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-1">&#x00a7;</a>
               </div>
-              <p><strong>color(s: str, arg1, arg2. …)</strong>   </p>
+              <p><strong>color(s: str, arg1, arg2. …):str</strong>   </p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">color</span><span class="hljs-params">(s,...)</span></span>
   <span class="hljs-keyword">local</span> all = {red=<span class="hljs-number">31</span>, green=<span class="hljs-number">32</span>, yellow=<span class="hljs-number">33</span>, purple=<span class="hljs-number">34</span>}
-  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\27[1m\27[&#x27;</span>.. all[s] ..<span class="hljs-string">&#x27;m&#x27;</span>..<span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(...)..<span class="hljs-string">&#x27;\27[0m&#x27;</span>) <span class="hljs-keyword">end</span>
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\27[1m\27[&#x27;</span>.. all[s] ..<span class="hljs-string">&#x27;m&#x27;</span>..<span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(...)..<span class="hljs-string">&#x27;\27[0m&#x27;</span>) <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-2">&#x00a7;</a>
+              </div>
+              <p><strong>sfmt(fmt :string, ?arg1 :any, ?arg2 :any, …)</strong><br>format a string</p>
 
-<span class="hljs-keyword">return</span> {color=color}</pre></div></div>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sfmt</span><span class="hljs-params">(...)</span></span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(...) <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-3">&#x00a7;</a>
+              </div>
+              <p><strong>fmt(fmt :string, ?arg1 :any, ?arg2 :any, …)</strong><br>format and print t a string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fmt</span><span class="hljs-params">( ...)</span></span> <span class="hljs-built_in">io</span>.<span class="hljs-built_in">write</span>(sfmt(...)) <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">return</span> {color=color, fmt=fmt, sfmt=sfmt}</pre></div></div>
             
         </li>
         

@@ -103,6 +103,7 @@
 <span class="hljs-keyword">local</span> obj = <span class="hljs-built_in">require</span><span class="hljs-string">&quot;obj&quot;</span>
 <span class="hljs-keyword">local</span> csv = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;files&quot;</span>).csv 
 <span class="hljs-keyword">local</span> lst = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;list&quot;</span>)
+<span class="hljs-keyword">local</span> sfmt = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;strings&quot;</span>).sfmt
 <span class="hljs-keyword">local</span> isKlass, isY, isX, isNum, isSym, isSkip, isWhat</pre></div></div>
             
         </li>
@@ -118,7 +119,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:new</span><span class="hljs-params">(init,       new)</span></span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:new</span><span class="hljs-params">(inits,       new)</span></span>
   new = obj(<span class="hljs-built_in">self</span>,<span class="hljs-string">&quot;Sample&quot;</span>,
             {rows={},keep=<span class="hljs-literal">true</span>,cols={},names={},x={},y={}})
   <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(inits <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">do</span> new:add(row) <span class="hljs-keyword">end</span>  
@@ -169,6 +170,34 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-5">&#x00a7;</a>
               </div>
+              <p><strong>better(row1 :table, row2 :table) :boolean</strong><br>Zitler’s <a href="https://doi.org/10.1007/978-3-540-30217-9_84">continuous domination
+indicator</a>.  To check
+if <code>Row1</code> is better than <code>row2</code>, this function runs two “whatif” queries  (that
+jump from one individual to another or back again).  According to
+Zitler, the thing we like best is the thing that, on average,
+losses least across those whatifs.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:better</span><span class="hljs-params">(row1,row2,   e,w,s1,s2,n,a,b,s1,s2)</span></span>
+  what1, what2, n, e = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, #<span class="hljs-built_in">self</span>.y, <span class="hljs-built_in">math</span>.<span class="hljs-built_in">exp</span>(<span class="hljs-number">1</span>)
+  <span class="hljs-keyword">for</span> _,col <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(<span class="hljs-built_in">self</span>.y) <span class="hljs-keyword">do</span>
+    a    = col:norm(row1[col.at])
+    b    = col:norm(row2[col.at])
+    w    = col.w <span class="hljs-comment">-- w = (1,-1) if (maximizing,minimizing)</span>
+    what1= what1 - e^(col.w * (a - b) / n)
+    what2= what2 - e^(col.w * (b - a) / n) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> what1 / n &lt; what2 / n <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-6">&#x00a7;</a>
+              </div>
               <p><strong>clone(?inits : table={}) : Sample</strong><br>Return a table with the same  structure as <code>self</code>.
 If <code>inits</code> supplied, add that data to <code>new</code>.</p>
 
@@ -182,11 +211,11 @@ If <code>inits</code> supplied, add that data to <code>new</code>.</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-6">&#x00a7;</a>
+                <a class="ss" href="#section-7">&#x00a7;</a>
               </div>
               <p><strong>data(t : table)</strong><br>Update the column summaries. Maybe  keep the new row.</p>
 
@@ -202,11 +231,11 @@ If <code>inits</code> supplied, add that data to <code>new</code>.</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-7">&#x00a7;</a>
+                <a class="ss" href="#section-8">&#x00a7;</a>
               </div>
               <p><strong>dist(row1 : table, row2 : table, the : config) : num</strong><br>Apply Aha’s instance-based distance algorithm,
 <a href="https://link.springer.com/content/pdf/10.1007/BF00153759.pdf">section 2.4</a>.</p>
@@ -226,11 +255,92 @@ If <code>inits</code> supplied, add that data to <code>new</code>.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-8">&#x00a7;</a>
+                <a class="ss" href="#section-9">&#x00a7;</a>
+              </div>
+              <p><strong>div(rows : table, the : options) : table,table</strong><br>Split rows via their distance to two faraway points, </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:div</span><span class="hljs-params">(rows,the,         one,two,three,c,a,b,l,r)</span></span>
+  one = lst.any(rows)
+  two = <span class="hljs-built_in">self</span>:faraway(one, the, rows)
+  three = <span class="hljs-built_in">self</span>:faraway(two, the, rows)
+  c   = <span class="hljs-built_in">self</span>:dist(two, three, the)
+  tmp = {}
+  <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(rows) <span class="hljs-keyword">do</span>
+    a = <span class="hljs-built_in">self</span>:dist(row, two, the)
+    b = <span class="hljs-built_in">self</span>:dist(row, three, the)
+    tmp[<span class="hljs-number">1</span>+#tmp] = {row= row, 
+                   x  = (a^<span class="hljs-number">2</span> + c^<span class="hljs-number">2</span> - b^<span class="hljs-number">2</span>) / (<span class="hljs-number">2</span>*c)} 
+  <span class="hljs-keyword">end</span>
+  l,r = {},{}
+  <span class="hljs-keyword">for</span> i,rowx <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(lst.keysort(tmp,<span class="hljs-string">&quot;x&quot;</span>)) <span class="hljs-keyword">do</span>
+    <span class="hljs-built_in">table</span>.<span class="hljs-built_in">insert</span>( i&lt;=#rows//<span class="hljs-number">2</span> <span class="hljs-keyword">and</span> l <span class="hljs-keyword">or</span> r, rowx.row) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> l,r <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-10">&#x00a7;</a>
+              </div>
+              <p><strong>divs(the : options) : [table]</strong><br>Recursive divide rows down to size #rows^(the.enough=.5).
+Return  one table per leaf.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:divs</span><span class="hljs-params">(the,     out,enough,run,better)</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span><span class="hljs-params">(rows,lvl,      pre,l,r)</span></span>
+    <span class="hljs-keyword">if</span> the.loud <span class="hljs-keyword">then</span>  <span class="hljs-comment">-- very useful debugging aid </span>
+      pre = <span class="hljs-string">&quot;|.. &quot;</span>;<span class="hljs-built_in">print</span>(pre:<span class="hljs-built_in">rep</span>(lvl)..<span class="hljs-built_in">tostring</span>(#rows))
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> #rows &lt; enough <span class="hljs-keyword">then</span>
+      out[#out+<span class="hljs-number">1</span>] = <span class="hljs-built_in">self</span>:clone(rows)
+    <span class="hljs-keyword">else</span> 
+      l,r = <span class="hljs-built_in">self</span>:div(rows, the,cols)
+      run(l, lvl+<span class="hljs-number">1</span>)
+      run(r, lvl+<span class="hljs-number">1</span>)  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span> <span class="hljs-comment">--------------------------------</span>
+  out = {}
+  enough = <span class="hljs-number">2</span>*(#<span class="hljs-built_in">self</span>.rows)^the.enough
+  run(<span class="hljs-built_in">self</span>.rows, <span class="hljs-number">0</span>)
+  better = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(t1,t2)</span></span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>:better(t1:mid(), t2:mid()) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> lst.<span class="hljs-built_in">sort</span>(out, better) <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-11">&#x00a7;</a>
+              </div>
+              <p><strong>faraway(row : table, the : config, rows : table) : table</strong><br>Return  a row that is the.far-.9 distant from 
+row across a sample of the.samples=256 rows</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:faraway</span><span class="hljs-params">(row,the,rows,      out,all)</span></span>
+  all = <span class="hljs-built_in">self</span>:neighbors(row,the, 
+              lst.shuffle(rows, the.samples)) 
+  <span class="hljs-keyword">return</span> all[the.far*#all // <span class="hljs-number">1</span>].row <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-12">&#x00a7;</a>
               </div>
               <p><strong>from(file : str) : self</strong><br>Load rows from file into `self.</p>
 
@@ -243,11 +353,11 @@ If <code>inits</code> supplied, add that data to <code>new</code>.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-9">&#x00a7;</a>
+                <a class="ss" href="#section-13">&#x00a7;</a>
               </div>
               <p><strong>header(t : table)</strong><br>Read the magic symbols, make the appropriate columns,
 store them in the right  places.</p>
@@ -268,11 +378,11 @@ store them in the right  places.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-10">&#x00a7;</a>
+                <a class="ss" href="#section-14">&#x00a7;</a>
               </div>
               <p> <strong>knn(row : table, the : config)</strong><br>Return some conclusion  from the neighbors of <code>row</code>.</p>
 
@@ -280,7 +390,7 @@ store them in the right  places.</p>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:knn</span><span class="hljs-params">(row,the,     stats,kadd,all,one)</span></span>
   stats = Sym:new()
-  all= <span class="hljs-built_in">self</span>:neighbors(row,the)
+  all= <span class="hljs-built_in">self</span>:neighbors(row, the, <span class="hljs-built_in">self</span>.rows)
   <span class="hljs-keyword">for</span> i = <span class="hljs-number">2</span>,the.knn <span class="hljs-keyword">do</span> 
     one = all[i].row
     stats:add( one[<span class="hljs-built_in">self</span>.klass.at] ) <span class="hljs-keyword">end</span>
@@ -290,30 +400,64 @@ store them in the right  places.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-11">&#x00a7;</a>
+                <a class="ss" href="#section-15">&#x00a7;</a>
               </div>
-              <p><strong>neighbors(row1 : table, the : options) : num</strong>   </p>
+              <p> <strong>mid()</strong><br>Central tendancy</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:neighbors</span><span class="hljs-params">(row1,the,    t)</span></span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:mid</span><span class="hljs-params">()</span></span>
+  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.cols,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z:mid() <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-16">&#x00a7;</a>
+              </div>
+              <p><strong>neighbors(row1 : table, the : options) : num</strong>    </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:neighbors</span><span class="hljs-params">(row1,the,rows,    t)</span></span>
   t={}
-  <span class="hljs-keyword">for</span> _,row2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(<span class="hljs-built_in">self</span>.rows) <span class="hljs-keyword">do</span>
-     t[ <span class="hljs-number">1</span>+#t ] = {row=row2, dist=<span class="hljs-built_in">self</span>:dist(row1,row2,the)} <span class="hljs-keyword">end</span> 
+  <span class="hljs-keyword">for</span> _,row2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(rows <span class="hljs-keyword">or</span> <span class="hljs-built_in">self</span>.rows) <span class="hljs-keyword">do</span>
+     t[<span class="hljs-number">1</span>+#t]= {row=row2, dist=<span class="hljs-built_in">self</span>:dist(row1,row2,the)} <span class="hljs-keyword">end</span> 
   <span class="hljs-keyword">return</span> lst.keysort(t,<span class="hljs-string">&quot;dist&quot;</span>) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-12">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-12">&#x00a7;</a>
+                <a class="ss" href="#section-17">&#x00a7;</a>
+              </div>
+              <p><strong>y(fmt)</strong><br>Goal vars</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:ys</span><span class="hljs-params">(fmt)</span></span>
+  fmt = fmt <span class="hljs-keyword">or</span> <span class="hljs-string">&quot; %5.2f&quot;</span>
+  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.y,
+           <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> sfmt(fmt, z:mid()) <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-18">&#x00a7;</a>
               </div>
               <hr>
 
