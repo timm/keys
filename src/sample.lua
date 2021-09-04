@@ -44,16 +44,16 @@ function Sample:add(t)
 -- indicator](https://doi.org/10.1007/978-3-540-30217-9_84).  To check
 -- if `Row1` is better than `row2`, this function runs two "whatif" queries  (that
 -- jump from one individual to another or back again).  According to
--- Zitler, the thing we like best is the thing losses least across those
--- whatifs.
-function Sample:better(row1,row2,   w,s1,s2,n,a,b,s1,s2)
-  what1, what2, n = 0, 0, #self.y
+-- Zitler, the thing we like best is the thing that, on average,
+-- losses least across those whatifs.
+function Sample:better(row1,row2,   e,w,s1,s2,n,a,b,s1,s2)
+  what1, what2, n, e = 0, 0, #self.y, math.exp(1)
   for _,col in pairs(self.y) do
-    w    = col.w -- w = (1,-1) if (maximizing,minimizing)
     a    = col:norm(row1[col.at])
     b    = col:norm(row2[col.at])
-    what1= what1 - math.exp(1)^(col.w * (a - b) / n)
-    what2= what2 - math.exp(1)^(col.w * (b - a) / n) end
+    w    = col.w -- w = (1,-1) if (maximizing,minimizing)
+    what1= what1 - e^(col.w * (a - b) / n)
+    what2= what2 - e^(col.w * (b - a) / n) end
   return what1 / n < what2 / n end
 
 -- **clone(?inits : table={}) : Sample**    
@@ -108,7 +108,7 @@ function Sample:div(rows,the,         one,two,three,c,a,b,l,r)
 -- **divs(the : options) : [table]**    
 -- Recursive divide rows down to size #rows^(the.enough=.5).
 -- Return  one table per leaf.
-function Sample:divs(the,    out, enough,run)
+function Sample:divs(the,     out,enough,run,better)
   function run(rows,lvl,      pre,l,r)
     if the.loud then  -- very useful debugging aid 
       pre = "|.. ";print(pre:rep(lvl)..tostring(#rows))
@@ -123,7 +123,8 @@ function Sample:divs(the,    out, enough,run)
   out = {}
   enough = 2*(#self.rows)^the.enough
   run(self.rows, 0)
-  return out end
+  better = function(t1,t2) return self:better(t1:mid(), t2:mid()) end
+  return lst.sort(out, better) end
 
 -- **faraway(row : table, the : config, rows : table) : table**    
 -- Return  a row that is the.far-.9 distant from 
