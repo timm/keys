@@ -1,6 +1,7 @@
 -- # class Sample
--- |**Does** | 1      |: stores some rows|
+-- |**Class**|Sample  |: category= data |
 -- |---------|-------:|------------------|
+-- |**Does** | 1      |: stores some rows|
 -- |         | 2      |: summarizes the rows in columns|
 -- |**Has**  | cols   |: all the columns|  
 -- |         | keep   |: if true then keep input row into rows|
@@ -19,14 +20,11 @@ local lst = require("list")
 local sfmt = require("strings").sfmt
 local isKlass, isY, isX, isNum, isSym, isSkip, isWhat
 
--- **new(?init : table = {}) : Sample**     
-function Sample:new(inits,       new)
-  new = obj(self,"Sample",
-            {rows={},keep=true,cols={},names={},x={},y={}})
-  for _,row in pairs(inits or {}) do new:add(row) end  
-  return new end
-
--- Structure of the column headers.
+-- -----
+-- ## Headers
+-- The first row of data names the columns.     
+-- Those names
+-- contain certain magic symbols.    
 function isSkip(s)  return s:find("?") end
 function isKlass(s) return s:find("!") end
 function isNum(s)   return s:sub(1,1):match("[A-Z]") end
@@ -34,15 +32,69 @@ function isY(s)     return s:find("+") or s:find("-") or isKlass(s) end
 function isWhat(s)  
   return isSkip(s) and Skip or (isNum(s) and Num or Sym) end
 
+-- -----
+-- ## Create
+-- **new(?init : table = {}) : Sample**     
+-- Create mew table.
+-- If `inits` supplied, add that data to `new`.
+-- In this use case, `inits` **must** contain column  headers at item #1.
+function Sample:new(inits,       new)
+  new = obj(self,"Sample",
+            {rows={},keep=true,cols={},names={},x={},y={}})
+  for _,row in pairs(inits or {}) do new:add(row) end  
+  return new end
+
+-- **clone(?inits : table={}) : Sample**    
+-- Return a table with the same  structure as `self`.
+-- If `inits` supplied, add that data to `new`.
+-- In this use case, `inits` should **not** contain a class header.
+function  Sample:clone(inits,    new)
+  new = Sample:new({self.names})
+  for _,row in pairs(inits or {}) do new:add(row) end
+  return new end
+
+-- **from(file : str) : self**   
+-- Load rows from file into `self.
+function Sample:from(file) 
+  for row in csv(file) do self:add(row) end 
+  return self end
+
+-- **header(t : table)**    
+-- Read the magic symbols, make the appropriate columns,
+-- store them in the right  places.
+function Sample:header(t,   what,new,tmp)
+  self.names = t
+  for at,name in pairs(t)  do
+    what = isWhat(name)
+    new  = what:new(at,name) 
+    self.cols[1+#self.cols] = new
+    if not isSkip(name) then
+      tmp= self[isY(name) and  "y" or "x"]
+      tmp[ 1+#tmp ] = new
+      if isKlass(name) then self.klass = new end end end end
+
+-- -----
+-- ## Update
 -- **add(t : table)**    
 -- If this is the first `row`, create the header. Else, add new data.
 function Sample:add(t)
    if #self.names > 0 then self:data(t) else self:header(t) end end
 
+-- **data(t : table)**   
+-- Update the column summaries. Maybe  keep the new row.
+function Sample:data(t,    row)
+  for _,col in pairs(self.cols) do -- update column summaries
+    col:add( t[col.at] ) end
+  if self.keep then  -- update rows
+    self.rows[ 1 + #self.rows ] = t end 
+  return row end
+
+-- ---------
+-- ## Query 
 -- **better(row1 :table, row2 :table) :boolean**     
 -- Zitler's [continuous domination
 -- indicator](https://doi.org/10.1007/978-3-540-30217-9_84).  To check
--- if `Row1` is better than `row2`, this function runs two "whatif" queries  (that
+-- if `row1` is better than `row2`, this function runs two "whatif" queries  (that
 -- jump from one individual to another or back again).  According to
 -- Zitler, the thing we like best is the thing that, on average,
 -- losses least across those whatifs.
@@ -56,23 +108,20 @@ function Sample:better(row1,row2,   e,w,s1,s2,n,a,b,s1,s2)
     what2= what2 - e^(col.w * (b - a) / n) end
   return what1 / n < what2 / n end
 
--- **clone(?inits : table={}) : Sample**    
--- Return a table with the same  structure as `self`.
--- If `inits` supplied, add that data to `new`.
-function  Sample:clone(inits,    new)
-  new = Sample:new({self.names})
-  for _,row in pairs(inits or {}) do new:add(row) end
-  return new end
+--  **mid()**     
+-- Central tendancy
+function Sample:mid()
+  return lst.map(self.cols,function(z) return z:mid() end) end
 
--- **data(t : table)**   
--- Update the column summaries. Maybe  keep the new row.
-function Sample:data(t,    row)
-  for _,col in pairs(self.cols) do -- update column summaries
-    col:add( t[col.at] ) end
-  if self.keep then  -- update rows
-    self.rows[ 1 + #self.rows ] = t end 
-  return row end
+-- **y(fmt)**    
+-- Goal vars
+function Sample:ys(fmt)
+  fmt = fmt or " %5.2f"
+  return lst.map(self.y,
+           function(z) return sfmt(fmt, z:mid()) end) end
 
+-- ------
+-- ## Distance 
 -- **dist(row1 : table, row2 : table, the : config) : num**  
 -- Apply Aha's instance-based distance algorithm,
 -- [section 2.4](https://link.springer.com/content/pdf/10.1007/BF00153759.pdf).
@@ -106,7 +155,7 @@ function Sample:div(rows,the,         one,two,three,c,a,b,l,r)
   return l,r end
 
 -- **divs(the : options) : [table]**    
--- Recursive divide rows down to size #rows^(the.enough=.5).
+-- Recursive divide rows down to size #rows^(the.enough=.5).    
 -- Return  one table per leaf.
 function Sample:divs(the,     out,enough,run,better)
   function run(rows,lvl,      pre,l,r)
@@ -134,26 +183,6 @@ function Sample:faraway(row,the,rows,      out,all)
               lst.shuffle(rows, the.samples)) 
   return all[the.far*#all // 1].row end
 
--- **from(file : str) : self**   
--- Load rows from file into `self.
-function Sample:from(file) 
-  for row in csv(file) do self:add(row) end 
-  return self end
-
--- **header(t : table)**    
--- Read the magic symbols, make the appropriate columns,
--- store them in the right  places.
-function Sample:header(t,   what,new,tmp)
-  self.names = t
-  for at,name in pairs(t)  do
-    what = isWhat(name)
-    new  = what:new(at,name) 
-    self.cols[1+#self.cols] = new
-    if not isSkip(name) then
-      tmp= self[isY(name) and  "y" or "x"]
-      tmp[ 1+#tmp ] = new
-      if isKlass(name) then self.klass = new end end end end
-
 --  **knn(row : table, the : config)**   
 -- Return some conclusion  from the neighbors of `row`.
 function Sample:knn(row,the,     stats,kadd,all,one)
@@ -165,11 +194,6 @@ function Sample:knn(row,the,     stats,kadd,all,one)
   kadd={mode=function() return stats.mode end}
   return kadd[the.kadd]() end
 
---  **mid()**     
--- Central tendancy
-function Sample:mid()
-  return lst.map(self.cols,function(z) return z:mid() end) end
-
 -- **neighbors(row1 : table, the : options) : num**    
 function Sample:neighbors(row1,the,rows,    t)
   t={}
@@ -177,12 +201,9 @@ function Sample:neighbors(row1,the,rows,    t)
      t[1+#t]= {row=row2, dist=self:dist(row1,row2,the)} end 
   return lst.keysort(t,"dist") end
 
--- **y(fmt)**    
--- Goal vars
-function Sample:ys(fmt)
-  fmt = fmt or " %5.2f"
-  return lst.map(self.y,
-           function(z) return sfmt(fmt, z:mid()) end) end
 
 --  ------------
+-- ## Returns
+
+
 return Sample

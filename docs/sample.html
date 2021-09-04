@@ -21,9 +21,9 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-1">&#x00a7;</a>
               </div>
+              <h1 id="class-sample">class Sample</h1>
 <a href="http://menzies.us/keys"><img align=right width=150 src="duo101a.png"></a>
 <a href="https://github.com/timm/keys"               class="github-corner" aria-label="View source on GitHub"><svg               width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C;               color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path               d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path               d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-&nbsp;<br> 
 <p style="text-align:left;">
     <b>Duo101. data miners using/used-by optimizers</b>
 <br>&copy;2021 <a href="http://menzies.us">Tim Menzies</a>, timm@ieee.org
@@ -36,23 +36,27 @@
 <br><b>cli:</b> <a href="about.html">about</a>, <a href="cli.html">cli</a>
 <br><b>tool:</b> <a href="nb.html">nb</a>
 </p>
-<br clear=all>
 <img alt="Lua" src="https://img.shields.io/badge/lua-v5.4-blue"> 
 <a href="https://github.com/timm/keys/blob/master/LICENSE.md"><img alt="License" src="https://img.shields.io/badge/license-unlicense-red"></a> 
 <img src="https://img.shields.io/badge/purpose-ai%20,%20se-blueviolet"> 
 <img alt="Platform" src="https://img.shields.io/badge/platform-osx%20,%20linux-lightgrey"> 
 <a href="https://github.com/timm/keys/actions"><img src="https://github.com/timm/keys/actions/workflows/unit-test.yml/badge.svg"></a> 
 <a href="https://zenodo.org/badge/latestdoi/318809834"><img src="https://zenodo.org/badge/318809834.svg"></a>
-              <h1 id="class-sample">class Sample</h1>
+<hr>
 <table>
 <thead>
 <tr>
-<th><strong>Does</strong></th>
-<th align="right">1</th>
-<th>: stores some rows</th>
+<th><strong>Class</strong></th>
+<th align="right">Sample</th>
+<th>: category= data</th>
 </tr>
 </thead>
 <tbody><tr>
+<td><strong>Does</strong></td>
+<td align="right">1</td>
+<td>: stores some rows</td>
+</tr>
+<tr>
 <td></td>
 <td align="right">2</td>
 <td>: summarizes the rows in columns</td>
@@ -115,15 +119,9 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p><strong>new(?init : table = {}) : Sample</strong>     </p>
+              <hr>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:new</span><span class="hljs-params">(inits,       new)</span></span>
-  new = obj(<span class="hljs-built_in">self</span>,<span class="hljs-string">&quot;Sample&quot;</span>,
-            {rows={},keep=<span class="hljs-literal">true</span>,cols={},names={},x={},y={}})
-  <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(inits <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">do</span> new:add(row) <span class="hljs-keyword">end</span>  
-  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -134,7 +132,9 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
-              <p>Structure of the column headers.</p>
+              <h2 id="headers">Headers</h2>
+<p>The first row of data names the columns.<br>Those names
+contain certain magic symbols.    </p>
 
             </div>
             
@@ -154,12 +154,9 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-4">&#x00a7;</a>
               </div>
-              <p><strong>add(t : table)</strong><br>If this is the first <code>row</code>, create the header. Else, add new data.</p>
+              <hr>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:add</span><span class="hljs-params">(t)</span></span>
-   <span class="hljs-keyword">if</span> #<span class="hljs-built_in">self</span>.names &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">self</span>:data(t) <span class="hljs-keyword">else</span> <span class="hljs-built_in">self</span>:header(t) <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -170,9 +167,157 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-5">&#x00a7;</a>
               </div>
-              <p><strong>better(row1 :table, row2 :table) :boolean</strong><br>Zitler’s <a href="https://doi.org/10.1007/978-3-540-30217-9_84">continuous domination
+              <h2 id="create">Create</h2>
+<p><strong>new(?init : table = {}) : Sample</strong><br>Create mew table.
+If <code>inits</code> supplied, add that data to <code>new</code>.
+In this use case, <code>inits</code> <strong>must</strong> contain column  headers at item #1.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:new</span><span class="hljs-params">(inits,       new)</span></span>
+  new = obj(<span class="hljs-built_in">self</span>,<span class="hljs-string">&quot;Sample&quot;</span>,
+            {rows={},keep=<span class="hljs-literal">true</span>,cols={},names={},x={},y={}})
+  <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(inits <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">do</span> new:add(row) <span class="hljs-keyword">end</span>  
+  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-6">&#x00a7;</a>
+              </div>
+              <p><strong>clone(?inits : table={}) : Sample</strong><br>Return a table with the same  structure as <code>self</code>.
+If <code>inits</code> supplied, add that data to <code>new</code>.
+In this use case, <code>inits</code> should <strong>not</strong> contain a class header.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span>  <span class="hljs-title">Sample:clone</span><span class="hljs-params">(inits,    new)</span></span>
+  new = Sample:new({<span class="hljs-built_in">self</span>.names})
+  <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(inits <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">do</span> new:add(row) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-7">&#x00a7;</a>
+              </div>
+              <p><strong>from(file : str) : self</strong><br>Load rows from file into `self.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:from</span><span class="hljs-params">(file)</span></span> 
+  <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> csv(file) <span class="hljs-keyword">do</span> <span class="hljs-built_in">self</span>:add(row) <span class="hljs-keyword">end</span> 
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span> <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-8">&#x00a7;</a>
+              </div>
+              <p><strong>header(t : table)</strong><br>Read the magic symbols, make the appropriate columns,
+store them in the right  places.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:header</span><span class="hljs-params">(t,   what,new,tmp)</span></span>
+  <span class="hljs-built_in">self</span>.names = t
+  <span class="hljs-keyword">for</span> at,name <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t)  <span class="hljs-keyword">do</span>
+    what = isWhat(name)
+    new  = what:new(at,name) 
+    <span class="hljs-built_in">self</span>.cols[<span class="hljs-number">1</span>+#<span class="hljs-built_in">self</span>.cols] = new
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> isSkip(name) <span class="hljs-keyword">then</span>
+      tmp= <span class="hljs-built_in">self</span>[isY(name) <span class="hljs-keyword">and</span>  <span class="hljs-string">&quot;y&quot;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;x&quot;</span>]
+      tmp[ <span class="hljs-number">1</span>+#tmp ] = new
+      <span class="hljs-keyword">if</span> isKlass(name) <span class="hljs-keyword">then</span> <span class="hljs-built_in">self</span>.klass = new <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-9">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-10">&#x00a7;</a>
+              </div>
+              <h2 id="update">Update</h2>
+<p><strong>add(t : table)</strong><br>If this is the first <code>row</code>, create the header. Else, add new data.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:add</span><span class="hljs-params">(t)</span></span>
+   <span class="hljs-keyword">if</span> #<span class="hljs-built_in">self</span>.names &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">self</span>:data(t) <span class="hljs-keyword">else</span> <span class="hljs-built_in">self</span>:header(t) <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-11">&#x00a7;</a>
+              </div>
+              <p><strong>data(t : table)</strong><br>Update the column summaries. Maybe  keep the new row.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:data</span><span class="hljs-params">(t,    row)</span></span>
+  <span class="hljs-keyword">for</span> _,col <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(<span class="hljs-built_in">self</span>.cols) <span class="hljs-keyword">do</span> <span class="hljs-comment">-- update column summaries</span>
+    col:add( t[col.at] ) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-built_in">self</span>.keep <span class="hljs-keyword">then</span>  <span class="hljs-comment">-- update rows</span>
+    <span class="hljs-built_in">self</span>.rows[ <span class="hljs-number">1</span> + #<span class="hljs-built_in">self</span>.rows ] = t <span class="hljs-keyword">end</span> 
+  <span class="hljs-keyword">return</span> row <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-12">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-13">&#x00a7;</a>
+              </div>
+              <h2 id="query">Query</h2>
+<p><strong>better(row1 :table, row2 :table) :boolean</strong><br>Zitler’s <a href="https://doi.org/10.1007/978-3-540-30217-9_84">continuous domination
 indicator</a>.  To check
-if <code>Row1</code> is better than <code>row2</code>, this function runs two “whatif” queries  (that
+if <code>row1</code> is better than <code>row2</code>, this function runs two “whatif” queries  (that
 jump from one individual to another or back again).  According to
 Zitler, the thing we like best is the thing that, on average,
 losses least across those whatifs.</p>
@@ -192,52 +337,61 @@ losses least across those whatifs.</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-6">&#x00a7;</a>
+                <a class="ss" href="#section-14">&#x00a7;</a>
               </div>
-              <p><strong>clone(?inits : table={}) : Sample</strong><br>Return a table with the same  structure as <code>self</code>.
-If <code>inits</code> supplied, add that data to <code>new</code>.</p>
+              <p> <strong>mid()</strong><br>Central tendancy</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span>  <span class="hljs-title">Sample:clone</span><span class="hljs-params">(inits,    new)</span></span>
-  new = Sample:new({<span class="hljs-built_in">self</span>.names})
-  <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(inits <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">do</span> new:add(row) <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:mid</span><span class="hljs-params">()</span></span>
+  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.cols,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z:mid() <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-7">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-7">&#x00a7;</a>
+                <a class="ss" href="#section-15">&#x00a7;</a>
               </div>
-              <p><strong>data(t : table)</strong><br>Update the column summaries. Maybe  keep the new row.</p>
+              <p><strong>y(fmt)</strong><br>Goal vars</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:data</span><span class="hljs-params">(t,    row)</span></span>
-  <span class="hljs-keyword">for</span> _,col <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(<span class="hljs-built_in">self</span>.cols) <span class="hljs-keyword">do</span> <span class="hljs-comment">-- update column summaries</span>
-    col:add( t[col.at] ) <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">if</span> <span class="hljs-built_in">self</span>.keep <span class="hljs-keyword">then</span>  <span class="hljs-comment">-- update rows</span>
-    <span class="hljs-built_in">self</span>.rows[ <span class="hljs-number">1</span> + #<span class="hljs-built_in">self</span>.rows ] = t <span class="hljs-keyword">end</span> 
-  <span class="hljs-keyword">return</span> row <span class="hljs-keyword">end</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:ys</span><span class="hljs-params">(fmt)</span></span>
+  fmt = fmt <span class="hljs-keyword">or</span> <span class="hljs-string">&quot; %5.2f&quot;</span>
+  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.y,
+           <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> sfmt(fmt, z:mid()) <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-8">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-8">&#x00a7;</a>
+                <a class="ss" href="#section-16">&#x00a7;</a>
               </div>
-              <p><strong>dist(row1 : table, row2 : table, the : config) : num</strong><br>Apply Aha’s instance-based distance algorithm,
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-17">&#x00a7;</a>
+              </div>
+              <h2 id="distance">Distance</h2>
+<p><strong>dist(row1 : table, row2 : table, the : config) : num</strong><br>Apply Aha’s instance-based distance algorithm,
 <a href="https://link.springer.com/content/pdf/10.1007/BF00153759.pdf">section 2.4</a>.</p>
 
             </div>
@@ -255,11 +409,11 @@ If <code>inits</code> supplied, add that data to <code>new</code>.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-9">&#x00a7;</a>
+                <a class="ss" href="#section-18">&#x00a7;</a>
               </div>
               <p><strong>div(rows : table, the : options) : table,table</strong><br>Split rows via their distance to two faraway points, </p>
 
@@ -285,14 +439,13 @@ If <code>inits</code> supplied, add that data to <code>new</code>.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-10">&#x00a7;</a>
+                <a class="ss" href="#section-19">&#x00a7;</a>
               </div>
-              <p><strong>divs(the : options) : [table]</strong><br>Recursive divide rows down to size #rows^(the.enough=.5).
-Return  one table per leaf.</p>
+              <p><strong>divs(the : options) : [table]</strong><br>Recursive divide rows down to size #rows^(the.enough=.5).<br>Return  one table per leaf.</p>
 
             </div>
             
@@ -317,11 +470,11 @@ Return  one table per leaf.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-11">&#x00a7;</a>
+                <a class="ss" href="#section-20">&#x00a7;</a>
               </div>
               <p><strong>faraway(row : table, the : config, rows : table) : table</strong><br>Return  a row that is the.far-.9 distant from 
 row across a sample of the.samples=256 rows</p>
@@ -336,53 +489,11 @@ row across a sample of the.samples=256 rows</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-12">&#x00a7;</a>
-              </div>
-              <p><strong>from(file : str) : self</strong><br>Load rows from file into `self.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:from</span><span class="hljs-params">(file)</span></span> 
-  <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> csv(file) <span class="hljs-keyword">do</span> <span class="hljs-built_in">self</span>:add(row) <span class="hljs-keyword">end</span> 
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span> <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-13">&#x00a7;</a>
-              </div>
-              <p><strong>header(t : table)</strong><br>Read the magic symbols, make the appropriate columns,
-store them in the right  places.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:header</span><span class="hljs-params">(t,   what,new,tmp)</span></span>
-  <span class="hljs-built_in">self</span>.names = t
-  <span class="hljs-keyword">for</span> at,name <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(t)  <span class="hljs-keyword">do</span>
-    what = isWhat(name)
-    new  = what:new(at,name) 
-    <span class="hljs-built_in">self</span>.cols[<span class="hljs-number">1</span>+#<span class="hljs-built_in">self</span>.cols] = new
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> isSkip(name) <span class="hljs-keyword">then</span>
-      tmp= <span class="hljs-built_in">self</span>[isY(name) <span class="hljs-keyword">and</span>  <span class="hljs-string">&quot;y&quot;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;x&quot;</span>]
-      tmp[ <span class="hljs-number">1</span>+#tmp ] = new
-      <span class="hljs-keyword">if</span> isKlass(name) <span class="hljs-keyword">then</span> <span class="hljs-built_in">self</span>.klass = new <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-14">&#x00a7;</a>
+                <a class="ss" href="#section-21">&#x00a7;</a>
               </div>
               <p> <strong>knn(row : table, the : config)</strong><br>Return some conclusion  from the neighbors of <code>row</code>.</p>
 
@@ -400,27 +511,11 @@ store them in the right  places.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-15">&#x00a7;</a>
-              </div>
-              <p> <strong>mid()</strong><br>Central tendancy</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:mid</span><span class="hljs-params">()</span></span>
-  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.cols,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z:mid() <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-16">&#x00a7;</a>
+                <a class="ss" href="#section-22">&#x00a7;</a>
               </div>
               <p><strong>neighbors(row1 : table, the : options) : num</strong>    </p>
 
@@ -435,35 +530,20 @@ store them in the right  places.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-17">&#x00a7;</a>
-              </div>
-              <p><strong>y(fmt)</strong><br>Goal vars</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:ys</span><span class="hljs-params">(fmt)</span></span>
-  fmt = fmt <span class="hljs-keyword">or</span> <span class="hljs-string">&quot; %5.2f&quot;</span>
-  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.y,
-           <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> sfmt(fmt, z:mid()) <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-18">&#x00a7;</a>
+                <a class="ss" href="#section-23">&#x00a7;</a>
               </div>
               <hr>
+<h2 id="returns">Returns</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">return</span> Sample</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+
+<span class="hljs-keyword">return</span> Sample</pre></div></div>
             
         </li>
         
