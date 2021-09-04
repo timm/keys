@@ -189,26 +189,6 @@ In this use case, <code>inits</code> <strong>must</strong> contain column  heade
               <div class="sswrap ">
                 <a class="ss" href="#section-6">&#x00a7;</a>
               </div>
-              <p><strong>clone(?inits : table={}) : Sample</strong><br>Return a table with the same  structure as <code>self</code>.
-If <code>inits</code> supplied, add that data to <code>new</code>.
-In this use case, <code>inits</code> should <strong>not</strong> contain a class header.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span>  <span class="hljs-title">Sample:clone</span><span class="hljs-params">(inits,    new)</span></span>
-  new = Sample:new({<span class="hljs-built_in">self</span>.names})
-  <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(inits <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">do</span> new:add(row) <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-7">&#x00a7;</a>
-              </div>
               <p><strong>from(file : str) : self</strong><br>Load rows from file into `self.</p>
 
             </div>
@@ -220,11 +200,11 @@ In this use case, <code>inits</code> should <strong>not</strong> contain a class
         </li>
         
         
-        <li id="section-8">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-8">&#x00a7;</a>
+                <a class="ss" href="#section-7">&#x00a7;</a>
               </div>
               <p><strong>header(t : table)</strong><br>Read the magic symbols, make the appropriate columns,
 store them in the right  places.</p>
@@ -245,15 +225,36 @@ store them in the right  places.</p>
         </li>
         
         
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-8">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
         <li id="section-9">
             <div class="annotation">
               
               <div class="sswrap ">
                 <a class="ss" href="#section-9">&#x00a7;</a>
               </div>
-              <hr>
+              <h2 id="copy">Copy</h2>
+<p><strong>clone(?inits : table={}) : Sample</strong><br>Return a table with the same  structure as <code>self</code>.
+If <code>inits</code> supplied, add that data to <code>new</code>.
+In this use case, <code>inits</code> should <strong>not</strong> contain a class header.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span>  <span class="hljs-title">Sample:clone</span><span class="hljs-params">(inits,    new)</span></span>
+  new = Sample:new({<span class="hljs-built_in">self</span>.names})
+  <span class="hljs-keyword">for</span> _,row <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(inits <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">do</span> new:add(row) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -263,6 +264,19 @@ store them in the right  places.</p>
               
               <div class="sswrap ">
                 <a class="ss" href="#section-10">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-11">&#x00a7;</a>
               </div>
               <h2 id="update">Update</h2>
 <p><strong>add(t : table)</strong><br>If this is the first <code>row</code>, create the header. Else, add new data.</p>
@@ -275,11 +289,11 @@ store them in the right  places.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-11">&#x00a7;</a>
+                <a class="ss" href="#section-12">&#x00a7;</a>
               </div>
               <p><strong>data(t : table)</strong><br>Update the column summaries. Maybe  keep the new row.</p>
 
@@ -295,11 +309,11 @@ store them in the right  places.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-12">&#x00a7;</a>
+                <a class="ss" href="#section-13">&#x00a7;</a>
               </div>
               <hr>
 
@@ -308,11 +322,11 @@ store them in the right  places.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-13">&#x00a7;</a>
+                <a class="ss" href="#section-14">&#x00a7;</a>
               </div>
               <h2 id="query">Query</h2>
 <p><strong>better(row1 :table, row2 :table) :boolean</strong><br>Zitler’s <a href="https://doi.org/10.1007/978-3-540-30217-9_84">continuous domination
@@ -337,11 +351,11 @@ losses least across those whatifs.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-14">&#x00a7;</a>
+                <a class="ss" href="#section-15">&#x00a7;</a>
               </div>
               <p> <strong>mid()</strong><br>Report central tendany of all columns.</p>
 
@@ -353,33 +367,21 @@ losses least across those whatifs.</p>
         </li>
         
         
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-15">&#x00a7;</a>
-              </div>
-              <p><strong>ys(fmt)</strong><br>Report central tendany of goals.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:ys</span><span class="hljs-params">(fmt)</span></span>
-  fmt = fmt <span class="hljs-keyword">or</span> <span class="hljs-string">&quot; %5.2f&quot;</span>
-  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.y,
-           <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> sfmt(fmt, z:mid()) <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-16">
             <div class="annotation">
               
               <div class="sswrap ">
                 <a class="ss" href="#section-16">&#x00a7;</a>
               </div>
-              <hr>
+              <p><strong>ys(fmt)</strong><br>Report central tendany of goals.</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Sample:ys</span><span class="hljs-params">(fmt)</span></span>
+  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.y,<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> z:mid() <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span>
+  fmt = fmt <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;%5.2f &quot;</span>
+  <span class="hljs-keyword">return</span> lst.map(<span class="hljs-built_in">self</span>.y,
+           <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(z)</span></span> <span class="hljs-keyword">return</span> sfmt(fmt, z:mid()) <span class="hljs-keyword">end</span>) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -389,6 +391,19 @@ losses least across those whatifs.</p>
               
               <div class="sswrap ">
                 <a class="ss" href="#section-17">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-18">&#x00a7;</a>
               </div>
               <h2 id="distance">Distance</h2>
 <p><strong>dist(row1 : table, row2 : table, the : config) : num</strong><br>Apply Aha’s instance-based distance algorithm,
@@ -409,11 +424,11 @@ losses least across those whatifs.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-18">&#x00a7;</a>
+                <a class="ss" href="#section-19">&#x00a7;</a>
               </div>
               <p><strong>div(rows : table, the : options) : table,table</strong><br>Split rows via their distance to two faraway points, </p>
 
@@ -439,11 +454,11 @@ losses least across those whatifs.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-19">&#x00a7;</a>
+                <a class="ss" href="#section-20">&#x00a7;</a>
               </div>
               <p><strong>divs(the : options) : [table]</strong><br>Recursive divide rows down to size #rows^(the.enough=.5).<br>Return  one table per leaf.</p>
 
@@ -470,11 +485,11 @@ losses least across those whatifs.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-20">&#x00a7;</a>
+                <a class="ss" href="#section-21">&#x00a7;</a>
               </div>
               <p><strong>faraway(row : table, the : config, rows : table) : table</strong><br>Return  a row that is the.far-.9 distant from 
 row across a sample of the.samples=256 rows</p>
@@ -489,11 +504,11 @@ row across a sample of the.samples=256 rows</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-21">&#x00a7;</a>
+                <a class="ss" href="#section-22">&#x00a7;</a>
               </div>
               <p> <strong>knn(row : table, the : config)</strong><br>Return some conclusion  from the neighbors of <code>row</code>.</p>
 
@@ -511,11 +526,11 @@ row across a sample of the.samples=256 rows</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-22">&#x00a7;</a>
+                <a class="ss" href="#section-23">&#x00a7;</a>
               </div>
               <p><strong>neighbors(row1 : table, the : options) : num</strong>    </p>
 
@@ -530,11 +545,11 @@ row across a sample of the.samples=256 rows</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-23">&#x00a7;</a>
+                <a class="ss" href="#section-24">&#x00a7;</a>
               </div>
               <hr>
 
@@ -543,11 +558,11 @@ row across a sample of the.samples=256 rows</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-24">&#x00a7;</a>
+                <a class="ss" href="#section-25">&#x00a7;</a>
               </div>
               
             </div>

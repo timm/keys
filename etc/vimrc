@@ -158,6 +158,10 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_python_checkers = ['python']
 let g:syntastic_python_python_exec = 'python3'
 let g:syntastic_loc_list_height=5
+:set relativenumber
+:set rnu
+set cursorline
+"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 "autocmd BufWritePost *.py call Flake8()
 
 " au VimEnter * RainbowParenthesesToggle

@@ -44,15 +44,6 @@ function Sample:new(inits,       new)
   for _,row in pairs(inits or {}) do new:add(row) end  
   return new end
 
--- **clone(?inits : table={}) : Sample**    
--- Return a table with the same  structure as `self`.
--- If `inits` supplied, add that data to `new`.
--- In this use case, `inits` should **not** contain a class header.
-function  Sample:clone(inits,    new)
-  new = Sample:new({self.names})
-  for _,row in pairs(inits or {}) do new:add(row) end
-  return new end
-
 -- **from(file : str) : self**   
 -- Load rows from file into `self.
 function Sample:from(file) 
@@ -72,6 +63,17 @@ function Sample:header(t,   what,new,tmp)
       tmp= self[isY(name) and  "y" or "x"]
       tmp[ 1+#tmp ] = new
       if isKlass(name) then self.klass = new end end end end
+
+-- -----
+-- ## Copy
+-- **clone(?inits : table={}) : Sample**    
+-- Return a table with the same  structure as `self`.
+-- If `inits` supplied, add that data to `new`.
+-- In this use case, `inits` should **not** contain a class header.
+function  Sample:clone(inits,    new)
+  new = Sample:new({self.names})
+  for _,row in pairs(inits or {}) do new:add(row) end
+  return new end
 
 -- -----
 -- ## Update
@@ -116,9 +118,7 @@ function Sample:mid()
 -- **ys(fmt)**    
 -- Report central tendany of goals.
 function Sample:ys(fmt)
-  fmt = fmt or " %5.2f"
-  return lst.map(self.y,
-           function(z) return sfmt(fmt, z:mid()) end) end
+  return lst.map(self.y,function(z) return z:mid() end) end
 
 -- ------
 -- ## Distance 

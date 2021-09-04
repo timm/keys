@@ -31,5 +31,6 @@ do
 
 do
   s = Sample:new():from("../data/auto93.csv")
+  lst.pump(lst.map(s.y, function(z) return z.name end))
   for _,t in pairs(s:divs(the)) do
-    lst.pump(t:ys()) end end
+    lst.pump(lst.fmts(t:ys())) end end
