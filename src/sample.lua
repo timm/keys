@@ -16,6 +16,7 @@ local Skip= require"skip"
 local obj = require"obj"
 local csv = require("files").csv 
 local lst = require("list")
+local sfmt = require("strings").sfmt
 local isKlass, isY, isX, isNum, isSym, isSkip, isWhat
 
 -- **new(?init : table = {}) : Sample**     
@@ -37,6 +38,23 @@ function isWhat(s)
 -- If this is the first `row`, create the header. Else, add new data.
 function Sample:add(t)
    if #self.names > 0 then self:data(t) else self:header(t) end end
+
+-- **better(row1 :table, row2 :table) :boolean**     
+-- Zitler's [continuous domination
+-- indicator](https://doi.org/10.1007/978-3-540-30217-9_84).  To check
+-- if `Row1` is better than `row2`, this function runs two "whatif" queries  (that
+-- jump from one individual to another or back again).  According to
+-- Zitler, the thing we like best is the thing losses least across those
+-- whatifs.
+function Sample:better(row1,row2,   w,s1,s2,n,a,b,s1,s2)
+  what1, what2, n = 0, 0, #self.y
+  for _,col in pairs(self.y) do
+    w    = col.w -- w = (1,-1) if (maximizing,minimizing)
+    a    = col:norm(row1[col.at])
+    b    = col:norm(row2[col.at])
+    what1= what1 - math.exp(1)^(col.w * (a - b) / n)
+    what2= what2 - math.exp(1)^(col.w * (b - a) / n) end
+  return what1 / n < what2 / n end
 
 -- **clone(?inits : table={}) : Sample**    
 -- Return a table with the same  structure as `self`.
@@ -151,12 +169,19 @@ function Sample:knn(row,the,     stats,kadd,all,one)
 function Sample:mid()
   return lst.map(self.cols,function(z) return z:mid() end) end
 
- -- **neighbors(row1 : table, the : options) : num**   
+-- **neighbors(row1 : table, the : options) : num**    
 function Sample:neighbors(row1,the,rows,    t)
   t={}
   for _,row2 in pairs(rows or self.rows) do
      t[1+#t]= {row=row2, dist=self:dist(row1,row2,the)} end 
   return lst.keysort(t,"dist") end
+
+-- **y(fmt)**    
+-- Goal vars
+function Sample:ys(fmt)
+  fmt = fmt or " %5.2f"
+  return lst.map(self.y,
+           function(z) return sfmt(fmt, z:mid()) end) end
 
 --  ------------
 return Sample

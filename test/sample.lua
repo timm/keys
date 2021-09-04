@@ -32,4 +32,4 @@ do
 do
   s = Sample:new():from("../data/auto93.csv")
   for _,t in pairs(s:divs(the)) do
-    lst.pump(t:mid()) end end
+    lst.pump(t:ys()) end end
