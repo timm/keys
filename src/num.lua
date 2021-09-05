@@ -19,6 +19,7 @@ local Some = require"some"
 local obj  = require"obj"
 local _=require("list"); local copy=_.copy
 
+-- Creation
 -- **new(?at : int=0, ?name : str="") : Num**   
 function Num:new(at, name)
   name= name or ""
@@ -28,6 +29,8 @@ function Num:new(at, name)
     lo= 1E32, hi= -1E32,
     w=name:find("-") and -1 or 1}) end
 
+-- -----
+-- Update
 -- **add(x : num)**   
 function Num:add(x,    d)
   if x ~= "?" then
@@ -41,6 +44,8 @@ function Num:add(x,    d)
     self.lo = math.min(x, self.lo)
     self.hi = math.max(x, self.hi)  end end
 
+-- -------
+-- ## Comparison
 -- **delta(other : Num) : num**  
 -- Return the difference in the means, mediated by the variances.
 function Num:delta(other,    y,z,e)
@@ -48,6 +53,8 @@ function Num:delta(other,    y,z,e)
   return math.abs(y.mu - z.mu) / (
          (e + y.sd^2/y.n + z.sd^2/z.n)^.5) end
 
+-- ----------
+-- ## Distance
 -- **dist(x : num, y : num) : num**  
 -- Implements Aha's instance-based distance algorithm (for numeric attributes);
 -- see [section 2.4](https://link.springer.com/content/pdf/10.1007/BF00153759.pdf).
@@ -59,6 +66,8 @@ function Num:dist(x,y)
   else               x,y = self:norm(x), self:norm(y) end
   return math.abs(x-y) end
 
+-- ------
+-- ## Copy
 -- **merge(lst : num+) : Num**   
 -- Combine self with  a `lst` of other `Num`s.
 function Num:merge(lst,      new)
@@ -66,6 +75,8 @@ function Num:merge(lst,      new)
   for _,x in pairs(lst._all) do new:add(x) end
   return new end
 
+-- -----
+-- ## Query
 -- **mid() : num**  
 -- Central tendency.
 function Num:mid() 
@@ -81,6 +92,8 @@ function Num:norm(x,    a)
 -- Variance  of numerics  is the  standard deviation.
 function Num:var() return self.sd end
 
+-- -------
+-- ## Printing
 -- **tile(width : int, ps : float+) : table**   
 -- For all the `Nums` in `t`, print out normalized
 -- in the `lo`..`hi` range of `self`.

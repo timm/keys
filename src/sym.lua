@@ -14,13 +14,17 @@ local Sym = {}
 local obj = require"obj"
 local lst = require"list"
 
+-- Creation
+-- **new(?at : int=0, ?name : str="") : Num**   
 -- **new(?at : int=0, ?name : string="") : Sym**   
 function Sym:new(at, name)  
   return obj(self,"Sym",{
     n=0, name=name or "", at=at or 0,
     has={},mode=0,_most=0}) end
 
--- **add(x : atom)**  
+-- -----
+-- Update
+--- **add(x : atom)**  
 -- Update.
 function Sym:add(x)
   if x ~= "?" then
@@ -29,14 +33,18 @@ function Sym:add(x)
     if self.has[x] > self._most  then
       self._most, self.mode = self.has[x], x end end end
 
--- **dist(x : atom, y : atom)**   
+-- ----------
+-- ## Distance
+--- **dist(x : atom, y : atom)**   
 -- Return the gap between symbols `x` and `y`.
 -- Implements Aha's instance-based distance algorithm (for symbolic attributes);
 -- see [section 2.4](https://link.springer.com/content/pdf/10.1007/BF00153759.pdf).
 function Sym:dist(x,y) 
   return x==y and 0 or 1 end
 
--- **merge(other : Sym) : Sym**  
+-- ------
+-- ## Copy
+--- **merge(other : Sym) : Sym**  
 -- Return a  new `Sym` after combining `self` with `other`.
 function Sym:merge(other)
   new = lst.copy(self)
@@ -47,7 +55,9 @@ function Sym:merge(other)
     if v > new._most then new.mode, new._most = k,v end end 
   return new end
 
--- **mid() : any**    
+-- -----
+-- ## Query
+--- **mid() : any**    
 -- Central tendency.
 function Sym:mid() 
   return self.mode end 

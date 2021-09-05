@@ -383,9 +383,9 @@ supplied, then return the  first <code>n</code> items.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fmts</span><span class="hljs-params">(t, w,d,       num,)</span></span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fmts</span><span class="hljs-params">(t, w,d,       num)</span></span>
   w,d = w <span class="hljs-keyword">or</span> <span class="hljs-number">5</span>, d <span class="hljs-keyword">or</span> <span class="hljs-number">2</span>
-  num = <span class="hljs-built_in">table</span>.contact(<span class="hljs-string">&quot;%&quot;</span>,w,<span class="hljs-string">&quot;.&quot;</span>,d,<span class="hljs-string">&quot;f&quot;</span>)
+  num = <span class="hljs-built_in">table</span>.<span class="hljs-built_in">concat</span>({<span class="hljs-string">&quot;%&quot;</span>,w,<span class="hljs-string">&quot;.&quot;</span>,d,<span class="hljs-string">&quot;f&quot;</span>})
   <span class="hljs-keyword">return</span> map(t, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(z,    s)</span></span> 
       <span class="hljs-keyword">if</span>   <span class="hljs-built_in">type</span>(z)==<span class="hljs-string">&quot;number&quot;</span> 
       <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">string</span>.<span class="hljs-built_in">format</span>(num,z)

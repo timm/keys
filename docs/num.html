@@ -134,7 +134,8 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p><strong>new(?at : int=0, ?name : str=””) : Num</strong>   </p>
+              <p>Creation
+<strong>new(?at : int=0, ?name : str=””) : Num</strong>   </p>
 
             </div>
             
@@ -155,7 +156,21 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
-              <p><strong>add(x : num)</strong>   </p>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-4">&#x00a7;</a>
+              </div>
+              <p>Update
+<strong>add(x : num)</strong>   </p>
 
             </div>
             
@@ -174,13 +189,27 @@
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-4">&#x00a7;</a>
+                <a class="ss" href="#section-5">&#x00a7;</a>
               </div>
-              <p><strong>delta(other : Num) : num</strong><br>Return the difference in the means, mediated by the variances.</p>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-6">&#x00a7;</a>
+              </div>
+              <h2 id="comparison">Comparison</h2>
+<p><strong>delta(other : Num) : num</strong><br>Return the difference in the means, mediated by the variances.</p>
 
             </div>
             
@@ -192,13 +221,27 @@
         </li>
         
         
-        <li id="section-5">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-5">&#x00a7;</a>
+                <a class="ss" href="#section-7">&#x00a7;</a>
               </div>
-              <p><strong>dist(x : num, y : num) : num</strong><br>Implements Aha’s instance-based distance algorithm (for numeric attributes);
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-8">&#x00a7;</a>
+              </div>
+              <h2 id="distance">Distance</h2>
+<p><strong>dist(x : num, y : num) : num</strong><br>Implements Aha’s instance-based distance algorithm (for numeric attributes);
 see <a href="https://link.springer.com/content/pdf/10.1007/BF00153759.pdf">section 2.4</a>.
 In summary, If any value missing, guess a value of the other that
 maximizes the distance.</p>
@@ -214,68 +257,15 @@ maximizes the distance.</p>
         </li>
         
         
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-6">&#x00a7;</a>
-              </div>
-              <p><strong>merge(lst : num+) : Num</strong><br>Combine self with  a <code>lst</code> of other <code>Num</code>s.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:merge</span><span class="hljs-params">(lst,      new)</span></span>
-  new = copy(<span class="hljs-built_in">self</span>)
-  <span class="hljs-keyword">for</span> _,x <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(lst._all) <span class="hljs-keyword">do</span> new:add(x) <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-7">&#x00a7;</a>
-              </div>
-              <p><strong>mid() : num</strong><br>Central tendency.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:mid</span><span class="hljs-params">()</span></span> 
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>.mu <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-8">&#x00a7;</a>
-              </div>
-              <p><strong>norm(x : num) : num</strong><br>Return <code>x</code> mapped into 0..1 for lo..hi.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:norm</span><span class="hljs-params">(x,    a)</span></span>
-  <span class="hljs-keyword">if</span> x ==<span class="hljs-string">&quot;?&quot;</span> <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> x <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">return</span> (x-<span class="hljs-built_in">self</span>.lo) / (<span class="hljs-built_in">self</span>.hi - <span class="hljs-built_in">self</span>.lo + <span class="hljs-number">1E-32</span>) <span class="hljs-keyword">end</span></pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-9">
             <div class="annotation">
               
               <div class="sswrap ">
                 <a class="ss" href="#section-9">&#x00a7;</a>
               </div>
-              <p><strong>var() : num</strong><br>Variance  of numerics  is the  standard deviation.</p>
+              <hr>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:var</span><span class="hljs-params">()</span></span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>.sd <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -286,25 +276,15 @@ maximizes the distance.</p>
               <div class="sswrap ">
                 <a class="ss" href="#section-10">&#x00a7;</a>
               </div>
-              <p><strong>tile(width : int, ps : float+) : table</strong><br>For all the <code>Nums</code> in <code>t</code>, print out normalized
-in the <code>lo</code>..<code>hi</code> range of <code>self</code>.</p>
+              <h2 id="copy">Copy</h2>
+<p><strong>merge(lst : num+) : Num</strong><br>Combine self with  a <code>lst</code> of other <code>Num</code>s.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:tile</span><span class="hljs-params">(t,width,ps,    a,s,where)</span></span>
-  a = <span class="hljs-built_in">self</span>.some:all()
-  s = {}
-  <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>, (width <span class="hljs-keyword">or</span> <span class="hljs-number">32</span>) <span class="hljs-keyword">do</span> s[i]=<span class="hljs-string">&quot; &quot;</span> <span class="hljs-keyword">end</span>
-  where = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span></span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">math</span>.<span class="hljs-built_in">floor</span>(width*<span class="hljs-built_in">self</span>:norm(n)) <span class="hljs-keyword">end</span>
-  pos   = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span></span> <span class="hljs-keyword">return</span> a[<span class="hljs-number">1</span>] + p*(a[#a] - a[<span class="hljs-number">1</span>]) <span class="hljs-keyword">end</span>
-  <span class="hljs-keyword">for</span> p=<span class="hljs-number">.1</span>,<span class="hljs-number">.3</span>,<span class="hljs-number">.01</span> <span class="hljs-keyword">do</span> s[where(pos(p))] =<span class="hljs-string">&quot;-&quot;</span> <span class="hljs-keyword">end</span> 
-  <span class="hljs-keyword">for</span> p=<span class="hljs-number">.7</span>,<span class="hljs-number">.9</span>,<span class="hljs-number">.01</span> <span class="hljs-keyword">do</span> s[where(pos(p))] =<span class="hljs-string">&quot;-&quot;</span> <span class="hljs-keyword">end</span> 
-  s[where(<span class="hljs-built_in">self</span>.some:mid())] = <span class="hljs-string">&quot;|&quot;</span>
-  <span class="hljs-keyword">return</span> {rank= <span class="hljs-built_in">self</span>.rank <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>,
-          str = <span class="hljs-built_in">table</span>.<span class="hljs-built_in">concat</span>(s), 
-          mid = per(<span class="hljs-built_in">self</span>.some:all()),
-          per = map(ps <span class="hljs-keyword">or</span> {<span class="hljs-number">.25</span>, <span class="hljs-number">.5</span>, <span class="hljs-number">.75</span>}, 
-                    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span></span> <span class="hljs-keyword">return</span> per(<span class="hljs-built_in">self</span>:all(),p) <span class="hljs-keyword">end</span>)} <span class="hljs-keyword">end</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:merge</span><span class="hljs-params">(lst,      new)</span></span>
+  new = copy(<span class="hljs-built_in">self</span>)
+  <span class="hljs-keyword">for</span> _,x <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(lst._all) <span class="hljs-keyword">do</span> new:add(x) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> new <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -327,6 +307,111 @@ in the <code>lo</code>..<code>hi</code> range of <code>self</code>.</p>
               
               <div class="sswrap ">
                 <a class="ss" href="#section-12">&#x00a7;</a>
+              </div>
+              <h2 id="query">Query</h2>
+<p><strong>mid() : num</strong><br>Central tendency.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:mid</span><span class="hljs-params">()</span></span> 
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>.mu <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-13">&#x00a7;</a>
+              </div>
+              <p><strong>norm(x : num) : num</strong><br>Return <code>x</code> mapped into 0..1 for lo..hi.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:norm</span><span class="hljs-params">(x,    a)</span></span>
+  <span class="hljs-keyword">if</span> x ==<span class="hljs-string">&quot;?&quot;</span> <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> x <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> (x-<span class="hljs-built_in">self</span>.lo) / (<span class="hljs-built_in">self</span>.hi - <span class="hljs-built_in">self</span>.lo + <span class="hljs-number">1E-32</span>) <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-14">&#x00a7;</a>
+              </div>
+              <p><strong>var() : num</strong><br>Variance  of numerics  is the  standard deviation.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:var</span><span class="hljs-params">()</span></span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>.sd <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-15">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-16">&#x00a7;</a>
+              </div>
+              <h2 id="printing">Printing</h2>
+<p><strong>tile(width : int, ps : float+) : table</strong><br>For all the <code>Nums</code> in <code>t</code>, print out normalized
+in the <code>lo</code>..<code>hi</code> range of <code>self</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Num:tile</span><span class="hljs-params">(t,width,ps,    a,s,where)</span></span>
+  a = <span class="hljs-built_in">self</span>.some:all()
+  s = {}
+  <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>, (width <span class="hljs-keyword">or</span> <span class="hljs-number">32</span>) <span class="hljs-keyword">do</span> s[i]=<span class="hljs-string">&quot; &quot;</span> <span class="hljs-keyword">end</span>
+  where = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span></span> <span class="hljs-keyword">return</span> <span class="hljs-built_in">math</span>.<span class="hljs-built_in">floor</span>(width*<span class="hljs-built_in">self</span>:norm(n)) <span class="hljs-keyword">end</span>
+  pos   = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(p)</span></span> <span class="hljs-keyword">return</span> a[<span class="hljs-number">1</span>] + p*(a[#a] - a[<span class="hljs-number">1</span>]) <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">for</span> p=<span class="hljs-number">.1</span>,<span class="hljs-number">.3</span>,<span class="hljs-number">.01</span> <span class="hljs-keyword">do</span> s[where(pos(p))] =<span class="hljs-string">&quot;-&quot;</span> <span class="hljs-keyword">end</span> 
+  <span class="hljs-keyword">for</span> p=<span class="hljs-number">.7</span>,<span class="hljs-number">.9</span>,<span class="hljs-number">.01</span> <span class="hljs-keyword">do</span> s[where(pos(p))] =<span class="hljs-string">&quot;-&quot;</span> <span class="hljs-keyword">end</span> 
+  s[where(<span class="hljs-built_in">self</span>.some:mid())] = <span class="hljs-string">&quot;|&quot;</span>
+  <span class="hljs-keyword">return</span> {rank= <span class="hljs-built_in">self</span>.rank <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>,
+          str = <span class="hljs-built_in">table</span>.<span class="hljs-built_in">concat</span>(s), 
+          mid = per(<span class="hljs-built_in">self</span>.some:all()),
+          per = map(ps <span class="hljs-keyword">or</span> {<span class="hljs-number">.25</span>, <span class="hljs-number">.5</span>, <span class="hljs-number">.75</span>}, 
+                    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(p)</span></span> <span class="hljs-keyword">return</span> per(<span class="hljs-built_in">self</span>:all(),p) <span class="hljs-keyword">end</span>)} <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-17">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-18">&#x00a7;</a>
               </div>
               
             </div>
