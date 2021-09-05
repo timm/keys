@@ -1,0 +1,272 @@
+   2  
+   2   'C functions'>
+   2   'CObject interoperability'>
+   2   'Collections'>
+   2   'Language-Security'>
+   2   'NetClients-URIResolver'>
+   2   'TmpFileArchiveMember protocol'>
+   2   'awful ST-80 compatibility hacks'>
+   2   'basic & copying'>
+   2   'bit arithmetic'>
+   2   'command-line'>
+   2   'compilation'>
+   2   'delaying'>
+   2   'disabling instance creation'>
+   2   'errors'>
+   2   'exception signaling'>
+   2   'filesystem'>
+   2   'floating point'>
+   2   'information'>
+   2   'instance creation (ANSI)'>
+   2   'introspection'>
+   2   'loading/dumping objects'>
+   2   'low-level access'>
+   2   'mutual exclusion'>
+   2   'point creation'>
+   2   'pragmas'>
+   2   'primitive allocation'>
+   2   'private - subpackages'>
+   2   'private-autoloading'>
+   2   'relational operators'>
+   2   'saving the image'>
+   2   'set up'>
+   2   := aString
+   2   := self methodCategory.
+   2   aString [
+   2   and category. If the class is already defined, if
+   2   category
+   2   class variables, pool dictionaries and category. If the
+   2   method source and install in method category, categoryName. If
+   2   methodCategory = categoryName
+   2   methodCategory: categoryName.
+   2   methodsFor: 'no category'
+   2   notNil ifTrue: [method methodCategory: categoryName].
+   2   shape subclass: classNameString instanceVariableNames: stringInstVarNames classVariableNames: stringOfClassVarNames poolDictionaries: stringOfPoolNames category: categoryNameString [
+   2   source category ok |
+   2   the class category"
+   3   'C data access'>
+   3   'C hacks'>
+   3   'CObject'>
+   3   'Streams'>
+   3   'basic (UTC)'>
+   3   'byte-order dependancies'>
+   3   'byte-order dependencies'>
+   3   'comparison'>
+   3   'compatibility (non-ANSI)'>
+   3   'creating a class hierarchy'>
+   3   'demo'>
+   3   'encoding URLs'>
+   3   'getting info'>
+   3   'getting limits'>
+   3   'instance variables'>
+   3   'literals - iteration'>
+   3   'misc methods'>
+   3   'miscellaneous'>
+   3   'printing hierarchy'>
+   3   'private - accessing'>
+   3   'private - handling maps'>
+   3   'private methods - searching'>
+   3   'private-abstract'>
+   3   'restoring'>
+   3   'splitting in dates & times'>
+   3   'standard streams'>
+   3   'stream interface'>
+   3   'symbol table'>
+   3   'tables'>
+   3   'timed invocation'>
+   3   'unwind protection'>
+   3   [
+   3   the method category to the given string"
+   4   'Collections-Keyed'>
+   4   'Collections-Unordered'>
+   4   'Streams-Collections'>
+   4   'api'>
+   4   'calling'>
+   4   'equality'>
+   4   'loading'>
+   4   'overriding'>
+   4   'parsing class declarations'>
+   4   'polymorphism'>
+   4   'private - initialization'>
+   4   'private-instance creation'>
+   4   'querying'>
+   4   'replacing items'>
+   4   'reverting to LargePositiveInteger'>
+   4   'searching'>
+   4   'security'>
+   4   'special accessing'>
+   4   'transforming'>
+   5   'VM callbacks'>
+   5   'accessing (ANSI for DateAndTimes)'>
+   5   'control structures'>
+   5   'dictionary testing'>
+   5   'error raising'>
+   5   'establishing proxy classes'>
+   5   'hacks'>
+   5   'optimized cases'>
+   5   'pluggable behavior (not yet implemented)'>
+   5   'private - heap management'>
+   5   'private - packages file'>
+   5   'refreshing'>
+   5   'rehashing'>
+   5   'shortcuts'>
+   5   'testing the class hierarchy'>
+   5   'transcendental operations'>
+   5   If the class is already defined, if necessary, recompile
+   5   the method category"
+   6   'ArchiveMember protocol'>
+   6   'accessing (non ANSI & for Durations)'>
+   6   'accessing class hierarchy'>
+   6   'attributes'>
+   6   'compilation (alternative)'>
+   6   'dependents access'>
+   6   'idle tasks'>
+   6   'initialize-release'>
+   6   'instance creation (non-ANSI)'>
+   6   'invocation'>
+   6   'overridden'>
+   6   'primitive operations'>
+   6   'saving and restoring'>
+   6   'security checks'>
+   6   'shortcuts and iterators'>
+   6   'time zones'>
+   6   'timer process'>
+   7   'Collections-Text'>
+   7   'Collections-Weak'>
+   7   'bit operations'>
+   7   'builtin'>
+   7   'class type methods'>
+   7   'clocks'>
+   7   'copying Collections'>
+   7   'dictionary enumerating'>
+   7   'enumerating the elements of a collection'>
+   7   'filtering'>
+   7   'members'>
+   7   'point functions'>
+   7   'private methods - sorting'>
+   7   'private-decoding bytecodes'>
+   7   'source code'>
+   7   'stream protocol'>
+   7   'streaming'>
+   7   'testing the form of the instances'>
+   8   'C instance creation'>
+   8   'Examples-Useful tools'>
+   8   'Language-Processes'>
+   8   'change and update'>
+   8   'class creation - alternative'>
+   8   'computations'>
+   8   'concatenating'>
+   8   'description'>
+   8   'no category'
+   8   'no category')
+   8   'organization of messages and classes'>
+   8   'support for lightweight classes'>
+   8   classNameString instanceVariableNames: stringInstVarNames classVariableNames: stringOfClassVarNames poolDictionaries: stringOfPoolNames category: categoryNameString [
+   9   'built-ins'>
+   9   'compiling'>
+   9   'dynamic linking'>
+   9   'file-in'>
+   9   'filing'>
+   9   'finalization'>
+   9   'instance creation - alternative'>
+   9   'math methods'>
+   9   'pointer-like behavior'>
+   9   'private-parsing options'>
+   9   'rectangle functions'>
+   9   'retrying'>
+   9   'signaling'>
+   9   'testing accesses'>
+  10   'accessing-writing'>
+  10   'character writing'>
+  10   'coercion methods'>
+  10   'disabled'>
+  10   'evaluating'>
+  10   'exception description'>
+  10   'helper byte-level methods'>
+  10   'modifying'>
+  10   'multiple process'>
+  10   'overriding inherited methods'>
+  10   'sorting'>
+  10   'testing the method dictionary'>
+  10   [^(Smalltalk at: classNameString) category: categoryNameString].
+  10   at: classNameString) category: categoryNameString
+  10   categoryNameString
+  10   categoryNameString [
+  11   'arithmetics'>
+  11   'class polymorphism'>
+  11   'copying SequenceableCollections'>
+  11   'instance creation (Blue Book)'>
+  11   'multibyte encodings'>
+  12   'buffering'>
+  12   'dictionary removing'>
+  12   'namespace protocol'>
+  12   'numeric testing'>
+  12   'priorities'>
+  12   'private-parsing patterns'>
+  12   'stream operations'>
+  12   'truncation and round off'>
+  13   'Language-Packaging'>
+  13   'bit operators'>
+  13   'c call-outs'>
+  13   'iteration'>
+  13   'reading system defaults'>
+  13   'subclass creation'>
+  14   'directory operations'>
+  14   'initializing'>
+  14   'string processing'>
+  15   'accessing the method dictionary'>
+  15   'binary I/O'>
+  15   'constants'>
+  16   'Collections-Sequenceable'>
+  16   'debugging'>
+  16   'overrides for superspaces'>
+  16   'saving and loading'>
+  17   'initialization'>
+  18   'private - binary I/O'>
+  19   'date computations'>
+  19   'exception handling'>
+  20   'coercion'>
+  20   'creating instances'>
+  21   'Streams-Files'>
+  21   'conversion'>
+  22   'method dictionary'>
+  22   'namespace hierarchy'>
+  23   'enumeration'>
+  23   'file name management'>
+  23   'positioning'>
+  23   'removing'>
+  23   'testing collections'>
+  24   'private-C call-outs'>
+  25   'coercing'>
+  26   'accessing-reading'>
+  29   'Language-Implementation'>
+  29   'misc math'>
+  30   'delegation'>
+  31   'adding'>
+  31   'private-printing'>
+  31   'regex'>
+  34   'accessing instances and variables'>
+  34   'more advanced accessing'>
+  35   'Language-C interface'>
+  36   'all'>
+  37   'Language-Data types'>
+  37   'copying'>
+  40   'testing functionality'>
+  43   'Language-Exceptions'>
+  44   'characterization'>
+  46   'file operations'>
+  55   'comparing'>
+  56   'builtins'>
+  56   'storing'>
+  60   'enumerating'>
+  61   'arithmetic'>
+  87   'private methods'>
+  97   'converting'>
+ 130   'printing'>
+ 182   'testing'>
+ 206   'built ins'>
+ 221   'instance creation'>
+ 280   'private'>
+ 286   'basic'>
+ 909   'accessing'>
+5116 

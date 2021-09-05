@@ -29,8 +29,7 @@ function isSkip(s)  return s:find("?") end
 function isKlass(s) return s:find("!") end
 function isNum(s)   return s:sub(1,1):match("[A-Z]") end
 function isY(s)     return s:find("+") or s:find("-") or isKlass(s) end
-function isWhat(s)  
-  return isSkip(s) and Skip or (isNum(s) and Num or Sym) end
+function isWhat(s)  return isSkip(s) and Skip or (isNum(s) and Num or Sym) end
 
 -- -----
 -- ## Create
@@ -44,9 +43,9 @@ function Sample:new(inits,       new)
   for _,row in pairs(inits or {}) do new:add(row) end  
   return new end
 
--- **from(file : str) : self**   
+-- **load(file : str) : self**   
 -- Load rows from file into `self.
-function Sample:from(file) 
+function Sample:load(file) 
   for row in csv(file) do self:add(row) end 
   return self end
 

@@ -5,7 +5,7 @@ require("rand").srand(0)
 local the = require"cli"
 local lst = require"list"
 local rnd = require("maths").rnd
-local s   = Sample:new():from("../data/auto93.csv")
+local s   = Sample:new():load("../data/auto93.csv")
 
 do
   local col=s.cols[1]
@@ -20,7 +20,7 @@ do
    assert(t[2].dist < t[#t].dist,"near not far") end end 
 
 do
- s = Sample:new():from("../data/weathernom.csv")
+ s = Sample:new():load("../data/weathernom.csv")
  local n,yes=0,0
  local rows = lst.shuffle(s.rows)
  for _,row in pairs(rows) do
@@ -30,7 +30,7 @@ do
  print(yes/n) end
 
 do
-  s = Sample:new():from("../data/auto93.csv")
+  s = Sample:new():load("../data/auto93.csv")
   lst.pump(lst.map(s.y, function(z) return z.name end))
   for _,t in pairs(s:divs(the)) do
     lst.pump(lst.fmts(t:ys())) end end
