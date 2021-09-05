@@ -14,7 +14,7 @@ local Sym = {}
 local obj = require"obj"
 local lst = require"list"
 
--- Creation
+-- ## Creation
 -- **new(?at : int=0, ?name : str="") : Num**   
 -- **new(?at : int=0, ?name : string="") : Sym**   
 function Sym:new(at, name)  
@@ -23,8 +23,8 @@ function Sym:new(at, name)
     has={},mode=0,_most=0}) end
 
 -- -----
--- Update
---- **add(x : atom)**  
+-- ## Update
+-- **add(x : atom)**   
 -- Update.
 function Sym:add(x)
   if x ~= "?" then
@@ -35,7 +35,7 @@ function Sym:add(x)
 
 -- ----------
 -- ## Distance
---- **dist(x : atom, y : atom)**   
+-- **dist(x : atom, y : atom)**   
 -- Return the gap between symbols `x` and `y`.
 -- Implements Aha's instance-based distance algorithm (for symbolic attributes);
 -- see [section 2.4](https://link.springer.com/content/pdf/10.1007/BF00153759.pdf).
@@ -44,7 +44,7 @@ function Sym:dist(x,y)
 
 -- ------
 -- ## Copy
---- **merge(other : Sym) : Sym**  
+-- **merge(other : Sym) : Sym**  
 -- Return a  new `Sym` after combining `self` with `other`.
 function Sym:merge(other)
   new = lst.copy(self)
@@ -57,7 +57,7 @@ function Sym:merge(other)
 
 -- -----
 -- ## Query
---- **mid() : any**    
+-- **mid() : any**    
 -- Central tendency.
 function Sym:mid() 
   return self.mode end 

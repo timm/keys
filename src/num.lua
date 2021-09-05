@@ -19,7 +19,8 @@ local Some = require"some"
 local obj  = require"obj"
 local _=require("list"); local copy=_.copy
 
--- Creation
+-- --------
+-- ## Creation
 -- **new(?at : int=0, ?name : str="") : Num**   
 function Num:new(at, name)
   name= name or ""
@@ -30,7 +31,7 @@ function Num:new(at, name)
     w=name:find("-") and -1 or 1}) end
 
 -- -----
--- Update
+-- ## Update
 -- **add(x : num)**   
 function Num:add(x,    d)
   if x ~= "?" then
