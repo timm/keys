@@ -5,10 +5,10 @@ local function color(s,...)
 
 -- **sfmt(fmt :string, ?arg1 :any, ?arg2 :any, ...)**  
 -- format a string
-function sfmt(...) return string.format(...) end
+local function sfmt(...) return string.format(...) end
 
 -- **fmt(fmt :string, ?arg1 :any, ?arg2 :any, ...)**  
 -- format and print t a string.
-function fmt( ...) io.write(sfmt(...)) end
+local function fmt( ...) io.write(sfmt(...)) end
 
-return {color=color, fmt=fmt, sfmt=sfmt}
+return {color=color, fmt=fm, sfmt=sfmt}

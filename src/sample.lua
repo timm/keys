@@ -99,7 +99,7 @@ function Sample:data(t,    row)
 -- jump from one individual to another or back again).  According to
 -- Zitler, the thing we like best is the thing that, on average,
 -- losses least across those whatifs.
-function Sample:better(row1,row2,   e,w,s1,s2,n,a,b,s1,s2)
+function Sample:better(row1,row2,   e,w,s1,s2,n,a,b,what1,what2)
   what1, what2, n, e = 0, 0, #self.y, math.exp(1)
   for _,col in pairs(self.y) do
     a    = col:norm(row1[col.at])
@@ -136,7 +136,7 @@ function Sample:dist(row1,row2,the,       a,b,d,n)
 
 -- **div(rows : table, the : options) : table,table**    
 -- Split rows via their distance to two faraway points, 
-function Sample:div(rows,the,         one,two,three,c,a,b,l,r)
+function Sample:div(rows,the,         one,two,three,tmp,c,a,b,l,r)
   one = lst.any(rows)
   two = self:faraway(one, the, rows)
   three = self:faraway(two, the, rows)
