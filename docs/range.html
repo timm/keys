@@ -44,8 +44,21 @@
 <a href="https://zenodo.org/badge/latestdoi/318809834"><img src="https://zenodo.org/badge/318809834.svg"></a>
 <hr>
 <p>This code lets us treat numeric <code>Nums</code> and symbolic <code>Syms</code> ranges with the same
-protocol. Also, for <code>Nums</code>, this code implements supervised discrimination.</p>
-<table>
+protocol. Also, for <code>Nums</code>, this code implements supervised discretization.</p>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-2">&#x00a7;</a>
+              </div>
+              <table>
 <thead>
 <tr>
 <th><strong>Class</strong></th>
@@ -56,41 +69,51 @@ protocol. Also, for <code>Nums</code>, this code implements supervised discrimin
 <tbody><tr>
 <td><strong>Does</strong></td>
 <td align="right">1</td>
-<td>: explores lists of (x:num, y:sym), sorted on <code>num</code></td>
+<td>: unify  interface to numeric and symbolic ranges</td>
 </tr>
 <tr>
 <td></td>
 <td align="right">2</td>
-<td>: find ranges that split the <code>x</code> values into not-small chunks</td>
+<td>: reports if a row can be in a range</td>
 </tr>
 <tr>
 <td></td>
 <td align="right">3</td>
-<td>: prune ranges that do not change the <code>y</code> distribution</td>
+<td>: print details about this range</td>
 </tr>
 <tr>
 <td></td>
 <td align="right">4</td>
-<td>: reports if a value can be in a range</td>
+<td>: explores lists of (x:num, y:sym), sorted on <code>num</code></td>
+</tr>
+<tr>
+<td></td>
+<td align="right">5</td>
+<td>: find ranges that split the <code>x</code> values into not-small chunks</td>
+</tr>
+<tr>
+<td></td>
+<td align="right">6</td>
+<td>: prune ranges that do not change the <code>y</code> distribution</td>
 </tr>
 <tr>
 <td><strong>Has</strong></td>
-<td align="right">x:Num</td>
+<td align="right">x :Num</td>
 <td>: info about the <code>x</code> values</td>
 </tr>
 <tr>
 <td></td>
-<td align="right">y:Sym</td>
+<td align="right">y :Sym</td>
 <td>: info about the <code>y</code> values</td>
 </tr>
 <tr>
 <td></td>
-<td align="right">at:num</td>
+<td align="right">at :num</td>
 <td>: column index of this range</td>
 </tr>
 <tr>
 <td></td>
-<td align="right">name:str</td>
+<td align="right">name :str</td>
 <td>: column name of this range</td>
 </tr>
 <tr>
@@ -111,29 +134,38 @@ protocol. Also, for <code>Nums</code>, this code implements supervised discrimin
 <tbody><tr>
 <td><strong>Does</strong></td>
 <td align="right">1</td>
-<td>: reports if a value can be in a range</td>
+<td>: unify interface to numeric and symbols ranges</td>
+</tr>
+<tr>
+<td></td>
+<td align="right">2</td>
+<td>: reports if a row can be in a range</td>
+</tr>
+<tr>
+<td></td>
+<td align="right">3</td>
+<td>: print details abut this range</td>
 </tr>
 <tr>
 <td><strong>Has</strong></td>
-<td align="right">x:string</td>
+<td align="right">x :string</td>
 <td>: the symbolic <code>x</code> value that defines this range</td>
 </tr>
 <tr>
 <td></td>
-<td align="right">at:num</td>
+<td align="right">at :num</td>
 <td>: column index of this range</td>
 </tr>
 <tr>
 <td></td>
-<td align="right">name:str</td>
+<td align="right">name :str</td>
 <td>: column name of this range</td>
 </tr>
 </tbody></table>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-keyword">local</span> Nums={}
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">local</span> Nums={}
 <span class="hljs-keyword">local</span> Syms={}
 <span class="hljs-keyword">local</span> Num = <span class="hljs-built_in">require</span><span class="hljs-string">&quot;num&quot;</span>
 <span class="hljs-keyword">local</span> Sym = <span class="hljs-built_in">require</span><span class="hljs-string">&quot;sym&quot;</span>
@@ -144,11 +176,11 @@ protocol. Also, for <code>Nums</code>, this code implements supervised discrimin
         </li>
         
         
-        <li id="section-2">
+        <li id="section-3">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-2">&#x00a7;</a>
+                <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
               <hr>
 
@@ -157,11 +189,11 @@ protocol. Also, for <code>Nums</code>, this code implements supervised discrimin
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-3">&#x00a7;</a>
+                <a class="ss" href="#section-4">&#x00a7;</a>
               </div>
               <h2 id="creation">Creation</h2>
 
@@ -177,37 +209,15 @@ protocol. Also, for <code>Nums</code>, this code implements supervised discrimin
         </li>
         
         
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="sswrap ">
-                <a class="ss" href="#section-4">&#x00a7;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
         <li id="section-5">
             <div class="annotation">
               
               <div class="sswrap ">
                 <a class="ss" href="#section-5">&#x00a7;</a>
               </div>
-              <h2 id="printing">Printing</h2>
+              <hr>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Nums:show</span><span class="hljs-params">(w,d,         f)</span></span> 
-   w,d=w <span class="hljs-keyword">or</span> <span class="hljs-number">5</span>,d <span class="hljs-keyword">or</span> <span class="hljs-number">2</span>
-   f = sfmt(<span class="hljs-string">&quot;%%%s,%sf&quot;</span>,w,d) <span class="hljs-comment">-- format for width`w` and `d` decimals</span>
-   <span class="hljs-keyword">return</span> sfmt(<span class="hljs-string">&quot;%s=[&quot;</span>..f..<span class="hljs-string">&quot;..&quot;</span>..f..<span class="hljs-string">&quot;]&quot;</span>,<span class="hljs-built_in">self</span>.name,<span class="hljs-built_in">self</span>.xs.lo,<span class="hljs-built_in">self</span>.xs.hi) <span class="hljs-keyword">end</span>
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Syms:show</span><span class="hljs-params">(w,d,          s)</span></span> 
-   s=<span class="hljs-built_in">tostring</span>(<span class="hljs-built_in">self</span>.x)
-   <span class="hljs-keyword">return</span>   sfmt(<span class="hljs-string">&quot;%s=[%s]&quot;</span>, <span class="hljs-built_in">self</span>.name, s:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,<span class="hljs-built_in">math</span>.<span class="hljs-built_in">min</span>(w,#s))) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -218,7 +228,7 @@ protocol. Also, for <code>Nums</code>, this code implements supervised discrimin
               <div class="sswrap ">
                 <a class="ss" href="#section-6">&#x00a7;</a>
               </div>
-              <hr>
+              <h2 id="copy">Copy</h2>
 
             </div>
             
@@ -231,22 +241,12 @@ protocol. Also, for <code>Nums</code>, this code implements supervised discrimin
               <div class="sswrap ">
                 <a class="ss" href="#section-7">&#x00a7;</a>
               </div>
-              <h2 id="query">Query</h2>
-<p><strong>holds(row :table, isFirst :boolean, isLast :boolean) :boolean)</strong><br>Returns true if this row might be in this range.
-Note that for <code>Nums</code>, being the first or last range is space case</p>
+              <p><strong>clone(?xs :Num, ?ys:Sym): Nums|Syms</strong><br>return a range with the same name and column index</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Nums:holds</span><span class="hljs-params">(row,isFirst,isLast,            x)</span></span>
-   x = row[<span class="hljs-built_in">self</span>.at]
-   <span class="hljs-keyword">if</span>         x==<span class="hljs-string">&quot;?&quot;</span>                               <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> 
-   <span class="hljs-keyword">elseif</span> isFirst <span class="hljs-keyword">and</span> x &lt;= <span class="hljs-built_in">self</span>.xs.hi <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> 
-   <span class="hljs-keyword">elseif</span> isLast   <span class="hljs-keyword">and</span> x &gt;= <span class="hljs-built_in">self</span>.xs.lo <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
-   <span class="hljs-keyword">else</span>    <span class="hljs-keyword">return</span> x&gt;=<span class="hljs-built_in">self</span>.xs.lo <span class="hljs-keyword">and</span> x&lt;=<span class="hljs-built_in">self</span>.xs.hi <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Syms:holds</span><span class="hljs-params">(row, isFirst, isLast,      x)</span></span>
-   x = row[<span class="hljs-built_in">self</span>.at]
-   <span class="hljs-keyword">return</span> x==<span class="hljs-string">&quot;?&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> x==<span class="hljs-built_in">self</span>.x <span class="hljs-keyword">end</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Nums:clone</span><span class="hljs-params">(xs,ys)</span></span> <span class="hljs-keyword">return</span> Nums:new(xs, ys, <span class="hljs-built_in">self</span>.at, <span class="hljs-built_in">self</span>.name) <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Syms:clone</span><span class="hljs-params">(xs,ys)</span></span> <span class="hljs-keyword">return</span> Syms:new(xs, ys, <span class="hljs-built_in">self</span>.at, <span class="hljs-built_in">self</span>.name) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -270,26 +270,18 @@ Note that for <code>Nums</code>, being the first or last range is space case</p>
               <div class="sswrap ">
                 <a class="ss" href="#section-9">&#x00a7;</a>
               </div>
-              <h2 id="discretization">Discretization</h2>
-<p><strong>ranges(xys :{{num,str}}, tiny :num, enough :num): {range}</strong><br>Make a new range when<br>(1) there is enough left for at least one more range; and<br>(2) the lo,hi delta in current range is not tiny; and<br>(3) there are enough x values in this range; and<br>(4) there is natural split here</p>
+              <h2 id="printing">Printing</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ranges</span><span class="hljs-params">(xys, tiny, enough,         now,out,x,y)</span></span>
-   <span class="hljs-keyword">while</span> width &lt;<span class="hljs-number">4</span> <span class="hljs-keyword">and</span> width&lt;#xy/<span class="hljs-number">2</span> <span class="hljs-keyword">do</span> width=<span class="hljs-number">1.2</span>*width <span class="hljs-keyword">end</span> <span class="hljs-comment">--grow small widths</span>
-   now = Nums:new()
-   out = {now}
-   <span class="hljs-keyword">for</span> j,xy <span class="hljs-keyword">in</span> <span class="hljs-built_in">sort</span>(xys,<span class="hljs-string">&quot;x&quot;</span>) <span class="hljs-keyword">do</span>
-      x,y = xy[<span class="hljs-number">1</span>],xy[<span class="hljs-number">2</span>]
-      <span class="hljs-keyword">if</span> j &lt; #xys - enough <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (1)</span>
-         <span class="hljs-keyword">if</span> x ~= xys[j+<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (2)</span>
-             <span class="hljs-keyword">if</span> now.n &gt; enough <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (3)</span>
-                <span class="hljs-keyword">if</span> now.hi - now.lo &gt; tiny <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (4)</span>
-                     now=Nums:new()
-                     out[ <span class="hljs-number">1</span>+#out ] = now <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
-      now.xs.add(x)
-      now.ys.add(y) <span class="hljs-keyword">end</span>
-   <span class="hljs-keyword">return</span> prune(out) <span class="hljs-keyword">end</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Nums:show</span><span class="hljs-params">(w,d,         f)</span></span> 
+   w,d=w <span class="hljs-keyword">or</span> <span class="hljs-number">5</span>,d <span class="hljs-keyword">or</span> <span class="hljs-number">2</span>
+   f = sfmt(<span class="hljs-string">&quot;%%%s,%sf&quot;</span>,w,d) <span class="hljs-comment">-- format for width`w` and `d` decimals</span>
+   <span class="hljs-keyword">return</span> sfmt(<span class="hljs-string">&quot;%s=[&quot;</span>..f..<span class="hljs-string">&quot;..&quot;</span>..f..<span class="hljs-string">&quot;]&quot;</span>,<span class="hljs-built_in">self</span>.name,<span class="hljs-built_in">self</span>.xs.lo,<span class="hljs-built_in">self</span>.xs.hi) <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Syms:show</span><span class="hljs-params">(w,d,          s)</span></span> 
+   s=<span class="hljs-built_in">tostring</span>(<span class="hljs-built_in">self</span>.x)
+   <span class="hljs-keyword">return</span>   sfmt(<span class="hljs-string">&quot;%s=[%s]&quot;</span>, <span class="hljs-built_in">self</span>.name, s:<span class="hljs-built_in">sub</span>(<span class="hljs-number">1</span>,<span class="hljs-built_in">math</span>.<span class="hljs-built_in">min</span>(w,#s))) <span class="hljs-keyword">end</span></pre></div></div>
             
         </li>
         
@@ -299,6 +291,112 @@ Note that for <code>Nums</code>, being the first or last range is space case</p>
               
               <div class="sswrap ">
                 <a class="ss" href="#section-10">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-11">&#x00a7;</a>
+              </div>
+              <h2 id="query">Query</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-12">&#x00a7;</a>
+              </div>
+              <p><strong>holds(row :table, isFirst :boolean, isLast :boolean) :boolean)</strong><br>Returns true if this row might be in this range.
+Note that for <code>Nums</code>, being the first or last range is space case</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Nums:holds</span><span class="hljs-params">(row,isFirst,isLast,            x)</span></span>
+   x = row[<span class="hljs-built_in">self</span>.at]
+   <span class="hljs-keyword">if</span>         x==<span class="hljs-string">&quot;?&quot;</span>                               <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> 
+   <span class="hljs-keyword">elseif</span> isFirst <span class="hljs-keyword">and</span> x &lt;= <span class="hljs-built_in">self</span>.xs.hi <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> 
+   <span class="hljs-keyword">elseif</span> isLast   <span class="hljs-keyword">and</span> x &gt;= <span class="hljs-built_in">self</span>.xs.lo <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+   <span class="hljs-keyword">else</span>    <span class="hljs-keyword">return</span> x&gt;=<span class="hljs-built_in">self</span>.xs.lo <span class="hljs-keyword">and</span> x&lt;=<span class="hljs-built_in">self</span>.xs.hi <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Syms:holds</span><span class="hljs-params">(row, isFirst, isLast,      x)</span></span>
+   x = row[<span class="hljs-built_in">self</span>.at]
+   <span class="hljs-keyword">return</span> x==<span class="hljs-string">&quot;?&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> x==<span class="hljs-built_in">self</span>.x <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-13">&#x00a7;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-14">&#x00a7;</a>
+              </div>
+              <h2 id="discretization">Discretization</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-15">&#x00a7;</a>
+              </div>
+              <p><strong>ranges(xys:{{num,str}}, tiny:num, enough:num, at:int, name:str): {range}</strong><br>Make a new range when<br>(1) there is enough left for at least one more range; and<br>(2) the lo,hi delta in current range is not tiny; and<br>(3) there are enough x values in this range; and<br>(4) there is natural split here</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ranges</span><span class="hljs-params">(xys, tiny, enough,at,name,         now,out,x,y)</span></span>
+   <span class="hljs-keyword">while</span> width &lt;<span class="hljs-number">4</span> <span class="hljs-keyword">and</span> width&lt;#xy/<span class="hljs-number">2</span> <span class="hljs-keyword">do</span> width=<span class="hljs-number">1.2</span>*width <span class="hljs-keyword">end</span> <span class="hljs-comment">--grow small widths</span>
+   now = Nums:new(Num:new(),Sym:new(),at,name)
+   out = {now}
+   <span class="hljs-keyword">for</span> j,xy <span class="hljs-keyword">in</span> <span class="hljs-built_in">sort</span>(xys,<span class="hljs-string">&quot;x&quot;</span>) <span class="hljs-keyword">do</span>
+      x,y = xy[<span class="hljs-number">1</span>],xy[<span class="hljs-number">2</span>]
+      <span class="hljs-keyword">if</span> j &lt; #xys - enough <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (1)</span>
+         <span class="hljs-keyword">if</span> x ~= xys[j+<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (2)</span>
+             <span class="hljs-keyword">if</span> now.n &gt; enough <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (3)</span>
+                <span class="hljs-keyword">if</span> now.hi - now.lo &gt; tiny <span class="hljs-keyword">then</span> <span class="hljs-comment">-- (4)</span>
+                     now = now:clone()
+                     out[ <span class="hljs-number">1</span>+#out ] = now <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
+      now.xs.add(x)
+      now.ys.add(y) <span class="hljs-keyword">end</span>
+   <span class="hljs-keyword">return</span> prune(out) <span class="hljs-keyword">end</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-16">&#x00a7;</a>
               </div>
               <p><strong>prune(b4 :{{xs:Num,ys:Sym}}) :{{xs:Num,ys:Sym}}</strong><br>Return a smaller version of <code>b4</code> (by subsuming ranges
 that do not change the class distributions seen in <code>ys</code>)</p>
@@ -311,9 +409,9 @@ that do not change the class distributions seen in <code>ys</code>)</p>
       a= b4[j]
       <span class="hljs-keyword">if</span> j &lt; n<span class="hljs-number">-1</span> <span class="hljs-keyword">then</span>
          b= b4[j+<span class="hljs-number">1</span>]
-         cy= merge(a.ys, b.ys)
-         <span class="hljs-keyword">if</span> cy:var() &lt;= (a.ys:var()*a.ys.n + b.ys:val()*b.ys.n) / cy.n <span class="hljs-keyword">then</span>
-             a= Nums(a.xs:merge(b.xs),   cy)
+         ay,by,cy= a.ys, b.ys, merge(a.ys, b.ys)
+         <span class="hljs-keyword">if</span> cy:var() &lt;= ay:var()*ay.n/c.n + by:var()*by.n/cy.n <span class="hljs-keyword">then</span>
+             a= a:clone(a.xs:merge(b.xs), cy)
              j = j + <span class="hljs-number">1</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">end</span>
       tmp[<span class="hljs-number">1</span>+#tmp] = a
       j = j + <span class="hljs-number">1</span>
@@ -323,11 +421,11 @@ that do not change the class distributions seen in <code>ys</code>)</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-11">&#x00a7;</a>
+                <a class="ss" href="#section-17">&#x00a7;</a>
               </div>
               <hr>
 
@@ -336,11 +434,11 @@ that do not change the class distributions seen in <code>ys</code>)</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-12">&#x00a7;</a>
+                <a class="ss" href="#section-18">&#x00a7;</a>
               </div>
               
             </div>

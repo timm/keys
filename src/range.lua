@@ -1,26 +1,29 @@
 -- # category Range = _Nums_ or _Syms_
 -- This code lets us treat numeric `Nums` and symbolic `Syms` ranges with the same
--- protocol. Also, for `Nums`, this code implements supervised discrimination.
---
--- |**Class**|Nums   |: category= data |
--- |---------|-------:|------------------|
--- |**Does** | 1         |: explores lists of (x:num, y:sym), sorted on `num` |
--- |             | 2         |: find ranges that split the `x` values into not-small chunks |
--- |             | 3         |: prune ranges that do not change the `y` distribution|
--- |             | 4         |: reports if a value can be in a range |
--- |**Has**   | x:Num   |: info about the `x` values |
--- |             | y:Sym   |: info about the `y` values |
--- |             | at:num |: column index of this range |
--- |             | name:str |: column name of this range |
--- |**Uses** |            |: [Num](num.html),   [Sym](sym.html)|    
--- ------------------------------------------- 
--- |**Class**|Syms      |: category= data |
--- |---------|-------:|------------------|
--- |**Does** | 1         |: reports if a value can be in a range |
--- |**Has**   | x:string |: the symbolic `x` value that defines this range |
--- |             | at:num |: column index of this range |
--- |             | name:str |: column name of this range |
-
+-- protocol. Also, for `Nums`, this code implements supervised discretization.
+-- -----------------------------------------
+-- |**Class**|Nums      |: category= data  |
+-- |---------|---------:|------------------|
+-- |**Does** | 1        |: unify  interface to numeric and symbolic ranges|
+-- |         | 2        |: reports if a row can be in a range|
+-- |         | 3        |: print details about this range|
+-- |         | 4        |: explores lists of (x:num, y:sym), sorted on `num`|
+-- |         | 5        |: find ranges that split the `x` values into not-small chunks|
+-- |         | 6        |: prune ranges that do not change the `y` distribution|
+-- |**Has**  | x :Num   |: info about the `x` values|
+-- |         | y :Sym   |: info about the `y` values|
+-- |         | at :num  |: column index of this range|
+-- |         | name :str|: column name of this range|
+-- |**Uses** |          |: [Num](num.html),   [Sym](sym.html)|    
+-- ----------------------------------------- 
+-- |**Class**|Syms      |: category= data  |
+-- |---------|---------:|------------------|
+-- |**Does** | 1        |: unify interface to numeric and symbols ranges|
+-- |         | 2        |: reports if a row can be in a range|
+-- |         | 3        |: print details abut this range|
+-- |**Has**  | x :string|: the symbolic `x` value that defines this range|
+-- |         | at :num  |: column index of this range|
+-- |         | name :str|: column name of this range|
 local Nums={}
 local Syms={}
 local Num = require"num"
@@ -38,6 +41,14 @@ function Syms(x,at,name)
    return obj(self,"Syms", {at=at or 0, name=name or "",x=x}) end
 
 -- ------
+-- ## Copy
+
+-- **clone(?xs :Num, ?ys:Sym): Nums|Syms**   
+-- return a range with the same name and column index
+function Nums:clone(xs,ys) return Nums:new(xs, ys, self.at, self.name) end
+function Syms:clone(xs,ys) return Syms:new(xs, ys, self.at, self.name) end
+
+-- ------
 -- ## Printing
 function Nums:show(w,d,         f) 
    w,d=w or 5,d or 2
@@ -50,6 +61,7 @@ function Syms:show(w,d,          s)
 
 -- ------------------------------
 -- ## Query
+
 -- **holds(row :table, isFirst :boolean, isLast :boolean) :boolean)**    
 -- Returns true if this row might be in this range.
 -- Note that for `Nums`, being the first or last range is space case
@@ -66,15 +78,16 @@ function Syms:holds(row, isFirst, isLast,      x)
 
 -- -----------
 -- ## Discretization
--- **ranges(xys :{{num,str}}, tiny :num, enough :num): {range}**      
+
+-- **ranges(xys:{{num,str}}, tiny:num, enough:num, at:int, name:str): {range}**      
 -- Make a new range when       
 -- (1) there is enough left for at least one more range; and       
 -- (2) the lo,hi delta in current range is not tiny; and   
 -- (3) there are enough x values in this range; and      
 -- (4) there is natural split here
-function ranges(xys, tiny, enough,         now,out,x,y)
+function ranges(xys, tiny, enough,at,name,         now,out,x,y)
    while width <4 and width<#xy/2 do width=1.2*width end --grow small widths
-   now = Nums:new()
+   now = Nums:new(Num:new(),Sym:new(),at,name)
    out = {now}
    for j,xy in sort(xys,"x") do
       x,y = xy[1],xy[2]
@@ -82,7 +95,7 @@ function ranges(xys, tiny, enough,         now,out,x,y)
          if x ~= xys[j+1][1] then -- (2)
              if now.n > enough then -- (3)
                 if now.hi - now.lo > tiny then -- (4)
-                     now=Nums:new()
+                     now = now:clone()
                      out[ 1+#out ] = now end end end end
       now.xs.add(x)
       now.ys.add(y) end
@@ -97,9 +110,9 @@ function prune(b4,             j,tmp,n,a,b,cy)
       a= b4[j]
       if j < n-1 then
          b= b4[j+1]
-         cy= merge(a.ys, b.ys)
-         if cy:var() <= (a.ys:var()*a.ys.n + b.ys:val()*b.ys.n) / cy.n then
-             a= Nums(a.xs:merge(b.xs),   cy)
+         ay,by,cy= a.ys, b.ys, merge(a.ys, b.ys)
+         if cy:var() <= ay:var()*ay.n/c.n + by:var()*by.n/cy.n then
+             a= a:clone(a.xs:merge(b.xs), cy)
              j = j + 1 end end
       tmp[1+#tmp] = a
       j = j + 1
