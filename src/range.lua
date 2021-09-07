@@ -22,6 +22,7 @@
 -- |         | 2        |: reports if a row can be in a range|
 -- |         | 3        |: print details abut this range|
 -- |**Has**  | x :string|: the symbolic `x` value that defines this range|
+-- |         | y :Sym   |: info about the `y` values|
 -- |         | at :num  |: column index of this range|
 -- |         | name :str|: column name of this range|
 local Nums={}
@@ -38,7 +39,8 @@ function Nums(xs,ys,at,name)
                    xs=xs or Num:new(), ys=ys or Sym:new()}) end 
 
 function Syms(x,at,name)
-   return obj(self,"Syms", {at=at or 0, name=name or "",x=x}) end
+   return obj(self,"Syms", {at=at or 0, name=name or "",
+                   x=x, ys=Sym:new()}) end
 
 -- ------
 -- ## Copy
@@ -57,7 +59,7 @@ function Nums:show(w,d,         f)
 
 function Syms:show(w,d,          s) 
    s=tostring(self.x)
-   return   sfmt("%s=[%s]", self.name, s:sub(1,math.min(w,#s))) end
+   return sfmt("%s=[%s]", self.name, s:sub(1,math.min(w,#s))) end
 
 -- ------------------------------
 -- ## Query
@@ -70,7 +72,7 @@ function Nums:holds(row,isFirst,isLast,            x)
    if         x=="?"                               then return true 
    elseif isFirst and x <= self.xs.hi then return true 
    elseif isLast   and x >= self.xs.lo then return true
-   else    return x>=self.xs.lo and x<=self.xs.hi end end
+   else   return x>=self.xs.lo and x<=self.xs.hi end end
 
 function Syms:holds(row, isFirst, isLast,      x)
    x = row[self.at]
@@ -78,17 +80,20 @@ function Syms:holds(row, isFirst, isLast,      x)
 
 -- -----------
 -- ## Discretization
+-- **TODO**: this code handles `xys` being pairs of (numbers,symbols). Given
+-- that the above code offers a uniform interface to `Nums` and `Syms`, it should
+-- be possible to extend this  to handle
+-- pairs of (symbols,symbols) or even (anything,numbers).
 
--- **ranges(xys:{{num,str}}, tiny:num, enough:num, at:int, name:str): {range}**      
+-- **ranges(xys:{{num,str}}, tiny:num, enough:num, first:Nums): {range}**      
 -- Make a new range when       
 -- (1) there is enough left for at least one more range; and       
 -- (2) the lo,hi delta in current range is not tiny; and   
 -- (3) there are enough x values in this range; and      
 -- (4) there is natural split here
-function ranges(xys, tiny, enough,at,name,         now,out,x,y)
+function ranges(xys, tiny, enough,first,         now,out,x,y)
    while width <4 and width<#xy/2 do width=1.2*width end --grow small widths
-   now = Nums:new(Num:new(),Sym:new(),at,name)
-   out = {now}
+   out = {first}
    for j,xy in sort(xys,"x") do
       x,y = xy[1],xy[2]
       if j < #xys - enough then -- (1)
